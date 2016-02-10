@@ -4,3 +4,4 @@
 
 public_schema_owner 2016-02-10T15:50:13Z Francisco Puga <fpuga@icarto.es> # Set utentes as public owner
 create_postgis_extension 2016-02-10T16:52:58Z Francisco Puga <fpuga@icarto.es> # Create postgis extension
+create_schema_utentes 2016-02-10T17:41:33Z Francisco Puga <fpuga@icarto.es> # Create schema 'utentes'
