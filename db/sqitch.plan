@@ -7,3 +7,4 @@ create_postgis_extension 2016-02-10T16:52:58Z Francisco Puga <fpuga@icarto.es> #
 create_schema_utentes 2016-02-10T17:41:33Z Francisco Puga <fpuga@icarto.es> # Create schema 'utentes'
 create_table_exploracaos [create_schema_utentes] 2016-02-10T19:08:54Z Francisco Puga <fpuga@icarto.es> # Create table exploracaos
 create_table_licencias [create_schema_utentes] 2016-02-10T19:40:31Z Francisco Puga <fpuga@icarto.es> # Create table licencias
+create_table_fontes [create_schema_utentes] 2016-02-10T19:53:10Z Francisco Puga <fpuga@icarto.es> # Create table fontes
