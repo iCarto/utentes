@@ -287,7 +287,7 @@ INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('
 
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('actividade', '' , '' , 0 ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('actividade', 'Abastecimento' , '' , NULL ,'');
-INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('actividade', 'Agricultura' , '' , NULL ,'');
+INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('actividade', 'Agricultura-Rega' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('actividade', 'Indústria' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('actividade', 'Pecuária' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('actividade', 'Piscicultura' , '' , NULL ,'');
