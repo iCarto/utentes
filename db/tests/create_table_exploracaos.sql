@@ -21,7 +21,7 @@ RESET client_min_messages;
 
 BEGIN;
 
-SELECT plan(81);
+SELECT plan(85);
 
 SET search_path TO utentes,public;
 
@@ -46,7 +46,8 @@ SELECT columns_are(
 	     'c_licencia',
 	     'c_real',
 	     'c_estimado',
-	     'the_geom'
+	     'the_geom',
+	     'actividade'
 	], 'Found expected columns for utentes.exploracaos'
 );
 
@@ -181,6 +182,11 @@ SELECT has_column(        'exploracaos', 'the_geom' );
 SELECT col_type_is(       'exploracaos', 'the_geom', 'geometry(MultiPolygon,32737)' );
 SELECT col_is_null('exploracaos', 'the_geom' );
 SELECT col_hasnt_default( 'exploracaos', 'the_geom' );
+
+SELECT has_column(        'exploracaos', 'actividade' );
+SELECT col_type_is(       'exploracaos', 'actividade', 'text' );
+SELECT col_is_null(	  'exploracaos', 'actividade' );
+SELECT col_hasnt_default( 'exploracaos', 'actividade' );
 
 
 SELECT table_owner_is ( 'utentes', 'exploracaos', 'utentes' , 'utentes.exploracaos owner is utentes');
