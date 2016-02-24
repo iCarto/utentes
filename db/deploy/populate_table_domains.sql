@@ -207,6 +207,7 @@ INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('bacia', 'Megaruma' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('bacia', 'Messalo' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('bacia', 'Montepuez' , '' , NULL ,'');
+INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('bacia', 'Rovuma' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('bacia', 'Orla Marítima 1' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('bacia', 'Orla Marítima 2' , '' , NULL ,'');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('bacia', 'Orla Marítima 3' , '' , NULL ,'');
@@ -217,6 +218,8 @@ INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('subacia', 'Messalo' , '' , NULL ,'Messalo');
 
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('subacia', 'Montepuez' , '' , NULL ,'Montepuez');
+
+INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('subacia', 'Rovuma' , '' , NULL ,'Rovuma');
 
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('subacia', '' , '' , 0 ,'Orla Marítima 1');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent) VALUES ('subacia', 'Meapia' , '' , NULL ,'Orla Marítima 1');
