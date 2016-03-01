@@ -28,7 +28,7 @@ SELECT columns_are(
        'utentes',
        'domains',
 	ARRAY[
-		'gid', 'category', 'value', 'alias', 'ordering', 'parent'
+		'gid', 'category', 'value', 'alias', 'ordering', 'parent', 'tooltip'
 	], 'Found expected columns for utentes.domains'
 );
 
@@ -78,7 +78,7 @@ SELECT col_hasnt_default( 'domains', 'alias' );
 
 
 SELECT has_column(        'domains', 'ordering' );
-SELECT col_type_is(       'domains', 'ordering', 'integer' );
+SELECT col_type_is(       'domains', 'ordering', 'text' );
 SELECT col_is_null('domains', 'ordering' );
 SELECT col_hasnt_default( 'domains', 'ordering' );
 
@@ -88,6 +88,11 @@ SELECT col_type_is(       'domains', 'parent', 'text' );
 SELECT col_is_null('domains', 'parent' );
 SELECT col_hasnt_default( 'domains', 'parent' );
 
+
+SELECT has_column(        'domains', 'tooltip' );
+SELECT col_type_is(       'domains', 'tooltip', 'text' );
+SELECT col_is_null('domains', 'tooltip' );
+SELECT col_hasnt_default( 'domains', 'tooltip' );
 
 SELECT table_owner_is ( 'utentes', 'domains', 'utentes' , 'utentes.domains owner is utentes');
 SELECT finish();

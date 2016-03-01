@@ -7,8 +7,9 @@ CREATE TABLE utentes.domains (
     category text NOT NULL,
     value    text NOT NULL,
     alias    text,
-    ordering integer,
-    parent   text
+    ordering text,
+    parent   text,
+    tooltip  text
 );
 
 ALTER TABLE utentes.domains OWNER TO utentes;

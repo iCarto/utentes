@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT gid, category, value, alias, ordering, parent
+SELECT gid, category, value, alias, ordering, parent, tooltip
 FROM utentes.domains
 WHERE FALSE;
 
