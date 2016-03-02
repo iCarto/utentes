@@ -17,6 +17,6 @@ update public.entrada e set exploracao_gid = u.gid FROM utentes.exploracaos u WH
 delete from utentes.fontes;
 insert into utentes.fontes (exploracao, tipo_agua, tipo_fonte, c_soli) (select exploracao_gid, tipo, fonte, consumo_so from public.entrada);
 delete from utentes.licencias;
-insert into utentes.licencias (lic_tipo, lic_nro, exploracao, estado, c_soli_int, c_licencia) (select tipo, '9999-999-99', exploracao_gid, replace(estado, 'ă','ã'), consumo_so, consumo_li from public.entrada);
+insert into utentes.licencias (lic_tipo, lic_nro, exploracao, estado, c_soli_int, c_licencia) (select tipo, n_explorac || '-001', exploracao_gid, replace(estado, 'ă','ã'), consumo_so, consumo_li from public.entrada);
 
 delete from public.entrada ;
