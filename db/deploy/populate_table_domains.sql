@@ -84,7 +84,7 @@ INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) 
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', '', '', '0', 'Subterrânea', '');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', 'Furo', NULL, NULL, 'Subterrânea', NULL);
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', 'Outros', NULL, NULL, 'Subterrânea', NULL);
-INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', 'Pozo', NULL, NULL, 'Subterrânea', NULL);
+INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', 'Poço', NULL, NULL, 'Subterrânea', NULL);
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', '', '', '0', 'Superficial', '');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', 'Albufeira', NULL, NULL, 'Superficial', NULL);
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('fonte_tipo', 'Lago', NULL, NULL, 'Superficial', NULL);
@@ -107,9 +107,9 @@ INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) 
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', '', '', '0', NULL, '');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Irregular', NULL, '1', NULL, 'A licença encontra-se num estado irregular (Incumplimieto dos acordos)');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Denegada', NULL, '2', NULL, 'A licença foi negada por não cumprir os requisitos');
-INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente solicitaçao utente', NULL, '3', NULL, 'O utente ainda não tem entregado a carta de solicitação');
-INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão Solicitação (Direcção)', NULL, '4', NULL, 'O utente tem entregado a solicitação. Pendente de revisão por direcção');
-INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão Solicitação (D. Jurídico)', NULL, '5', NULL, 'O utente tem entregado a solicitação. Pendente de revisão pelo departamento jurídico');
+INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente solicitação utente', NULL, '3', NULL, 'O utente ainda não tem entregado a carta de solicitação');
+INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão solicitação (Direcção)', NULL, '4', NULL, 'O utente tem entregado a solicitação. Pendente de revisão por direcção');
+INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão solicitação (D. Jurídico)', NULL, '5', NULL, 'O utente tem entregado a solicitação. Pendente de revisão pelo departamento jurídico');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente aprobação tecnica (D. Cadastro)', NULL, '6', NULL, 'Pendente que os técnicos do departamento de cadastro saiam a terreno a realizar a avaliação técnica');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente aprobação tecnica (Dirección)', NULL, '7', NULL, 'Avaliação técnica realizada. Pendente revisão e aprovação da licença por direcção');
 INSERT INTO utentes.domains (category, value, alias, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente emisão (D. Jurídico)', NULL, '8', NULL, 'Licença aprovada por direcção. Pendente emissão da licença por departamento jurídico');
