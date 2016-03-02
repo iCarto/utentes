@@ -7,13 +7,12 @@ CREATE TABLE utentes.licencias (
     gid        serial PRIMARY KEY,
     lic_nro    text NOT NULL UNIQUE,
     lic_tipo   text NOT NULL REFERENCES domains.licencia_tipo(key)
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION,
-    finalidade text,
+               ON UPDATE CASCADE
+               ON DELETE NO ACTION,
     cadastro   text,
     estado     text REFERENCES domains.licencia_estado(key)
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION,
+               ON UPDATE CASCADE
+               ON DELETE NO ACTION,
     d_emissao  date,
     d_validade date,
     c_soli_tot numeric(10,2),
@@ -23,8 +22,7 @@ CREATE TABLE utentes.licencias (
     c_real_tot numeric(10,2),
     c_real_int numeric(10,2),
     c_real_fon numeric(10,2),
-    exploracao integer NOT NULL
-               REFERENCES utentes.exploracaos(gid)
+    exploracao integer NOT NULL REFERENCES utentes.exploracaos(gid)
     	         ON UPDATE CASCADE
 	             ON DELETE CASCADE
 );
