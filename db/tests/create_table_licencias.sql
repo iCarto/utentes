@@ -21,7 +21,7 @@ RESET client_min_messages;
 
 BEGIN;
 
-SELECT plan(60);
+SELECT plan(52);
 
 SET search_path TO utentes,public;
 
@@ -29,7 +29,8 @@ SELECT columns_are(
        'utentes',
        'licencias',
 	ARRAY[
-		'gid',	'lic_nro',	'lic_tipo',	'exploracao',	'cadastro',	'd_emissao',	'd_validade',	'd_solici',	'estado',	'c_requerid',	'c_licencia',	'c_real',	'c_real_int'
+		'gid',	'lic_nro',	'lic_tipo',	'exploracao',	'cadastro',	'd_emissao',	'd_validade',	'estado',	'c_licencia',	'c_real_tot',	'c_real_int',
+    'c_soli_tot', 'finalidade', 'c_soli_fon', 'c_soli_int', 'c_real_fon'
 	], 'Found expected columns for utentes.licencias'
 );
 
@@ -99,23 +100,10 @@ SELECT col_type_is(       'licencias', 'd_validade', 'date' );
 SELECT col_is_null('licencias', 'd_validade' );
 SELECT col_hasnt_default( 'licencias', 'd_validade' );
 
-
-SELECT has_column(        'licencias', 'd_solici' );
-SELECT col_type_is(       'licencias', 'd_solici', 'date' );
-SELECT col_is_null('licencias', 'd_solici' );
-SELECT col_hasnt_default( 'licencias', 'd_solici' );
-
-
 SELECT has_column(        'licencias', 'estado' );
 SELECT col_type_is(       'licencias', 'estado', 'text' );
 SELECT col_is_null('licencias', 'estado' );
 SELECT col_hasnt_default( 'licencias', 'estado' );
-
-
-SELECT has_column(        'licencias', 'c_requerid' );
-SELECT col_type_is(       'licencias', 'c_requerid', 'numeric(10,2)' );
-SELECT col_is_null('licencias', 'c_requerid' );
-SELECT col_hasnt_default( 'licencias', 'c_requerid' );
 
 
 SELECT has_column(        'licencias', 'c_licencia' );
@@ -124,10 +112,10 @@ SELECT col_is_null('licencias', 'c_licencia' );
 SELECT col_hasnt_default( 'licencias', 'c_licencia' );
 
 
-SELECT has_column(        'licencias', 'c_real' );
-SELECT col_type_is(       'licencias', 'c_real', 'numeric(10,2)' );
-SELECT col_is_null('licencias', 'c_real' );
-SELECT col_hasnt_default( 'licencias', 'c_real' );
+SELECT has_column(        'licencias', 'c_real_tot' );
+SELECT col_type_is(       'licencias', 'c_real_tot', 'numeric(10,2)' );
+SELECT col_is_null('licencias', 'c_real_tot' );
+SELECT col_hasnt_default( 'licencias', 'c_real_tot' );
 
 
 SELECT has_column(        'licencias', 'c_real_int' );

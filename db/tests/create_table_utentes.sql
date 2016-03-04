@@ -21,7 +21,7 @@ RESET client_min_messages;
 
 BEGIN;
 
-SELECT plan(31);
+SELECT plan(30);
 
 SET search_path TO utentes,public;
 
@@ -29,7 +29,8 @@ SELECT columns_are(
        'utentes',
        'utentes',
 	ARRAY[
-		'gid',	'nome',	'nuit',	'entidade',	'reg_comerc',	'reg_zona'
+		'gid',	'nome',	'nuit',	'entidade',	'reg_comerc',	'reg_zona',
+    'loc_provin', 'loc_distri', 'loc_posto', 'loc_nucleo'
 	], 'Found expected columns for utentes.utentes'
 );
 
@@ -72,7 +73,6 @@ SELECT col_hasnt_default( 'utentes', 'nome' );
 SELECT has_column(        'utentes', 'nuit' );
 SELECT col_type_is(       'utentes', 'nuit', 'text' );
 SELECT col_is_null('utentes', 'nuit' );
-SELECT col_is_unique( 'utentes', 'nuit', 'Column utentes.utentes.nuit should be unique' );
 SELECT col_hasnt_default( 'utentes', 'nuit' );
 
 

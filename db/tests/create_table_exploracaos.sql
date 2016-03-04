@@ -21,7 +21,7 @@ RESET client_min_messages;
 
 BEGIN;
 
-SELECT plan(85);
+SELECT plan(95);
 
 SET search_path TO utentes,public;
 
@@ -31,6 +31,7 @@ SELECT columns_are(
 	ARRAY[
 	     'gid',
 	     'exp_name',
+       'd_soli',
 	     'exp_id',
 	     'utente',
 	     'observacio',
@@ -40,14 +41,16 @@ SELECT columns_are(
 	     'loc_nucleo',
 	     'loc_endere',
 	     'loc_bacia',
+       'loc_subaci',
 	     'loc_rio',
 	     'pagos',
-	     'c_requerid',
+       'c_soli',
 	     'c_licencia',
 	     'c_real',
 	     'c_estimado',
-	     'the_geom',
-	     'actividade'
+       'actividade',
+       'area',
+	     'the_geom'
 	], 'Found expected columns for utentes.exploracaos'
 );
 
@@ -81,7 +84,6 @@ SELECT col_is_pk( 'exploracaos', 'gid', 'Column gid should be the pk');
 SELECT has_column(        'exploracaos', 'exp_name' );
 SELECT col_type_is(       'exploracaos', 'exp_name', 'text' );
 SELECT col_not_null( 'exploracaos', 'exp_name' );
-SELECT col_is_unique( 'exploracaos', 'exp_name', 'Column utentes.exploracaos.exp_name should be unique' );
 SELECT col_hasnt_default( 'exploracaos', 'exp_name' );
 
 
@@ -141,6 +143,11 @@ SELECT col_type_is(       'exploracaos', 'loc_bacia', 'text' );
 SELECT col_is_null('exploracaos', 'loc_bacia' );
 SELECT col_hasnt_default( 'exploracaos', 'loc_bacia' );
 
+SELECT has_column(        'exploracaos', 'loc_subaci' );
+SELECT col_type_is(       'exploracaos', 'loc_subaci', 'text' );
+SELECT col_is_null('exploracaos', 'loc_subaci' );
+SELECT col_hasnt_default( 'exploracaos', 'loc_subaci' );
+
 
 SELECT has_column(        'exploracaos', 'loc_rio' );
 SELECT col_type_is(       'exploracaos', 'loc_rio', 'text' );
@@ -150,14 +157,23 @@ SELECT col_hasnt_default( 'exploracaos', 'loc_rio' );
 
 SELECT has_column(        'exploracaos', 'pagos' );
 SELECT col_type_is(       'exploracaos', 'pagos', 'boolean' );
-SELECT col_not_null('exploracaos', 'pagos' );
 SELECT col_hasnt_default( 'exploracaos', 'pagos' );
 
 
-SELECT has_column(        'exploracaos', 'c_requerid' );
-SELECT col_type_is(       'exploracaos', 'c_requerid', 'numeric(10,2)' );
-SELECT col_is_null('exploracaos', 'c_requerid' );
-SELECT col_hasnt_default( 'exploracaos', 'c_requerid' );
+SELECT has_column(        'exploracaos', 'area' );
+SELECT col_type_is(       'exploracaos', 'area', 'numeric(10,2)' );
+SELECT col_is_null('exploracaos', 'area' );
+SELECT col_hasnt_default( 'exploracaos', 'area' );
+
+SELECT has_column(        'exploracaos', 'c_soli' );
+SELECT col_type_is(       'exploracaos', 'c_soli', 'numeric(10,2)' );
+SELECT col_is_null('exploracaos', 'c_soli' );
+SELECT col_hasnt_default( 'exploracaos', 'c_soli' );
+
+SELECT has_column(        'exploracaos', 'd_soli' );
+SELECT col_type_is(       'exploracaos', 'd_soli', 'date' );
+SELECT col_is_null('exploracaos', 'd_soli' );
+SELECT col_hasnt_default( 'exploracaos', 'd_soli' );
 
 
 SELECT has_column(        'exploracaos', 'c_licencia' );

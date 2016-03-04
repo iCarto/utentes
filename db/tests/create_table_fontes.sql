@@ -21,7 +21,7 @@ RESET client_min_messages;
 
 BEGIN;
 
-SELECT plan(51);
+SELECT plan(55);
 
 SET search_path TO utentes,public;
 
@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'fontes',
 	ARRAY[
-		'gid',	'exploracao',	'tipo_agua',	'tipo_fonte',	'lat_lon',	'd_dado',	'c_requerid',	'c_max',	'c_real',	'contador',	'metodo_est'
+		'gid',	'exploracao',	'tipo_agua',	'tipo_fonte',	'lat_lon',	'd_dado',	'c_soli',	'c_max',	'c_real',	'contador',	'metodo_est', 'comentario'
 	], 'Found expected columns for utentes.fontes'
 );
 
@@ -87,6 +87,11 @@ SELECT col_type_is(       'fontes', 'lat_lon', 'text' );
 SELECT col_is_null('fontes', 'lat_lon' );
 SELECT col_hasnt_default( 'fontes', 'lat_lon' );
 
+SELECT has_column(        'fontes', 'comentario' );
+SELECT col_type_is(       'fontes', 'comentario', 'text' );
+SELECT col_is_null('fontes', 'comentario' );
+SELECT col_hasnt_default( 'fontes', 'comentario' );
+
 
 SELECT has_column(        'fontes', 'd_dado' );
 SELECT col_type_is(       'fontes', 'd_dado', 'date' );
@@ -94,10 +99,10 @@ SELECT col_is_null('fontes', 'd_dado' );
 SELECT col_hasnt_default( 'fontes', 'd_dado' );
 
 
-SELECT has_column(        'fontes', 'c_requerid' );
-SELECT col_type_is(       'fontes', 'c_requerid', 'numeric(10,2)' );
-SELECT col_is_null('fontes', 'c_requerid' );
-SELECT col_hasnt_default( 'fontes', 'c_requerid' );
+SELECT has_column(        'fontes', 'c_soli' );
+SELECT col_type_is(       'fontes', 'c_soli', 'numeric(10,2)' );
+SELECT col_is_null('fontes', 'c_soli' );
+SELECT col_hasnt_default( 'fontes', 'c_soli' );
 
 
 SELECT has_column(        'fontes', 'c_max' );
