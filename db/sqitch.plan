@@ -4,8 +4,30 @@
 
 public_schema_owner 2016-02-10T15:50:13Z Francisco Puga <fpuga@icarto.es> # Set utentes as public owner
 create_postgis_extension 2016-02-10T16:52:58Z Francisco Puga <fpuga@icarto.es> # Create postgis extension
+
+create_schema_domains 2016-03-04T09:05:07Z Francisco Puga <fpuga@icarto.es> # Create schema domains
+create_table_domains_actividade [create_schema_domains] 2016-03-04T09:05:07Z Francisco Puga <fpuga@icarto.es> # Create table domains.actividade
+create_table_domains_animal_tipo [create_schema_domains] 2016-03-04T09:05:07Z Francisco Puga <fpuga@icarto.es> # Create table domains.animal_tipo
+create_table_domains_bacia [create_schema_domains] 2016-03-04T09:05:08Z Francisco Puga <fpuga@icarto.es> # Create table domains.bacia
+create_table_domains_contador [create_schema_domains] 2016-03-04T09:05:08Z Francisco Puga <fpuga@icarto.es> # Create table domains.contador
+create_table_domains_cultivo_tipo [create_schema_domains] 2016-03-04T09:05:08Z Francisco Puga <fpuga@icarto.es> # Create table domains.cultivo_tipo
+create_table_domains_distrito [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.distrito
+create_table_domains_energia_tipo [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.energia_tipo
+create_table_domains_fonte_tipo [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.fonte_tipo
+create_table_domains_industria_tipo [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.industria_tipo
+create_table_domains_licencia_estado [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.licencia_estado
+create_table_domains_licencia_tipo [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.licencia_tipo
+create_table_domains_pagamentos [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.pagamentos
+create_table_domains_posto [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.posto
+create_table_domains_provincia [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.provincia
+create_table_domains_rega_tipo [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.rega_tipo
+create_table_domains_subacia [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.subacia
+create_view_domains [create_schema_domains] 2016-03-04T09:05:12Z Francisco Puga <fpuga@icarto.es> # Create view domains.domains
+populate_domains_table [create_schema_domains] 2016-03-04T09:05:12Z Francisco Puga <fpuga@icarto.es> # Populate domains tables
+
 create_schema_utentes 2016-02-10T17:41:33Z Francisco Puga <fpuga@icarto.es> # Create schema 'utentes'
 create_table_utentes [create_schema_utentes] 2016-02-10T20:02:41Z Francisco Puga <fpuga@icarto.es> # Create table utentes
 create_table_exploracaos [create_table_utentes] 2016-02-10T19:08:54Z Francisco Puga <fpuga@icarto.es> # Create table exploracaos
 create_table_licencias [create_table_exploracaos] 2016-02-10T19:40:31Z Francisco Puga <fpuga@icarto.es> # Create table licencias
 create_table_fontes [create_table_exploracaos] 2016-02-10T19:53:10Z Francisco Puga <fpuga@icarto.es> # Create table fontes
+

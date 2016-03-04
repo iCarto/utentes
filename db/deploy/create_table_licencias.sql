@@ -6,10 +6,14 @@ BEGIN;
 CREATE TABLE utentes.licencias (
     gid        serial PRIMARY KEY,
     lic_nro    text NOT NULL UNIQUE,
-    lic_tipo   text NOT NULL,
+    lic_tipo   text NOT NULL REFERENCES domains.licencia_tipo(key)
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
     finalidade text,
     cadastro   text,
-    estado     text,
+    estado     text REFERENCES domains.licencia_estado(key)
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
     d_emissao  date,
     d_validade date,
     c_soli_tot numeric(10,2),

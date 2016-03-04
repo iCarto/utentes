@@ -5,7 +5,9 @@ BEGIN;
 
 CREATE TABLE utentes.fontes (
     gid        serial PRIMARY KEY,
-    tipo_agua  text NOT NULL,
+    tipo_agua  text NOT NULL REFERENCES domains.licencia_tipo(key)
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
     tipo_fonte text,
     lat_lon    text,
     d_dado     date,
@@ -18,7 +20,10 @@ CREATE TABLE utentes.fontes (
     exploracao integer NOT NULL
                REFERENCES utentes.exploracaos(gid)
     	         ON UPDATE CASCADE
-	             ON DELETE CASCADE
+	             ON DELETE CASCADE,
+    FOREIGN KEY (tipo_agua, tipo_fonte) REFERENCES domains.fonte_tipo (parent, key)
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION
 );
 
 ALTER TABLE utentes.fontes OWNER TO utentes;
