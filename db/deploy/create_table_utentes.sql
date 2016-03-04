@@ -16,6 +16,7 @@ CREATE TABLE utentes.utentes (
     loc_distri text,
     loc_posto  text,
     loc_nucleo text,
+    observacio text,
     FOREIGN KEY (loc_provin, loc_distri) REFERENCES domains.distrito (parent, key)
       ON UPDATE CASCADE
       ON DELETE NO ACTION,
