@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'fontes',
 	ARRAY[
-		'gid',	'exploracao',	'tipo_agua',	'tipo_fonte',	'lat_lon',	'd_dado',	'c_soli',	'c_max',	'c_real',	'contador',	'metodo_est', 'comentario'
+		'gid',	'exploracao',	'tipo_agua',	'tipo_fonte',	'lat_lon',	'd_dado',	'c_soli',	'c_max',	'c_real',	'contador',	'metodo_est', 'observacio'
 	], 'Found expected columns for utentes.fontes'
 );
 
@@ -87,10 +87,10 @@ SELECT col_type_is(       'fontes', 'lat_lon', 'text' );
 SELECT col_is_null('fontes', 'lat_lon' );
 SELECT col_hasnt_default( 'fontes', 'lat_lon' );
 
-SELECT has_column(        'fontes', 'comentario' );
-SELECT col_type_is(       'fontes', 'comentario', 'text' );
-SELECT col_is_null('fontes', 'comentario' );
-SELECT col_hasnt_default( 'fontes', 'comentario' );
+SELECT has_column(        'fontes', 'observacio' );
+SELECT col_type_is(       'fontes', 'observacio', 'text' );
+SELECT col_is_null('fontes', 'observacio' );
+SELECT col_hasnt_default( 'fontes', 'observacio' );
 
 
 SELECT has_column(        'fontes', 'd_dado' );

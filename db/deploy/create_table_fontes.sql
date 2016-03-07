@@ -16,7 +16,7 @@ CREATE TABLE utentes.fontes (
     c_real     numeric(10,2),
     contador   boolean,
     metodo_est text,
-    comentario text,
+    observacio text,
     exploracao integer NOT NULL
                REFERENCES utentes.exploracaos(gid)
     	         ON UPDATE CASCADE
