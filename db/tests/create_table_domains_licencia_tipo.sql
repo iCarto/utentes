@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('licencia_tipo');
-SELECT has_pk( 'licencia_tipo' );
+-- SELECT has_pk( 'licencia_tipo' );
 
 SELECT has_column(        'licencia_tipo', 'category' );
 SELECT col_type_is(       'licencia_tipo', 'category', 'text' );

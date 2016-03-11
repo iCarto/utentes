@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'utentes',
 	ARRAY[
-		'gid',	'nome',	'nuit',	'entidade',	'reg_comerc',	'reg_zona',
+		'gid',	'nome',	'nuit',	'entidade', 'observacio', 'reg_comerc',	'reg_zona',
     'loc_provin', 'loc_distri', 'loc_posto', 'loc_nucleo'
 	], 'Found expected columns for utentes.utentes'
 );

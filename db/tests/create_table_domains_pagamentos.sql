@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('pagamentos');
-SELECT has_pk( 'pagamentos' );
+-- SELECT has_pk( 'pagamentos' );
 
 SELECT has_column(        'pagamentos', 'category' );
 SELECT col_type_is(       'pagamentos', 'category', 'text' );

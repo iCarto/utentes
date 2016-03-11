@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('rega_tipo');
-SELECT has_pk( 'rega_tipo' );
+-- SELECT has_pk( 'rega_tipo' );
 
 SELECT has_column(        'rega_tipo', 'category' );
 SELECT col_type_is(       'rega_tipo', 'category', 'text' );

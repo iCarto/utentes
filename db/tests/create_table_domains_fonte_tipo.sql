@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('fonte_tipo');
-SELECT has_pk( 'fonte_tipo' );
+-- SELECT has_pk( 'fonte_tipo' );
 
 SELECT has_column(        'fonte_tipo', 'category' );
 SELECT col_type_is(       'fonte_tipo', 'category', 'text' );

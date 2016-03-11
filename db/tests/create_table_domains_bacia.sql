@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('bacia');
-SELECT has_pk( 'bacia' );
+-- SELECT has_pk( 'bacia' );
 
 SELECT has_column(        'bacia', 'category' );
 SELECT col_type_is(       'bacia', 'category', 'text' );

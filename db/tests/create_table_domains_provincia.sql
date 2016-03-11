@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('provincia');
-SELECT has_pk( 'provincia' );
+-- SELECT has_pk( 'provincia' );
 
 SELECT has_column(        'provincia', 'category' );
 SELECT col_type_is(       'provincia', 'category', 'text' );

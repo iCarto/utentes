@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('actividade');
-SELECT has_pk( 'actividade' );
+-- SELECT has_pk( 'actividade' );
 
 SELECT has_column(        'actividade', 'category' );
 SELECT col_type_is(       'actividade', 'category', 'text' );

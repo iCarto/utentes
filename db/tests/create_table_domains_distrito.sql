@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('distrito');
-SELECT has_pk( 'distrito' );
+-- SELECT has_pk( 'distrito' );
 
 SELECT has_column(        'distrito', 'category' );
 SELECT col_type_is(       'distrito', 'category', 'text' );

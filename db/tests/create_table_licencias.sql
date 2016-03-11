@@ -30,7 +30,7 @@ SELECT columns_are(
        'licencias',
 	ARRAY[
 		'gid',	'lic_nro',	'lic_tipo',	'exploracao',	'cadastro',	'd_emissao',	'd_validade',	'estado',	'c_licencia',	'c_real_tot',	'c_real_int',
-    'c_soli_tot', 'finalidade', 'c_soli_fon', 'c_soli_int', 'c_real_fon'
+    'c_soli_tot', 'c_soli_fon', 'c_soli_int', 'c_real_fon'
 	], 'Found expected columns for utentes.licencias'
 );
 

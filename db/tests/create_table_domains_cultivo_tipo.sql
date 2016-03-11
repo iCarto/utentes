@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('cultivo_tipo');
-SELECT has_pk( 'cultivo_tipo' );
+-- SELECT has_pk( 'cultivo_tipo' );
 
 SELECT has_column(        'cultivo_tipo', 'category' );
 SELECT col_type_is(       'cultivo_tipo', 'category', 'text' );

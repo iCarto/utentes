@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('industria_tipo');
-SELECT has_pk( 'industria_tipo' );
+-- SELECT has_pk( 'industria_tipo' );
 
 SELECT has_column(        'industria_tipo', 'category' );
 SELECT col_type_is(       'industria_tipo', 'category', 'text' );

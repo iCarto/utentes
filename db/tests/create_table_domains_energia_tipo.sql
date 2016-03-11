@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('energia_tipo');
-SELECT has_pk( 'energia_tipo' );
+-- SELECT has_pk( 'energia_tipo' );
 
 SELECT has_column(        'energia_tipo', 'category' );
 SELECT col_type_is(       'energia_tipo', 'category', 'text' );

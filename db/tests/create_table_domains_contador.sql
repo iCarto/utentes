@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('contador');
-SELECT has_pk( 'contador' );
+-- SELECT has_pk( 'contador' );
 
 SELECT has_column(        'contador', 'category' );
 SELECT col_type_is(       'contador', 'category', 'text' );

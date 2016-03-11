@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('posto');
-SELECT has_pk( 'posto' );
+-- SELECT has_pk( 'posto' );
 
 SELECT has_column(        'posto', 'category' );
 SELECT col_type_is(       'posto', 'category', 'text' );

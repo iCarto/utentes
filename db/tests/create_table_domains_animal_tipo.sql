@@ -34,7 +34,7 @@ SELECT columns_are(
 );
 
 SELECT has_table('animal_tipo');
-SELECT has_pk( 'animal_tipo' );
+-- SELECT has_pk( 'animal_tipo' );
 
 SELECT has_column(        'animal_tipo', 'category' );
 SELECT col_type_is(       'animal_tipo', 'category', 'text' );
