@@ -31,3 +31,4 @@ create_table_exploracaos [create_table_utentes] 2016-02-10T19:08:54Z Francisco P
 create_table_licencias [create_table_exploracaos] 2016-02-10T19:40:31Z Francisco Puga <fpuga@icarto.es> # Create table licencias
 create_table_fontes [create_table_exploracaos] 2016-02-10T19:53:10Z Francisco Puga <fpuga@icarto.es> # Create table fontes
 
+create_table_actividades [create_schema_utentes] 2016-03-11T13:52:28Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades
