@@ -32,3 +32,9 @@ create_table_licencias [create_table_exploracaos] 2016-02-10T19:40:31Z Francisco
 create_table_fontes [create_table_exploracaos] 2016-02-10T19:53:10Z Francisco Puga <fpuga@icarto.es> # Create table fontes
 
 create_table_actividades [create_schema_utentes] 2016-03-11T13:52:28Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades
+create_table_actividades_abastecemento [create_schema_utentes create_table_actividades] 2016-03-11T17:31:31Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_abastecemento
+create_table_actividades_saneamento [create_schema_utentes create_table_actividades] 2016-03-11T17:31:31Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_saneamento
+create_table_actividades_agricultura_rega [create_schema_utentes create_table_actividades] 2016-03-11T17:31:31Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_agricultura_rega
+create_table_actividades_piscicultura [create_schema_utentes create_table_actividades] 2016-03-11T17:31:32Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_piscicultura
+create_table_actividades_industria [create_schema_utentes create_table_actividades] 2016-03-11T17:31:32Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_industria
+create_table_actividades_produccao_energia [create_schema_utentes create_table_actividades] 2016-03-11T17:31:34Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_produccao_energia
