@@ -51,12 +51,6 @@ SELECT col_not_null(
 	'gid',
 	'Column utentes.actividades.gid is not nullable'
 );
-SELECT col_has_default(
-	'utentes',
-	'actividades',
-	'gid',
-	'Column utentes.actividades.gid has default value'
-);
 SELECT col_is_pk( 'actividades', 'gid', 'Column gid should be the pk');
 
 SELECT has_column(        'actividades_saneamento', 'exploracao' );

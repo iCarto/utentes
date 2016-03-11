@@ -5,7 +5,9 @@
 BEGIN;
 
 CREATE TABLE utentes.actividades_produccao_energia (
-    gid serial NOT NULL PRIMARY KEY,
+    gid integer PRIMARY KEY REFERENCES utentes.actividades(gid)
+         ON UPDATE CASCADE
+         ON DELETE CASCADE,
     exploracao integer NOT NULL,
     c_estimado numeric(10,2),
     tipo text,

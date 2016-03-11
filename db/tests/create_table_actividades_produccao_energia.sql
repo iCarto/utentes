@@ -51,12 +51,6 @@ SELECT col_not_null(
 	'gid',
 	'Column utentes.actividades_produccao_energia.gid is not nullable'
 );
-SELECT col_has_default(
-	'utentes',
-	'actividades_produccao_energia',
-	'gid',
-	'Column utentes.actividades_produccao_energia.gid has default value'
-);
 SELECT col_is_pk( 'actividades_produccao_energia', 'gid', 'Column gid should be the pk');
 
 SELECT has_column(        'actividades_produccao_energia', 'exploracao' );
