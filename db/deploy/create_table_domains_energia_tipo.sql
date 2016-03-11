@@ -5,7 +5,7 @@ BEGIN;
 
 CREATE TABLE domains.energia_tipo (
     category text,
-    key text,
+    key text UNIQUE,
     value text,
     ordering text,
     parent text,

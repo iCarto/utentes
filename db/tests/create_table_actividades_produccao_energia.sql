@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'actividades_produccao_energia',
 	ARRAY[
-		'gid',	'c_estimado',	'tipo',	'alt_agua',	'potencia',	'equipo',	'eval_impac'
+		'gid',	'c_estimado',	'energia_tipo',	'alt_agua',	'potencia',	'equipo',	'eval_impac'
 	], 'Found expected columns for utentes.actividades_produccao_energia'
 );
 
@@ -59,10 +59,10 @@ SELECT col_is_null('actividades_produccao_energia', 'c_estimado' );
 SELECT col_hasnt_default( 'actividades_produccao_energia', 'c_estimado' );
 
 
-SELECT has_column(        'actividades_produccao_energia', 'tipo' );
-SELECT col_type_is(       'actividades_produccao_energia', 'tipo', 'text' );
-SELECT col_is_null('actividades_produccao_energia', 'tipo' );
-SELECT col_hasnt_default( 'actividades_produccao_energia', 'tipo' );
+SELECT has_column(        'actividades_produccao_energia', 'energia_tipo' );
+SELECT col_type_is(       'actividades_produccao_energia', 'energia_tipo', 'text' );
+SELECT col_is_null('actividades_produccao_energia', 'energia_tipo' );
+SELECT col_hasnt_default( 'actividades_produccao_energia', 'energia_tipo' );
 
 
 SELECT has_column(        'actividades_produccao_energia', 'alt_agua' );

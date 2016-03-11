@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT gid, c_estimado, tipo, alt_agua, potencia, equipo, eval_impac
+SELECT gid, c_estimado, energia_tipo, alt_agua, potencia, equipo, eval_impac
 FROM utentes.actividades_produccao_energia
 WHERE FALSE;
 

@@ -9,7 +9,9 @@ CREATE TABLE utentes.actividades_produccao_energia (
          ON UPDATE CASCADE
          ON DELETE CASCADE,
     c_estimado numeric(10,2),
-    tipo text,
+    energia_tipo text REFERENCES domains.energia_tipo(key)
+         ON UPDATE CASCADE
+	 ON DELETE NO ACTION,
     alt_agua numeric(10,2),
     potencia numeric(10,2),
     equipo text,
