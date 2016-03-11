@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'actividades_piscicultura',
 	ARRAY[
-		'gid',	'exploracao',	'c_estimado',	'area',	'v_reservas'
+		'gid',	'c_estimado',	'area',	'v_reservas'
 	], 'Found expected columns for utentes.actividades_piscicultura'
 );
 
@@ -52,12 +52,6 @@ SELECT col_not_null(
 	'Column utentes.actividades_piscicultura.gid is not nullable'
 );
 SELECT col_is_pk( 'actividades_piscicultura', 'gid', 'Column gid should be the pk');
-
-SELECT has_column(        'actividades_piscicultura', 'exploracao' );
-SELECT col_type_is(       'actividades_piscicultura', 'exploracao', 'integer' );
-SELECT col_not_null( 'actividades_piscicultura', 'exploracao' );
-SELECT col_hasnt_default( 'actividades_piscicultura', 'exploracao' );
-
 
 SELECT has_column(        'actividades_piscicultura', 'c_estimado' );
 SELECT col_type_is(       'actividades_piscicultura', 'c_estimado', 'numeric(10,2)' );

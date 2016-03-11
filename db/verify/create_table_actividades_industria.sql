@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT gid, exploracao, c_estimado, tipo, instalacio, efluente, tratamento, eval_impac
+SELECT gid, c_estimado, tipo, instalacio, efluente, tratamento, eval_impac
 FROM utentes.actividades_industria
 WHERE FALSE;
 

@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'actividades_saneamento',
 	ARRAY[
-		'gid',	'exploracao',	'c_estimado',	'habitantes'
+		'gid',	'c_estimado',	'habitantes'
 	], 'Found expected columns for utentes.actividades_saneamento'
 );
 
@@ -52,11 +52,6 @@ SELECT col_not_null(
 	'Column utentes.actividades.gid is not nullable'
 );
 SELECT col_is_pk( 'actividades', 'gid', 'Column gid should be the pk');
-
-SELECT has_column(        'actividades_saneamento', 'exploracao' );
-SELECT col_type_is(       'actividades_saneamento', 'exploracao', 'integer' );
-SELECT col_not_null( 'actividades_saneamento', 'exploracao' );
-SELECT col_hasnt_default( 'actividades_saneamento', 'exploracao' );
 
 
 SELECT has_column(        'actividades_saneamento', 'c_estimado' );

@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT gid, exploracao, c_estimado
+SELECT gid, c_estimado
 FROM utentes.actividades_agricultura_rega
 WHERE FALSE;
 

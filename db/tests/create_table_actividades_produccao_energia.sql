@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'actividades_produccao_energia',
 	ARRAY[
-		'gid',	'exploracao',	'c_estimado',	'tipo',	'alt_agua',	'potencia',	'equipo',	'eval_impac'
+		'gid',	'c_estimado',	'tipo',	'alt_agua',	'potencia',	'equipo',	'eval_impac'
 	], 'Found expected columns for utentes.actividades_produccao_energia'
 );
 
@@ -52,12 +52,6 @@ SELECT col_not_null(
 	'Column utentes.actividades_produccao_energia.gid is not nullable'
 );
 SELECT col_is_pk( 'actividades_produccao_energia', 'gid', 'Column gid should be the pk');
-
-SELECT has_column(        'actividades_produccao_energia', 'exploracao' );
-SELECT col_type_is(       'actividades_produccao_energia', 'exploracao', 'integer' );
-SELECT col_not_null( 'actividades_produccao_energia', 'exploracao' );
-SELECT col_hasnt_default( 'actividades_produccao_energia', 'exploracao' );
-
 
 SELECT has_column(        'actividades_produccao_energia', 'c_estimado' );
 SELECT col_type_is(       'actividades_produccao_energia', 'c_estimado', 'numeric(10,2)' );

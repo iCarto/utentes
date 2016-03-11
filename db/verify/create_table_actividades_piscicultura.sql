@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT gid, exploracao, c_estimado, area, v_reservas
+SELECT gid, c_estimado, area, v_reservas
 FROM utentes.actividades_piscicultura
 WHERE FALSE;
 

@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'actividades_agricultura_rega',
 	ARRAY[
-		'gid',	'exploracao',	'c_estimado'
+		'gid',	'c_estimado'
 	], 'Found expected columns for utentes.actividades_agricultura_rega'
 );
 
@@ -52,12 +52,6 @@ SELECT col_not_null(
 	'Column utentes.actividades_agricultura_rega.gid is not nullable'
 );
 SELECT col_is_pk( 'actividades_agricultura_rega', 'gid', 'Column gid should be the pk');
-
-SELECT has_column(        'actividades_agricultura_rega', 'exploracao' );
-SELECT col_type_is(       'actividades_agricultura_rega', 'exploracao', 'integer' );
-SELECT col_not_null( 'actividades_agricultura_rega', 'exploracao' );
-SELECT col_hasnt_default( 'actividades_agricultura_rega', 'exploracao' );
-
 
 SELECT has_column(        'actividades_agricultura_rega', 'c_estimado' );
 SELECT col_type_is(       'actividades_agricultura_rega', 'c_estimado', 'numeric(10,2)' );

@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'actividades_industria',
 	ARRAY[
-		'gid',	'exploracao',	'c_estimado',	'tipo',	'instalacio',	'efluente',	'tratamento',	'eval_impac'
+		'gid',	'c_estimado',	'tipo',	'instalacio',	'efluente',	'tratamento',	'eval_impac'
 	], 'Found expected columns for utentes.actividades_industria'
 );
 
@@ -52,12 +52,6 @@ SELECT col_not_null(
 	'Column utentes.actividades_industria.gid is not nullable'
 );
 SELECT col_is_pk( 'actividades_industria', 'gid', 'Column gid should be the pk');
-
-SELECT has_column(        'actividades_industria', 'exploracao' );
-SELECT col_type_is(       'actividades_industria', 'exploracao', 'integer' );
-SELECT col_not_null( 'actividades_industria', 'exploracao' );
-SELECT col_hasnt_default( 'actividades_industria', 'exploracao' );
-
 
 SELECT has_column(        'actividades_industria', 'c_estimado' );
 SELECT col_type_is(       'actividades_industria', 'c_estimado', 'numeric(10,2)' );

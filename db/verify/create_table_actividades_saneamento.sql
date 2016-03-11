@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT gid, exploracao, c_estimado, habitantes
+SELECT gid, c_estimado, habitantes
 FROM utentes.actividades_saneamento
 WHERE FALSE;
 
