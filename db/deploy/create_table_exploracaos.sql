@@ -26,9 +26,6 @@ CREATE TABLE utentes.exploracaos (
     c_licencia numeric(10,2),
     c_real     numeric(10,2),
     c_estimado numeric(10,2),
-    actividade text REFERENCES domains.actividade (key)
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION,
     area       numeric(10,2),
     the_geom   geometry(MultiPolygon,32737),
     utente     integer NOT NULL
