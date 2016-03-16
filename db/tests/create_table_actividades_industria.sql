@@ -29,7 +29,7 @@ SELECT columns_are(
        'utentes',
        'actividades_industria',
 	ARRAY[
-		'gid',	'c_estimado',	'industria_tipo',	'instalacio',	'efluente',	'tratamento',	'eval_impac'
+		'gid',	'c_estimado',	'tipo_indus',	'instalacio',	'efluente',	'tratamento',	'eval_impac'
 	], 'Found expected columns for utentes.actividades_industria'
 );
 
@@ -59,10 +59,10 @@ SELECT col_is_null('actividades_industria', 'c_estimado' );
 SELECT col_hasnt_default( 'actividades_industria', 'c_estimado' );
 
 
-SELECT has_column(        'actividades_industria', 'industria_tipo' );
-SELECT col_type_is(       'actividades_industria', 'industria_tipo', 'text' );
-SELECT col_is_null('actividades_industria', 'industria_tipo' );
-SELECT col_hasnt_default( 'actividades_industria', 'industria_tipo' );
+SELECT has_column(        'actividades_industria', 'tipo_indus' );
+SELECT col_type_is(       'actividades_industria', 'tipo_indus', 'text' );
+SELECT col_is_null('actividades_industria', 'tipo_indus' );
+SELECT col_hasnt_default( 'actividades_industria', 'tipo_indus' );
 
 
 SELECT has_column(        'actividades_industria', 'instalacio' );

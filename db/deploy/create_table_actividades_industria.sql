@@ -9,9 +9,9 @@ CREATE TABLE utentes.actividades_industria (
          ON UPDATE CASCADE
          ON DELETE CASCADE,
     c_estimado numeric(10,2),
-    industria_tipo text REFERENCES domains.industria_tipo(key)
-         ON UPDATE CASCADE
-	 ON DELETE NO ACTION,
+    tipo_indus text REFERENCES domains.industria_tipo(key)
+          ON UPDATE CASCADE
+	        ON DELETE NO ACTION,
     instalacio text,
     efluente text,
     tratamento text,
