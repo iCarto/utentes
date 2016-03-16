@@ -21,7 +21,7 @@ RESET client_min_messages;
 
 BEGIN;
 
-SELECT plan(95);
+SELECT no_plan();
 
 SET search_path TO utentes,public;
 

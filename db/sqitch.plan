@@ -38,3 +38,4 @@ create_table_actividades_agricultura_rega [create_schema_utentes create_table_ac
 create_table_actividades_piscicultura [create_schema_utentes create_table_actividades] 2016-03-11T17:31:32Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_piscicultura
 create_table_actividades_industria [create_schema_utentes create_table_actividades] 2016-03-11T17:31:32Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_industria
 create_table_actividades_produccao_energia [create_schema_utentes create_table_actividades] 2016-03-11T17:31:34Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_produccao_energia
+create_table_actividades_cultivos [create_schema_utentes create_table_actividades create_table_actividades_agricultura_rega] 2016-03-16T15:26:17Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_cultivos
