@@ -26,5 +26,35 @@ insert into utentes.actividades (exploracao, tipo) (SELECT exploracao_gid, activ
 insert into utentes.actividades_industria (gid, c_estimado) (SELECT gid, random() * 100 from utentes.actividades where exploracao IN ( select exploracao_gid from public.entrada where actividade = 'Indústria' ) );
 insert into utentes.actividades_agricultura_rega (gid, c_estimado) (SELECT gid, random() * 100 from utentes.actividades where exploracao IN ( select exploracao_gid from public.entrada where actividade = 'Agricultura-Regadia' ) );
 insert into utentes.actividades_abastecemento (gid, c_estimado, dotacao) (SELECT gid, random() * 100, random()*1000 from utentes.actividades where exploracao IN ( select exploracao_gid from public.entrada where actividade = 'Abastecimento' ) );
-delete from public.entrada ;
 
+DELETE FROM utentes.actividades WHERE exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029');
+INSERT INTO utentes.actividades (exploracao, tipo) (SELECT gid, 'Pecuária' from utentes.exploracaos WHERE exp_id = '2010-029');
+INSERT INTO utentes.actividades_pecuaria (gid, c_estimado) (SELECT gid, 100 FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029'));
+INSERT INTO utentes.actividades_reses (gid, actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
+  1,
+  (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029')),
+  10,
+  'Ovino (Ovelhas)',
+  100,
+  1000
+ );
+INSERT INTO utentes.actividades_reses (gid, actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
+   2,
+   (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029')),
+   20,
+   'Avícola (Aves)',
+   200,
+   2000
+);
+INSERT INTO utentes.actividades_reses (gid, actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
+    3,
+    (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029')),
+    30,
+    'Equino (Cavalos)',
+    300,
+    3000
+);
+
+
+
+delete from public.entrada ;
