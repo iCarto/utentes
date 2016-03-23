@@ -134,6 +134,9 @@ INSERT INTO domains.licencia_tipo (category, key, value, ordering, parent, toolt
 INSERT INTO domains.pagamentos (category, key, value, ordering, parent, tooltip) VALUES ('pagamentos', NULL, NULL, '0', NULL, NULL);
 INSERT INTO domains.pagamentos (category, key, value, ordering, parent, tooltip) VALUES ('pagamentos', 'Non pagada', 'false', NULL, NULL, NULL);
 INSERT INTO domains.pagamentos (category, key, value, ordering, parent, tooltip) VALUES ('pagamentos', 'Pagada', 'true', NULL, NULL, NULL);
+INSERT INTO domains.boolean (category, key, value, ordering, parent, tooltip) VALUES ('boolean', NULL, NULL, '0', NULL, NULL);
+INSERT INTO domains.boolean (category, key, value, ordering, parent, tooltip) VALUES ('boolean', 'Sim', 'true', NULL, NULL, NULL);
+INSERT INTO domains.boolean (category, key, value, ordering, parent, tooltip) VALUES ('boolean', 'Não', 'false', NULL, NULL, NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, '0', 'Ancuabe', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Ancuabe', NULL, NULL, 'Ancuabe', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mesa', NULL, NULL, 'Ancuabe', NULL);

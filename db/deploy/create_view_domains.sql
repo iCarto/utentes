@@ -28,6 +28,8 @@ SELECT category, key, value, ordering, parent, tooltip FROM domains.licencia_tip
 UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.pagamentos
 UNION
+SELECT category, key, value, ordering, parent, tooltip FROM domains.boolean
+UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.posto
 UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.provincia

@@ -18,6 +18,7 @@ create_table_domains_industria_tipo [create_schema_domains] 2016-03-04T09:05:09Z
 create_table_domains_licencia_estado [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.licencia_estado
 create_table_domains_licencia_tipo [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.licencia_tipo
 create_table_domains_pagamentos [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.pagamentos
+create_table_domains_boolean [create_schema_domains] 2016-03-04T09:05:10Z Andrés Maneiro <amaneiro@icarto.es> # Create table domains.boolean
 create_table_domains_posto [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.posto
 create_table_domains_provincia [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.provincia
 create_table_domains_rega_tipo [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.rega_tipo
