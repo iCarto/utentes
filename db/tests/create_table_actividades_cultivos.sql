@@ -96,7 +96,7 @@ SELECT col_hasnt_default( 'actividades_cultivos', 'eficiencia' );
 
 SELECT has_column(        'actividades_cultivos', 'area' );
 SELECT col_type_is(       'actividades_cultivos', 'area', 'numeric(10,2)' );
-SELECT col_not_null( 'actividades_cultivos', 'area' );
+SELECT col_is_null( 'actividades_cultivos', 'area' );
 SELECT col_hasnt_default( 'actividades_cultivos', 'area' );
 
 
