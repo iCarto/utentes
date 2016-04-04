@@ -42,4 +42,3 @@ create_table_actividades_produccao_energia [create_schema_utentes create_table_a
 create_table_actividades_cultivos [create_schema_utentes create_table_actividades create_table_actividades_agricultura_rega] 2016-03-16T15:26:17Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_cultivos
 create_table_actividades_pecuaria [create_schema_utentes create_table_actividades] 2016-03-16T17:45:38Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_pecuaria
 create_table_actividades_reses [create_schema_utentes create_table_actividades create_table_actividades_pecuaria] 2016-03-16T17:52:14Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_reses
-drop_constraints_for_testing 2016-03-20T13:06:05Z Francisco Puga <fpuga@icarto.es> # Drop some constraints for testing
