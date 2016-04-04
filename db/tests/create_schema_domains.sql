@@ -48,7 +48,8 @@ SELECT tables_are(
 	'posto',
 	'provincia',
 	'rega_tipo',
-	'subacia'
+	'subacia',
+	'boolean'
 	], 'Found expected tables for schema domains'
 );
 

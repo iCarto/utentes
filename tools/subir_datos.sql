@@ -30,24 +30,21 @@ insert into utentes.actividades_abastecemento (gid, c_estimado, dotacao) (SELECT
 DELETE FROM utentes.actividades WHERE exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029');
 INSERT INTO utentes.actividades (exploracao, tipo) (SELECT gid, 'Pecuária' from utentes.exploracaos WHERE exp_id = '2010-029');
 INSERT INTO utentes.actividades_pecuaria (gid, c_estimado) (SELECT gid, 100 FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029'));
-INSERT INTO utentes.actividades_reses (gid, actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
-  1,
+INSERT INTO utentes.actividades_reses (actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
   (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029')),
   10,
   'Ovino (Ovelhas)',
   100,
   1000
  );
-INSERT INTO utentes.actividades_reses (gid, actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
-   2,
+INSERT INTO utentes.actividades_reses (actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
    (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029')),
    20,
    'Avícola (Aves)',
    200,
    2000
 );
-INSERT INTO utentes.actividades_reses (gid, actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
-    3,
+INSERT INTO utentes.actividades_reses (actividade, c_estimado, reses_tipo, reses_nro, c_res) VALUES (
     (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-029')),
     30,
     'Equino (Cavalos)',
@@ -55,6 +52,24 @@ INSERT INTO utentes.actividades_reses (gid, actividade, c_estimado, reses_tipo, 
     3000
 );
 
+INSERT INTO utentes.actividades_cultivos (cult_id, actividade, c_estimado, cultivo, rega, eficiencia, area) VALUES (
+  '2010-022-01',
+  (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-022')),
+  10,
+  'Arroz',
+  'Asperção',
+  0.1,
+  1
+);
 
+INSERT INTO utentes.actividades_cultivos (cult_id, actividade, c_estimado, cultivo, rega, eficiencia, area) VALUES (
+  '2010-022-02',
+  (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-022')),
+  20,
+  'Açúcar',
+  'Goteo',
+  0.2,
+  2
+);
 
 delete from public.entrada ;

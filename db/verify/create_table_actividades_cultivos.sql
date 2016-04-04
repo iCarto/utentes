@@ -2,7 +2,7 @@
 
 BEGIN;
 
-SELECT gid, actividade, c_estimado, cultivo, rega, eficiencia, area, observacio, the_geom
+SELECT gid, cult_id, actividade, c_estimado, cultivo, rega, eficiencia, area, observacio, the_geom
 FROM utentes.actividades_cultivos
 WHERE FALSE;
 

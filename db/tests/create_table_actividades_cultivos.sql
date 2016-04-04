@@ -28,7 +28,7 @@ SELECT columns_are(
        'utentes',
        'actividades_cultivos',
 	ARRAY[
-		'gid',	'actividade',	'c_estimado',	'cultivo',	'rega',	'eficiencia',	'area',	'observacio',	'the_geom'
+		'gid',	'cult_id', 'actividade',	'c_estimado',	'cultivo',	'rega',	'eficiencia',	'area',	'observacio',	'the_geom'
 	], 'Found expected columns for utentes.actividades_cultivos'
 );
 
@@ -43,6 +43,14 @@ SELECT col_has_default( 'utentes', 'actividades_cultivos', 'gid',
 	'Column utentes.actividades_agricultura_rega.gid has default value');
 SELECT col_is_pk( 'actividades_cultivos', 'gid', 'Column gid should be the pk');
 
+
+SELECT has_column( 'actividades_cultivos', 'cult_id' );
+SELECT col_type_is( 'utentes', 'actividades_cultivos', 'cult_id', 'text',
+	'Column utentes.actividades_cultivos.cult_id is type text' );
+SELECT col_not_null( 'utentes', 'actividades_cultivos', 'cult_id',
+	'Column utentes.actividades_cultivos.cult_id is not nullable' );
+SELECT col_hasnt_default( 'actividades_cultivos', 'cult_id' );
+SELECT col_is_unique( 'actividades_cultivos', 'cult_id', 'Column culd_id  should be unique');
 
 
 
@@ -104,7 +112,6 @@ SELECT col_hasnt_default( 'actividades_cultivos', 'observacio' );
 
 SELECT has_column(        'actividades_cultivos', 'the_geom' );
 SELECT col_type_is(       'actividades_cultivos', 'the_geom', 'geometry(MultiPolygon,32737)' );
-SELECT col_not_null('actividades_cultivos', 'the_geom' );
 SELECT col_hasnt_default( 'actividades_cultivos', 'the_geom' );
 
 

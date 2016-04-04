@@ -8,6 +8,7 @@ BEGIN;
 CREATE TABLE utentes.actividades_cultivos (
 
     gid SERIAL PRIMARY KEY,
+    cult_id text NOT NULL UNIQUE,
     actividade integer NOT NULL REFERENCES utentes.actividades_agricultura_rega(gid)
     	       ON UPDATE CASCADE
 	       ON DELETE CASCADE,
@@ -21,7 +22,7 @@ CREATE TABLE utentes.actividades_cultivos (
     eficiencia numeric(10,2) NOT NULL,
     area numeric(10,2) NOT NULL,
     observacio text,
-    the_geom geometry(MultiPolygon,32737) NOT NULL
+    the_geom geometry(MultiPolygon,32737)
 );
 
 ALTER TABLE utentes.actividades_cultivos OWNER TO utentes;
