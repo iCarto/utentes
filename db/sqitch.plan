@@ -43,3 +43,4 @@ create_table_actividades_cultivos [create_schema_utentes create_table_actividade
 create_table_actividades_pecuaria [create_schema_utentes create_table_actividades] 2016-03-16T17:45:38Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_pecuaria
 create_table_actividades_reses [create_schema_utentes create_table_actividades create_table_actividades_pecuaria] 2016-03-16T17:52:14Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_reses
 create_table_settings 2016-04-05T16:34:43Z Francisco Puga <fpuga@icarto.es> # Create table utentes.settings
+populate_table_settings 2016-04-05T16:48:30Z Francisco Puga <fpuga@icarto.es> # Populate table settings
