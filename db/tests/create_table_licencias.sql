@@ -102,7 +102,7 @@ SELECT col_hasnt_default( 'licencias', 'd_validade' );
 
 SELECT has_column(        'licencias', 'estado' );
 SELECT col_type_is(       'licencias', 'estado', 'text' );
-SELECT col_is_null('licencias', 'estado' );
+SELECT col_not_null('licencias', 'estado' );
 SELECT col_hasnt_default( 'licencias', 'estado' );
 
 

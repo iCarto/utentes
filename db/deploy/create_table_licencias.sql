@@ -10,7 +10,7 @@ CREATE TABLE utentes.licencias (
                ON UPDATE CASCADE
                ON DELETE NO ACTION,
     cadastro   text,
-    estado     text REFERENCES domains.licencia_estado(key)
+    estado     text NOT NULL REFERENCES domains.licencia_estado(key)
                ON UPDATE CASCADE
                ON DELETE NO ACTION,
     d_emissao  date,
