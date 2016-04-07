@@ -62,14 +62,26 @@ INSERT INTO utentes.actividades_cultivos (cult_id, actividade, c_estimado, culti
   1
 );
 
-INSERT INTO utentes.actividades_cultivos (cult_id, actividade, c_estimado, cultivo, rega, eficiencia, area) VALUES (
+INSERT INTO utentes.actividades_cultivos (cult_id, actividade, c_estimado, cultivo, rega, eficiencia, area, the_geom) VALUES (
   '2010-022-02',
   (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-022')),
   20,
   'Açúcar',
   'Goteo',
   0.2,
-  2
+  2,
+  (SELECT ST_Multi(ST_Buffer(ST_Translate(ST_Centroid(the_geom), 500, 500), 100)) from utentes.exploracaos WHERE exp_id = '2010-022')
+);
+
+INSERT INTO utentes.actividades_cultivos (cult_id, actividade, c_estimado, cultivo, rega, eficiencia, area, the_geom) VALUES (
+  '2010-022-03',
+  (SELECT gid FROM utentes.actividades where exploracao = (SELECT gid from utentes.exploracaos WHERE exp_id = '2010-022')),
+  30,
+  'Açúcar',
+  'Goteo',
+  0.3,
+  3,
+  (SELECT ST_Multi(ST_Buffer(ST_Translate(ST_Centroid(the_geom), 100, 100), 50)) from utentes.exploracaos WHERE exp_id = '2010-022')
 );
 
 delete from public.entrada ;
