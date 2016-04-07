@@ -106,24 +106,24 @@ INSERT INTO domains.industria_tipo (category, key, value, ordering, parent, tool
 INSERT INTO domains.industria_tipo (category, key, value, ordering, parent, tooltip) VALUES ('industria_tipo', 'Petroquímica', NULL, NULL, NULL, NULL);
 INSERT INTO domains.industria_tipo (category, key, value, ordering, parent, tooltip) VALUES ('industria_tipo', 'Química', NULL, NULL, NULL, NULL);
 INSERT INTO domains.industria_tipo (category, key, value, ordering, parent, tooltip) VALUES ('industria_tipo', 'Téxtil', NULL, NULL, NULL, NULL);
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', NULL, NULL, '0', NULL, NULL);
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Irregular', NULL, '1', NULL, 'A licença encontra-se num estado irregular (Incumplimieto dos acordos)
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', NULL, NULL, '00', NULL, NULL);
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Irregular', NULL, '01', NULL, 'A licença encontra-se num estado irregular (Incumplimieto dos acordos)
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Denegada', NULL, '2', NULL, 'A licença foi negada por não cumprir os requisitos
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Denegada', NULL, '02', NULL, 'A licença foi negada por não cumprir os requisitos
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente solicitação utente', NULL, '3', NULL, 'O utente ainda não tem entregado a carta de solicitação
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente solicitação utente', NULL, '03', NULL, 'O utente ainda não tem entregado a carta de solicitação
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão solicitação (Direcção)', NULL, '4', NULL, 'O utente tem entregado a solicitação. Pendente de revisão por direcção
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão solicitação (Direcção)', NULL, '04', NULL, 'O utente tem entregado a solicitação. Pendente de revisão por direcção
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão solicitação (D. Jurídico)', NULL, '5', NULL, 'O utente tem entregado a solicitação. Pendente de revisão pelo departamento jurídico
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente revisão solicitação (D. Jurídico)', NULL, '05', NULL, 'O utente tem entregado a solicitação. Pendente de revisão pelo departamento jurídico
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente aprobação tecnica (D. Cadastro)', NULL, '6', NULL, 'Pendente que os técnicos do departamento de cadastro saiam a terreno a realizar a avaliação técnica
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente aprobação tecnica (D. Cadastro)', NULL, '06', NULL, 'Pendente que os técnicos do departamento de cadastro saiam a terreno a realizar a avaliação técnica
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente aprobação tecnica (Dirección)', NULL, '7', NULL, 'Avaliação técnica realizada. Pendente revisão e aprovação da licença por direcção
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente aprobação tecnica (Dirección)', NULL, '07', NULL, 'Avaliação técnica realizada. Pendente revisão e aprovação da licença por direcção
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente emisão (D. Jurídico)', NULL, '8', NULL, 'Licença aprovada por direcção. Pendente emissão da licença por departamento jurídico
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente emisão (D. Jurídico)', NULL, '08', NULL, 'Licença aprovada por direcção. Pendente emissão da licença por departamento jurídico
 ');
-INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente firma (Direcção)', NULL, '9', NULL, 'Licença emitida. Pendente assinatura de direcção para sua aprovação definitiva.
+INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Pendente firma (Direcção)', NULL, '09', NULL, 'Licença emitida. Pendente assinatura de direcção para sua aprovação definitiva.
 ');
 INSERT INTO domains.licencia_estado (category, key, value, ordering, parent, tooltip) VALUES ('licencia_estado', 'Licenciada', NULL, '10', NULL, 'Licença concedida, em activo e com funcionamento regular
 ');
