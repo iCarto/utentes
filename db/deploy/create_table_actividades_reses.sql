@@ -9,12 +9,12 @@ CREATE TABLE utentes.actividades_reses (
 
     gid SERIAL PRIMARY KEY,
     actividade integer NOT NULL REFERENCES utentes.actividades_pecuaria(gid)
-    	       ON UPDATE CASCADE
-	       ON DELETE CASCADE,
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     c_estimado numeric(10,2) NOT NULL,
     reses_tipo text NOT NULL REFERENCES domains.animal_tipo(key)
-    	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,
     reses_nro integer NOT NULL,
     c_res integer NOT NULL,
     observacio text

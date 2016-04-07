@@ -6,8 +6,8 @@ BEGIN;
 
 CREATE TABLE utentes.actividades_piscicultura (
     gid integer PRIMARY KEY REFERENCES utentes.actividades(gid)
-         ON UPDATE CASCADE
-         ON DELETE CASCADE,
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
     c_estimado numeric(10,2),
     area numeric(10,2),
     v_reservas numeric(10,2)
