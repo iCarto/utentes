@@ -7,7 +7,7 @@ CREATE TABLE domains.actividade (
     category text,
     key text UNIQUE,
     value text,
-    ordering text,
+    ordering integer,
     parent text,
     tooltip text
 );

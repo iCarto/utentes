@@ -7,7 +7,7 @@ CREATE TABLE domains.bacia (
     category text,
     key text UNIQUE,
     value text,
-    ordering text,
+    ordering integer,
     parent text,
     tooltip text
 );

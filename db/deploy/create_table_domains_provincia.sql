@@ -7,7 +7,7 @@ CREATE TABLE domains.provincia (
     category text,
     key text UNIQUE,
     value text,
-    ordering text,
+    ordering integer,
     parent text,
     tooltip text
 );

@@ -7,7 +7,7 @@ CREATE TABLE domains.contador (
     category text,
     key text,
     value text,
-    ordering text,
+    ordering integer,
     parent text,
     tooltip text
 );

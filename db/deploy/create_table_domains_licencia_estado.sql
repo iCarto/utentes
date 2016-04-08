@@ -7,7 +7,7 @@ CREATE TABLE domains.licencia_estado (
     category text,
     key text UNIQUE,
     value text,
-    ordering text,
+    ordering integer,
     parent text,
     tooltip text
 );
