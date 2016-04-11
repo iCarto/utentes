@@ -29,8 +29,8 @@ INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip) VALU
 INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip) VALUES ('bacia', 'Orla Marítima 3', NULL, NULL, NULL, NULL);
 INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip) VALUES ('bacia', 'Rovuma', NULL, NULL, NULL, NULL);
 INSERT INTO domains.contador (category, key, value, ordering, parent, tooltip) VALUES ('contador', NULL, NULL, 0, NULL, NULL);
-INSERT INTO domains.contador (category, key, value, ordering, parent, tooltip) VALUES ('contador', 'Existe', NULL, NULL, NULL, NULL);
-INSERT INTO domains.contador (category, key, value, ordering, parent, tooltip) VALUES ('contador', 'Não existe', NULL, NULL, NULL, NULL);
+INSERT INTO domains.contador (category, key, value, ordering, parent, tooltip) VALUES ('contador', 'Existe', 'true', 1, NULL, NULL);
+INSERT INTO domains.contador (category, key, value, ordering, parent, tooltip) VALUES ('contador', 'Não existe', 'false', 2, NULL, NULL);
 INSERT INTO domains.cultivo_tipo (category, key, value, ordering, parent, tooltip) VALUES ('cultivo_tipo', NULL, NULL, 0, NULL, NULL);
 INSERT INTO domains.cultivo_tipo (category, key, value, ordering, parent, tooltip) VALUES ('cultivo_tipo', 'Arroz', NULL, NULL, NULL, NULL);
 INSERT INTO domains.cultivo_tipo (category, key, value, ordering, parent, tooltip) VALUES ('cultivo_tipo', 'Açúcar', NULL, NULL, NULL, NULL);
