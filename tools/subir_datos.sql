@@ -10,6 +10,13 @@ update public.entrada e set utente_gid = u.gid FROM utentes.utentes u WHERE u.no
 
 insert into utentes.exploracaos (exp_id, exp_name, utente, loc_provin, loc_distri, loc_posto, loc_bacia, loc_subaci, the_geom) (SELECT n_explorac, 'Exploracao', utente_gid, provincia, distrito, posto, bacia, subacia, geom FROM public.entrada);
 
+-- To check filter 'Pagamentos'
+UPDATE utentes.exploracaos SET pagos = true WHERE exp_id = '2010-001';
+UPDATE utentes.exploracaos SET pagos = false WHERE exp_id = '2010-002';
+
+-- To check what happens with multi-lines comments
+UPDATE utentes.exploracaos SET observacio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elit arcu, pharetra nec dapibus ut, dignissim quis turpis. Etiam nibh nibh, placerat vitae neque eget, egestas placerat arcu.\nSed arcu purus, auctor vitae pharetra dictum, suscipit lobortis sem. Suspendisse ac tortor in arcu ullamcorper scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas ut tincidunt lacus. Vestibulum condimentum facilisis eros eu convallis. Nullam non consequat est, non ullamcorper massa. Morbi a odio eget neque pretium efficitur. Aliquam mollis vestibulum erat, eu vestibulum nisl bibendum vitae. Sed vitae aliquam leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla facilisi. Curabitur at tempor urna.' WHERE exp_id = '2010-001';
+
 -- add fontes & licencias
 alter table public.entrada add column exploracao_gid integer;
 update public.entrada e set exploracao_gid = u.gid FROM utentes.exploracaos u WHERE u.exp_id = e.n_explorac;
@@ -19,7 +26,8 @@ insert into utentes.fontes (exploracao, tipo_agua, tipo_fonte, c_soli) (select e
 delete from utentes.licencias;
 insert into utentes.licencias (lic_tipo, lic_nro, exploracao, estado, c_soli_int, c_licencia) (select tipo, n_explorac || '-001', exploracao_gid, replace(estado, 'ă','ã'), consumo_so, consumo_li from public.entrada);
 
-
+-- Set two licenses to one exploration to check that we can remove one of their
+INSERT INTO utentes.licencias (lic_tipo, lic_nro, exploracao, estado, c_soli_int, c_licencia) (select 'Subterrânea', n_explorac || '-002', exploracao_gid, replace(estado, 'ă','ã'), consumo_so, consumo_li from public.entrada WHERE n_explorac = '2010-001');
 
 insert into utentes.actividades (exploracao, tipo) (SELECT exploracao_gid, actividade from public.entrada);
 
