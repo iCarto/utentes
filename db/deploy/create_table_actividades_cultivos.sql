@@ -19,7 +19,7 @@ CREATE TABLE utentes.actividades_cultivos (
     rega text NOT NULL REFERENCES domains.rega_tipo(key)
         ON UPDATE CASCADE
         ON DELETE NO ACTION,
-    eficiencia numeric(10,2) NOT NULL,
+    eficiencia numeric(10,2),
     area numeric(10,2),
     observacio text,
     the_geom geometry(MultiPolygon,32737)
