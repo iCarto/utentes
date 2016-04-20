@@ -26,7 +26,7 @@ CREATE TABLE utentes.exploracaos (
     c_licencia numeric(10,2),
     c_real     numeric(10,2),
     c_estimado numeric(10,2),
-    area       numeric(10,2),
+    area       numeric(10,4),
     the_geom   geometry(MultiPolygon,32737),
     utente     integer NOT NULL
                REFERENCES utentes.utentes(gid)

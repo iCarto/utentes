@@ -20,7 +20,7 @@ CREATE TABLE utentes.actividades_cultivos (
         ON UPDATE CASCADE
         ON DELETE NO ACTION,
     eficiencia numeric(10,2),
-    area numeric(10,2),
+    area numeric(10,4),
     observacio text,
     the_geom geometry(MultiPolygon,32737)
 );
