@@ -9,7 +9,7 @@ CREATE TABLE utentes.actividades_piscicultura (
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     c_estimado numeric(10,2),
-    area numeric(10,4),
+    area numeric(12,4),
     v_reservas numeric(10,2)
 );
 
