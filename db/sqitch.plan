@@ -45,3 +45,4 @@ create_table_actividades_reses [create_schema_utentes create_table_actividades c
 create_table_settings 2016-04-05T16:34:43Z Francisco Puga <fpuga@icarto.es> # Create table utentes.settings
 populate_table_settings 2016-04-05T16:48:30Z Francisco Puga <fpuga@icarto.es> # Populate table settings
 update_domains_distrito_change_pemba 2016-08-03T14:00:18Z Francisco Puga <fpuga@icarto.es> # Update domains.distrito to change Pemba -> Pemba-Metuge
+update_domains_cultivo_tipo_add_fruticola 2016-08-03T14:52:50Z Francisco Puga <fpuga@icarto.es> # Adds the type fruticola to the cultivo_tipo table
