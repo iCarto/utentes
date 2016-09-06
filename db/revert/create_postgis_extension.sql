@@ -1,4 +1,4 @@
--- Revert utentes:create_postgis_extension from pg
+-- Revert sixhiara:create_postgis_extension from pg
 
 BEGIN;
 
