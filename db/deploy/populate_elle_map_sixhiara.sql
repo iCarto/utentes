@@ -4317,7 +4317,7 @@ INSERT INTO elle._map_style (nombre_capa, nombre_estilo, type, definicion, label
         <reference id_state="7925" xlink:type="simple" xlink:href="states#id(''7925'')" />
     </color>
     <rotation type="double">0.0</rotation>
-    <description type="string">N�o operacional</description>
+    <description type="string">Não operacional</description>
     <referenceSystem type="integer">0</referenceSystem>
     <mask type="null"></mask>
     <isShapeVisible type="boolean">true</isShapeVisible>
@@ -4342,7 +4342,7 @@ INSERT INTO elle._map_style (nombre_capa, nombre_estilo, type, definicion, label
         <reference id_state="7925" xlink:type="simple" xlink:href="states#id(''7925'')" />
     </color>
     <rotation type="double">0.0</rotation>
-    <description type="string">N�o operacional</description>
+    <description type="string">Não operacional</description>
     <referenceSystem type="integer">0</referenceSystem>
     <mask type="null"></mask>
     <isShapeVisible type="boolean">true</isShapeVisible>
