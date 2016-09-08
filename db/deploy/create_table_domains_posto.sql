@@ -13,6 +13,6 @@ CREATE TABLE domains.posto (
     UNIQUE (key, parent)
 );
 
-ALTER TABLE domains.posto OWNER TO utentes;
+-- ALTER TABLE domains.posto OWNER TO utentes;
 
 COMMIT;

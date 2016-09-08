@@ -13,6 +13,6 @@ CREATE TABLE utentes.actividades (
         ON DELETE NO ACTION
 );
 
-ALTER TABLE utentes.actividades OWNER TO utentes;
+-- ALTER TABLE utentes.actividades OWNER TO utentes;
 
 COMMIT;

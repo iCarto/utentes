@@ -56,6 +56,6 @@ geom geometry('POINT', 32737)
 );
 CREATE INDEX ON "utentes"."inventario_fontes" USING GIST ("geom");
 
-ALTER TABLE utentes.inventario_fontes OWNER TO utentes;
+-- ALTER TABLE utentes.inventario_fontes OWNER TO utentes;
 
 COMMIT;

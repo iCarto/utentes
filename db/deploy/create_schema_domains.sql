@@ -2,6 +2,7 @@
 
 BEGIN;
 
-CREATE SCHEMA domains AUTHORIZATION utentes;
+-- CREATE SCHEMA domains AUTHORIZATION utentes;
+CREATE SCHEMA domains;
 
 COMMIT;

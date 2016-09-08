@@ -20,6 +20,6 @@ CREATE TABLE utentes.actividades_reses (
     observacio text
 );
 
-ALTER TABLE utentes.actividades_reses OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_reses OWNER TO utentes;
 
 COMMIT;

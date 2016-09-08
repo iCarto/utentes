@@ -12,6 +12,6 @@ CREATE TABLE domains.energia_tipo (
     tooltip text
 );
 
-ALTER TABLE domains.energia_tipo OWNER TO utentes;
+-- ALTER TABLE domains.energia_tipo OWNER TO utentes;
 
 COMMIT;

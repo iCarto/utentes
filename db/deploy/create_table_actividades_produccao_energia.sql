@@ -18,6 +18,6 @@ CREATE TABLE utentes.actividades_produccao_energia (
     eval_impac boolean
 );
 
-ALTER TABLE utentes.actividades_produccao_energia OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_produccao_energia OWNER TO utentes;
 
 COMMIT;

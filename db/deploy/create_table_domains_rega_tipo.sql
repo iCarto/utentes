@@ -12,6 +12,6 @@ CREATE TABLE domains.rega_tipo (
     tooltip text
 );
 
-ALTER TABLE domains.rega_tipo OWNER TO utentes;
+-- ALTER TABLE domains.rega_tipo OWNER TO utentes;
 
 COMMIT;

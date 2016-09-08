@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP ROLE inventario;
+-- DROP ROLE inventario;
 
 COMMIT;

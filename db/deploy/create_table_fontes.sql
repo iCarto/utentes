@@ -26,6 +26,6 @@ CREATE TABLE utentes.fontes (
       ON DELETE NO ACTION
 );
 
-ALTER TABLE utentes.fontes OWNER TO utentes;
+-- ALTER TABLE utentes.fontes OWNER TO utentes;
 
 COMMIT;

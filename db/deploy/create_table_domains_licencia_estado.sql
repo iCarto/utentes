@@ -12,6 +12,6 @@ CREATE TABLE domains.licencia_estado (
     tooltip text
 );
 
-ALTER TABLE domains.licencia_estado OWNER TO utentes;
+-- ALTER TABLE domains.licencia_estado OWNER TO utentes;
 
 COMMIT;

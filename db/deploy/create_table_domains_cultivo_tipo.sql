@@ -12,6 +12,6 @@ CREATE TABLE domains.cultivo_tipo (
     tooltip text
 );
 
-ALTER TABLE domains.cultivo_tipo OWNER TO utentes;
+-- ALTER TABLE domains.cultivo_tipo OWNER TO utentes;
 
 COMMIT;

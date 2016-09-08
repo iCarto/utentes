@@ -7,6 +7,6 @@ CREATE TABLE utentes.settings (
     value text NOT NULL
 );
 
-ALTER TABLE utentes.settings OWNER TO utentes;
+-- ALTER TABLE utentes.settings OWNER TO utentes;
 
 COMMIT;

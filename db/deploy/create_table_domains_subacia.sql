@@ -13,6 +13,6 @@ CREATE TABLE domains.subacia (
     UNIQUE (key, parent)
 );
 
-ALTER TABLE domains.subacia OWNER TO utentes;
+-- ALTER TABLE domains.subacia OWNER TO utentes;
 
 COMMIT;

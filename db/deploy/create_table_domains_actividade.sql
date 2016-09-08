@@ -12,6 +12,6 @@ CREATE TABLE domains.actividade (
     tooltip text
 );
 
-ALTER TABLE domains.actividade OWNER TO utentes;
+-- ALTER TABLE domains.actividade OWNER TO utentes;
 
 COMMIT;

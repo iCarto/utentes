@@ -25,6 +25,6 @@ CREATE TABLE utentes.actividades_cultivos (
     the_geom geometry(MultiPolygon,32737)
 );
 
-ALTER TABLE utentes.actividades_cultivos OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_cultivos OWNER TO utentes;
 
 COMMIT;

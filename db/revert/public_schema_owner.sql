@@ -2,7 +2,7 @@
 
 BEGIN;
 
-ALTER SCHEMA public OWNER TO postgres;
-DROP ROLE utentes;
+-- ALTER SCHEMA public OWNER TO postgres;
+-- DROP ROLE utentes;
 
 COMMIT;

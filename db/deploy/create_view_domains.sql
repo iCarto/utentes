@@ -39,5 +39,5 @@ UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.subacia
 ;
 
-ALTER VIEW domains.domains OWNER TO utentes;
+-- ALTER VIEW domains.domains OWNER TO utentes;
 COMMIT;

@@ -2,7 +2,8 @@
 
 BEGIN;
 
-CREATE SCHEMA inventario_dominios AUTHORIZATION sixhiara_owner;
+-- CREATE SCHEMA inventario_dominios AUTHORIZATION sixhiara_owner;
+CREATE SCHEMA inventario_dominios;
 
 CREATE TABLE inventario_dominios.tip_fonte (
     category text,
@@ -222,8 +223,8 @@ CREATE TABLE inventario_dominios.c_nitrit (
 INSERT INTO inventario_dominios.c_nitrit (key, ordering) VALUES ('< 10', 0), ('10 - 25', 1), ('25 - 50', 2), ('50 - 100', 3), ('100 - 250', 4), ('> 250', 5);
 
 
-GRANT USAGE ON SCHEMA inventario_dominios TO inventario_read;
-GRANT SELECT ON ALL TABLES IN SCHEMA inventario_dominios TO inventario_read;
+-- GRANT USAGE ON SCHEMA inventario_dominios TO inventario_read;
+-- GRANT SELECT ON ALL TABLES IN SCHEMA inventario_dominios TO inventario_read;
 
 
 COMMIT;

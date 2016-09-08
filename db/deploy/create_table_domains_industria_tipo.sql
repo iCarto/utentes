@@ -12,6 +12,6 @@ CREATE TABLE domains.industria_tipo (
     tooltip text
 );
 
-ALTER TABLE domains.industria_tipo OWNER TO utentes;
+-- ALTER TABLE domains.industria_tipo OWNER TO utentes;
 
 COMMIT;

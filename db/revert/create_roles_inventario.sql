@@ -2,7 +2,7 @@
 
 BEGIN;
 
-DROP ROLE inventario_read;
-DROP ROLE inventario_write;
+-- DROP ROLE inventario_read;
+-- DROP ROLE inventario_write;
 
 COMMIT;

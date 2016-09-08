@@ -12,6 +12,6 @@ CREATE TABLE domains.contador (
     tooltip text
 );
 
-ALTER TABLE domains.contador OWNER TO utentes;
+-- ALTER TABLE domains.contador OWNER TO utentes;
 
 COMMIT;

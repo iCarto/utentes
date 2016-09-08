@@ -18,6 +18,6 @@ CREATE TABLE utentes.actividades_industria (
     eval_impac boolean
 );
 
-ALTER TABLE utentes.actividades_industria OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_industria OWNER TO utentes;
 
 COMMIT;

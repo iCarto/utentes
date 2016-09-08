@@ -3,7 +3,7 @@
 BEGIN;
 
 DROP SCHEMA cbase CASCADE;
-DROP ROLE cbase_read;
-DROP ROLE cbase_write;
+-- DROP ROLE cbase_read;
+-- DROP ROLE cbase_write;
 
 COMMIT;

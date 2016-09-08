@@ -11,6 +11,6 @@ CREATE TABLE utentes.actividades_pecuaria (
     c_estimado numeric(10,2)
 );
 
-ALTER TABLE utentes.actividades_pecuaria OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_pecuaria OWNER TO utentes;
 
 COMMIT;

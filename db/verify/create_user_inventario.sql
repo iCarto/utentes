@@ -2,6 +2,6 @@
 
 BEGIN;
 
-SELECT 1/count(*) FROM pg_roles WHERE rolname='inventario';
+-- SELECT 1/count(*) FROM pg_roles WHERE rolname='inventario';
 
 ROLLBACK;

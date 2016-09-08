@@ -27,6 +27,6 @@ CREATE TABLE utentes.licencias (
 	             ON DELETE CASCADE
 );
 
-ALTER TABLE utentes.licencias OWNER TO utentes;
+-- ALTER TABLE utentes.licencias OWNER TO utentes;
 
 COMMIT;

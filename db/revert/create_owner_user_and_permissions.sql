@@ -2,9 +2,9 @@
 
 BEGIN;
 
-ALTER SCHEMA public OWNER TO postgres;
-GRANT ALL ON schema public TO public;
-GRANT ALL ON database sixhiara TO public;
-DROP ROLE sixhiara_owner;
+-- ALTER SCHEMA public OWNER TO postgres;
+-- GRANT ALL ON schema public TO public;
+-- GRANT ALL ON database sixhiara TO public;
+-- DROP ROLE sixhiara_owner;
 
 COMMIT;

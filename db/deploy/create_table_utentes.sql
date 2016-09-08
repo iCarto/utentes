@@ -25,6 +25,6 @@ CREATE TABLE utentes.utentes (
                 ON DELETE NO ACTION
 );
 
-ALTER TABLE utentes.utentes OWNER TO utentes;
+-- ALTER TABLE utentes.utentes OWNER TO utentes;
 
 COMMIT;

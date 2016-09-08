@@ -13,6 +13,6 @@ CREATE TABLE domains.fonte_tipo (
     UNIQUE (key, parent)
 );
 
-ALTER TABLE domains.fonte_tipo OWNER TO utentes;
+-- ALTER TABLE domains.fonte_tipo OWNER TO utentes;
 
 COMMIT;

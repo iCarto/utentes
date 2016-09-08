@@ -8,6 +8,5 @@ UPDATE domains.posto SET parent='Pemba' WHERE (category, ordering, parent) = ('p
 UPDATE domains.posto SET parent='Pemba' WHERE (category, key, parent) = ('posto', 'Metuge', 'Pemba - Metuge');
 UPDATE domains.posto SET parent='Pemba' WHERE (category, key, parent) = ('posto', 'Mieze', 'Pemba - Metuge');
 
-ALTER TABLE domains.posto DROP CONSTRAINT posto_parent_fkey;
-
+-- ALTER TABLE domains.posto DROP CONSTRAINT posto_key_parent_key;
 COMMIT;

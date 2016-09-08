@@ -741,7 +741,7 @@ SELECT AddGeometryColumn('cbase','reserva_zona_tampao','geom','32737','MULTIPOLY
 CREATE INDEX ON "cbase"."reserva_zona_tampao" USING GIST ("geom");
 
 
-GRANT SELECT ON ALL TABLES IN SCHEMA cbase TO cbase_read;
-GRANT INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA cbase TO cbase_write;
+-- GRANT SELECT ON ALL TABLES IN SCHEMA cbase TO cbase_read;
+-- GRANT INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA cbase TO cbase_write;
 
 COMMIT;

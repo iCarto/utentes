@@ -14,6 +14,6 @@ CREATE TABLE domains.distrito (
 );
 
 
-ALTER TABLE domains.distrito OWNER TO utentes;
+-- ALTER TABLE domains.distrito OWNER TO utentes;
 
 COMMIT;

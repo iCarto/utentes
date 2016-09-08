@@ -12,6 +12,6 @@ CREATE TABLE domains.pagamentos (
     tooltip text
 );
 
-ALTER TABLE domains.pagamentos OWNER TO utentes;
+-- ALTER TABLE domains.pagamentos OWNER TO utentes;
 
 COMMIT;

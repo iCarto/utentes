@@ -12,6 +12,6 @@ CREATE TABLE domains.animal_tipo (
     tooltip text
 );
 
-ALTER TABLE domains.animal_tipo OWNER TO utentes;
+-- ALTER TABLE domains.animal_tipo OWNER TO utentes;
 
 COMMIT;

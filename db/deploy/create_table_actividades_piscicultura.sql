@@ -13,6 +13,6 @@ CREATE TABLE utentes.actividades_piscicultura (
     v_reservas numeric(10,2)
 );
 
-ALTER TABLE utentes.actividades_piscicultura OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_piscicultura OWNER TO utentes;
 
 COMMIT;

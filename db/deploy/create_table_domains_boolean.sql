@@ -12,6 +12,6 @@ CREATE TABLE domains.boolean (
     tooltip text
 );
 
-ALTER TABLE domains.boolean OWNER TO utentes;
+-- ALTER TABLE domains.boolean OWNER TO utentes;
 
 COMMIT;

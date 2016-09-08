@@ -11,6 +11,6 @@ CREATE TABLE utentes.actividades_agricultura_rega (
     c_estimado numeric(10,2)
 );
 
-ALTER TABLE utentes.actividades_agricultura_rega OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_agricultura_rega OWNER TO utentes;
 
 COMMIT;

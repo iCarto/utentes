@@ -44,6 +44,6 @@ CREATE TABLE utentes.exploracaos (
 );
 
 CREATE INDEX ON utentes.exploracaos USING GIST (the_geom);
-ALTER TABLE utentes.exploracaos OWNER TO utentes;
+-- ALTER TABLE utentes.exploracaos OWNER TO utentes;
 
 COMMIT;

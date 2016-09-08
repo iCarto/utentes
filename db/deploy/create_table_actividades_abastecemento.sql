@@ -13,6 +13,6 @@ CREATE TABLE utentes.actividades_abastecemento (
     dotacao integer
 );
 
-ALTER TABLE utentes.actividades_abastecemento OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_abastecemento OWNER TO utentes;
 
 COMMIT;

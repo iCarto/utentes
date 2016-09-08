@@ -10,7 +10,7 @@ CREATE TABLE inventario_dominios.bacia (
     parent text,
     tooltip text
 );
-GRANT SELECT ON inventario_dominios.bacia TO inventario_read;
+-- GRANT SELECT ON inventario_dominios.bacia TO inventario_read;
 
 
 -- INSERT INTO inventario_dominios.bacia (category, key, value, ordering, parent, tooltip) VALUES ('bacia', NULL, NULL, 0, NULL, NULL);
@@ -32,7 +32,7 @@ CREATE TABLE inventario_dominios.distrito (
     tooltip text,
     UNIQUE (key, parent)
 );
-GRANT SELECT ON inventario_dominios.distrito TO inventario_read;
+-- GRANT SELECT ON inventario_dominios.distrito TO inventario_read;
 
 -- INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Cabo Delgado', NULL);
 INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Ancuabe', NULL, NULL, 'Cabo Delgado', NULL);
@@ -80,7 +80,7 @@ CREATE TABLE inventario_dominios.posto (
     tooltip text,
     UNIQUE (key, parent)
 );
-GRANT SELECT ON inventario_dominios.posto TO inventario_read;
+-- GRANT SELECT ON inventario_dominios.posto TO inventario_read;
 
 -- INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Ancuabe', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Ancuabe', NULL, NULL, 'Ancuabe', NULL);
@@ -220,7 +220,7 @@ CREATE TABLE inventario_dominios.provincia (
     parent text,
     tooltip text
 );
-GRANT SELECT ON inventario_dominios.provincia TO inventario_read;
+-- GRANT SELECT ON inventario_dominios.provincia TO inventario_read;
 
 -- INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', NULL, NULL, 0, NULL, NULL);
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Cabo Delgado', NULL, NULL, NULL, NULL);
@@ -235,7 +235,7 @@ CREATE TABLE inventario_dominios.subacia (
     tooltip text,
     UNIQUE (key, parent)
 );
-GRANT SELECT ON inventario_dominios.subacia TO inventario_read;
+-- GRANT SELECT ON inventario_dominios.subacia TO inventario_read;
 
 -- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Megaruma', NULL);
 INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Megaruma', NULL, NULL, 'Megaruma', NULL);

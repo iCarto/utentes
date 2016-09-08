@@ -12,6 +12,6 @@ CREATE TABLE domains.provincia (
     tooltip text
 );
 
-ALTER TABLE domains.provincia OWNER TO utentes;
+-- ALTER TABLE domains.provincia OWNER TO utentes;
 
 COMMIT;

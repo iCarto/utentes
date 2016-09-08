@@ -12,6 +12,6 @@ CREATE TABLE utentes.actividades_saneamento (
     habitantes integer
 );
 
-ALTER TABLE utentes.actividades_saneamento OWNER TO utentes;
+-- ALTER TABLE utentes.actividades_saneamento OWNER TO utentes;
 
 COMMIT;

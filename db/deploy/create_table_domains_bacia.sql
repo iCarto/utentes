@@ -12,6 +12,6 @@ CREATE TABLE domains.bacia (
     tooltip text
 );
 
-ALTER TABLE domains.bacia OWNER TO utentes;
+-- ALTER TABLE domains.bacia OWNER TO utentes;
 
 COMMIT;

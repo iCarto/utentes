@@ -6,7 +6,8 @@ SET client_min_messages TO error;
 \set ECHO none
 \set QUIET 1
 
-CREATE SCHEMA inventario AUTHORIZATION sixhiara_owner;
+-- CREATE SCHEMA inventario AUTHORIZATION sixhiara_owner;
+CREATE SCHEMA inventario;
 
 CREATE TABLE "inventario"."fontes" (
 gid SERIAL PRIMARY KEY,
@@ -526,10 +527,10 @@ CREATE INDEX ON "inventario"."barragens" USING GIST ("geom");
 
 
 
-GRANT USAGE ON SCHEMA inventario TO inventario_read;
-GRANT SELECT ON ALL TABLES IN SCHEMA inventario TO inventario_read;
+-- GRANT USAGE ON SCHEMA inventario TO inventario_read;
+-- GRANT SELECT ON ALL TABLES IN SCHEMA inventario TO inventario_read;
 
-GRANT INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA inventario TO inventario_write;
+-- GRANT INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA inventario TO inventario_write;
 
 
 

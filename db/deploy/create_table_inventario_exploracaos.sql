@@ -46,8 +46,8 @@ CREATE TABLE inventario.exploracaos (
 	   ON DELETE NO ACTION
 );
 
-GRANT SELECT ON inventario.exploracaos TO inventario_read;
-GRANT INSERT, UPDATE, DELETE ON inventario.exploracaos TO inventario_write;
+-- GRANT SELECT ON inventario.exploracaos TO inventario_read;
+-- GRANT INSERT, UPDATE, DELETE ON inventario.exploracaos TO inventario_write;
 
 
 COMMIT;
