@@ -23,7 +23,7 @@ CREATE TABLE inventario_dominios.red_monit (
     parent text,
     tooltip text
 );
-INSERT INTO inventario_dominios.red_monit (key, ordering) VALUES ('NO', 0), ('Base', 1), ('Base - 2014', 2), ('Base e qualidade', 3), ('Base e qualidade - 2014', 4), ('Velho-Sustituído', 5);
+INSERT INTO inventario_dominios.red_monit (key, ordering) VALUES ('NO', 0), ('Base', 1), ('Base e qualidade', 2), ('Velho-Sustituído', 3);
 
 CREATE TABLE inventario_dominios.propiedad (
     category text,
