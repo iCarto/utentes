@@ -29,7 +29,7 @@ INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_e
 INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'estradas', 'estradas', 23, true, '199999', NULL, 'Estradas', 'cbase', NULL);
 INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'aldeias', 'aldeias', 24, false, '500000', NULL, 'Assentamentos populacionais', 'cbase', NULL);
 INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'cidades_vilas', 'cidades_vilas', 25, true, '600000', NULL, 'Assentamentos populacionais', 'cbase', NULL);
-INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'exploracaos', 'exploracaos', 26, true, '199999', NULL, 'BDD_Técnica', 'inventario', NULL);
+INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'exploracoes', 'exploracoes', 26, true, '199999', NULL, 'BDD_Técnica', 'inventario', NULL);
 INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'acuiferos', 'acuiferos', 27, true, '199999', NULL, 'BDD_Técnica', 'inventario', NULL);
 INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'albufeiras', 'albufeiras', 28, true, '999999', NULL, 'BDD_Técnica', 'cbase', NULL);
 INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('SIXHIARA', 'barragens', 'barragens', 29, true, '199999', NULL, 'BDD_Técnica', 'inventario', NULL);
@@ -4538,7 +4538,7 @@ INSERT INTO elle._map_style (nombre_capa, nombre_estilo, type, definicion, label
 </XMLPersitence>
 ', NULL);
 
-INSERT INTO elle._map_style (nombre_capa, nombre_estilo, type, definicion, label) VALUES ('exploracaos', 'SIXHIARA', 'gvl', '<?xml version="1.0" encoding="windows-1252"?>
+INSERT INTO elle._map_style (nombre_capa, nombre_estilo, type, definicion, label) VALUES ('exploracoes', 'SIXHIARA', 'gvl', '<?xml version="1.0" encoding="windows-1252"?>
 <XMLPersitence xmlns:xlink="http://www.w3.org/1999/xlink" >
 <persistence_xml_version>2.0.0</persistence_xml_version>
   <rootState id_state="7958" xlink:type="simple" xlink:href="states#id(''7958'')" />

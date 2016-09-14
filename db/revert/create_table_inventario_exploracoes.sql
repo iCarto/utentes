@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP TABLE inventario.exploracaos;
+DROP TABLE inventario.exploracoes;
 
 COMMIT;

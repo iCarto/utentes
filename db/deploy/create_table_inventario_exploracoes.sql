@@ -2,7 +2,7 @@
 
 BEGIN;
 
-CREATE TABLE inventario.exploracaos (
+CREATE TABLE inventario.exploracoes (
        gid SERIAL PRIMARY KEY,
        exp_name text,
        exp_id text,
@@ -28,13 +28,13 @@ CREATE TABLE inventario.exploracaos (
        piscicult boolean,
        industria boolean,
        pro_energ boolean,
-       tipo_subt text,
-       tipo_supe text,
+       tipo_subt boolean,
+       tipo_supe boolean,
        con_l_su numeric(10,2),
        con_l_sb numeric(10,2),
        con_l_to numeric(10,2),
-       est_l_su numeric(10,2),
-       est_l_sb numeric(10,2),
+       est_l_su text,
+       est_l_sb text,
        pagamento text,
        observacio text,
        geom geometry('MULTIPOLYGON', 32737),
