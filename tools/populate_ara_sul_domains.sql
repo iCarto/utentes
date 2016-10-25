@@ -8,27 +8,14 @@ INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) 
 INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Inhambane', NULL, NULL, NULL, NULL);
 INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Manica', NULL, NULL, NULL, NULL);
 INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Maputo', NULL, NULL, NULL, NULL);
-INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Cabo Delgado', NULL, NULL, NULL, NULL);
-INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Nampula', NULL, NULL, NULL, NULL);
-INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Niassa', NULL, NULL, NULL, NULL);
 INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Sofala', NULL, NULL, NULL, NULL);
-INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Tete', NULL, NULL, NULL, NULL);
-INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Zambezia', NULL, NULL, NULL, NULL);
 
 DELETE FROM inventario_dominios.provincia;
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Gaza', NULL, NULL, NULL, NULL);
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Inhambane', NULL, NULL, NULL, NULL);
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Manica', NULL, NULL, NULL, NULL);
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Maputo', NULL, NULL, NULL, NULL);
-INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Cabo Delgado', NULL, NULL, NULL, NULL);
-INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Nampula', NULL, NULL, NULL, NULL);
-INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Niassa', NULL, NULL, NULL, NULL);
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Sofala', NULL, NULL, NULL, NULL);
-INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Tete', NULL, NULL, NULL, NULL);
-INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Zambezia', NULL, NULL, NULL, NULL);
-
-
-
 
 
 
@@ -40,11 +27,7 @@ INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) V
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Inhambane', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Manica', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Maputo', NULL);
-INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Cabo Delgado', NULL);
-INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Nampula', NULL);
-INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Niassa', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Sofala', NULL);
-INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Tete', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Zambezia', NULL);
 
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Bilene', NULL, NULL, 'Gaza', NULL);
@@ -164,6 +147,109 @@ INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALU
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Moamba', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Namaacha', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Machanga', NULL);
+
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Alto Changane', NULL, NULL, 'Chibuto', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Bela Vista', NULL, NULL, 'Matutuine', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Boane', NULL, NULL, 'Boane', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Calanga', NULL, NULL, 'Manhiça', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Caniçado', NULL, NULL, 'Guija', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Catuane', NULL, NULL, 'Matutuine', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chaimite', NULL, NULL, 'Chibuto', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Changalane', NULL, NULL, 'Namaacha', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Changanine', NULL, NULL, 'Chibuto', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chibonzane', NULL, NULL, 'Mandlakaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chicomo', NULL, NULL, 'Massinga', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chicumbane', NULL, NULL, 'Xai Xai', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chidenguele', NULL, NULL, 'Mandlakaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chigubo', NULL, NULL, 'Chigubo', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chissano', NULL, NULL, 'Bilene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chivongoene', NULL, NULL, 'Guija', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chongoene', NULL, NULL, 'Xai Xai', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cidade da Matola', NULL, NULL, 'Cidade da Matola', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cidade de Chibuto', NULL, NULL, 'Chibuto', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cidade de Chokwe', NULL, NULL, 'Chokwe', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cidade de Inhambane', NULL, NULL, 'Cidade de Inhambane', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cidade de Maputo', NULL, NULL, 'Cidade de Maputo', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cidade de Maxixe', NULL, NULL, 'Cidade de Maxixe', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cidade de Xai Xai', NULL, NULL, 'Cidade de Xai Xai', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Combomune', NULL, NULL, 'Mabalane', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Cumbana', NULL, NULL, 'Jangamo', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Dindiza', NULL, NULL, 'Chigubo', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Funhalouro', NULL, NULL, 'Funhalouro', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Godide', NULL, NULL, 'Chibuto', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Homoine', NULL, NULL, 'Homoine', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Ilha Josina Machel', NULL, NULL, 'Manhiça', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Inharrime', NULL, NULL, 'Inharrime', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Inhassoro', NULL, NULL, 'Inhassoro', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Jangamo', NULL, NULL, 'Jangamo', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Lionde', NULL, NULL, 'Chokwe', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mabalane', NULL, NULL, 'Mabalane', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mabote', NULL, NULL, 'Mabote', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Macarretane', NULL, NULL, 'Chokwe', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Machanga', NULL, NULL, 'Machanga', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Machubo', NULL, NULL, 'Marracuene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Macia', NULL, NULL, 'Bilene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Macuacua', NULL, NULL, 'Mandlakaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Magude', NULL, NULL, 'Magude', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mahele', NULL, NULL, 'Magude', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Makluane', NULL, NULL, 'Bilene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Malehice', NULL, NULL, 'Chibuto', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Maluana', NULL, NULL, 'Manhiça', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mandlakaze', NULL, NULL, 'Mandlakaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Manhiça', NULL, NULL, 'Manhiça', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mapai', NULL, NULL, 'Chicualacuala', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mapinhane', NULL, NULL, 'Vilankulo', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mapulanguene', NULL, NULL, 'Magude', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Marracuene', NULL, NULL, 'Marracuene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Massangena', NULL, NULL, 'Massangena', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Massinga', NULL, NULL, 'Massinga', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Massingir', NULL, NULL, 'Massingir', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Matola Rio', NULL, NULL, 'Boane', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mavodze', NULL, NULL, 'Massingir', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mavue', NULL, NULL, 'Massangena', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mawayela', NULL, NULL, 'Panda', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mazivila', NULL, NULL, 'Bilene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mazucane', NULL, NULL, 'Mandlakaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Messano', NULL, NULL, 'Bilene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Moamba', NULL, NULL, 'Moamba', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mocumbi', NULL, NULL, 'Inharrime', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Morrumbene', NULL, NULL, 'Morrumbene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Motaze', NULL, NULL, 'Magude', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mubangoene', NULL, NULL, 'Guija', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mucoduene', NULL, NULL, 'Morrumbene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mugazine (catembe)', NULL, NULL, 'Matutuine', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Nalazi', NULL, NULL, 'Guija', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Namaacha', NULL, NULL, 'Namaacha', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Nguzene', NULL, NULL, 'Mandlakaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Nova Mambone', NULL, NULL, 'Govuro', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Ntlavene', NULL, NULL, 'Mabalane', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Pafuri', NULL, NULL, 'Chicualacuala', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Palmeira (3 de Fevereiro)', NULL, NULL, 'Manhiça', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Panda', NULL, NULL, 'Panda', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Panjane', NULL, NULL, 'Magude', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Pembe', NULL, NULL, 'Homoine', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Pessene', NULL, NULL, 'Moamba', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Praia de Bilene', NULL, NULL, 'Bilene', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Quissico', NULL, NULL, 'Zavala', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Ressano Garcia', NULL, NULL, 'Moamba', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Sabie', NULL, NULL, 'Moamba', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Save', NULL, NULL, 'Machaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Tome', NULL, NULL, 'Funhalouro', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Urrene', NULL, NULL, 'Panda', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Vila Eduardo Mondlane', NULL, NULL, 'Chicualacuala', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Vilankulo', NULL, NULL, 'Vilankulo', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Xhalala', NULL, NULL, 'Mandlakaze', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Xilembene', NULL, NULL, 'Chokwe', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Xinavane', NULL, NULL, 'Manhiça', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Zandamela', NULL, NULL, 'Zavala', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Zimane', NULL, NULL, 'Mabote', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Zinave', NULL, NULL, 'Mabote', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Zitundo', NULL, NULL, 'Matutuine', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Zongoene', NULL, NULL, 'Xai Xai', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Zulo', NULL, NULL, 'Massingir', NULL);
+
+
+
 
 
 

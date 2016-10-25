@@ -14,12 +14,18 @@ if [ ! -d $DBF_FOLDER ] ; then
     exit
 fi
 
+ARA=$2
+if [ -z "$ARA" ]; then
+    echo "Indique a que ARA pertenecen los datos Sul/Norte"
+    exit
+fi
+
 TODAY=`date +%Y%m%d`
-CBASE=./cbase.sql.$TODAY
-ACUIFEROS=./acuiferos.sql.$TODAY
-FONTES=./fontes.sql.$TODAY
-BARRAGENS=./barragens.sql.$TODAY
-ESTACOES=./estacoes.sql.$TODAY
+CBASE=./cbase.sql.$TODAY.${ARA}
+ACUIFEROS=./acuiferos.sql.$TODAY.${ARA}
+FONTES=./fontes.sql.$TODAY.${ARA}
+BARRAGENS=./barragens.sql.$TODAY.${ARA}
+ESTACOES=./estacoes.sql.$TODAY.${ARA}
 
 echo 'BEGIN;' > $CBASE
 echo 'BEGIN;' > $ACUIFEROS
@@ -135,7 +141,7 @@ done
 echo "INSERT INTO elle._map_style (nombre_capa, nombre_estilo, type, definicion, label) SELECT nombre_capa, 'TODAS', type, definicion, label FROM elle._map_style WHERE nombre_estilo='SIXHIARA';" >> $MAP
 echo "COMMIT;" >> $MAP
 
-OUTPUT=./inventario_alfanumerico.sql.$TODAY
+OUTPUT=./inventario_alfanumerico.sql.$TODAY.${ARA}
 
 echo 'BEGIN;' > $OUTPUT
 for shp in `find $DBF_FOLDER -iname '*.dbf'` ; do
