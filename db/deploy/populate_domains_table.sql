@@ -61,7 +61,7 @@ INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) V
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Namuno', NULL, NULL, 'Cabo Delgado', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Nangade', NULL, NULL, 'Cabo Delgado', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Palma', NULL, NULL, 'Cabo Delgado', NULL);
-INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Pemba', NULL, NULL, 'Cabo Delgado', NULL);
+INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Pemba - Metuge', NULL, NULL, 'Cabo Delgado', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Quissanga', NULL, NULL, 'Cabo Delgado', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Niassa', NULL);
 INSERT INTO domains.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Cidade de Lichinga', NULL, NULL, 'Niassa', NULL);
@@ -254,9 +254,9 @@ INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALU
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Palma', NULL, NULL, 'Palma', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Pundanhar', NULL, NULL, 'Palma', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Quionga', NULL, NULL, 'Palma', NULL);
-INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Pemba', NULL);
-INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Metuge', NULL, NULL, 'Pemba', NULL);
-INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mieze', NULL, NULL, 'Pemba', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Pemba - Metuge', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Metuge', NULL, NULL, 'Pemba - Metuge', NULL);
+INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mieze', NULL, NULL, 'Pemba - Metuge', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Quissanga', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Bilibiza', NULL, NULL, 'Quissanga', NULL);
 INSERT INTO domains.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mahate', NULL, NULL, 'Quissanga', NULL);
@@ -288,6 +288,7 @@ INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VA
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Miruco', NULL, NULL, 'Orla Marítima 1', NULL);
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muaguide', NULL, NULL, 'Orla Marítima 1', NULL);
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muizi', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Pemba', NULL, NULL, 'Orla Marítima 1', NULL);
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Ridi', NULL, NULL, 'Orla Marítima 1', NULL);
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N OM1', NULL, NULL, 'Orla Marítima 1', NULL);
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Tara-Quilite', NULL, NULL, 'Orla Marítima 1', NULL);

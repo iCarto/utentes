@@ -23,6 +23,67 @@ INSERT INTO inventario_dominios.bacia (category, key, value, ordering, parent, t
 INSERT INTO inventario_dominios.bacia (category, key, value, ordering, parent, tooltip) VALUES ('bacia', 'Rovuma', NULL, NULL, NULL, NULL);
 
 
+
+CREATE TABLE inventario_dominios.subacia (
+    category text,
+    key text,
+    value text,
+    ordering integer,
+    parent text,
+    tooltip text,
+    UNIQUE (key, parent)
+);
+-- GRANT SELECT ON inventario_dominios.subacia TO inventario_read;
+
+-- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Megaruma', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Megaruma', NULL, NULL, 'Megaruma', NULL);
+-- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Messalo', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Messalo', NULL, NULL, 'Messalo', NULL);
+-- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Montepuez', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Montepuez', NULL, NULL, 'Montepuez', NULL);
+-- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Meapia', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Metava', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Metori', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Miezi', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Miruco', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muaguide', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muizi', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Pemba', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Ridi', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N OM1', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Tara-Quilite', NULL, NULL, 'Orla Marítima 1', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Tari', NULL, NULL, 'Orla Marítima 1', NULL);
+--INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Buizili', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Chafi', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Diquide', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Messingue', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muacamula', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muembe-Nanomo', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muenha', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Necumbi', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N OM2', NULL, NULL, 'Orla Marítima 2', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Sicoro/Lingula', NULL, NULL, 'Orla Marítima 2', NULL);
+--INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Bundaze-Monga', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Calundi/Uncudi', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Macanga', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Mecumbi', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Mepuira', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Meranvi', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Mipama', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Nango/Mepuira', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Quigode', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Quinhevo', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N OM3', NULL, NULL, 'Orla Marítima 3', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Sinheu/Mutamba', NULL, NULL, 'Orla Marítima 3', NULL);
+--INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Rovuma', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Rovuma', NULL, NULL, 'Rovuma', NULL);
+
+
+
 CREATE TABLE inventario_dominios.distrito (
     category text,
     key text,
@@ -50,7 +111,7 @@ INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent
 INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Namuno', NULL, NULL, 'Cabo Delgado', NULL);
 INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Nangade', NULL, NULL, 'Cabo Delgado', NULL);
 INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Palma', NULL, NULL, 'Cabo Delgado', NULL);
-INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Pemba', NULL, NULL, 'Cabo Delgado', NULL);
+INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Pemba - Metuge', NULL, NULL, 'Cabo Delgado', NULL);
 INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Quissanga', NULL, NULL, 'Cabo Delgado', NULL);
 -- INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', NULL, NULL, 0, 'Niassa', NULL);
 INSERT INTO inventario_dominios.distrito (category, key, value, ordering, parent, tooltip) VALUES ('distrito', 'Cidade de Lichinga', NULL, NULL, 'Niassa', NULL);
@@ -199,9 +260,9 @@ INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, t
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Palma', NULL, NULL, 'Palma', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Pundanhar', NULL, NULL, 'Palma', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Quionga', NULL, NULL, 'Palma', NULL);
---INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Pemba', NULL);
-INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Metuge', NULL, NULL, 'Pemba', NULL);
-INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mieze', NULL, NULL, 'Pemba', NULL);
+--INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Pemba - Metuge', NULL);
+INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Metuge', NULL, NULL, 'Pemba - Metuge', NULL);
+INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mieze', NULL, NULL, 'Pemba - Metuge', NULL);
 --INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', NULL, NULL, 0, 'Quissanga', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Bilibiza', NULL, NULL, 'Quissanga', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Mahate', NULL, NULL, 'Quissanga', NULL);
@@ -226,61 +287,5 @@ CREATE TABLE inventario_dominios.provincia (
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Cabo Delgado', NULL, NULL, NULL, NULL);
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Niassa', NULL, NULL, NULL, NULL);
 
-CREATE TABLE inventario_dominios.subacia (
-    category text,
-    key text,
-    value text,
-    ordering integer,
-    parent text,
-    tooltip text,
-    UNIQUE (key, parent)
-);
--- GRANT SELECT ON inventario_dominios.subacia TO inventario_read;
-
--- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Megaruma', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Megaruma', NULL, NULL, 'Megaruma', NULL);
--- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Messalo', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Messalo', NULL, NULL, 'Messalo', NULL);
--- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Montepuez', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Montepuez', NULL, NULL, 'Montepuez', NULL);
--- INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Meapia', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Metava', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Metori', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Miezi', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Miruco', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muaguide', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muizi', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Ridi', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N OM1', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Tara-Quilite', NULL, NULL, 'Orla Marítima 1', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Tari', NULL, NULL, 'Orla Marítima 1', NULL);
---INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Buizili', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Chafi', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Diquide', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Messingue', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muacamula', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muembe-Nanomo', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Muenha', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Necumbi', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N OM2', NULL, NULL, 'Orla Marítima 2', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Sicoro/Lingula', NULL, NULL, 'Orla Marítima 2', NULL);
---INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Bundaze-Monga', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Calundi/Uncudi', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Macanga', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Mecumbi', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Mepuira', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Meranvi', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Mipama', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Nango/Mepuira', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Quigode', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Quinhevo', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'S/N OM3', NULL, NULL, 'Orla Marítima 3', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Sinheu/Mutamba', NULL, NULL, 'Orla Marítima 3', NULL);
---INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', NULL, NULL, 0, 'Rovuma', NULL);
-INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Rovuma', NULL, NULL, 'Rovuma', NULL);
 
 COMMIT;

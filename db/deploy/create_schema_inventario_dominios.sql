@@ -222,6 +222,16 @@ CREATE TABLE inventario_dominios.c_nitrit (
 
 INSERT INTO inventario_dominios.c_nitrit (key, ordering) VALUES ('< 10', 0), ('10 - 25', 1), ('25 - 50', 2), ('50 - 100', 3), ('100 - 250', 4), ('> 250', 5);
 
+CREATE TABLE inventario_dominios.si_no (
+    category text,
+    key text UNIQUE,
+    value text,
+    ordering integer,
+    parent text,
+    tooltip text
+);
+
+INSERT INTO inventario_dominios.si_no (key, ordering) VALUES ('Sim', 0), ('Não', 1);
 
 -- GRANT USAGE ON SCHEMA inventario_dominios TO inventario_read;
 -- GRANT SELECT ON ALL TABLES IN SCHEMA inventario_dominios TO inventario_read;

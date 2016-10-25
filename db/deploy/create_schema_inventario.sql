@@ -257,7 +257,9 @@ subacia text,
 	    ON DELETE NO ACTION,
 "n_pluviom" integer,
 "coment" varchar(254),
-"et_id" float8,
+"sac" text REFERENCES inventario_dominios.si_no(key)
+	ON UPDATE CASCADE
+	ON DELETE NO ACTION,
 geom geometry('POINT', 32737),
 
 FOREIGN KEY (provincia, distrito) REFERENCES inventario_dominios.distrito (parent, key)
@@ -269,7 +271,6 @@ FOREIGN KEY (provincia, distrito) REFERENCES inventario_dominios.distrito (paren
 FOREIGN KEY (bacia, subacia) REFERENCES inventario_dominios.subacia (parent, key)
     ON UPDATE CASCADE
     ON DELETE NO ACTION
-    
 );
 CREATE INDEX ON "inventario"."estacoes" USING GIST ("geom");
 
