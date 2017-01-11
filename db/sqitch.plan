@@ -56,3 +56,4 @@ create_user_inventario 2016-07-18T16:13:26Z Francisco Puga <fpuga@icarto.es> # C
 populate_elle_map_sixhiara 2016-07-20T15:02:52Z Francisco Puga <fpuga@icarto.es> # Populates tables and simbology for map SIXHIARA
 populate_elle_map_todas 2016-07-22T15:04:04Z Francisco Puga <fpuga@icarto.es> # Populates tables and simbology for map TODAS
 create_table_inventario_exploracoes 2016-08-14T10:34:54Z Francisco Puga <fpuga@icarto.es> # Create table inventario.exploracoes
+@20161006 2017-01-11T12:30:57Z Francisco Puga <fpuga@icarto.es> # tag 20161006
