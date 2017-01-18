@@ -57,3 +57,13 @@ populate_elle_map_sixhiara 2016-07-20T15:02:52Z Francisco Puga <fpuga@icarto.es>
 populate_elle_map_todas 2016-07-22T15:04:04Z Francisco Puga <fpuga@icarto.es> # Populates tables and simbology for map TODAS
 create_table_inventario_exploracoes 2016-08-14T10:34:54Z Francisco Puga <fpuga@icarto.es> # Create table inventario.exploracoes
 @20161006 2017-01-11T12:30:57Z Francisco Puga <fpuga@icarto.es> # tag 20161006
+
+insert_domains_industria_tipo_more_types 2017-01-11T12:40:23Z Francisco Puga <fpuga@icarto.es> # Insert more rows in domains.industria_tipo
+update_domains_licencia_estado_inserts_and_renames 2017-01-11T12:50:13Z Francisco Puga <fpuga@icarto.es> # Inserts and modifies rows in domains.licencia_estado
+update_domains_pagamentos_renames_keys 2017-01-11T16:55:54Z Francisco Puga <fpuga@icarto.es> # Renames values for domains.pagamentos
+update_domains_actividade_renames_regadio 2017-01-18T09:16:13Z Francisco Puga <fpuga@icarto.es> # Renames 'Agricultura-Regadia' in domains.actividade
+update_domains_localizacion 2017-01-18T09:57:14Z Francisco Puga <fpuga@icarto.es> # Adds a new column and more localization domains
+update_domains_localizacion_hidrologica 2017-01-18T11:45:16Z Francisco Puga <fpuga@icarto.es> # Update the domains for bacia and subacia
+create_table_domains_ara 2017-01-18T12:09:19Z Francisco Puga <fpuga@icarto.es> # Create table domains.ara
+update_view_domains_with_ara 2017-01-18T12:17:33Z Francisco Puga <fpuga@icarto.es> # Update view domains to add domains.ara table
+update_table_utentes_licencias_add_taxa_fields 2017-01-18T14:41:07Z Francisco Puga <fpuga@icarto.es> # Adds columns to calculate the cost of the licenses
