@@ -12,4 +12,7 @@ dropuser -h localhost -U postgres inventario_read
 dropuser -h localhost -U postgres inventario_write
 dropuser -h localhost -U postgres inventario
 createdb -h localhost -U postgres -T template1 sixhiara
-createdb -h localhost -U postgres -T template1 arasul
+cd ..
+sqitch deploy
+cd scripts
+createdb -h localhost -U postgres -T sixhiara arasul
