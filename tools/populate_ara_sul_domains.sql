@@ -2,6 +2,11 @@
 
 BEGIN;
 
+DELETE FROM domains.ara;
+INSERT INTO domains.ara VALUES ('ara', 'Sul', 'Sul', NULL, NULL, NULL);
+
+
+
 DELETE FROM inventario_dominios.provincia;
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Gaza', NULL, NULL, NULL, NULL);
 INSERT INTO inventario_dominios.provincia (category, key, value, ordering, parent, tooltip) VALUES ('provincia', 'Inhambane', NULL, NULL, NULL, NULL);

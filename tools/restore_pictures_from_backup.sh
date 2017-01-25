@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DATABASE=sixhiara
+DATABASE=aranorte
 
 TODAY=`date +%Y%m%d`
 
