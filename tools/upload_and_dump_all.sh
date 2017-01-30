@@ -27,7 +27,6 @@ PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DA
 
 ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_sixhiara_BDD_ARA_revision.backup -Fc -O -x -Z 9 ${DATABASE}
 
-exit
 
 OPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM utentes.utentes; DELETE FROM utentes.settings;"
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./sixhiara_BDD_Testeo_160913.sql

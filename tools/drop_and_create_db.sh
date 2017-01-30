@@ -1,7 +1,6 @@
 #!/bin/bash
 
 psql -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname IN ('aranorte', 'arasul');"
-dropdb -h localhost -U postgres sixhiara
 dropdb -h localhost -U postgres arasul
 dropdb -h localhost -U postgres aranorte
 dropuser -h localhost -U postgres utentes

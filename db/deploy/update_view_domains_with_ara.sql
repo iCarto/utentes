@@ -16,7 +16,9 @@ SELECT category, key, value, ordering, parent, tooltip FROM domains.contador
 UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.cultivo_tipo
 UNION
-SELECT category, key, value, ordering, parent, tooltip FROM domains.distrito
+SELECT a.category, a.key, a.value, a.ordering, a.parent, a.tooltip FROM domains.distrito a JOIN domains.ara b on a.ara = b.key
+UNION
+SELECT 'utentes-distrito', key, value, ordering, parent, tooltip FROM domains.distrito
 UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.energia_tipo
 UNION
@@ -32,7 +34,9 @@ SELECT category, key, value, ordering, parent, tooltip FROM domains.pagamentos
 UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.boolean
 UNION
-SELECT category, key, value, ordering, parent, tooltip FROM domains.posto
+SELECT a.category, a.key, a.value, a.ordering, a.parent, a.tooltip FROM domains.posto a JOIN domains.ara b on a.ara = b.key
+UNION
+SELECT 'utentes-posto', key, value, ordering, parent, tooltip FROM domains.posto
 UNION
 SELECT category, key, value, ordering, parent, tooltip FROM domains.provincia
 UNION

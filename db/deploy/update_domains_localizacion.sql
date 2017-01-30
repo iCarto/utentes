@@ -147,7 +147,8 @@ UPDATE domains.distrito SET ara = 'Norte' WHERE key IN ('Ancuabe', 'Balama', 'Ch
 
 UPDATE domains.distrito SET ara = 'Sul' WHERE key IN ('Bilene', 'Chibuto', 'Chicualacuala', 'Chigubo', 'Chokwe', 'Cidade De Xai-Xai', 'Guija', 'Mabalane', 'Massangena', 'Massingir', 'Xai-Xai', 'Cidade De Inhambane', 'Funhalouro', 'Govuro', 'Homoine', 'Inharrime', 'Inhassoro', 'Jangamo', 'Mabote', 'Mandlakaze', 'Massinga', 'Maxixe', 'Morrumbene', 'Panda', 'Vilankulo', 'Zavala', 'Machaze', 'Boane', 'Cidade Da Matola', 'Cidade De Maputo', 'Magude', 'Manhiça', 'Marracuene', 'Matutuine', 'Moamba', 'Namaacha', 'Machanga');
 
-
+UPDATE domains.distrito SET ara = 'Norte' WHERE key IS NULL AND parent IN ('Cabo Delgado', 'Niassa');
+UPDATE domains.distrito SET ara = 'Sul' WHERE key IS NULL AND parent IN ('Gaza', 'Inhambane', 'Manica', 'Maputo', 'Sofala');
 
 
 

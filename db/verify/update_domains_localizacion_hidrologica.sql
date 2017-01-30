@@ -2,6 +2,7 @@
 
 BEGIN;
 
--- XXX Add verifications here.
+SELECT ara FROM domains.bacia;
+SELECT ara FROM domains.subacia;
 
 ROLLBACK;

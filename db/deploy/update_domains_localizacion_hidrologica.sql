@@ -2,9 +2,15 @@
 
 BEGIN;
 
-UPDATE domains.bacia SET parent = 'Norte' WHERE key IN ('Megaruma', 'Messalo', 'Montepuez', 'Rovuma', 'Orla Marítima 1', 'Orla Marítima 2', 'Orla Marítima 3');
+ALTER TABLE domains.bacia ADD COLUMN ara text;
+ALTER TABLE domains.subacia ADD COLUMN ara text;
 
+UPDATE domains.bacia SET parent = 'Norte' WHERE key IN ('Megaruma', 'Messalo', 'Montepuez', 'Rovuma', 'Orla Marítima 1', 'Orla Marítima 2', 'Orla Marítima 3');
 UPDATE domains.bacia SET parent = 'Norte' WHERE ordering = 0;
+UPDATE domains.bacia SET ara = 'Norte' WHERE parent = 'Norte';
+
+
+UPDATE domains.subacia SET ara = 'Norte' WHERE key IN ('Megaruma', 'Messalo', 'Montepuez', 'Rovuma', 'Miruco', 'Muaguide', 'Ridi', 'Meapia', 'Muizi', 'Metori', 'Metava', 'S/N OM1', 'Pemba', 'Tara-Quilite', 'Tari', 'Miezi', 'Muacamula', 'Messingue', 'Sicoro/Lingula', 'Muembe-Nanomo', 'Diquide', 'Buizili', 'S/N', 'Chafi', 'Muenha', 'Necumbi', 'S/N OM2', 'Quigode', 'Mipama', 'Nango/Mepuira', 'Sinheu/Mutamba', 'Quinhevo', 'Bundaze-Monga', 'Mepuira', 'S/N OM3', 'Mecumbi', 'Macanga', 'Calundi/Uncudi', 'Meranvi');
 
 INSERT INTO domains.bacia (category, key, parent) VALUES
 ('bacia', 'Bambe', 'Sul'),
@@ -31,8 +37,8 @@ INSERT INTO domains.bacia (category, key, parent) VALUES
 ('bacia', 'Tembe', 'Sul'),
 ('bacia', 'Umbelézi', 'Sul'),
 ('bacia', 'Outra', 'Sul');
-
 INSERT INTO domains.bacia (category, key, parent, ordering) VALUES ('bacia', NULL, 'Sul', 0);
+UPDATE domains.bacia SET ara = 'Sul' WHERE parent = 'Sul';
 
 INSERT INTO domains.subacia (category, key, parent, ordering) VALUES
 ('subacia', NULL, 'Bambe' , 0),
@@ -83,5 +89,7 @@ INSERT INTO domains.subacia (category, key, parent, ordering) VALUES
 ('subacia', 'Umbelézi', 'Umbelézi' , NULL),
 ('subacia', NULL, 'Outra' , 0),
 ('subacia', 'Outra', 'Outra' , NULL);
+
+UPDATE domains.subacia SET ara = 'Sul' WHERE key IN ('Bambe', 'Bembe', 'Chiendsele', 'Das Pedras', 'Davetave', 'Fúti', 'Govuro', 'Incomati', 'Inhanombe', 'Inharrime', 'Inhavumalala', 'Limpopo', 'Maducha', 'Maputo', 'Matola', 'Mucambe', 'Mulalace', 'Mutamba', 'Nhangualala', 'Panga', 'Save', 'Tembe', 'Umbelézi', 'Outra');
 
 COMMIT;
