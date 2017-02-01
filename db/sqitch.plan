@@ -68,3 +68,4 @@ create_table_domains_ara 2017-01-18T12:09:19Z Francisco Puga <fpuga@icarto.es> #
 update_view_domains_with_ara 2017-01-18T12:17:33Z Francisco Puga <fpuga@icarto.es> # Update view domains to add domains.ara table
 update_table_utentes_licencias_add_taxa_fields 2017-01-18T14:41:07Z Francisco Puga <fpuga@icarto.es> # Adds columns to calculate the cost of the licenses
 create_trigger_calculate_area_exploracao 2017-01-30T17:45:31Z Francisco Puga <fpuga@icarto.es> # Create trigger on exploracaos to calculate area
+@20170201 2017-02-01T17:12:01Z Francisco Puga <fpuga@icarto.es> # tag 20170201
