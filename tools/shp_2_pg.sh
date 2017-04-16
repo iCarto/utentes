@@ -1,8 +1,15 @@
 #!/bin/bash
 
-#$1 = PATH_TO/160414_SIG_SIXHIARA/
-SHAPE_FOLDER="${1}/Dados/Capas/SHP/"
-DBF_FOLDER="${1}/Dados/Tablas_embebida/"
+# Norte $1 = PATH_TO/160414_SIG_SIXHIARA/
+
+# Sul. $1 = 1701_BDD_ARA_Sul
+
+ORG_FOLDER=/mnt/Proyectos/2016_Proyectos/1605_SIXHIARA_IV/05_PROCESO/05_01_SHP_RASTER/02_BDD_ARA_Sul/1701_BDD_ARA_Sul/
+DEST_FOLDER=${1}
+SHAPE_FOLDER="${1}/03_Capas/"
+DBF_FOLDER="${1}/02_Tablas_embebida/"
+
+rsync -azvP --delete --exclude="00_Proceso" fpuga@gallactica:${ORG_FOLDER} ${DEST_FOLDER}
 
 if [ ! -d $SHAPE_FOLDER ] ; then
     echo "El directorio $SHAPE_FOLDER debe existir"
@@ -20,6 +27,7 @@ if [ -z "$ARA" ]; then
     exit
 fi
 
+
 TODAY=`date +%Y%m%d`
 CBASE=./cbase.sql.$TODAY.${ARA}
 ACUIFEROS=./acuiferos.sql.$TODAY.${ARA}
@@ -35,18 +43,12 @@ echo 'BEGIN;' > $ESTACOES
 
 ALL_TABLES=()
 
-FIRST_RIO='false'
 for shp in `find $SHAPE_FOLDER -iname '*.shp'` ; do
 
     TABLE=`basename ${shp%.shp} | tr '[:upper:]' '[:lower:]'`
     SCHEMA_BASE=cbase
     OUTPUT=$CBASE
 
-    # bug 1186
-    if [[ ${FIRST_RIO} == 'false' ]] && [[ ${TABLE} == 'rios' ]] ; then
-	FIRST_RIO='true'
-	continue
-    fi
 
     if [[ ${TABLE} == 'acuiferos' ]] ; then
 	SCHEMA_BASE=inventario

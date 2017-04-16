@@ -76,6 +76,7 @@ INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, t
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Catuane', NULL, NULL, 'Matutuine', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chaimite', NULL, NULL, 'Chibuto', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Changalane', NULL, NULL, 'Namaacha', NULL);
+INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Changalan', NULL, NULL, 'Namaacha', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Changanine', NULL, NULL, 'Chibuto', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chibonzane', NULL, NULL, 'Mandlakaze', NULL);
 INSERT INTO inventario_dominios.posto (category, key, value, ordering, parent, tooltip) VALUES ('posto', 'Chicomo', NULL, NULL, 'Massinga', NULL);
@@ -233,6 +234,7 @@ INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent,
 INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Tegue ou Tague', NULL, NULL, 'Panga', NULL);
 INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Save', NULL, NULL, 'Save', NULL);
 INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Inhanombe', NULL, NULL, 'Tembe', NULL);
+INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Tembe', NULL, NULL, 'Tembe', NULL);
 INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Lagoa Nhajosse', NULL, NULL, ' -- ', NULL);
 INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Inhanombe', NULL, NULL, ' -- ', NULL);
 INSERT INTO inventario_dominios.subacia (category, key, value, ordering, parent, tooltip) VALUES ('subacia', 'Guiua', NULL, NULL, ' -- ', NULL);

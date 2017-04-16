@@ -4,8 +4,19 @@ TODAY=`date +%y%m%d`
 PSQL="psql -X -q -v ON_ERROR_STOP=1 --pset pager=off"
 PGDUMP="/usr/lib/postgresql/9.5/bin/pg_dump"
 
+# DATABASE = $1
+# DATA_VERSION = $2
+foo() {
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f cbase.sql.$2
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f acuiferos.sql.$2
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f fontes.sql.$2
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f barragens.sql.$2
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f estacoes.sql.$2
+}
 
-${PSQL] -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname IN ('aranorte', 'aranorte_test', 'arasul');"
+
+
+${PSQL} -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname IN ('aranorte', 'aranorte_test', 'arasul');"
 dropdb -h localhost -U postgres arasul
 dropdb -h localhost -U postgres aranorte
 dropdb -h localhost -U postgres aranorte_test
@@ -31,17 +42,13 @@ cd scripts
 createdb -h localhost -U postgres -T aranorte arasul
 
 
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f cbase.sql.$NORTE_DATA_VERSION
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f acuiferos.sql.$NORTE_DATA_VERSION
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f fontes.sql.$NORTE_DATA_VERSION
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f barragens.sql.$NORTE_DATA_VERSION
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f estacoes.sql.$NORTE_DATA_VERSION
+foo ${DATABASE} ${NORTE_DATA_VERSION}
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f inventario_alfanumerico.sql.$NORTE_DATA_VERSION
 
 OPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM utentes.utentes; DELETE FROM utentes.settings;"
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./datos/170127_aranorte_reales.sql
 
-bash restore_pictures_from_backup.sh fotos_inventario_20160918.backup
+bash restore_pictures_from_backup.sh fotos_inventario_20160918.Norte.backup ${DATABASE}
 
 ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_sixhiara_BDD_ARA_revision.backup -Fc -O -x -Z 9 ${DATABASE}
 
@@ -61,16 +68,13 @@ ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_sixhiara_BDD_Tes
 
 
 DATABASE=arasul
-SUR_DATA_VERSION=20160915.Sul
+SUR_DATA_VERSION=20170415.Sul
 
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f cbase.sql.$SUR_DATA_VERSION
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./populate_ara_sul_domains.sql
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f acuiferos.sql.$SUR_DATA_VERSION
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f fontes.sql.$SUR_DATA_VERSION
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f barragens.sql.$SUR_DATA_VERSION
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f estacoes.sql.$SUR_DATA_VERSION
+foo ${DATABASE} ${SUR_DATA_VERSION}
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM elle._map; DELETE FROM elle._map_overview; DELETE FROM elle._map_overview_style; DELETE FROM elle._map_style;"
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./sixhiara_ARA_Sul_Mapa.sql
+bash restore_pictures_from_backup.sh fotos_inventario_170415.Sul.backup ${DATABASE}
 
 
 ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_arasul.backup -Fc -O -x -Z 9 ${DATABASE}

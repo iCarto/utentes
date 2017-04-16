@@ -1,10 +1,10 @@
 #!/bin/sh
 
-DATABASE=aranorte
-
-TODAY=`date +%Y%m%d`
 
 BACKUP_FILE="${1}"
+DATABASE=${2}
+
+
 
 if [ ! -f $BACKUP_FILE ] ; then
     echo "El fichero de backup debe existir"
