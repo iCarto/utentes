@@ -72,3 +72,8 @@ create_trigger_calculate_area_exploracao 2017-01-30T17:45:31Z Francisco Puga <fp
 @20170503 2017-05-03T15:07:18Z Francisco Puga <fpuga@icarto.es> # tag 20170503
 
 alter_table_domains_boolean_add_unique_constraint 2017-07-17T18:25:45Z Francisco Puga <fpuga@icarto.es> # Adds a unique constraint for column key in domains.boolean
+alter_table_actividades_piscicolas_add_new_fields 2017-07-17T18:26:45Z Francisco Puga <fpuga@icarto.es> # alter_table_actividades_piscicolas_add_new_fields
+create_tables_domains_tanques_piscicolas 2017-07-16T09:16:14Z Francisco Puga <fpuga@icarto.es> # Create domains tables needed by tanques_piscicolas
+create_table_actividades_tanques_piscicolas 2017-07-12T19:11:26Z Francisco Puga <fpuga@icarto.es> # Create table actividades_tanques_piscicolas
+alter_table_actividades_piscicolas_add_new_fields 2017-07-17T10:43:34Z Francisco Puga <fpuga@icarto.es> # Adds new fields to actividades_piscicola
+
