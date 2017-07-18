@@ -76,4 +76,6 @@ alter_table_actividades_piscicolas_add_new_fields 2017-07-17T18:26:45Z Francisco
 create_tables_domains_tanques_piscicolas 2017-07-16T09:16:14Z Francisco Puga <fpuga@icarto.es> # Create domains tables needed by tanques_piscicolas
 create_table_actividades_tanques_piscicolas 2017-07-12T19:11:26Z Francisco Puga <fpuga@icarto.es> # Create table actividades_tanques_piscicolas
 alter_table_utentes_add_new_fields 2017-07-17T16:21:34Z Francisco Puga <fpuga@icarto.es> # Adds new field to utentes.utentes
+alter_table_domains_add_app_column 2017-07-18T12:36:02Z Francisco Puga <fpuga@icarto.es> # Add column app to provincia, distrito, posto, bacia, subacia, licencia_estado
+domains_view_filtered 2017-07-17T19:04:54Z Francisco Puga <fpuga@icarto.es> # Uses a materialized view for domains filtered by ara
 
