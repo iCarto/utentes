@@ -70,3 +70,5 @@ update_table_utentes_licencias_add_taxa_fields 2017-01-18T14:41:07Z Francisco Pu
 create_trigger_calculate_area_exploracao 2017-01-30T17:45:31Z Francisco Puga <fpuga@icarto.es> # Create trigger on exploracaos to calculate area
 @20170201 2017-02-01T17:12:01Z Francisco Puga <fpuga@icarto.es> # tag 20170201
 @20170503 2017-05-03T15:07:18Z Francisco Puga <fpuga@icarto.es> # tag 20170503
+
+alter_table_domains_boolean_add_unique_constraint 2017-07-17T18:25:45Z Francisco Puga <fpuga@icarto.es> # Adds a unique constraint for column key in domains.boolean
