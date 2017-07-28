@@ -14,7 +14,7 @@ CREATE TABLE domains.utentes_uten_tipo (
 INSERT INTO domains.utentes_uten_tipo (key, value, ordering, parent, tooltip) VALUES
 (NULL, NULL, 0, NULL, NULL),
 ('Pessoa física', NULL, 1, NULL, NULL),
-('Empresa ', NULL, 2, NULL, NULL),
+('Empresa', NULL, 2, NULL, NULL),
 ('Associação', NULL, 3, NULL, NULL),
 ('Outro', NULL, 4, NULL, NULL);
 
