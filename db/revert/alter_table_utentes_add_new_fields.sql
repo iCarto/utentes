@@ -3,6 +3,10 @@
 BEGIN;
 
 
+-- uncomment this line if reverting during development
+ALTER TABLE utentes.utentes ADD COLUMN entidade;
+UPDATE utentes.utentes SET entidade = uten_tipo;
+
 ALTER TABLE utentes.utentes
 DROP COLUMN uten_tipo,
 DROP COLUMN uten_gere,
