@@ -9,7 +9,7 @@ CREATE TABLE utentes.actividades_tanques_piscicolas (
     actividade integer NOT NULL REFERENCES utentes.actividades_piscicultura(gid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    tipo text references domains.tanque_piscicola_tipo(key) on update cascade on delete no action,
+    tipo text NOT NULL references domains.tanque_piscicola_tipo(key) on update cascade on delete no action,
     cumprimen numeric(10,2),
     largura numeric(10,2),
     profundid numeric(10,2),
@@ -19,7 +19,7 @@ CREATE TABLE utentes.actividades_tanques_piscicolas (
     estado text REFERENCES domains.tanque_piscicola_estado(key)
         ON UPDATE CASCADE
         ON DELETE NO ACTION,
-    esp_culti text REFERENCES domains.tanque_piscicola_esp_culti(key)
+    esp_culti text NOT NULL REFERENCES domains.tanque_piscicola_esp_culti(key)
         ON UPDATE CASCADE
         ON DELETE NO ACTION,
     esp_cul_o TEXT,
