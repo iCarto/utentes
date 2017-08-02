@@ -74,7 +74,7 @@ INSERT INTO domains.tanque_piscicola_tipo_alim (key, value, ordering, parent, to
 ('Ração feita', NULL, 7, NULL, NULL),
 ('Restos de comida', NULL, 8, NULL, NULL),
 ('Térmites', NULL, 9, NULL, NULL),
-('Verdudas', NULL, 10, NULL, NULL),
+('Verduras', NULL, 10, NULL, NULL),
 ('Outros', NULL, 11, NULL, NULL);
 
 

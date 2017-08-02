@@ -4,7 +4,7 @@ BEGIN;
 
 
 -- uncomment this line if reverting during development
-ALTER TABLE utentes.utentes ADD COLUMN entidade;
+ALTER TABLE utentes.utentes ADD COLUMN entidade text;
 UPDATE utentes.utentes SET entidade = uten_tipo;
 
 ALTER TABLE utentes.utentes

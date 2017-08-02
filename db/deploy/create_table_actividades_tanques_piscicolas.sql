@@ -27,6 +27,7 @@ CREATE TABLE utentes.actividades_tanques_piscicolas (
     tipo_al_o TEXT,
     n_ale_pov integer,
     prov_alev text references domains.tanque_piscicola_prov_alev(key) on update cascade on delete no action,
+    prov_al_o text,
     venda numeric(10,2),
     consumo numeric(10,2),
     pro_anual numeric(10,2),
