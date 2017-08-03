@@ -41,4 +41,19 @@ CREATE INDEX ON utentes.actividades_tanques_piscicolas USING GIST (the_geom);
 -- ALTER TABLE utentes.actividades_tanques_piscicolas OWNER TO utentes;
 
 
+CREATE FUNCTION utentes.calcular_area_m2() RETURNS trigger AS $$
+BEGIN
+  NEW.area_gps = ST_Area(NEW.the_geom);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ALTER FUNCTION utentes.calcular_area_m2() OWNER TO :"owner";
+
+CREATE TRIGGER calcular_area_m2
+BEFORE INSERT OR UPDATE ON utentes.actividades_tanques_piscicolas
+FOR EACH ROW EXECUTE PROCEDURE utentes.calcular_area_m2();
+
+UPDATE utentes.actividades_tanques_piscicolas SET the_geom = the_geom;
+
 COMMIT;
