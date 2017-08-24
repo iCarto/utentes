@@ -30,7 +30,7 @@ update domains.posto set app = array_append(app, 'DPMAIP') where parent IN ( sel
 
 ALTER TABLE domains.bacia ADD COLUMN app TEXT[];
 update domains.bacia set app = string_to_array(ara, ';');
-UPDATE domains.bacia set app = ARRAY['Norte', 'DPMAIP'] WHERE ara = 'Norte' AND key != 'Rovuma';
+UPDATE domains.bacia set app = ARRAY['Norte', 'DPMAIP'] WHERE ara = 'Norte';
 ALTER TABLE domains.bacia DROP COLUMN ara;
 DELETE FROM domains.bacia WHERE key is null;
 INSERT INTO domains.bacia (category, key, ordering, parent, app) VALUES ('bacia', null, 0, null, null);
@@ -39,7 +39,7 @@ UPDATE domains.bacia SET parent = null;
 
 ALTER TABLE domains.subacia ADD COLUMN app TEXT[];
 update domains.subacia set app = string_to_array(ara, ';');
-UPDATE domains.subacia set app = ARRAY['Norte', 'DPMAIP'] WHERE ara = 'Norte' AND key != 'Rovuma';
+UPDATE domains.subacia set app = ARRAY['Norte', 'DPMAIP'] WHERE ara = 'Norte';
 ALTER TABLE domains.subacia DROP COLUMN ara;
 
 COMMIT;

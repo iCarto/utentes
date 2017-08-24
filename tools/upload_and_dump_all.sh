@@ -25,6 +25,12 @@ foo2() {
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f ./datos/170421_${1}.sql
 }
 
+dump() {
+    BACKUP_FOLDER=/tmp/${TODAY}
+    mkdir -p $BACKUP_FOLDER
+    [ $FLAG_DUMP -eq 1 ] && ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f ${BACKUP_FOLDER}/${TODAY}_BDD_${1}.backup -Fc -O -x -Z 9 ${1}
+}
+
 # $1 = DATABASE
 # $2 = TAG OR @HEAD
 sqitch_deploy() {
@@ -81,7 +87,7 @@ foo2 ${DATABASE} ${NORTE_DATA_VERSION}
 # bash restore_pictures_from_backup.sh fotos_inventario_20160918.Norte.backup ${DATABASE}
 
 sqitch_deploy $DATABASE @HEAD
-[ $FLAG_DUMP -eq 1 ] && ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_BDD_${DATABASE}.backup -Fc -O -x -Z 9 ${DATABASE}
+dump $DATABASE
 
 
 
@@ -90,7 +96,7 @@ echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
 createdb -h localhost -U postgres -T aranorte ${DATABASE}
 foo2 ${DATABASE} ${NORTE_DATA_VERSION}
 # sqitch_deploy $DATABASE @HEAD
-${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_BDD_${DATABASE}.backup -Fc -O -x -Z 9 ${DATABASE}
+dump $DATABASE
 
 
 DATABASE=dpmaip
@@ -99,9 +105,9 @@ createdb -h localhost -U postgres -T vacia ${DATABASE}
 sqitch_deploy $DATABASE @HEAD
 # foo2 ${DATABASE} ${NORTE_DATA_VERSION}
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM utentes.utentes; DELETE FROM utentes.settings;"
-PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./datos/170421_aranorte_test.sql
+# PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./datos/170421_aranorte_test.sql
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM domains.ara; INSERT INTO domains.ara VALUES ('ara', 'DPMAIP', 'DPMAIP', NULL, NULL, NULL); REFRESH MATERIALIZED VIEW domains.domains;"
-[ $FLAG_DUMP -eq 1 ] && ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_BDD_${DATABASE}.backup -Fc -O -x -Z 9 ${DATABASE}
+dump $DATABASE
 
 
 
@@ -119,7 +125,7 @@ bash restore_pictures_from_backup.sh fotos_inventario_20170417.Sul.backup ${DATA
 sqitch_deploy $DATABASE @HEAD
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM domains.ara; INSERT INTO domains.ara VALUES ('ara', 'Sul', 'Sul', NULL, NULL, NULL); REFRESH MATERIALIZED VIEW domains.domains;"
 
-[ $FLAG_DUMP -eq 1 ] && ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f /tmp/${TODAY}_BDD_${DATABASE}.backup -Fc -O -x -Z 9 ${DATABASE}
+dump $DATABASE
 
 }
 
