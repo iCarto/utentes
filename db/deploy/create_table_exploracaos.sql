@@ -10,15 +10,15 @@ CREATE TABLE utentes.exploracaos (
     d_soli     date,
     observacio text,
     loc_provin text NOT NULL REFERENCES domains.provincia (key)
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION,
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,
     loc_distri text NOT NULL,
     loc_posto  text NOT NULL,
     loc_nucleo text,
     loc_endere text,
     loc_bacia  text REFERENCES domains.bacia (key)
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION,
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,
     loc_subaci text,
     loc_rio    text,
     pagos      boolean,
@@ -28,19 +28,18 @@ CREATE TABLE utentes.exploracaos (
     c_estimado numeric(10,2),
     area       numeric(12,4),
     the_geom   geometry(MultiPolygon,32737),
-    utente     integer NOT NULL
-               REFERENCES utentes.utentes(gid)
-               ON UPDATE CASCADE
-               ON DELETE CASCADE,
-   FOREIGN KEY (loc_provin, loc_distri) REFERENCES domains.distrito (parent, key)
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-   FOREIGN KEY (loc_distri, loc_posto) REFERENCES domains.posto (parent, key)
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-   FOREIGN KEY (loc_bacia, loc_subaci) REFERENCES domains.subacia (parent, key)
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION
+    utente     integer NOT NULL REFERENCES utentes.utentes(gid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (loc_provin, loc_distri) REFERENCES domains.distrito (parent, key)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,
+    FOREIGN KEY (loc_distri, loc_posto) REFERENCES domains.posto (parent, key)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION,
+    FOREIGN KEY (loc_bacia, loc_subaci) REFERENCES domains.subacia (parent, key)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION
 );
 
 CREATE INDEX ON utentes.exploracaos USING GIST (the_geom);

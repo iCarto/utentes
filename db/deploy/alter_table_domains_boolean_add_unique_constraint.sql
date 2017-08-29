@@ -2,6 +2,6 @@
 
 BEGIN;
 
-ALTER TABLE domains.boolean ADD CONSTRAINT boolean_key_key UNIQUE(key); 
+ALTER TABLE domains.boolean ADD CONSTRAINT boolean_key_key UNIQUE(key);
 
 COMMIT;

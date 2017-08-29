@@ -22,5 +22,3 @@ DELETE FROM domains.provincia;
 
 
 COMMIT;
-
-

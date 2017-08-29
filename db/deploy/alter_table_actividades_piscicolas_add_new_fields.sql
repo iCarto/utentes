@@ -99,19 +99,19 @@ SELECT category, key, value, ordering, parent, tooltip FROM domains.piscicultura
 
 
 ALTER TABLE utentes.actividades_piscicultura
-      ADD COLUMN produc_pi NUMERIC(10,2),
-      ADD COLUMN n_tanques INTEGER,
-      ADD COLUMN n_ale_pov INTEGER,
-      ADD COLUMN ano_i_ati INTEGER,
-      ADD COLUMN tipo_proc TEXT REFERENCES domains.piscicultura_tipo_proc(key) ON UPDATE CASCADE ON DELETE NO ACTION,
-      ADD COLUMN asis_aber TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
-      ADD COLUMN asis_moni TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
-      ADD COLUMN asis_orig TEXT[],
-      ADD COLUMN asis_or_o TEXT,
-      ADD COLUMN trat_t_en TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
-      ADD COLUMN trat_a_sa TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
-      ADD COLUMN gaio_subm TEXT REFERENCES domains.piscicultura_gaio_subm(key) ON UPDATE CASCADE ON DELETE NO ACTION,
-      ADD COLUMN problemas TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
-      ADD COLUMN prob_prin TEXT;
+    ADD COLUMN produc_pi NUMERIC(10,2),
+    ADD COLUMN n_tanques INTEGER,
+    ADD COLUMN n_ale_pov INTEGER,
+    ADD COLUMN ano_i_ati INTEGER,
+    ADD COLUMN tipo_proc TEXT REFERENCES domains.piscicultura_tipo_proc(key) ON UPDATE CASCADE ON DELETE NO ACTION,
+    ADD COLUMN asis_aber TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
+    ADD COLUMN asis_moni TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
+    ADD COLUMN asis_orig TEXT[],
+    ADD COLUMN asis_or_o TEXT,
+    ADD COLUMN trat_t_en TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
+    ADD COLUMN trat_a_sa TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
+    ADD COLUMN gaio_subm TEXT REFERENCES domains.piscicultura_gaio_subm(key) ON UPDATE CASCADE ON DELETE NO ACTION,
+    ADD COLUMN problemas TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
+    ADD COLUMN prob_prin TEXT;
 
 COMMIT;

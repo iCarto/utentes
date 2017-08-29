@@ -3,20 +3,20 @@
 BEGIN;
 
 ALTER TABLE utentes.actividades_piscicultura
-      DROP COLUMN produc_pi,
-      DROP COLUMN n_tanques,
-      DROP COLUMN n_ale_pov,
-      DROP COLUMN ano_i_ati,
-      DROP COLUMN tipo_proc,
-      DROP COLUMN asis_aber,
-      DROP COLUMN asis_moni,
-      DROP COLUMN asis_orig,
-      DROP COLUMN asis_or_o,
-      DROP COLUMN trat_t_en,
-      DROP COLUMN trat_a_sa,
-      DROP COLUMN gaio_subm,
-      DROP COLUMN problemas,
-      DROP COLUMN prob_prin;
+    DROP COLUMN produc_pi,
+    DROP COLUMN n_tanques,
+    DROP COLUMN n_ale_pov,
+    DROP COLUMN ano_i_ati,
+    DROP COLUMN tipo_proc,
+    DROP COLUMN asis_aber,
+    DROP COLUMN asis_moni,
+    DROP COLUMN asis_orig,
+    DROP COLUMN asis_or_o,
+    DROP COLUMN trat_t_en,
+    DROP COLUMN trat_a_sa,
+    DROP COLUMN gaio_subm,
+    DROP COLUMN problemas,
+    DROP COLUMN prob_prin;
 
 CREATE OR REPLACE VIEW domains.domains AS
 SELECT category, key, value, ordering, parent, tooltip FROM domains.ara

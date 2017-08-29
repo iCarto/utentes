@@ -11,9 +11,9 @@ ALTER TABLE domains.provincia DROP COLUMN app;
 
 DELETE FROM domains.provincia where key is null;
 INSERT INTO domains.provincia (category, key, ordering, parent, ara) values
-  ('provincia', null, 0, null, 'Norte'),
-  ('provincia', null, 0, null, 'Sur'),
-  ('provincia', null, 0, null, null);
+    ('provincia', null, 0, null, 'Norte'),
+    ('provincia', null, 0, null, 'Sur'),
+    ('provincia', null, 0, null, null);
 
 
 ALTER TABLE domains.distrito ADD COLUMN ara TEXT;

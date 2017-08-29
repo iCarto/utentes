@@ -7,15 +7,15 @@ ALTER TABLE domains.distrito ADD COLUMN ara text;
 ALTER TABLE domains.posto ADD COLUMN ara text;
 
 INSERT INTO domains.provincia (category, key, value, ordering, parent, tooltip, ara) VALUES
-       ('provincia', NULL, NULL, 0, 'Sul', NULL, 'Sul'),
-       ('provincia', 'Gaza', NULL, NULL, 'Sul', NULL, 'Sul'),
-       ('provincia', 'Inhambane', NULL, NULL, 'Sul', NULL, 'Sul'),
-       ('provincia', 'Manica', NULL, NULL, 'Sul', NULL, 'Sul'),
-       ('provincia', 'Maputo', NULL, NULL, 'Sul', NULL, 'Sul'),
-       ('provincia', 'Nampula', NULL, NULL, NULL, NULL, NULL),
-       ('provincia', 'Sofala', NULL, NULL, 'Sul', NULL, 'Sul'),
-       ('provincia', 'Tete', NULL, NULL, NULL, NULL, NULL),
-       ('provincia', 'Zambezia', NULL, NULL, NULL, NULL, NULL);
+    ('provincia', NULL, NULL, 0, 'Sul', NULL, 'Sul'),
+    ('provincia', 'Gaza', NULL, NULL, 'Sul', NULL, 'Sul'),
+    ('provincia', 'Inhambane', NULL, NULL, 'Sul', NULL, 'Sul'),
+    ('provincia', 'Manica', NULL, NULL, 'Sul', NULL, 'Sul'),
+    ('provincia', 'Maputo', NULL, NULL, 'Sul', NULL, 'Sul'),
+    ('provincia', 'Nampula', NULL, NULL, NULL, NULL, NULL),
+    ('provincia', 'Sofala', NULL, NULL, 'Sul', NULL, 'Sul'),
+    ('provincia', 'Tete', NULL, NULL, NULL, NULL, NULL),
+    ('provincia', 'Zambezia', NULL, NULL, NULL, NULL, NULL);
 
 UPDATE domains.provincia SET ara = 'Norte' WHERE key IN ('Cabo Delgado', 'Niassa');
 INSERT INTO domains.provincia VALUES ('provincia', NULL, NULL, 0, 'Norte', NULL, 'Norte');
@@ -268,7 +268,7 @@ INSERT INTO domains.posto (category, key, ordering, parent) values ('posto', NUL
 INSERT INTO domains.posto (category, key, ordering, parent) values ('posto', NULL, 0, 'Maringue');
 
 
-INSERT INTO domains.posto (category, key, parent) VALUES 
+INSERT INTO domains.posto (category, key, parent) VALUES
 ('posto', 'Alto Molocue', 'Alto Molocue'),
 ('posto', 'Nauela', 'Alto Molocue'),
 ('posto', 'Angoche', 'Angoche'),

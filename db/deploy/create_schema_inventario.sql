@@ -14,26 +14,26 @@ gid SERIAL PRIMARY KEY,
 "fonte" varchar(254),
 "cod_fonte" varchar(254) NOT NULL UNIQUE,
 "tip_fonte" varchar(254) REFERENCES inventario_dominios.tip_fonte(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "red_monit" varchar(254)  REFERENCES inventario_dominios.red_monit(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "entidade" varchar(254),
 "tecnico" varchar(254),
 "data" varchar(100),
 "hora" varchar(254),
 "provincia" varchar(254) REFERENCES inventario_dominios.provincia(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "distrito" varchar(254),
 "posto_adm" varchar(254),
 "nucleo" varchar(254),
 "altitude" numeric(10,2),
 "distancia" numeric(10,2),
 "propiedad" varchar(254) REFERENCES inventario_dominios.propiedad(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "nome_prop" varchar(254),
 "telefone" varchar(254),
 "escritura" boolean,
@@ -48,11 +48,11 @@ gid SERIAL PRIMARY KEY,
 "outros" boolean,
 "coment_otr" varchar(254),
 "estado_fon" varchar(254) REFERENCES inventario_dominios.estado(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "tipo_pozo" varchar(254) REFERENCES inventario_dominios.tipo_pozo(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "prof_pozo" numeric(10,2),
 "diametro" numeric(10,2),
 "alt_brocal" numeric(10,2),
@@ -65,8 +65,8 @@ gid SERIAL PRIMARY KEY,
 "t_bombeo" integer,
 "potencia" numeric(10,2),
 "estado" varchar(254) REFERENCES inventario_dominios.estado_ampliado(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "reperfor" boolean,
 "rep_dista" numeric(10,2),
 "limpezas" boolean,
@@ -78,7 +78,7 @@ geom geometry('POINT', 32737),
 FOREIGN KEY (provincia, distrito) REFERENCES inventario_dominios.distrito (parent, key)
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
-   FOREIGN KEY (distrito, posto_adm) REFERENCES inventario_dominios.posto (parent, key)
+    FOREIGN KEY (distrito, posto_adm) REFERENCES inventario_dominios.posto (parent, key)
     ON UPDATE CASCADE
     ON DELETE NO ACTION
 );
@@ -87,8 +87,8 @@ CREATE INDEX ON "inventario"."fontes" USING GIST ("geom");
 CREATE TABLE "inventario"."analise" (
 gid SERIAL PRIMARY KEY,
 "cod_fonte" text NOT NULL REFERENCES inventario.fontes(cod_fonte)
-	    ON UPDATE CASCADE
-	    ON DELETE CASCADE,
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 "fonte" text,
 "data_most" date NOT NULL,
 "hora_most" varchar(6),
@@ -98,15 +98,15 @@ gid SERIAL PRIMARY KEY,
 "c_cheiro" text,
 "c_ph" numeric(10,2),
 "c_nitrat" text REFERENCES inventario_dominios.c_nitrat(key)
-	   ON UPDATE CASCADE
-	   ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "c_nitrit" text REFERENCES inventario_dominios.c_nitrit(key)
-	   ON UPDATE CASCADE
-	   ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "par_rango" boolean,
 "cond_most" text REFERENCES inventario_dominios.cond_most(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "com_most" text,
 "laborator" text,
 "data_anal" date,
@@ -163,8 +163,8 @@ gid SERIAL PRIMARY KEY,
 CREATE TABLE "inventario"."quantidade_agua" (
 gid SERIAL PRIMARY KEY,
 "cod_fonte" varchar(50) REFERENCES inventario.fontes(cod_fonte)
-	    ON UPDATE CASCADE
-	    ON DELETE CASCADE,
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 "data" date NOT NULL,
 "hora" varchar(6),
 "quan_agua" numeric(10,2),
@@ -178,14 +178,14 @@ gid SERIAL PRIMARY KEY,
 "acuifero" varchar(50),
 "cod_acuif" varchar(50) NOT NULL UNIQUE,
 "tipo_hidr" varchar(254) REFERENCES inventario_dominios.tipo_hidr(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "tipo_lito" varchar(254) REFERENCES inventario_dominios.tipo_lito(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "tipo_poro" varchar(50) REFERENCES inventario_dominios.tipo_poro(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "geologia" varchar(254),
 "profundid" varchar(50),
 "cumprimen" varchar(50),
@@ -201,27 +201,27 @@ gid SERIAL PRIMARY KEY,
 "estazon" varchar(254),
 "cod_estac" varchar(254) NOT NULL UNIQUE,
 "tip_estac" varchar(254) REFERENCES inventario_dominios.tip_estac(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "provincia" varchar(254) REFERENCES inventario_dominios.provincia(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "distrito" varchar(254),
 "posto_adm" varchar(254),
 "nucleo" varchar(254),
 "altitude" numeric(10,2),
 "bacia" varchar(254) REFERENCES inventario_dominios.bacia(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 subacia text,
 "rio" varchar(254),
 "estado" varchar(254) REFERENCES inventario_dominios.estado_ampliado(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "ano_const" integer,
 "gestao" varchar(254) REFERENCES inventario_dominios.gestao_estacoes(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "n_tecnico" integer,
 "responsab" varchar(254),
 "telefone" varchar(254),
@@ -229,23 +229,23 @@ subacia text,
 "ano_fin" integer,
 "n_anos" integer,
 "frec_toma" varchar(254) REFERENCES inventario_dominios.frecuencia(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "frec_regi" varchar(254) REFERENCES inventario_dominios.frecuencia(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "nivel" boolean,
 "n_precis" varchar(254) REFERENCES inventario_dominios.precisao(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "lin_em" boolean,
 "n_lin_em" integer,
 "n_outros" boolean,
 "n_t_outro" varchar(254),
 "velocidad" boolean,
 "v_precis" varchar(254) REFERENCES inventario_dominios.precisao(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "molinetes" boolean,
 "n_molinet" integer,
 "v_outros" boolean,
@@ -253,19 +253,19 @@ subacia text,
 "caudal" boolean,
 "pluviomet" boolean,
 "tip_pluvi" varchar(254) REFERENCES inventario_dominios.tip_pluvi(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "n_pluviom" integer,
 "coment" varchar(254),
 "sac" text REFERENCES inventario_dominios.si_no(key)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 geom geometry('POINT', 32737),
 
 FOREIGN KEY (provincia, distrito) REFERENCES inventario_dominios.distrito (parent, key)
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
-   FOREIGN KEY (distrito, posto_adm) REFERENCES inventario_dominios.posto (parent, key)
+    FOREIGN KEY (distrito, posto_adm) REFERENCES inventario_dominios.posto (parent, key)
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
 FOREIGN KEY (bacia, subacia) REFERENCES inventario_dominios.subacia (parent, key)
@@ -279,8 +279,8 @@ CREATE INDEX ON "inventario"."estacoes" USING GIST ("geom");
 CREATE TABLE "inventario"."dados_hidrometricos" (
 gid SERIAL PRIMARY KEY,
 "cod_estac" varchar(50) NOT NULL REFERENCES inventario.estacoes(cod_estac)
-	    ON UPDATE CASCADE
-	    ON DELETE CASCADE,
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 "estazon" varchar(50),
 "ano" text,
 "n_med_ja" numeric(10,2),
@@ -407,8 +407,8 @@ gid SERIAL PRIMARY KEY,
 CREATE TABLE "inventario"."dados_pluviometricos" (
 gid SERIAL PRIMARY KEY,
 "cod_estac" varchar(50) NOT NULL REFERENCES inventario.estacoes(cod_estac)
-	    ON UPDATE CASCADE
-	    ON DELETE CASCADE,
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 "estazon" varchar(50),
 "ano" text,
 "to_mes_ja" numeric(10,2),
@@ -472,27 +472,27 @@ gid SERIAL PRIMARY KEY,
 "barragem" varchar(254),
 "cod_barra" varchar(254) NOT NULL UNIQUE,
 "tip_barra" varchar(254) REFERENCES inventario_dominios.tip_barra(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "provincia" varchar(254) REFERENCES inventario_dominios.provincia(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "distrito" varchar(254),
 "posto_adm" varchar(254),
 "nucleo" varchar(254),
 "altitude" numeric(10,2),
 "bacia" varchar(254) REFERENCES inventario_dominios.bacia(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 subacia text,
 "rio" varchar(254),
 "estado" varchar(254) REFERENCES inventario_dominios.estado_ampliado(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "ano_const" integer,
 "gestao" varchar(254) REFERENCES inventario_dominios.gestao(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "responsab" varchar(254),
 "telefone" varchar(254),
 "tip_bar_2" varchar(254),
@@ -508,14 +508,14 @@ subacia text,
 "fonte_loc" varchar(254),
 "fonte_inf" varchar(254),
 "fiab_info" varchar(254) REFERENCES inventario_dominios.fiab_info(key)
-	    ON UPDATE CASCADE
-	    ON DELETE NO ACTION,
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
 "coment" varchar(254),
 geom geometry('POINT', 32737),
 FOREIGN KEY (provincia, distrito) REFERENCES inventario_dominios.distrito (parent, key)
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
-   FOREIGN KEY (distrito, posto_adm) REFERENCES inventario_dominios.posto (parent, key)
+    FOREIGN KEY (distrito, posto_adm) REFERENCES inventario_dominios.posto (parent, key)
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
 FOREIGN KEY (bacia, subacia) REFERENCES inventario_dominios.subacia (parent, key)

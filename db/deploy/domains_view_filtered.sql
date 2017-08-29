@@ -63,7 +63,7 @@ UNION
 SELECT category, key, value, ordering, parent, tooltip, null FROM domains.tanque_piscicola_prov_alev
 UNION
 SELECT category, key, value, ordering, parent, tooltip, null FROM domains.tanque_piscicola_fert_agua
-UNION 
+UNION
 SELECT category, key, value, ordering, parent, tooltip, null FROM domains.utentes_uten_tipo
 )
 SELECT category, key, value, ordering, parent, tooltip FROM tmp_query WHERE app IS NULL OR ((SELECT key FROM domains.ara LIMIT 1) = ANY(app))

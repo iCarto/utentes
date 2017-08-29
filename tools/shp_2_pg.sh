@@ -51,51 +51,51 @@ for shp in `find $SHAPE_FOLDER -iname '*.shp'` ; do
 
 
     if [[ ${TABLE} == 'acuiferos' ]] ; then
-	SCHEMA_BASE=inventario
-	OUTPUT=$ACUIFEROS
+        SCHEMA_BASE=inventario
+        OUTPUT=$ACUIFEROS
     fi
 
     if [[ ${TABLE} == 'fontes' ]] ; then
-	SCHEMA_BASE=inventario
-	OUTPUT=$FONTES
-	echo "ALTER TABLE inventario.fontes add column aaa text;" >> $OUTPUT
+        SCHEMA_BASE=inventario
+        OUTPUT=$FONTES
+        echo "ALTER TABLE inventario.fontes add column aaa text;" >> $OUTPUT
     fi
 
     if [[ ${TABLE} == 'barragem' ]] ; then
-	TABLE=barragens
-	SCHEMA_BASE=inventario
-	OUTPUT=$BARRAGENS
+        TABLE=barragens
+        SCHEMA_BASE=inventario
+        OUTPUT=$BARRAGENS
     fi
 
     if [[ ${TABLE} == 'estacoes' ]] ; then
-	SCHEMA_BASE=inventario
-	OUTPUT=$ESTACOES
+        SCHEMA_BASE=inventario
+        OUTPUT=$ESTACOES
     fi
 
     if [[ ${TABLE} == 'zimbabwe' ]] || [[ ${TABLE} == 'zambia' ]] || [[ ${TABLE} == 'swaziland' ]] || [[ ${TABLE} == 'south_africa' ]] || [[ ${TABLE} == 'rdcongo' ]] || [[ ${TABLE} == 'namibia' ]] || [[ ${TABLE} == 'madagascar' ]] || [[ ${TABLE} == 'lesotho' ]] || [[ ${TABLE} == 'congo' ]] || [[ ${TABLE} == 'botswana' ]] || [[ ${TABLE} == 'angola' ]] || [[ ${TABLE} == 'reserva_do_niassa' ]] || [[ ${TABLE} == 'biodiversidad_region' ]] || [[ ${TABLE} == 'piezo_v0' ]] || [[ ${TABLE} == 'estacoes_hidrometricas' ]] || [[ ${TABLE} == 'estaçoes_hidrometricas' ]] || [[ ${TABLE} == 'estacoes_pluviometricas' ]] || [[ ${TABLE} == 'estaçoes_pluviometricas' ]] || [[ ${TABLE} == 'cotas' ]] || [[ ${TABLE} == 'direcao_fluxo' ]] || [[ ${TABLE} == 'dir_fluxo' ]] ; then
-	continue
+        continue
     fi
     if [[ ${TABLE} == 'reserva_zona_tampão' ]]; then
-	TABLE='reserva_zona_tampao'
+        TABLE='reserva_zona_tampao'
     fi
 
     if [[ ${TABLE} == 'estaçoes_evaporacion' ]]; then
-	TABLE='estacoes_evaporacion'
+        TABLE='estacoes_evaporacion'
     fi
 
     if [[ ${TABLE} == 'areas_exploraçao_mineira' ]]; then
-	TABLE='areas_exploracao_mineira'
+        TABLE='areas_exploracao_mineira'
     fi
 
     if [[ ${TABLE} == 'areas_exploraçao_petroleo_gas' ]]; then
-	TABLE='areas_exploracao_petroleo_gas'
+        TABLE='areas_exploracao_petroleo_gas'
     fi
 
     ALL_TABLES+=(${TABLE})
 
     # debug
     # if [[ $OUTPUT == $CBASE ]] ; then
-    # 	continue
+    #     continue
     # fi
 
     shp2pgsql -s 32737 -g geom -a -W ISO8859-1 $shp ${SCHEMA_BASE}.${TABLE} \
@@ -104,7 +104,7 @@ for shp in `find $SHAPE_FOLDER -iname '*.shp'` ; do
     | sed 's/^SET.*//' >> $OUTPUT
 
     if [[ ${TABLE} == 'fontes' ]] ; then
-	echo "ALTER TABLE inventario.fontes drop column aaa;" >> $OUTPUT
+        echo "ALTER TABLE inventario.fontes drop column aaa;" >> $OUTPUT
     fi
 
 done
@@ -135,7 +135,7 @@ do
     TABLENAME=${ALL_TABLES[$i]}
     SCHEMA='cbase'
     if [[ ${LAYERNAME} == 'acuiferos' ]] || [[ ${LAYERNAME} == 'fontes' ]] || [[ ${LAYERNAME} == 'barragens' ]] ||[[ ${LAYERNAME} == 'estacoes' ]] ||[[ ${LAYERNAME} == 'exploracaos' ]]; then
-	SCHEMA='inventario'
+        SCHEMA='inventario'
     fi
     echo "INSERT INTO elle._map (mapa, nombre_capa, nombre_tabla, posicion, visible, max_escala, min_escala, grupo, schema, localizador) VALUES ('TODAS', '${LAYERNAME}', '${TABLENAME}', $i, true, NULL, NULL, NULL, '$SCHEMA', NULL);" >> $MAP
 done
@@ -151,14 +151,14 @@ for shp in `find $DBF_FOLDER -iname '*.dbf'` ; do
     SCHEMA=inventario
     APPEND=" -a "
     if [[ ${TABLE} == 'quantidade_agua' ]] ; then
-	TABLE=quantidade_agua2
-	SCHEMA=public
-	APPEND=" -c "
+        TABLE=quantidade_agua2
+        SCHEMA=public
+        APPEND=" -c "
     fi
     if [[ ${TABLE} == 'analise' ]] ; then
-	TABLE=analise2
-	SCHEMA=public
-	APPEND=" -c "
+        TABLE=analise2
+        SCHEMA=public
+        APPEND=" -c "
     fi
 
     shp2pgsql $APPEND -n -W ISO8859-1 $shp ${SCHEMA}.${TABLE} \
