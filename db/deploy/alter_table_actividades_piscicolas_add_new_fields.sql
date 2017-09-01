@@ -115,11 +115,23 @@ ALTER TABLE utentes.actividades_piscicultura
     ADD COLUMN prob_prin TEXT;
 
 
-CREATE TRIGGER calcular_area
-    BEFORE INSERT OR UPDATE ON utentes.actividades_piscicultura
-    FOR EACH ROW
-    EXECUTE PROCEDURE utentes.calcular_area();
+CREATE OR REPLACE FUNCTION utentes.calcular_area_piscicola() RETURNS trigger
+    LANGUAGE plpgsql AS $function$
+    DECLARE
+        my_gid integer := null;
+    BEGIN
+        SELECT gid FROM utentes.actividades WHERE exploracao = NEW.gid AND tipo = 'Piscicultura' INTO my_gid;
+        IF (NEW.the_geom IS NOT NULL) AND (my_gid IS NOT NULL) THEN
+            UPDATE utentes.actividades_piscicultura SET area = ST_Area(NEW.the_geom) / 10000 WHERE gid = my_gid;
+        END IF;
+        RETURN NEW;
+     END;
+$function$;
 
-UPDATE utentes.actividades_piscicultura SET the_geom = the_geom;
+
+CREATE TRIGGER calcular_area_piscicola
+    AFTER INSERT OR UPDATE ON utentes.exploracaos
+    FOR EACH ROW
+    EXECUTE PROCEDURE utentes.calcular_area_piscicola();
 
 COMMIT;
