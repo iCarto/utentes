@@ -114,4 +114,12 @@ ALTER TABLE utentes.actividades_piscicultura
     ADD COLUMN problemas TEXT REFERENCES domains.boolean(key) ON UPDATE CASCADE ON DELETE NO ACTION,
     ADD COLUMN prob_prin TEXT;
 
+
+CREATE TRIGGER calcular_area
+    BEFORE INSERT OR UPDATE ON utentes.actividades_piscicultura
+    FOR EACH ROW
+    EXECUTE PROCEDURE utentes.calcular_area();
+
+UPDATE utentes.actividades_piscicultura SET the_geom = the_geom;
+
 COMMIT;
