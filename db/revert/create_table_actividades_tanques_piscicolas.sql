@@ -2,8 +2,6 @@
 
 BEGIN;
 
-DROP TRIGGER calcular_area_m2 ON utentes.actividades_tanques_piscicolas;
-DROP FUNCTION utentes.calcular_area_m2();
 DROP TABLE utentes.actividades_tanques_piscicolas;
 
 COMMIT;
