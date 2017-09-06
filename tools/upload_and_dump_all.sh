@@ -118,6 +118,8 @@ main() {
 
     dump $DATABASE
 
+    python database_patch.py
+
 }
 
 FLAG_DUMP=0
