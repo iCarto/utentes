@@ -87,3 +87,4 @@ fixes_orthographic_errors_in_domains 2017-09-22T13:35:28Z Francisco Puga <fpuga@
 alter_table_licencias_add_n_licen_a 2017-09-24T16:20:12Z Francisco Puga <fpuga@icarto.es> # Add field n_licen_a to utentes.licencias
 create_domain_unidade_bacia 2017-09-21T16:21:20Z Francisco Puga <fpuga@icarto.es> # Create domain unidade bacia
 refresh_domains_view_with_unidade 2017-09-24T18:16:58Z Francisco Puga <fpuga@icarto.es> # Adds unidade to domains view
+alter_table_add_column_n_res_tot_to_pecuaria 2017-09-25T09:44:48Z Francisco Puga <fpuga@icarto.es> # Add column n_res_tot to actividades_pecuaria
