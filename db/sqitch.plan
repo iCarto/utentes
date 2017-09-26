@@ -90,3 +90,4 @@ refresh_domains_view_with_unidade 2017-09-24T18:16:58Z Francisco Puga <fpuga@ica
 alter_table_add_column_n_res_tot_to_pecuaria 2017-09-25T09:44:48Z Francisco Puga <fpuga@icarto.es> # Add column n_res_tot to actividades_pecuaria
 alter_table_reses_change_type_c_res 2017-09-25T11:25:50Z Francisco Puga <fpuga@icarto.es> # Changes to numeric the type of c_res
 alter_table_agricultura_add_new_fields 2017-09-25T17:24:43Z Francisco Puga <fpuga@icarto.es> # Add fields to table actividades.agricultura_rega
+create_table_version 2017-09-26T10:31:25Z Francisco Puga <fpuga@icarto.es> # Create table utentes.version
