@@ -21,7 +21,7 @@ INSERT INTO domains.fontes_sist_med (key, ordering) VALUES ('Volumétrica', 4);
 
 -- Add column to fontes
 ALTER TABLE utentes.fontes
-    ADD COLUMN sist_med TEXT references domains.fontes_sist_med(key);
+    ADD COLUMN sist_med TEXT references domains.fontes_sist_med(key) ON UPDATE CASCADE ON DELETE NO ACTION;
 
 -- Update column sist_med to existent data
 UPDATE utentes.fontes
