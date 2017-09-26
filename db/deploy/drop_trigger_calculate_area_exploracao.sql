@@ -2,9 +2,9 @@
 
 BEGIN;
 
-DROP TRIGGER calcular_area ON utentes.exploracaos;
-DROP TRIGGER calcular_area ON utentes.actividades_cultivos;
+-- DROP TRIGGER calcular_area ON utentes.exploracaos;
+-- DROP TRIGGER calcular_area ON utentes.actividades_cultivos;
 
-DROP FUNCTiON utentes.calcular_area();
+-- DROP FUNCTiON utentes.calcular_area();
 
 COMMIT;
