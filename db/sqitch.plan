@@ -81,3 +81,5 @@ update_table_domains_licencia_estado_set_parent 2017-08-02T16:12:18Z Francisco P
 domains_view_filtered 2017-07-17T19:04:54Z Francisco Puga <fpuga@icarto.es> # Uses a materialized view for domains filtered by ara
 drop_trigger_calculate_area_exploracao 2017-09-06T08:06:06Z Francisco Puga <fpuga@icarto.es> # Drop trigger calculate_area
 @20170906 2017-09-06T10:27:23Z Francisco Puga <fpuga@icarto.es> # 20170906
+
+alter_table_fuentes_add_sist_med_del_contador 2017-09-21T09:40:18Z eboado <eboado@icarto.es> # Adds new column to utentes.fontes and remove column contador
