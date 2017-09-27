@@ -78,7 +78,6 @@ alter_table_utentes_add_new_fields 2017-07-17T16:21:34Z Francisco Puga <fpuga@ic
 alter_table_domains_add_app_column 2017-07-18T12:36:02Z Francisco Puga <fpuga@icarto.es> # Add column app to provincia, distrito, posto, bacia, subacia, licencia_estado
 update_table_domains_licencia_estado_set_parent 2017-08-02T16:12:18Z Francisco Puga <fpuga@icarto.es> # Sets a parent value in licencia_estado
 domains_view_filtered 2017-07-17T19:04:54Z Francisco Puga <fpuga@icarto.es> # Uses a materialized view for domains filtered by ara
-@20170906 2017-09-06T10:27:23Z Francisco Puga <fpuga@icarto.es> # 20170906
 @dpmaip20170906 2017-09-06T10:28:23Z Francisco Puga <fpuga@icarto.es> # dpmaip-20170906
 alter_table_fuentes_add_sist_med_del_contador 2017-09-21T09:40:18Z eboado <eboado@icarto.es> # Adds new column to utentes.fontes and remove column contador
 fixes_orthographic_errors_in_domains 2017-09-22T13:35:28Z Francisco Puga <fpuga@icarto.es> # Rio, Umbeleci, Futi, Incomati
@@ -89,3 +88,4 @@ alter_table_add_column_n_res_tot_to_pecuaria 2017-09-25T09:44:48Z Francisco Puga
 alter_table_reses_change_type_c_res 2017-09-25T11:25:50Z Francisco Puga <fpuga@icarto.es> # Changes to numeric the type of c_res
 alter_table_agricultura_add_new_fields 2017-09-25T17:24:43Z Francisco Puga <fpuga@icarto.es> # Add fields to table actividades.agricultura_rega
 create_table_version 2017-09-26T10:31:25Z Francisco Puga <fpuga@icarto.es> # Create table utentes.version
+@20170927 2017-09-27T18:21:55Z Francisco Puga <fpuga@icarto.es> # 20170927
