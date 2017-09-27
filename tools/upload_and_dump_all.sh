@@ -99,7 +99,7 @@ main() {
 
     DATABASE=aranorte
     CBASE_VERSION=20160916.Norte
-    INVENTARIO_VERSION=170421
+    INVENTARIO_VERSION=170913
     UTENTES_VERSION=170926
 
     echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
@@ -113,6 +113,7 @@ main() {
     sqitch_deploy $DATABASE @HEAD
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
     dump $DATABASE
+
 
     DATABASE=aranorte_test
     INVENTARIO_VERSION="NONE"
