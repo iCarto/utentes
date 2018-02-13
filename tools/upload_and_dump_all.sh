@@ -10,7 +10,6 @@ PSQL="psql -X -q -v ON_ERROR_STOP=1 --pset pager=off"
 PGDUMP="/usr/lib/postgresql/9.5/bin/pg_dump"
 
 foo() {
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f cbase.sql.$2
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f acuiferos.sql.$2
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f fontes.sql.$2
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f barragens.sql.$2
@@ -89,60 +88,75 @@ clean_data_inventario() {
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -c "DO $$ DECLARE query text; BEGIN FOR query IN SELECT 'DELETE FROM ' || schemaname || '.' || tablename  from pg_tables where schemaname = 'inventario' LOOP EXECUTE query; END LOOP; END $$;"
 }
 
+for_each_database() {
+    TEMPLATE=$1
+    DATABASE=$2
+    CBASE_VERSION=$3
+
+    echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
+    createdb -h localhost -U postgres -T "$TEMPLATE" -E UTF8 "${DATABASE}"
+
+    if [[ ! -z "$CBASE_VERSION" ]] ; then
+        PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./datos/cbase.sql.${CBASE_VERSION}
+    fi
+}
+
+write_version_and_dump() {
+    DATABASE=$1
+
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.version;INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM inventario.version;INSERT INTO inventario.version (version) VALUES ('${TODAY}');"
+    dump $DATABASE
+}
+
 main() {
     drop_all
 
     DATABASE=vacia
-    echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
-    createdb -h localhost -U postgres -T template0 -E UTF8 ${DATABASE}
+    for_each_database "template0" "$DATABASE" ""
+
     sqitch_deploy $DATABASE $SQITCH_TAG
 
     DATABASE=aranorte
     CBASE_VERSION=20160916.Norte
-    INVENTARIO_VERSION=170913
+    INVENTARIO_VERSION=171122
     UTENTES_VERSION=170926
 
-    echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
-    createdb -h localhost -U postgres -T vacia ${DATABASE}
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f cbase.sql.${CBASE_VERSION}
-    # foo ${DATABASE} ${CBASE_VERSION}
+    for_each_database "vacia" "$DATABASE" "$CBASE_VERSION"
 
     fill_data "${DATABASE}" $INVENTARIO_VERSION $UTENTES_VERSION
     # bash restore_pictures_from_backup.sh fotos_inventario_20160918.Norte.backup ${DATABASE}
 
     sqitch_deploy $DATABASE @HEAD
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
-    dump $DATABASE
+    write_version_and_dump "$DATABASE"
+
 
 
     DATABASE=aranorte_test
     INVENTARIO_VERSION="NONE"
     UTENTES_VERSION=170421
 
-    echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
-    createdb -h localhost -U postgres -T aranorte ${DATABASE}
+    for_each_database "aranorte" "$DATABASE" ""
+
     fill_data ${DATABASE} $INVENTARIO_VERSION $UTENTES_VERSION
     # sqitch_deploy $DATABASE @HEAD
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.version;INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
-    dump $DATABASE
+    write_version_and_dump "$DATABASE"
 
     DATABASE=dpmaip
     INVENTARIO_VERSION="NONE"
     UTENTES_VERSION=170915
 
-    echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
-    createdb -h localhost -U postgres -T vacia ${DATABASE}
+    for_each_database "vacia" "$DATABASE" ""
+
     sqitch_deploy $DATABASE @HEAD
-    # foo2 ${DATABASE} ${NORTE_DATA_VERSION}
 
     fill_data ${DATABASE} $INVENTARIO_VERSION $UTENTES_VERSION
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.version;INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
-    dump $DATABASE
+    write_version_and_dump "$DATABASE"
 
     DATABASE=arasul
-    echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
     SUR_DATA_VERSION=20170417.Sul
-    createdb -h localhost -U postgres -T vacia ${DATABASE}
+
+    for_each_database "vacia" "$DATABASE" "$SUR_DATA_VERSION"
 
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./populate_ara_sul_domains.sql
     foo ${DATABASE} ${SUR_DATA_VERSION}
@@ -154,9 +168,8 @@ main() {
     cd ./bdd-arasul-3/
     bash upload_arasul_data.sh
     cd ..
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.version;INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM domains.ara; INSERT INTO domains.ara VALUES ('ara', 'Sul', 'Sul', NULL, NULL, NULL); REFRESH MATERIALIZED VIEW domains.domains;"
-    dump $DATABASE
+    write_version_and_dump "$DATABASE"
 
     python database_patch.py
 
