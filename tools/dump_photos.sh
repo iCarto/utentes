@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TODAY=`date +%Y%m%d`
-PSQL="psql -X -q -v ON_ERROR_STOP=1 --pset pager=off"
+PSQL="/usr/lib/postgresql/9.5/bin/psql --no-psqlrc --quiet -v ON_ERROR_STOP=1 --pset pager=off"
 PGDUMP="/usr/lib/postgresql/9.5/bin/pg_dump"
 
 DATABASE=arasul

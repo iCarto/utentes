@@ -6,7 +6,7 @@ SQITCH_TAG='@20170503'
 
 SUCCESS=0
 TODAY=$(date +%y%m%d)
-PSQL="psql -X -q -v ON_ERROR_STOP=1 --pset pager=off"
+PSQL="/usr/lib/postgresql/9.5/bin/psql --no-psqlrc --quiet -v ON_ERROR_STOP=1 --pset pager=off"
 PGDUMP="/usr/lib/postgresql/9.5/bin/pg_dump"
 
 foo() {
@@ -20,7 +20,7 @@ foo() {
 dump() {
     BACKUP_FOLDER=/tmp/${TODAY}
     mkdir -p $BACKUP_FOLDER
-    [ $FLAG_DUMP -eq 1 ] && ${PGDUMP} -h localhost -U postgres -C -E UTF-8 -f ${BACKUP_FOLDER}/${TODAY}_BDD_${1}.backup -Fc -O -x -Z 9 ${1}
+    [ $FLAG_DUMP -eq 1 ] && ${PGDUMP} -h localhost -U postgres -Fc -Z 9 -E UTF-8 -f ${BACKUP_FOLDER}/${TODAY}_BDD_${1}.backup  -O -x ${1}
 }
 
 fill_data() {
@@ -94,7 +94,7 @@ for_each_database() {
     CBASE_VERSION=$3
 
     echo -e "\n\n\nWORKING IN ${DATABASE}\n\n\n"
-    createdb -h localhost -U postgres -T "$TEMPLATE" -E UTF8 "${DATABASE}"
+    createdb -h localhost -U postgres -T "$TEMPLATE" -E UTF8 -O postgres "${DATABASE}"
 
     if [[ ! -z "$CBASE_VERSION" ]] ; then
         PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -f ./datos/cbase.sql.${CBASE_VERSION}
@@ -119,7 +119,7 @@ main() {
 
     DATABASE=aranorte
     CBASE_VERSION=20160916.Norte
-    INVENTARIO_VERSION=171122
+    INVENTARIO_VERSION=180313
     UTENTES_VERSION=170926
 
     for_each_database "vacia" "$DATABASE" "$CBASE_VERSION"
