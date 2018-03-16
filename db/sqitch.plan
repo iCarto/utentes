@@ -91,3 +91,6 @@ create_table_version 2017-09-26T10:31:25Z Francisco Puga <fpuga@icarto.es> # Cre
 @20170927 2017-09-27T18:21:55Z Francisco Puga <fpuga@icarto.es> # 20170927
 
 create_table_version_inventario 2017-12-12T10:50:04Z Francisco Puga <fpuga@icarto.es> # Create table inventario.version
+update_inventario_domains_estado 2018-03-16T11:38:31Z Pablo Sanxiao <psanxiao@icarto.es> # Update table inventario_dominios.estado
+update_inventario_domains_estado_ampliado 2018-03-16T11:44:02Z Pablo Sanxiao <psanxiao@icarto.es> # Update table inventario_dominios.estado_ampliado
+update_elle_map_style_bo_operacional 2018-03-16T12:33:14Z Pablo Sanxiao <psanxiao@icarto.es> # Update table elle._map_style change Bo to Operacional in estacoes and barragens
