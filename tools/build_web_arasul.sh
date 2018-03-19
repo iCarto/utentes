@@ -24,12 +24,13 @@ git checkout 1360_workflow
 
 sed -i "s/aranorte/arasul/" ${WWW_PATH}/utentes-api/production.ini
 sed -i "s/aranorte/arasul/" ${WWW_PATH}/utentes-api/development.ini
-sed -i 's%sqlalchemy.url.*%sqlalchemy = postgresql://postgres@localhost:5432/arasul%' ${WWW_PATH}/utentes-api/development.ini
+sed -i 's%sqlalchemy.url.*%sqlalchemy.url = postgresql://postgres@localhost:5432/arasul%' ${WWW_PATH}/utentes-api/development.ini
 
 
 workon utentes
 cd ${WWW_PATH}/utentes-api
 python setup.py develop
 python setup.py install
+pip install pyramid_jinja2
 
 [ -f secret.sh ] && bash secret.sh ${WWW_PATH}/utentes-api/

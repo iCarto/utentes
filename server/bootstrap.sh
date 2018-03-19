@@ -27,7 +27,9 @@ sed -i 's%.*history-search-forward%"\e[6~": history-search-forward%' /etc/inputr
 # apt-get -y python-gdal gdal-bin
 
 ./create_python${PYTHON_VERSION}_virtualenv_project.sh
-./install_apache.sh    # Los .conf hay que ajustarlos a mano
+# ./install_apache.sh    # Los .conf hay que ajustarlos a mano
+
+./install_nginx_y_visor.sh
 
 
 ./own_settings.sh

@@ -3,4 +3,4 @@
 source variables.ini
 
 cd /vagrant/scripts
-bash upload_and_dump_all.sh
+# sudo -u "${DEFAULT_USER}" -H /vagrant/scripts upload_and_dump_all.sh
