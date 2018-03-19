@@ -4,6 +4,7 @@
 BACKUP_FILE="${1}"
 DATABASE=${2}
 
+source ../server/variables.ini
 
 
 if [ ! -f $BACKUP_FILE ] ; then
@@ -11,7 +12,7 @@ if [ ! -f $BACKUP_FILE ] ; then
     exit
 fi
 
-PSQL="/usr/lib/postgresql/9.5/bin/psql --no-psqlrc --quiet -v ON_ERROR_STOP=1 --pset pager=off"
+PSQL="/usr/lib/postgresql/${PG_VERSION}/bin/psql --no-psqlrc --quiet -v ON_ERROR_STOP=1 --pset pager=off"
 
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM inventario.acuiferos_imagenes; DELETE FROM inventario.barragens_imagenes; DELETE FROM inventario.estacoes_imagenes; DELETE FROM inventario.fontes_imagenes;"
 

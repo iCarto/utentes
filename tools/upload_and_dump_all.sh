@@ -2,12 +2,15 @@
 
 # DATABASE = $1
 # DATA_VERSION = $2
+
+source ../server/variables.ini
+
 SQITCH_TAG='@20170503'
 
 SUCCESS=0
 TODAY=$(date +%y%m%d)
-PSQL="/usr/lib/postgresql/9.5/bin/psql --no-psqlrc --quiet -v ON_ERROR_STOP=1 --pset pager=off"
-PGDUMP="/usr/lib/postgresql/9.5/bin/pg_dump"
+PSQL="/usr/lib/postgresql/${PG_VERSION}/bin/psql --no-psqlrc --quiet -v ON_ERROR_STOP=1 --pset pager=off"
+PGDUMP="/usr/lib/postgresql/${PG_VERSION}/bin/pg_dump"
 
 foo() {
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -f acuiferos.sql.$2
@@ -119,10 +122,13 @@ main() {
 
     DATABASE=aranorte
     CBASE_VERSION=20160916.Norte
-    INVENTARIO_VERSION=180313
+    INVENTARIO_VERSION=171122
+    # INVENTARIO_VERSION=180313
     UTENTES_VERSION=170926
 
     for_each_database "vacia" "$DATABASE" "$CBASE_VERSION"
+
+
 
     fill_data "${DATABASE}" $INVENTARIO_VERSION $UTENTES_VERSION
     # bash restore_pictures_from_backup.sh fotos_inventario_20160918.Norte.backup ${DATABASE}
