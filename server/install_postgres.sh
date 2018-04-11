@@ -13,10 +13,10 @@ if [[ "${PG_VERSION}" = "9.1" ]] ; then
 else
     echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
     wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
-    sudo apt-get update
+    apt-get update
     apt-get install -y postgresql-${PG_VERSION} postgresql-contrib-${PG_VERSION} postgresql-server-dev-${PG_VERSION} postgresql-${PG_VERSION}-postgis-${POSTGIS_VERSION} postgis
     # Workaround
-    # apt-get install -y postgresql-server-dev-9.3
+    # apt-get install -y postgresql-server-dev-10
 fi
 
 

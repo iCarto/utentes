@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "debian/stretch64"
-  config.vm.box_url = "https://app.vagrantup.com/debian/boxes/stretch64"
+  config.vm.box = "debian/contrib-stretch64"
+  config.vm.box_url = "https://app.vagrantup.com/debian/boxes/contrib-stretch64"
   config.vm.box_check_update = false
 
   config.vm.network "forwarded_port", guest: 6543, host: 9000
