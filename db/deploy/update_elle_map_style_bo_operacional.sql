@@ -425,7 +425,7 @@ SET definicion = '<?xml version="1.0" encoding="UTF-8"?>
 </XMLPersitence>'
 WHERE nombre_capa = 'estacoes';
 
-﻿UPDATE elle._map_style
+UPDATE elle._map_style
 SET definicion = '<?xml version="1.0" encoding="UTF-8"?>
 <XMLPersitence xmlns:xlink="http://www.w3.org/1999/xlink" >
 <persistence_xml_version>2.0.0</persistence_xml_version>
@@ -1652,6 +1652,6 @@ SET definicion = '<?xml version="1.0" encoding="UTF-8"?>
 </states>
 </XMLPersitence>
 '
-WHERE nombre_capa = 'barragens'
+WHERE nombre_capa = 'barragens';
 
 COMMIT;
