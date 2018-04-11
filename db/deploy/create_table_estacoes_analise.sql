@@ -69,7 +69,7 @@ CREATE TABLE inventario.estacoes_analise
   pb numeric(10,2),
   zn numeric(10,2),
   comen_lab text,
-  CONSTRAINT analise_pkey PRIMARY KEY (gid),
+  CONSTRAINT estacoes_analise_pkey PRIMARY KEY (gid),
   CONSTRAINT analise_c_nitrat_fkey FOREIGN KEY (c_nitrat)
       REFERENCES inventario_dominios.c_nitrat (key) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE NO ACTION,
