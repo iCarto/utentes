@@ -97,3 +97,4 @@ update_elle_map_style_bo_operacional 2018-03-16T12:33:14Z Pablo Sanxiao <psanxia
 alter_table_fontes_add_columns_bacia_font_subacia_font 2018-04-06T17:34:36Z Pablo Sanxiao <psanxiao@icarto.es> # Added columns bacia_font and subacia_font to fontes table
 alter_table_analise_name 2018-04-11T08:38:34Z Pablo Sanxiao <psanxiao@icarto.es> # Update name of table analise to fontes_analise
 create_table_estacoes_analise 2018-04-11T09:06:11Z Pablo Sanxiao <psanxiao@icarto.es> # Create table estacoes_analise
+alter_table_fontes_analise_add_new_fields 2018-04-16T08:05:00Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table fontes_analise to add new fields sulfatos and fluoreto
