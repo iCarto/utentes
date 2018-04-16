@@ -7,20 +7,9 @@ CREATE TABLE inventario.estacoes_analise
   gid serial NOT NULL,
   cod_estac text NOT NULL,
   estazon text,
-  data_most date NOT NULL,
-  hora_most character varying(6),
-  c_tempera numeric(10,2),
-  c_conduct numeric(10,2),
-  c_cor integer,
-  c_cheiro text,
-  c_ph numeric(10,2),
-  c_nitrat text,
-  c_nitrit text,
-  par_rango boolean,
-  cond_most text,
-  com_most text,
+  data_med date NOT NULL,
+  hora_med character varying(6),
   laborator text,
-  data_anal date,
   temperat numeric(10,2),
   cor text,
   turbidez numeric(10,2),
@@ -48,6 +37,8 @@ CREATE TABLE inventario.estacoes_analise
   cl_resid numeric(10,2),
   cloruros numeric(10,2),
   fosfatos numeric(10,2),
+  sulfatos numeric(10,2),
+  fluoreto numeric(10,2),
   ca numeric(10,2),
   mg numeric(10,2),
   amonio numeric(10,2),
@@ -69,19 +60,10 @@ CREATE TABLE inventario.estacoes_analise
   pb numeric(10,2),
   zn numeric(10,2),
   comen_lab text,
-  CONSTRAINT estacoes_analise_pkey PRIMARY KEY (gid),
-  CONSTRAINT analise_c_nitrat_fkey FOREIGN KEY (c_nitrat)
-      REFERENCES inventario_dominios.c_nitrat (key) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE NO ACTION,
-  CONSTRAINT analise_c_nitrit_fkey FOREIGN KEY (c_nitrit)
-      REFERENCES inventario_dominios.c_nitrit (key) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE NO ACTION,
+  CONSTRAINT estacoes_analise_pkey PRIMARY KEY (gid), 
   CONSTRAINT analise_cod_estac_fkey FOREIGN KEY (cod_estac)
       REFERENCES inventario.estacoes (cod_estac) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE CASCADE,
-  CONSTRAINT analise_cond_most_fkey FOREIGN KEY (cond_most)
-      REFERENCES inventario_dominios.cond_most (key) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE NO ACTION
+      ON UPDATE CASCADE ON DELETE CASCADE
 )
 WITH (
   OIDS=FALSE
