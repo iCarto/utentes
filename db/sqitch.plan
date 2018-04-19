@@ -99,3 +99,4 @@ alter_table_analise_name 2018-04-11T08:38:34Z Pablo Sanxiao <psanxiao@icarto.es>
 create_table_estacoes_analise 2018-04-11T09:06:11Z Pablo Sanxiao <psanxiao@icarto.es> # Create table estacoes_analise
 alter_table_fontes_analise_add_new_fields 2018-04-16T08:05:00Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table fontes_analise to add new fields sulfatos and fluoreto
 alter_table_quantidade_automatic 2018-04-18T08:06:11Z Francisco Puga <fpuga@icarto.es> # Meter y quitar campos en quantidade_agua
+fixes_rename_fontes_analise 2018-04-19T10:26:34Z Francisco Puga <fpuga@icarto.es> # Fixes issues when renaming 'analise' to 'fontes_analise'
