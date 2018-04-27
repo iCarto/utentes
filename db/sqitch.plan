@@ -103,3 +103,4 @@ fixes_rename_fontes_analise 2018-04-19T10:26:34Z Francisco Puga <fpuga@icarto.es
 alter_tables_domains_bacia_subvacia_ARA_Sul 2018-04-27T11:54:39Z Pablo Sanxiao <psanxiao@icarto.es> # Alter domains tables bacia and subvacia for ARA Sul
 alter_table_licencias_add_field_tipo_lic 2018-05-08T09:37:39Z Pablo Sanxiao <psanxiao@icarto.es> # Added field tipo_lic in licencias table
 alter_table_licencias_rename_field_lic_tipo 2018-05-09T14:25:50Z Pablo Sanxiao <psanxiao@icarto.es> # Renamed field of licencias table lic_tipo to tipo_agua
+update_domains_licencia_estado_1435 2018-04-27T15:54:49Z Francisco Puga <fpuga@icarto.es> # New domains for implementing a workflow
