@@ -105,3 +105,4 @@ alter_table_licencias_add_field_tipo_lic 2018-05-08T09:37:39Z Pablo Sanxiao <psa
 alter_table_licencias_rename_field_lic_tipo 2018-05-09T14:25:50Z Pablo Sanxiao <psanxiao@icarto.es> # Renamed field of licencias table lic_tipo to tipo_agua
 update_domains_licencia_estado_1435 2018-04-27T15:54:49Z Francisco Puga <fpuga@icarto.es> # New domains for implementing a workflow
 alter_exploracaos_add_estado_lic 2018-04-27T18:10:23Z Francisco Puga <fpuga@icarto.es> # Adds estado_lic to exploracaos
+alter_exploracaos_add_requerimento_fields_1438 2018-04-28T08:00:59Z Francisco Puga <fpuga@icarto.es> # Adds 'requerimento' fields to 'exploraacos'
