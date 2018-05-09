@@ -101,3 +101,4 @@ alter_table_fontes_analise_add_new_fields 2018-04-16T08:05:00Z Pablo Sanxiao <ps
 alter_table_quantidade_automatic 2018-04-18T08:06:11Z Francisco Puga <fpuga@icarto.es> # Meter y quitar campos en quantidade_agua
 fixes_rename_fontes_analise 2018-04-19T10:26:34Z Francisco Puga <fpuga@icarto.es> # Fixes issues when renaming 'analise' to 'fontes_analise'
 alter_tables_domains_bacia_subvacia_ARA_Sul 2018-04-27T11:54:39Z Pablo Sanxiao <psanxiao@icarto.es> # Alter domains tables bacia and subvacia for ARA Sul
+alter_table_licencias_add_field_tipo_lic 2018-05-08T09:37:39Z Pablo Sanxiao <psanxiao@icarto.es> # Added field tipo_lic in licencias table
