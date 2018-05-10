@@ -2,9 +2,6 @@
 
 BEGIN;
 
-DROP TABLE domains.licencia_tipo_lic CASCADE;
-ALTER TABLE utentes.licencias DROP COLUMN tipo_lic;
-
 DROP MATERIALIZED VIEW domains.domains;
 CREATE MATERIALIZED VIEW domains.domains AS
 WITH tmp_query AS (
@@ -72,5 +69,11 @@ SELECT category, key, value, ordering, parent, tooltip, null FROM domains.fontes
 )
 SELECT category, key, value, ordering, parent, tooltip FROM tmp_query WHERE app IS NULL OR ((SELECT key FROM domains.ara LIMIT 1) = ANY(app))
 ;
+
+ALTER TABLE utentes.licencias DROP COLUMN tipo_lic;
+DROP TABLE domains.licencia_tipo_lic;
+
+
+
 
 COMMIT;

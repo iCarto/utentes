@@ -3,7 +3,7 @@
 BEGIN;
 
 SELECT 1/ count(*) FROM information_schema.tables WHERE table_name='licencia_tipo_agua';
-SELECT tipo_agua FROM utentes.licencas WHERE FALSE;
+SELECT tipo_agua FROM utentes.licencias WHERE FALSE;
 
 
 

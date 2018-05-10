@@ -3,7 +3,7 @@
 BEGIN;
 
 UPDATE utentes.exploracaos SET exp_id = substring(exp_id, 6) || '/ARAN/' || substring(exp_id, 0, 5) where exp_id ~ '.*-.*';
-UPDATE utentes.licencias SET lic_nro = substring(lic_nro, 6, 3) || '/ARAN/' || substring(lic_nro, 0, 5) || '/' || substring(lic_tipo, 0, 4) where lic_nro ~ '.*-.*';
+UPDATE utentes.licencias SET lic_nro = substring(lic_nro, 6, 3) || '/ARAN/' || substring(lic_nro, 0, 5) || '/' || substring(tipo_agua, 0, 4) where lic_nro ~ '.*-.*';
 UPDATE utentes.actividades_cultivos SET cult_id = substring(cult_id, 6, 3) || '/ARAN/' || substring(cult_id, 0, 5) || '/' || substring(cult_id, 10, 3) where cult_id ~ '.*-.*';
 UPDATE utentes.actividades_tanques_piscicolas SET tanque_id = substring(tanque_id, 6, 3) || '/ARAN/' || substring(tanque_id, 0, 5) || '/' || substring(tanque_id, 10, 3) where tanque_id ~ '.*-.*';
 

@@ -19,7 +19,7 @@ $$ LANGUAGE plpgsql;
 
 
 UPDATE utentes.exploracaos SET exp_id = substring(exp_id, 10, 4) || '-' || substring(exp_id, 0, 4) where exp_id ~ '.*/.*';
-UPDATE utentes.licencias SET lic_nro = substring(lic_nro, 10, 4) || '-' || substring(lic_nro, 0, 4) || '-' || CASE WHEN lic_tipo = 'Superficial' THEN '002' ELSE '001' END where lic_nro ~ '.*/.*';
+UPDATE utentes.licencias SET lic_nro = substring(lic_nro, 10, 4) || '-' || substring(lic_nro, 0, 4) || '-' || CASE WHEN tipo_agua = 'Superficial' THEN '002' ELSE '001' END where lic_nro ~ '.*/.*';
 
 UPDATE utentes.actividades_cultivos SET cult_id = substring(cult_id, 10, 4) || '-' || substring(cult_id, 0, 4) || '-' || substring(cult_id, 15, 3) where cult_id ~ '.*/.*';
 UPDATE utentes.actividades_tanques_piscicolas SET tanque_id = substring(tanque_id, 10, 4) || '-' || substring(tanque_id, 0, 4) || '-' || substring(tanque_id, 15, 3) where tanque_id ~ '.*/.*';

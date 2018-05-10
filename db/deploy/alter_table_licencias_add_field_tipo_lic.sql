@@ -96,5 +96,5 @@ ALTER TABLE utentes.licencias
    FOREIGN KEY (tipo_lic)
    REFERENCES domains.licencia_tipo_lic(key) ON UPDATE CASCADE;
 
-
+UPDATE utentes.licencias SET tipo_lic = 'Licença';
 COMMIT;
