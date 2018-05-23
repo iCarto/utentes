@@ -300,6 +300,8 @@ ALTER TABLE utentes.exploracaos DROP COLUMN fact_estado;
 
 ALTER TABLE utentes.licencias DROP COLUMN consumo_tipo;
 ALTER TABLE utentes.licencias DROP COLUMN consumo_fact;
+alter table utentes.licencias ALTER COLUMN iva TYPE integer;
+alter table utentes.licencias ALTER COLUMN iva SET DEFAULT 17;
 
 DROP TABLE domains.facturacao_consumo_tipo;
 DROP TABLE domains.facturacao_fact_tipo;

@@ -61,6 +61,8 @@ ALTER TABLE utentes.exploracaos ADD COLUMN pago_lic BOOLEAN NOT NULL DEFAULT fal
 
 ALTER TABLE utentes.licencias ADD COLUMN consumo_tipo TEXT NOT NULL REFERENCES domains.facturacao_consumo_tipo(key) ON UPDATE CASCADE DEFAULT 'Variável'; -- Fixo/Variável,
 ALTER TABLE utentes.licencias ADD COLUMN consumo_fact NUMERIC(10, 2);
+alter table utentes.licencias ALTER COLUMN iva TYPE NUMERIC(10, 2);
+alter table utentes.licencias ALTER COLUMN iva SET DEFAULT 12.75;
 
 CREATE OR REPLACE FUNCTION utentes.calcular_pagos_licencias()
  RETURNS trigger
@@ -68,7 +70,7 @@ CREATE OR REPLACE FUNCTION utentes.calcular_pagos_licencias()
 AS $function$
 BEGIN
     NEW.pago_mes := NEW.taxa_fixa + (COALESCE(NEW.consumo_fact, 0) * NEW.taxa_uso);
-    NEW.pago_iva := NEW.pago_mes * (1 + NEW.iva::float/100);
+    NEW.pago_iva := NEW.pago_mes * (1 + NEW.iva/100);
     RETURN NEW;
 END;
 $function$;
