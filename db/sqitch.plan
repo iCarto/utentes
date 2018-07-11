@@ -109,3 +109,5 @@ alter_exploracaos_add_requerimento_fields_1438 2018-04-28T08:00:59Z Francisco Pu
 update_renames_codes_to_new_format 2018-05-02T09:57:12Z Francisco Puga <fpuga@icarto.es> # Update exploracaos and licencias to rename codes to new format
 create_table_facturacao 2018-05-04T10:41:29Z Francisco Puga <fpuga@icarto.es> # Create table utentes.facturacao
 create_table_users 2018-05-15T10:34:51Z Francisco Puga <fpuga@icarto.es> # create table users
+add_new_domain_bacia 2018-05-24T16:12:49Z Francisco Puga <fpuga@icarto.es> # Add infulene
+@20180525 2018-07-11T17:11:40Z Francisco Puga <fpuga@icarto.es> # 20180525
