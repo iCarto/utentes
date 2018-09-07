@@ -113,3 +113,6 @@ add_new_domain_bacia 2018-05-24T16:12:49Z Francisco Puga <fpuga@icarto.es> # Add
 @20180525 2018-07-11T17:11:40Z Francisco Puga <fpuga@icarto.es> # 20180525
 
 update_data_renames_estados 2018-07-11T17:16:55Z Francisco Puga <fpuga@icarto.es> # Renames estados
+alter_table_exploracaos_add_net_column_rel_tec_perf 2018-09-05T16:29:58Z Luis Sevillano <lsevillano@icarto.es> # Add new column 'rel_tec_perf' to utentes.exploracaos
+alter_table_exploracaos_add_new_column_bol_an_agua 2018-09-06T06:29:26Z Luis Sevillano <lsevillano@icarto.es> # Add new column 'Boletim de análise de água' to utentes.exploracaos
+alter_table_exploracaos_add_new_verify_columns_for_previous_fields 2018-09-06T11:43:57Z Luis Sevillano <lsevillano@icarto.es> # Add two new columns 'rel_tec_perf_v' and 'bol_an_agua_v'
