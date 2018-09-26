@@ -120,3 +120,4 @@ alter_table_facturacao_add_new_field_fact_id 2018-10-17T18:34:50Z Luis Sevillano
 alter_table_utentes.licencias_add_column_printed 2018-10-18T09:18:55Z Luis Sevillano <lsevillano@icarto.es> # Add new column to licencias to store if a License has been printed
 create_table_datos_aras 2018-10-24T07:19:01Z Luis Sevillano <lsevillano@icarto.es> # Create table datos_aras to read from templates
 add_new_fields_to_actividades_piscicultura 2018-09-24T09:45:37Z Luis Sevillano <lsevillano@icarto.es> # Create table domains.tipo_agua
+add_new_field_tipo_fonte_to_fontes 2018-09-25T14:29:45Z Luis Sevillano <lsevillano@icarto.es> # Add new type of font
