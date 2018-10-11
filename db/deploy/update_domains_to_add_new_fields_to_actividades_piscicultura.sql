@@ -278,14 +278,14 @@ WITH tmp_query AS (
             NULL::text[]
            FROM domains.fontes_sist_med
         UNION
-         SELECT fontes_tipo_agua.category,
-            fontes_tipo_agua.key,
-            fontes_tipo_agua.value,
-            fontes_tipo_agua.ordering,
-            fontes_tipo_agua.parent,
-            fontes_tipo_agua.tooltip,
+         SELECT actividades_piscicultura_tipo_aqua.category,
+            actividades_piscicultura_tipo_aqua.key,
+            actividades_piscicultura_tipo_aqua.value,
+            actividades_piscicultura_tipo_aqua.ordering,
+            actividades_piscicultura_tipo_aqua.parent,
+            actividades_piscicultura_tipo_aqua.tooltip,
             NULL::text[]
-           FROM domains.fontes_tipo_agua
+           FROM domains.actividades_piscicultura_tipo_aqua
         UNION
          SELECT fontes_disp_a.category,
             fontes_disp_a.key,

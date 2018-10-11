@@ -14,8 +14,8 @@ CREATE TABLE domains.fontes_disp_a (
 INSERT INTO domains.fontes_disp_a (key, ordering) VALUES
 (NULL, 0),
 ('Anual', 1),
-('Sazonal', 2),
-('Com mares vivas', 3),
+('Com mares vivas', 2),
+('Sazonal', 3),
 ('Outros', 4);
 
 ALTER TABLE utentes.fontes

@@ -2,6 +2,7 @@
 
 BEGIN;
 
+ALTER TABLE domains.fonte_tipo ALTER COLUMN category SET DEFAULT 'fonte_tipo';
 INSERT INTO domains.fonte_tipo (category, key, parent) VALUES
     ('fonte_tipo', 'Mar', 'Superficial');
 
