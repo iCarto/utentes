@@ -117,3 +117,4 @@ alter_table_exploracaos_add_new_requerimento_documents_1510 2018-09-14T15:52:20Z
 create_table_documentos 2018-09-25T11:50:11Z Elías Gago <egago@icarto.es> # New table 'documents' to manage uploaded files for a exploraçao
 alter_table_documents_set_null_when_cascade 2018-10-10T18:41:43Z Francisco Puga <fpuga@icarto.es> # Sets null to exploracao when delete cascade con documents
 alter_table_facturacao_add_new_field_fact_id 2018-10-17T18:34:50Z Luis Sevillano <lsevillano@icarto.es> # Add column fact_id to utentes.facturacao
+alter_table_utentes.licencias_add_column_printed 2018-10-18T09:18:55Z Luis Sevillano <lsevillano@icarto.es> # Add new column to licencias to store if a License has been printed
