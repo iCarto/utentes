@@ -5,9 +5,9 @@ source variables.ini
 # Otras dependecias:
 # postgresql-server-dev-${PG_VERSION}
 
-apt-get install -y unzip cpanminus
+apt-get install -y unzip cpanminus build-essential
 cpanm --quiet --notest TAP::Parser::SourceHandler::pgTAP
-wget http://api.pgxn.org/dist/pgtap/"${PGTAP_VERSION}"/pgtap-"${PGTAP_VERSION}".zip
+wget --quiet http://api.pgxn.org/dist/pgtap/"${PGTAP_VERSION}"/pgtap-"${PGTAP_VERSION}".zip
 unzip pgtap-"${PGTAP_VERSION}".zip
 cd pgtap-"${PGTAP_VERSION}"
 make
