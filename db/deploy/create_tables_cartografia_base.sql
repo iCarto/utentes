@@ -2,20 +2,24 @@
 
 BEGIN;
 
+SET client_min_messages TO WARNING;
+
 CREATE TABLE "cbase"."provinces" (gid serial,
 "id" int4,
 "provincia" varchar(30),
 "censo_2007" int4,
-"orig_fid" int4);
+"orig_fid" int4,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."provinces" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','provinces','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."provinces" USING GIST ("geom");
 
 CREATE TABLE "cbase"."cidades_vilas" (gid serial,
 "nome" varchar(25),
-"descrição" varchar(32));
+"descrição" varchar(32),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."cidades_vilas" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','cidades_vilas','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."cidades_vilas" USING GIST ("geom");
 
 CREATE TABLE "cbase"."aldeias" (gid serial,
@@ -26,9 +30,10 @@ CREATE TABLE "cbase"."aldeias" (gid serial,
 "pob_total" numeric(10,0),
 "pob_masc" numeric(10,0),
 "pob_fem" numeric(10,0),
-"agregados" numeric(10,0));
+"agregados" numeric(10,0),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."aldeias" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','aldeias','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."aldeias" USING GIST ("geom");
 
 
@@ -102,17 +107,19 @@ CREATE TABLE "cbase"."fontes_analiticas_2014" (gid serial,
 "con_campo" int2,
 "colif_lab" int2,
 "ph_campo" float8,
-"fe_labor" float8);
+"fe_labor" float8,
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."fontes_analiticas_2014" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','fontes_analiticas_2014','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."fontes_analiticas_2014" USING GIST ("geom");
 
 CREATE TABLE "cbase"."fontes_proteccao" (gid serial,
 "tipo_acti" varchar(50),
 "tipo_prot" varchar(50),
-"peri_prot" int4);
+"peri_prot" int4,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."fontes_proteccao" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','fontes_proteccao','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."fontes_proteccao" USING GIST ("geom");
 
 CREATE TABLE "cbase"."rejilla_50000" (gid serial,
@@ -121,9 +128,10 @@ CREATE TABLE "cbase"."rejilla_50000" (gid serial,
 "dimx_cm" float8,
 "dimy_cm" float8,
 "overlap" float8,
-"rot_rad" float8);
+"rot_rad" float8,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."rejilla_50000" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','rejilla_50000','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."rejilla_50000" USING GIST ("geom");
 
 CREATE TABLE "cbase"."fontes_analiticas" (gid serial,
@@ -204,9 +212,10 @@ CREATE TABLE "cbase"."fontes_analiticas" (gid serial,
 "l_sio2_mgl" float8,
 "l_ecoli" float8,
 "l_colt" float8,
-"l_colfec" float8);
+"l_colfec" float8,
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."fontes_analiticas" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','fontes_analiticas','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."fontes_analiticas" USING GIST ("geom");
 
 CREATE TABLE "cbase"."fontes_analiticas_2012" (gid serial,
@@ -245,16 +254,18 @@ CREATE TABLE "cbase"."fontes_analiticas_2012" (gid serial,
 "l_sio2_mgl" float8,
 "l_ecoli" float8,
 "l_colt" float8,
-"l_colfec" float8);
+"l_colfec" float8,
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."fontes_analiticas_2012" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','fontes_analiticas_2012','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."fontes_analiticas_2012" USING GIST ("geom");
 
 CREATE TABLE "cbase"."piezometria" (gid serial,
 "id" int4,
-"cota_piezo" int2);
+"cota_piezo" int2,
+geom geometry(MultiLineStringZM, 32737)
+);
 ALTER TABLE "cbase"."piezometria" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','piezometria','geom','32737','MULTILINESTRING',4);
 CREATE INDEX ON "cbase"."piezometria" USING GIST ("geom");
 
 CREATE TABLE "cbase"."rejilla_350000" (gid serial,
@@ -263,24 +274,27 @@ CREATE TABLE "cbase"."rejilla_350000" (gid serial,
 "dimx_cm" float8,
 "dimy_cm" float8,
 "overlap" float8,
-"rot_rad" float8);
+"rot_rad" float8,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."rejilla_350000" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','rejilla_350000','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."rejilla_350000" USING GIST ("geom");
 
 CREATE TABLE "cbase"."acuiferos_base" (gid serial,
-"layer" varchar(254));
+"layer" varchar(254),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."acuiferos_base" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','acuiferos_base','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."acuiferos_base" USING GIST ("geom");
 
 CREATE TABLE "cbase"."albufeiras" (gid serial,
 "barragem" varchar(254),
 "cod_barra" varchar(254),
 "fonte_loc" varchar(50),
-"fiab_loc" varchar(80));
+"fiab_loc" varchar(80),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."albufeiras" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','albufeiras','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."albufeiras" USING GIST ("geom");
 
 CREATE TABLE "cbase"."bacias" (gid serial,
@@ -293,9 +307,10 @@ CREATE TABLE "cbase"."bacias" (gid serial,
 "pre_media" float8,
 "esc_medio" float8,
 "n_estac_h" numeric(10,0),
-"n_utentes" int4);
+"n_utentes" int4,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."bacias" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','bacias','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."bacias" USING GIST ("geom");
 
 
@@ -306,40 +321,44 @@ CREATE TABLE "cbase"."postos_administrativos" (gid serial,
 "posto" varchar(30),
 "distrito" varchar(30),
 "provincia" varchar(30),
-"censo_2007" int4);
+"censo_2007" int4,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."postos_administrativos" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','postos_administrativos','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."postos_administrativos" USING GIST ("geom");
 
 
 CREATE TABLE "cbase"."distritos" (gid serial,
 "distrito" varchar(30),
 "provincia" varchar(50),
-"censo_2007" int4);
+"censo_2007" int4,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."distritos" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','distritos','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."distritos" USING GIST ("geom");
 
 CREATE TABLE "cbase"."provincia" (gid serial,
 "provincia" varchar(30),
-"censo_2007" int4);
+"censo_2007" int4,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."provincia" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','provincia','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."provincia" USING GIST ("geom");
 
 
 CREATE TABLE "cbase"."paises_limitrofes" (gid serial,
-"name_spani" varchar(50));
+"name_spani" varchar(50),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."paises_limitrofes" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','paises_limitrofes','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."paises_limitrofes" USING GIST ("geom");
 
 
 CREATE TABLE "cbase"."comunicaciones" (gid serial,
 "length" numeric,
-"shape_leng" numeric);
+"shape_leng" numeric,
+geom geometry(MultiLineString, 32737));
 ALTER TABLE "cbase"."comunicaciones" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','comunicaciones','geom','32737','MULTILINESTRING',2);
 CREATE INDEX ON "cbase"."comunicaciones" USING GIST ("geom");
 
 CREATE TABLE "cbase"."estradas" (gid serial,
@@ -354,23 +373,26 @@ CREATE TABLE "cbase"."estradas" (gid serial,
 "cond" varchar(4),
 "manut96" varchar(11),
 "reason" varchar(47),
-"length" float8);
+"length" float8,
+geom geometry(MultiLineString, 32737)
+);
 ALTER TABLE "cbase"."estradas" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','estradas','geom','32737','MULTILINESTRING',2);
 CREATE INDEX ON "cbase"."estradas" USING GIST ("geom");
 
 CREATE TABLE "cbase"."elevaciones" (gid serial,
 "lower" numeric,
-"upper" numeric);
+"upper" numeric,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."elevaciones" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','elevaciones','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."elevaciones" USING GIST ("geom");
 
 CREATE TABLE "cbase"."curvas_nivel_10m" (gid serial,
 "id" numeric(10,0),
-"contour" float8);
+"contour" float8,
+geom geometry(MultiLineString, 32737)
+);
 ALTER TABLE "cbase"."curvas_nivel_10m" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','curvas_nivel_10m','geom','32737','MULTILINESTRING',2);
 CREATE INDEX ON "cbase"."curvas_nivel_10m" USING GIST ("geom");
 
 CREATE TABLE "cbase"."zp_costa" (gid serial,
@@ -379,17 +401,19 @@ CREATE TABLE "cbase"."zp_costa" (gid serial,
 "distan_m" int2,
 "restriçoe" varchar(250),
 "leis" varchar(250),
-"artigo" varchar(250));
+"artigo" varchar(250),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."zp_costa" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','zp_costa','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."zp_costa" USING GIST ("geom");
 
 CREATE TABLE "cbase"."zp_fontes" (gid serial,
 "tipo_acti" varchar(250),
 "tipo_prot" varchar(250),
-"peri_prot" int2);
+"peri_prot" int2,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."zp_fontes" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','zp_fontes','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."zp_fontes" USING GIST ("geom");
 
 CREATE TABLE "cbase"."zp_albufeiras" (gid serial,
@@ -398,9 +422,10 @@ CREATE TABLE "cbase"."zp_albufeiras" (gid serial,
 "distan_m" int2,
 "restriçoe" varchar(250),
 "leis" varchar(250),
-"artigo" varchar(250));
+"artigo" varchar(250),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."zp_albufeiras" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','zp_albufeiras','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."zp_albufeiras" USING GIST ("geom");
 
 CREATE TABLE "cbase"."zp_nascentes" (gid serial,
@@ -409,9 +434,10 @@ CREATE TABLE "cbase"."zp_nascentes" (gid serial,
 "distan_m" int2,
 "restriçoe" varchar(250),
 "leis" varchar(250),
-"artigo" varchar(250));
+"artigo" varchar(250),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."zp_nascentes" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','zp_nascentes','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."zp_nascentes" USING GIST ("geom");
 
 CREATE TABLE "cbase"."lixeira" (gid serial,
@@ -424,9 +450,10 @@ CREATE TABLE "cbase"."lixeira" (gid serial,
 "fonte_loc" varchar(254),
 "fiab_loc" varchar(254),
 "fonte_info" varchar(254),
-"fiab_info" varchar(254));
+"fiab_info" varchar(254),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."lixeira" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','lixeira','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."lixeira" USING GIST ("geom");
 
 CREATE TABLE "cbase"."pontos_vertido" (gid serial,
@@ -438,9 +465,10 @@ CREATE TABLE "cbase"."pontos_vertido" (gid serial,
 "fonte_loc" varchar(254),
 "fiab_loc" varchar(254),
 "fonte_info" varchar(254),
-"fiab_info" varchar(254));
+"fiab_info" varchar(254),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."pontos_vertido" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','pontos_vertido','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."pontos_vertido" USING GIST ("geom");
 
 CREATE TABLE "cbase"."centros_saude" (gid serial,
@@ -454,9 +482,10 @@ CREATE TABLE "cbase"."centros_saude" (gid serial,
 "fonte_loc" varchar(254),
 "fiab_loc" varchar(254),
 "fonte_info" varchar(254),
-"fiab_info" varchar(254));
+"fiab_info" varchar(254),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."centros_saude" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','centros_saude','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."centros_saude" USING GIST ("geom");
 
 CREATE TABLE "cbase"."cemiterios" (gid serial,
@@ -468,9 +497,10 @@ CREATE TABLE "cbase"."cemiterios" (gid serial,
 "fonte_loc" varchar(254),
 "fiab_loc" varchar(254),
 "fonte_info" varchar(254),
-"fiab_info" varchar(254));
+"fiab_info" varchar(254),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."cemiterios" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','cemiterios','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."cemiterios" USING GIST ("geom");
 
 CREATE TABLE "cbase"."hoteis" (gid serial,
@@ -481,9 +511,10 @@ CREATE TABLE "cbase"."hoteis" (gid serial,
 "fonte_loc" varchar(254),
 "fiab_loc" varchar(254),
 "fonte_info" varchar(254),
-"fiab_info" varchar(254));
+"fiab_info" varchar(254),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."hoteis" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','hoteis','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."hoteis" USING GIST ("geom");
 
 CREATE TABLE "cbase"."bombas_combustivel" (gid serial,
@@ -495,9 +526,10 @@ CREATE TABLE "cbase"."bombas_combustivel" (gid serial,
 "fonte_loc" varchar(250),
 "fiab_loc" varchar(250),
 "fonte_info" varchar(250),
-"fiab_info" varchar(250));
+"fiab_info" varchar(250),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."bombas_combustivel" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','bombas_combustivel','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."bombas_combustivel" USING GIST ("geom");
 
 CREATE TABLE "cbase"."industria_agro_pecuarias" (gid serial,
@@ -511,27 +543,30 @@ CREATE TABLE "cbase"."industria_agro_pecuarias" (gid serial,
 "fonte_loc" varchar(250),
 "fiab_loc" varchar(250),
 "fonte_info" varchar(250),
-"fiab_info" varchar(50));
+"fiab_info" varchar(50),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."industria_agro_pecuarias" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','industria_agro_pecuarias','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."industria_agro_pecuarias" USING GIST ("geom");
 
 CREATE TABLE "cbase"."areas_exploracao_petroleo_gas" (gid serial,
 "nome" varchar(50),
 "tipo" varchar(250),
 "recurso" varchar(50),
-"recurso_a" varchar(50));
+"recurso_a" varchar(50),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."areas_exploracao_petroleo_gas" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','areas_exploracao_petroleo_gas','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."areas_exploracao_petroleo_gas" USING GIST ("geom");
 
 CREATE TABLE "cbase"."areas_exploracao_mineira" (gid serial,
 "nome" varchar(50),
 "tipo" varchar(250),
 "estado" varchar(50),
-"mineral" varchar(50));
+"mineral" varchar(50),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."areas_exploracao_mineira" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','areas_exploracao_mineira','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."areas_exploracao_mineira" USING GIST ("geom");
 
 CREATE TABLE "cbase"."industria_agro_pecuarias_menor" (gid serial,
@@ -544,9 +579,10 @@ CREATE TABLE "cbase"."industria_agro_pecuarias_menor" (gid serial,
 "fonte_loc" varchar(50),
 "fiab_loc" varchar(50),
 "fonte_info" varchar(50),
-"fiab_info" varchar(50));
+"fiab_info" varchar(50),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."industria_agro_pecuarias_menor" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','industria_agro_pecuarias_menor','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."industria_agro_pecuarias_menor" USING GIST ("geom");
 
 CREATE TABLE "cbase"."industrias" (gid serial,
@@ -559,9 +595,10 @@ CREATE TABLE "cbase"."industrias" (gid serial,
 "fonte_loc" varchar(50),
 "fiab_loc" varchar(50),
 "fonte_info" varchar(50),
-"fiab_info" varchar(50));
+"fiab_info" varchar(50),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."industrias" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','industrias','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."industrias" USING GIST ("geom");
 
 CREATE TABLE "cbase"."centro_educacional" (gid serial,
@@ -573,15 +610,17 @@ CREATE TABLE "cbase"."centro_educacional" (gid serial,
 "fonte_loc" varchar(80),
 "fiab_loc" varchar(80),
 "fonte_info" varchar(80),
-"fiab_info" varchar(80));
+"fiab_info" varchar(80),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."centro_educacional" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','centro_educacional','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."centro_educacional" USING GIST ("geom");
 
 CREATE TABLE "cbase"."geomorfologia_mzq" (gid serial,
-"geomorf" varchar(100));
+"geomorf" varchar(100),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."geomorfologia_mzq" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','geomorfologia_mzq','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."geomorfologia_mzq" USING GIST ("geom");
 
 CREATE TABLE "cbase"."usos_da_terra" (gid serial,
@@ -593,9 +632,10 @@ CREATE TABLE "cbase"."usos_da_terra" (gid serial,
 "pct_ocup2" numeric,
 "ocup3" numeric,
 "tipo3" varchar(254),
-"pct_ocup3" numeric);
+"pct_ocup3" numeric,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."usos_da_terra" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','usos_da_terra','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."usos_da_terra" USING GIST ("geom");
 
 CREATE TABLE "cbase"."litologia" (gid serial,
@@ -606,9 +646,10 @@ CREATE TABLE "cbase"."litologia" (gid serial,
 "formação" varchar(24),
 "classe" varchar(200),
 "acres" numeric,
-"lenda" varchar(250));
+"lenda" varchar(250),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."litologia" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','litologia','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."litologia" USING GIST ("geom");
 
 CREATE TABLE "cbase"."geomorfologia250_lbrn_cd" (gid serial,
@@ -616,9 +657,10 @@ CREATE TABLE "cbase"."geomorfologia250_lbrn_cd" (gid serial,
 "hectareas" numeric,
 "posto" varchar(30),
 "distrito" varchar(30),
-"provincia" varchar(30));
+"provincia" varchar(30),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."geomorfologia250_lbrn_cd" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','geomorfologia250_lbrn_cd','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."geomorfologia250_lbrn_cd" USING GIST ("geom");
 
 CREATE TABLE "cbase"."geologia250_lbrn_cd" (gid serial,
@@ -635,9 +677,10 @@ CREATE TABLE "cbase"."geologia250_lbrn_cd" (gid serial,
 "hectareas" numeric,
 "posto" varchar(30),
 "distrito" varchar(30),
-"provincia" varchar(30));
+"provincia" varchar(30),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."geologia250_lbrn_cd" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','geologia250_lbrn_cd','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."geologia250_lbrn_cd" USING GIST ("geom");
 
 CREATE TABLE "cbase"."solos" (gid serial,
@@ -651,9 +694,10 @@ CREATE TABLE "cbase"."solos" (gid serial,
 "acidez_alc" varchar(30),
 "mater_rgan" varchar(26),
 "sal_superf" varchar(15),
-"first_moso" varchar(10));
+"first_moso" varchar(10),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."solos" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','solos','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."solos" USING GIST ("geom");
 
 CREATE TABLE "cbase"."batimetria" (gid serial,
@@ -661,9 +705,10 @@ CREATE TABLE "cbase"."batimetria" (gid serial,
 "featurecla" varchar(32),
 "depth" int2,
 "fid_1" float8,
-"id" int4);
+"id" int4,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."batimetria" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','batimetria','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."batimetria" USING GIST ("geom");
 
 CREATE TABLE "cbase"."rios" (gid serial,
@@ -672,9 +717,10 @@ CREATE TABLE "cbase"."rios" (gid serial,
 "cau_medio" numeric,
 "mes_agua" varchar(250),
 "bacia" varchar(50),
-"subacia" varchar(50));
+"subacia" varchar(50),
+geom geometry(MultiLineString, 32737)
+);
 ALTER TABLE "cbase"."rios" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','rios','geom','32737','MULTILINESTRING',2);
 CREATE INDEX ON "cbase"."rios" USING GIST ("geom");
 
 CREATE TABLE "cbase"."grandes_lagos" (gid serial,
@@ -682,9 +728,10 @@ CREATE TABLE "cbase"."grandes_lagos" (gid serial,
 "country" varchar(54),
 "f_code_des" varchar(254),
 "hyc_descri" varchar(254),
-"name" varchar(254));
+"name" varchar(254),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."grandes_lagos" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','grandes_lagos','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."grandes_lagos" USING GIST ("geom");
 
 CREATE TABLE "cbase"."estacoes_evaporacion" (gid serial,
@@ -693,16 +740,18 @@ CREATE TABLE "cbase"."estacoes_evaporacion" (gid serial,
 "eleva" float8,
 "begin_date" date,
 "end_date" date,
-"province" varchar(254));
+"province" varchar(254),
+geom geometry(Point, 32737)
+);
 ALTER TABLE "cbase"."estacoes_evaporacion" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','estacoes_evaporacion','geom','32737','POINT',2);
 CREATE INDEX ON "cbase"."estacoes_evaporacion" USING GIST ("geom");
 
 CREATE TABLE "cbase"."lagos_embalses" (gid serial,
 "toponimo" varchar(50),
-"area_km2" float8);
+"area_km2" float8,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."lagos_embalses" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','lagos_embalses','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."lagos_embalses" USING GIST ("geom");
 
 CREATE TABLE "cbase"."aras" (gid serial,
@@ -713,31 +762,35 @@ CREATE TABLE "cbase"."aras" (gid serial,
 "tot_km2" float8,
 "moc_km" float8,
 "tot_km" float8,
-"z23" float8);
+"z23" float8,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."aras" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','aras','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."aras" USING GIST ("geom");
 
 CREATE TABLE "cbase"."concessoes_florestais" (gid serial,
-"area" numeric);
+"area" numeric,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."concessoes_florestais" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','concessoes_florestais','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."concessoes_florestais" USING GIST ("geom");
 
 
 CREATE TABLE "cbase"."areas_conservacao" (gid serial,
 "tipo_area" varchar(50),
-"toponimo" varchar(50));
+"toponimo" varchar(50),
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."areas_conservacao" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','areas_conservacao','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."areas_conservacao" USING GIST ("geom");
 
 
 CREATE TABLE "cbase"."reserva_zona_tampao" (gid serial,
 "nomes" varchar(60),
-"shape_area" numeric);
+"shape_area" numeric,
+geom geometry(MultiPolygon, 32737)
+);
 ALTER TABLE "cbase"."reserva_zona_tampao" ADD PRIMARY KEY (gid);
-SELECT AddGeometryColumn('cbase','reserva_zona_tampao','geom','32737','MULTIPOLYGON',2);
 CREATE INDEX ON "cbase"."reserva_zona_tampao" USING GIST ("geom");
 
 
