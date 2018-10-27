@@ -118,3 +118,4 @@ create_table_documentos 2018-09-25T11:50:11Z Elías Gago <egago@icarto.es> # New
 alter_table_documents_set_null_when_cascade 2018-10-10T18:41:43Z Francisco Puga <fpuga@icarto.es> # Sets null to exploracao when delete cascade con documents
 alter_table_facturacao_add_new_field_fact_id 2018-10-17T18:34:50Z Luis Sevillano <lsevillano@icarto.es> # Add column fact_id to utentes.facturacao
 alter_table_utentes.licencias_add_column_printed 2018-10-18T09:18:55Z Luis Sevillano <lsevillano@icarto.es> # Add new column to licencias to store if a License has been printed
+create_table_datos_aras 2018-10-24T07:19:01Z Luis Sevillano <lsevillano@icarto.es> # Create table datos_aras to read from templates
