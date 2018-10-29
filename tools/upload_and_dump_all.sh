@@ -33,7 +33,7 @@ dump() {
 # $2 = TAG OR @HEAD
 sqitch_deploy() {
     cd .. || error 'ERROR: arrancando sqitch deploy'
-    sqitch --quiet deploy db:pg://postgres:postgres@localhost:${PG_PORT}/$1 --to-change $2
+    sqitch --quiet deploy "db:pg://postgres:postgres@localhost:${PG_PORT}/${1}" --to-change "${2}"
     if ! [ "$?" -eq $SUCCESS ]; then
         echo 'Sqitch no ha finalizado correctamente'
         echo "$1, $2"
@@ -44,7 +44,7 @@ sqitch_deploy() {
 }
 
 clean_data_inventario() {
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${1} -c "DO $$ DECLARE query text; BEGIN FOR query IN SELECT 'DELETE FROM ' || schemaname || '.' || tablename  from pg_tables where schemaname = 'inventario' LOOP EXECUTE query; END LOOP; END $$;"
+    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${1}" -c "DO $$ DECLARE query text; BEGIN FOR query IN SELECT 'DELETE FROM ' || schemaname || '.' || tablename  from pg_tables where schemaname = 'inventario' LOOP EXECUTE query; END LOOP; END $$;"
 }
 
 for_each_database() {
