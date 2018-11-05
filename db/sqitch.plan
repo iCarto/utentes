@@ -125,3 +125,4 @@ update_domains_to_add_new_fields_to_actividades_piscicultura 2018-09-26T09:47:03
 changes_in_departaments_perms_and_names 2018-10-07T19:34:53Z Francisco Puga <fpuga@icarto.es> # A couple of change in perm and departament names
 alter_triggers_validate_exploracao_licencia 2018-10-26T18:42:49Z Francisco Puga <fpuga@icarto.es> # Adds DPMAIP as valid 'substring' for exp_id and lic_nro
 alter_table_exploracaos_add_lic_imp 2018-10-27T19:30:05Z Francisco Puga <fpuga@icarto.es> # Adds lic_imp to utentes.exploracaos refs #1394
+populate_arazambeze_domains 2018-11-05T11:04:05Z Francisco Puga <fpuga@icarto.es> # inserts/updates araz domains
