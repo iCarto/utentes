@@ -147,4 +147,6 @@ INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, ap
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Bazar', NULL, NULL);
 
 
+update domains.licencia_estado set app = app || '{Zambeze}'  where 'Norte' = any(app);
+
 COMMIT;

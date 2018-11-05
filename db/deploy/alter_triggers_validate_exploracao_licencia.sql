@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION utentes.validate_licencia()
  LANGUAGE plpgsql
 AS $function$
 BEGIN
-    IF NOT (NEW.lic_nro ~ '^\d{3}/ARA(S|N)|DPMAIP/\d{4}/(Sub|Sup)$') THEN
+    IF NOT (NEW.lic_nro ~ '^\d{3}/ARA(S|N|Z)|DPMAIP/\d{4}/(Sub|Sup)$') THEN
        RAISE EXCEPTION 'LIC_NRO NO TIENE EL FORMATO CORRECTO %', NEW.lic_nro USING ERRCODE = '99001';
     END IF;
         RETURN NEW;
@@ -27,7 +27,7 @@ BEGIN
        IF NEW.utente IS NULL THEN RAISE EXCEPTION 'utente es obligatorio %', NEW.exp_id USING ERRCODE = '99001'; END IF;
     END IF;
 
-    IF NOT (NEW.exp_id ~ '^\d{3}/ARA(S|N)|DPMAIP/\d{4}$') THEN
+    IF NOT (NEW.exp_id ~ '^\d{3}/ARA(S|N|Z)|DPMAIP/\d{4}$') THEN
        RAISE EXCEPTION 'EXP_ID NO TIENE EL FORMATO CORRECTO %', NEW.exp_id USING ERRCODE = '99001';
     END IF;
         RETURN NEW;
