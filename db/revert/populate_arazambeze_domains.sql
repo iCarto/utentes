@@ -2,6 +2,9 @@
 
 BEGIN;
 
--- XXX Add DDLs here.
+delete from domains.unidade where key = 'Zambeze';
+delete from domains.bacia where 'Zambeze' = any(app);
+
+delete from domains.subacia where 'Zambeze' = any(app) and not 'Sul' = any(app);
 
 COMMIT;

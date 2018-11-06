@@ -106,25 +106,22 @@ UPDATE domains.posto SET app = COALESCE(app, '{}') || '{Zambeze}' WHERE key = 'L
 
 
 
-INSERT INTO domains.unidade (category, key, app) values ('unidade', 'Zambeze', '{Zambeze}');
+INSERT INTO domains.unidade (category, key, app) values ('unidade', 'UGBZ', '{Zambeze}');
 
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Zambeze', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Inhaombe', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Bacias costeiras AZ', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Lualua', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Cuacua', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Nhangone', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Inhamara', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Micelo', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Luaua', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Nhamacota', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Bazar', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
-INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', NULL, NULL, 0, 'Zambeze', NULL, '{Zambeze}');
-
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Zambeze', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Inhaombe', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Bacias costeiras', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Lualua', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Cuacua', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Nhangone', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Inhamara', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Micelo', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Luaua', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Nhamacota', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
+INSERT INTO domains.bacia (category, key, value, ordering, parent, tooltip, app) VALUES ('bacia', 'Bazar', NULL, NULL, 'UGBZ', NULL, '{Zambeze}');
 
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Zambeze', NULL, NULL, 'Zambeze', NULL, '{Zambeze}');
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Inhaombe', NULL, NULL, 'Inhaombe', NULL, '{Zambeze}');
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Bacias costeiras AZ', NULL, NULL, 'Bacias costeiras AZ', NULL, '{Zambeze}');
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Lualua', NULL, NULL, 'Lualua', NULL, '{Zambeze}');
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Cuacua', NULL, NULL, 'Cuacua', NULL, '{Zambeze}');
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Nhangone', NULL, NULL, 'Nhangone', NULL, '{Zambeze}');
@@ -134,17 +131,21 @@ INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, ap
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Nhamacota', NULL, NULL, 'Nhamacota', NULL, '{Zambeze}');
 INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Bazar', NULL, NULL, 'Bazar', NULL, '{Zambeze}');
 
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Zambeze', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Inhaombe', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Bacias costeiras AZ', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Lualua', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Cuacua', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Nhangone', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Inhamara', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Micelo', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Luaua', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Nhamacota', NULL, NULL);
-INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', NULL, NULL, 0, 'Bazar', NULL, NULL);
+UPDATE domains.subacia set app = app || '{Zambeze}'  where key = 'Bacias costeiras' and parent = 'Bacias costeiras';
+-- INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', 'Bacias costeiras', NULL, NULL, 'Bacias costeiras', NULL, '{Zambeze}');
+
+
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Zambeze', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Inhaombe', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Bacias costeiras', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Lualua', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Cuacua', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Nhangone', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Inhamara', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Micelo', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Luaua', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Nhamacota', NULL, '{Zambeze}');
+INSERT INTO domains.subacia (category, key, value, ordering, parent, tooltip, app) VALUES ('subacia', null, NULL, 0, 'Bazar', NULL, '{Zambeze}');
 
 
 update domains.licencia_estado set app = app || '{Zambeze}'  where 'Norte' = any(app);
