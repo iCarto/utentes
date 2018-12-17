@@ -127,3 +127,4 @@ alter_triggers_validate_exploracao_licencia 2018-10-26T18:42:49Z Francisco Puga 
 alter_table_exploracaos_add_lic_imp 2018-10-27T19:30:05Z Francisco Puga <fpuga@icarto.es> # Adds lic_imp to utentes.exploracaos refs #1394
 populate_arazambeze_domains 2018-11-05T11:04:05Z Francisco Puga <fpuga@icarto.es> # inserts/updates araz domains
 endereco_in_two_lines 2018-11-05T23:00:49Z Francisco Puga <fpuga@icarto.es> # Endereco is now implemented as an array
+alter_exploracaos_add_column_d_ultima_entrega_doc 2018-12-16T12:26:27Z Luis Sevillano <lsevillano@icarto.es> # Alter Exploracaos add column 'd_ultima_entrega_doc'
