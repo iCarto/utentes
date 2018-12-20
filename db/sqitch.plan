@@ -130,3 +130,4 @@ endereco_in_two_lines 2018-11-05T23:00:49Z Francisco Puga <fpuga@icarto.es> # En
 alter_exploracaos_add_column_d_ultima_entrega_doc 2018-12-16T12:26:27Z Luis Sevillano <lsevillano@icarto.es> # Alter Exploracaos add column 'd_ultima_entrega_doc'
 update_datos_ara_zambeze 2018-12-18T17:42:25Z Luis Sevillano <lsevillano@icarto.es> # Update datos Ara Zambeze
 alter_default_values_for_consumo_to_fixo 2018-12-19T10:54:36Z Luis Sevillano <lsevillano@icarto.es> # Alter default values for consumo to Fixo
+alter_table_utentes_add_column_endereco 2018-12-20T09:49:52Z Luis Sevillano <lsevillano@icarto.es> # Alter table utentes add column Endereco
