@@ -2,6 +2,9 @@
 
 BEGIN;
 
-ALTER TABLE utentes.exploracaos ADD COLUMN d_ultima_entrega_doc TEXT;
+ALTER TABLE utentes.exploracaos ADD COLUMN d_ultima_entrega_doc DATE;
+
+UPDATE utentes.exploracaos SET d_soli = created_at where d_soli is null;
+UPDATE utentes.exploracaos SET d_ultima_entrega_doc = d_soli;
 
 COMMIT;
