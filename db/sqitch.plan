@@ -136,3 +136,4 @@ move_datos_ara_table_from_utentes_squema_to_domains_squema 2019-01-28T06:51:16Z 
 update_datos_aras 2019-02-18T18:46:54Z Luis Sevillano <lsevillano@icarto.es> # Update datos aras
 @190220 2019-02-20T12:00:30Z Francisco Puga <fpuga@icarto.es> # tag 190220
 create_table_domains.licencia_estado_renovacion 2019-01-14T13:05:07Z Luis Sevillano <lsevillano@icarto.es> # Create new domains licencia estados renovación
+create_table_utentes.renovacoes 2019-01-14T10:59:35Z Luis Sevillano <lsevillano@icarto.es> # Create table utentes.renovacoes
