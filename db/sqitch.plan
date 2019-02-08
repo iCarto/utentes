@@ -135,3 +135,4 @@ alter_table_exploracaos_add_cadastro_uni 2018-12-20T12:23:48Z Luis Sevillano <ls
 move_datos_ara_table_from_utentes_squema_to_domains_squema 2019-01-28T06:51:16Z Luis Sevillano <lsevillano@icarto.es> # Move table datos ara from utentes squema to domains squema
 update_datos_aras 2019-02-18T18:46:54Z Luis Sevillano <lsevillano@icarto.es> # Update datos aras
 @190220 2019-02-20T12:00:30Z Francisco Puga <fpuga@icarto.es> # tag 190220
+create_table_domains.licencia_estado_renovacion 2019-01-14T13:05:07Z Luis Sevillano <lsevillano@icarto.es> # Create new domains licencia estados renovación
