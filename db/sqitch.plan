@@ -133,3 +133,4 @@ alter_default_values_for_consumo_to_fixo 2018-12-19T10:54:36Z Luis Sevillano <ls
 alter_table_utentes_add_column_endereco 2018-12-20T09:49:52Z Luis Sevillano <lsevillano@icarto.es> # Alter table utentes add column Endereco
 alter_table_exploracaos_add_cadastro_uni 2018-12-20T12:23:48Z Luis Sevillano <lsevillano@icarto.es> # Alter tables exploracaos and fontes to add new fields cadastro_uni and cadastro
 move_datos_ara_table_from_utentes_squema_to_domains_squema 2019-01-28T06:51:16Z Luis Sevillano <lsevillano@icarto.es> # Move table datos ara from utentes squema to domains squema
+update_datos_aras 2019-02-18T18:46:54Z Luis Sevillano <lsevillano@icarto.es> # Update datos aras
