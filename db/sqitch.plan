@@ -138,3 +138,4 @@ update_datos_aras 2019-02-18T18:46:54Z Luis Sevillano <lsevillano@icarto.es> # U
 create_table_domains.licencia_estado_renovacion 2019-01-14T13:05:07Z Luis Sevillano <lsevillano@icarto.es> # Create new domains licencia estados renovación
 create_table_utentes.renovacoes 2019-01-14T10:59:35Z Luis Sevillano <lsevillano@icarto.es> # Create table utentes.renovacoes
 create_new_user_can_not_edit_anything 2019-02-18T11:16:21Z Luis Sevillano <lsevillano@icarto.es> # Create a new user that can't edit anything
+create_user_for_unidades_and_delegaciones 2019-03-06T08:35:43Z Luis Sevillano <lsevillano@icarto.es> # Create an user for Unidades and Delegaciones
