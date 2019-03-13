@@ -2,6 +2,7 @@
 
 BEGIN;
 
-ALTER TABLE utentes.users ADD COLUMN unidade text REFERENCES domains.unidade (key);
+ALTER TABLE utentes.users ADD COLUMN unidade text REFERENCES domains.unidade (key)
+    ON UPDATE CASCADE ON DELETE NO ACTION;
 
 COMMIT;
