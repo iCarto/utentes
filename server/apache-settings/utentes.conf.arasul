@@ -1,0 +1,34 @@
+<VirtualHost *:800>
+
+   # ServerName localhost
+   # ServerAlias localhost
+   ServerAdmin fpuga@icarto.es
+
+    DocumentRoot /var/www
+
+    LogLevel info
+
+
+    ## mod_wsgi ##
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    WSGIDaemonProcess utentes python-path=/var/www/utentes python-home=/home/icarto/.virtualenvs/utentes/ lang='en_ZA.utf8' locale='en_ZA.utf8'
+    WSGIProcessGroup utentes
+    WSGIScriptAlias / /var/www/utentes/wsgi.py
+
+    <Directory /var/www/utentes>
+        <Files wsgi.py>
+	    Require all granted
+        </Files>
+    </Directory>
+
+
+    ## static files if served by Apache ##
+    Alias /static/ /var/www/utentes/utentes/static/
+
+
+    <Directory /var/www/utentes/utentes/static>
+        Require all granted
+    </Directory>
+
+</VirtualHost>
