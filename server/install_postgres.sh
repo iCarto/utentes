@@ -14,19 +14,26 @@ else
     echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
     wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
     apt-get update
-    apt-get install -y postgresql-${PG_VERSION} postgresql-contrib-${PG_VERSION} postgresql-server-dev-${PG_VERSION} postgresql-${PG_VERSION}-postgis-${POSTGIS_VERSION} postgis
-    # Workaround
-    # apt-get install -y postgresql-server-dev-10
+    # apt-cache depends package-name
+    # apt-cache rdepends package-name
+    # dpkg -L package-name
+    apt-get install -y postgresql-${PG_VERSION} postgresql-contrib-${PG_VERSION} postgresql-server-dev-${PG_VERSION} postgresql-${PG_VERSION}-postgis-${POSTGIS_VERSION}
+    # apt-get install -y postgresql-${PG_VERSION}-postgis-${POSTGIS_VERSION}-scripts # para instalar topology, tiger, ...
+    # https://askubuntu.com/questions/117635/how-to-install-suggested-packages-in-apt-get
+    # `postgis` can recommends other PG_VERSION so to avoid installation this must be done in two steps
+    apt-get install -y --no-install-recommends postgis
 fi
 
 
-# Allow access from outside
+systemctl restart postgresql # on some systems cluster is not booted by default
 mv /etc/postgresql/${PG_VERSION}/main/postgresql.conf /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org
 grep -v '^#' /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org | grep '^[ ]*[a-z0-9]' > /etc/postgresql/${PG_VERSION}/main/postgresql.conf
 grep -v '^#' /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org | grep '^[ ]*[a-z0-9]' > /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org.no_comments
-echo "listen_addresses = '*'" >> /etc/postgresql/${PG_VERSION}/main/postgresql.conf
-sed -i "s/^port[ ]*=[ ]*[0-9]*/port = ${PG_PORT}/" /etc/postgresql/${PG_VERSION}/main/postgresql.conf
 cp /etc/postgresql/${PG_VERSION}/main/pg_hba.conf /etc/postgresql/${PG_VERSION}/main/pg_hba.conf.${PG_VERSION}.org
+if $PG_ALLOW_EXTERNAL_CON ; then
+    echo "listen_addresses = '*'" >> /etc/postgresql/${PG_VERSION}/main/postgresql.conf
+fi
+sed -i "s/^port[ ]*=[ ]*[0-9]*/port = ${PG_PORT}/" /etc/postgresql/${PG_VERSION}/main/postgresql.conf
 echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/${PG_VERSION}/main/pg_hba.conf
 chown postgres:postgres /etc/postgresql/${PG_VERSION}/main/pg_hba.conf
 chown postgres:postgres /etc/postgresql/${PG_VERSION}/main/postgresql.conf
@@ -42,4 +49,4 @@ sudo -u postgres psql postgres -c "ALTER USER postgres WITH PASSWORD '${PG_POSTG
 # https://stackoverflow.com/questions/1988249/how-do-i-use-su-to-execute-the-rest-of-the-bash-script-as-that-user
 sudo -u "${DEFAULT_USER}" -H ./config_postgres_dotfiles.sh
 
-sudo service postgresql restart
+systemctl restart postgresql 

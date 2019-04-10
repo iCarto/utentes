@@ -39,4 +39,4 @@ a2dissite 000-default
 
 
 # /etc/init.d/apache2 restart
-service apache2 reload
+systemctl reload apache
