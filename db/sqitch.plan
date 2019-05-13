@@ -143,3 +143,4 @@ alter_table_add_column_unidade_to_utentes.users 2019-03-06T11:52:06Z Luis Sevill
 alter_table_documentos_add_column_unidade 2019-03-22T12:44:03Z Elías Gago <egago@icarto.es> # Create new column in documentos to store unidade info
 alter_table_facturacao_add_column_juros 2019-05-01T10:58:48Z Elías Gago <egago@icarto.es> # Add column Juros to Facturacao table
 alter_table_facturacao_drop_column_pagos 2019-05-11T07:51:20Z Elías Gago <egago@icarto.es> # Delete pagos column from facturacao and exploracao tables
+alter_table_facturacao_add_column_recibo_id 2019-05-13T10:36:03Z Elías Gago <egago@icarto.es> # New column for facturacao to store the recibo number
