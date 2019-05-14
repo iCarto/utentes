@@ -145,3 +145,4 @@ alter_table_facturacao_add_column_juros 2019-05-01T10:58:48Z Elías Gago <egago@
 alter_table_facturacao_drop_column_pagos 2019-05-11T07:51:20Z Elías Gago <egago@icarto.es> # Delete pagos column from facturacao and exploracao tables
 alter_table_facturacao_add_column_recibo_id 2019-05-13T10:36:03Z Elías Gago <egago@icarto.es> # New column for facturacao to store the recibo number
 alter_table_facturacao_add_column_factura_and_recibo_dates 2019-05-13T11:40:27Z Elías Gago <egago@icarto.es> # Create columns for factura date and recibo date
+update_domains_facturacao_fac_estado 2019-05-14T14:16:33Z Elías Gago <egago@icarto.es> # Changes in facturacao name states
