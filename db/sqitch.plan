@@ -152,3 +152,4 @@ alter_table_fontes_add_rename_delete_several_fields 2019-05-22T14:28:37Z Pablo S
 create_tables_fontes_litologia_carac_hid 2019-05-22T15:00:34Z Pablo Sanxiao <psanxiao@icarto.es> # Created tables fontes_litologia and fontes_carac_hid, including related domains tables
 alter_table_quantidade_agua_add_and_rename_fields 2019-05-23T08:28:02Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table quantidade_agua, added and rename several fields
 alter_tabla_domains_gestao 2019-05-23T08:43:02Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table values inventario_dominios.gestao
+alter_tabla_inventario_barragens_add_rename_delete_fields 2019-05-23T08:57:51Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table inventario.barragens: Add, rename and delete fields
