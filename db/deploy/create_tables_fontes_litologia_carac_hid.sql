@@ -30,7 +30,7 @@ INSERT INTO inventario_dominios.litologia (key) VALUES
   ('Silty');
 
 CREATE TABLE inventario_dominios.carac_lit (
-  category text default 'litologia',
+  category text default 'carac_lit',
   key text UNIQUE,
   value text,
   ordering integer,
@@ -71,7 +71,7 @@ ALTER TABLE inventario.fontes_litologia
   ON UPDATE CASCADE ON DELETE CASCADE;
 
 CREATE TABLE inventario_dominios.tipo_cama (
-  category text default 'carac_hidro',
+  category text default 'tipo_cama',
   key text UNIQUE,
   value text,
   ordering integer,
@@ -85,7 +85,7 @@ INSERT INTO inventario_dominios.tipo_cama (key) VALUES
   ('Aquiclude');
 
 CREATE TABLE inventario_dominios.tipo_aqui (
-  category text default 'carac_hidro',
+  category text default 'tipo_aqui',
   key text UNIQUE,
   value text,
   ordering integer,
