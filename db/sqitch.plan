@@ -150,3 +150,4 @@ alter_table_fontes_rename_column_cod_fonte 2019-05-21T10:19:32Z Pablo Sanxiao <p
 alter_table_fontes_analise_remove_fonte_rename_comen_lab 2019-05-21T17:24:10Z Pablo Sanxiao <psanxiao@icarto.es> # Changes in table fontes_analise, remove field fonte and rename comen_lab
 alter_table_fontes_add_rename_delete_several_fields 2019-05-22T14:28:37Z Pablo Sanxiao <psanxiao@icarto.es> # Changes in table fontes: Add, rename and remove several fields
 create_tables_fontes_litologia_carac_hid 2019-05-22T15:00:34Z Pablo Sanxiao <psanxiao@icarto.es> # Created tables fontes_litologia and fontes_carac_hid, including related domains tables
+alter_table_quantidade_agua_add_and_rename_fields 2019-05-23T08:28:02Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table quantidade_agua, added and rename several fields
