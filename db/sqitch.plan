@@ -164,3 +164,4 @@ changes_for_bddunica_190520_ute_domains_loc_hidro 2019-05-22T09:47:36Z Francisco
 rename_domain_tipo_rega_tipo_cult 2019-05-24T16:23:06Z Francisco Puga <fpuga@icarto.es> # refs 1549
 add_tables_cbase_ara_201905 2019-05-27T14:16:58Z Francisco Puga <fpuga@icarto.es> # workaround for maps
 elle_wizard_maps_190520 2019-05-22T17:13:22Z Francisco Puga <fpuga@icarto.es> # elle maps for wizards
+basic_gis_permissions 2019-05-28T18:46:28Z Francisco Puga <fpuga@icarto.es> # basic gis permissions
