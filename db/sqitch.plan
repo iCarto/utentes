@@ -165,3 +165,5 @@ rename_domain_tipo_rega_tipo_cult 2019-05-24T16:23:06Z Francisco Puga <fpuga@ica
 add_tables_cbase_ara_201905 2019-05-27T14:16:58Z Francisco Puga <fpuga@icarto.es> # workaround for maps
 elle_wizard_maps_190520 2019-05-22T17:13:22Z Francisco Puga <fpuga@icarto.es> # elle maps for wizards
 basic_gis_permissions 2019-05-28T18:46:28Z Francisco Puga <fpuga@icarto.es> # basic gis permissions
+changes_for_inventario_tables_201905 2019-05-28T20:37:29Z Francisco Puga <fpuga@icarto.es> # changes
+fixes_elle_wizard_maps_190520 2019-05-29T11:59:07Z Francisco Puga <fpuga@icarto.es> # fixes for elle maps
