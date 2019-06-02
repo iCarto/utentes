@@ -156,3 +156,8 @@ alter_tabla_inventario_barragens_add_rename_delete_fields 2019-05-23T08:57:51Z P
 drop_tables_cbase_201905 2019-05-15T18:38:55Z Francisco Puga <fpuga@icarto.es> # drop_tables_cartografia_fase_201905
 add_tables_cbase_201905 2019-05-19T15:59:08Z Francisco Puga <fpuga@icarto.es> # Add cbase tables 201905
 alter_tables_domains_add_defaults_categories 2019-05-19T16:53:48Z Francisco Puga <fpuga@icarto.es> # add defalt categories for some inventario_dominios tables
+alter_tables_inventario_domains_add_app 2019-05-21T17:30:04Z Francisco Puga <fpuga@icarto.es> # Add app column to inventario domains
+changes_for_bddunica_190520_inv_domains_loc_adm 2019-05-20T11:57:03Z Francisco Puga <fpuga@icarto.es> # Some changes for bddunica 190520
+changes_for_bddunica_190520_inv_domains_loc_hidro 2019-05-22T07:53:38Z Francisco Puga <fpuga@icarto.es> # inv domains bacia
+changes_for_bddunica_190520_ute_domains_loc_adm 2019-05-22T08:26:10Z Francisco Puga <fpuga@icarto.es> # ute domains adm
+changes_for_bddunica_190520_ute_domains_loc_hidro 2019-05-22T09:47:36Z Francisco Puga <fpuga@icarto.es> # ute domains hidro
