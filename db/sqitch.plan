@@ -153,3 +153,5 @@ create_tables_fontes_litologia_carac_hid 2019-05-22T15:00:34Z Pablo Sanxiao <psa
 alter_table_quantidade_agua_add_and_rename_fields 2019-05-23T08:28:02Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table quantidade_agua, added and rename several fields
 alter_tabla_domains_gestao 2019-05-23T08:43:02Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table values inventario_dominios.gestao
 alter_tabla_inventario_barragens_add_rename_delete_fields 2019-05-23T08:57:51Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table inventario.barragens: Add, rename and delete fields
+drop_tables_cbase_201905 2019-05-15T18:38:55Z Francisco Puga <fpuga@icarto.es> # drop_tables_cartografia_fase_201905
+add_tables_cbase_201905 2019-05-19T15:59:08Z Francisco Puga <fpuga@icarto.es> # Add cbase tables 201905

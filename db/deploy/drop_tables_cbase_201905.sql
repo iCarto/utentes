@@ -1,0 +1,58 @@
+-- Deploy utentes:drop_tables_cartografia_fase_201905 to pg
+
+BEGIN;
+
+DROP TABLE cbase.estradas;
+DROP TABLE cbase.fontes_analiticas;
+DROP TABLE cbase.elevaciones;
+DROP TABLE cbase.estacoes_evaporacion;
+DROP TABLE cbase.fontes_analiticas_2012;
+DROP TABLE cbase.fontes_analiticas_2014;
+DROP TABLE cbase.acuiferos_base;
+DROP TABLE cbase.albufeiras;
+DROP TABLE cbase.aldeias;
+DROP TABLE cbase.aras;
+DROP TABLE cbase.areas_conservacao;
+DROP TABLE cbase.areas_exploracao_mineira;
+DROP TABLE cbase.areas_exploracao_petroleo_gas;
+DROP TABLE cbase.bacias;
+DROP TABLE cbase.batimetria;
+DROP TABLE cbase.bombas_combustivel;
+DROP TABLE cbase.cemiterios;
+DROP TABLE cbase.centro_educacional;
+DROP TABLE cbase.centros_saude;
+DROP TABLE cbase.cidades_vilas;
+DROP TABLE cbase.comunicaciones;
+DROP TABLE cbase.concessoes_florestais;
+DROP TABLE cbase.curvas_nivel_10m;
+DROP TABLE cbase.distritos;
+DROP TABLE cbase.fontes_proteccao;
+DROP TABLE cbase.geologia250_lbrn_cd;
+DROP TABLE cbase.geomorfologia250_lbrn_cd;
+DROP TABLE cbase.geomorfologia_mzq;
+DROP TABLE cbase.grandes_lagos;
+DROP TABLE cbase.hoteis;
+DROP TABLE cbase.industria_agro_pecuarias;
+DROP TABLE cbase.industria_agro_pecuarias_menor;
+DROP TABLE cbase.industrias;
+DROP TABLE cbase.lagos_embalses;
+DROP TABLE cbase.litologia;
+DROP TABLE cbase.lixeira;
+DROP TABLE cbase.paises_limitrofes;
+DROP TABLE cbase.piezometria;
+DROP TABLE cbase.pontos_vertido;
+DROP TABLE cbase.postos_administrativos;
+DROP TABLE cbase.provinces;
+DROP TABLE cbase.provincia;
+DROP TABLE cbase.rejilla_350000;
+DROP TABLE cbase.rejilla_50000;
+DROP TABLE cbase.reserva_zona_tampao;
+DROP TABLE cbase.rios;
+DROP TABLE cbase.solos;
+DROP TABLE cbase.usos_da_terra;
+DROP TABLE cbase.zp_albufeiras;
+DROP TABLE cbase.zp_costa;
+DROP TABLE cbase.zp_fontes;
+DROP TABLE cbase.zp_nascentes;
+
+COMMIT;
