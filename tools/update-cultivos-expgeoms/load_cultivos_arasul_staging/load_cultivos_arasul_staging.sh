@@ -4,7 +4,7 @@ set -x
 . ./variables.ini
 
 explotaciones_no_existentes=`$PSQL -t -X -A $PG_CONNECTION -c "
-select count(*) from public.${TABLE_EXPLORACAOS_TMP} tmp 
+select count(*) from public.${TABLE_EXPLORACAOS_TMP} tmp
 	left join utentes.exploracaos expl on tmp.e_exp_id = expl.exp_id and tmp.e_exp_name = expl.exp_name
 where expl.gid is null
 "`
@@ -40,7 +40,7 @@ AS \$\$ select gid from utentes.actividades where exploracao = p_exploracao; \$\
 LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION fn_get_eficiencia(p_rega TEXT) RETURNS NUMERIC(10,2)
-AS \$\$ select CASE COALESCE(p_rega, 'Aspersão') WHEN 'Aspersão' THEN 0.76 WHEN 'Goteo' THEN 0.85 WHEN 'Gravidade' THEN 0.62 WHEN 'Regional' THEN NULL ELSE NULL END as eficiencia; \$\$
+AS \$\$ select CASE COALESCE(p_rega, 'Aspersão') WHEN 'Aspersão' THEN 0.76 WHEN 'Gota a gota' THEN 0.85 WHEN 'Gravidade' THEN 0.62 WHEN 'Regional' THEN NULL ELSE NULL END as eficiencia; \$\$
 LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION fn_get_c_estimado(p_rega TEXT, p_area double precision, p_eficiencia double precision) RETURNS DOUBLE PRECISION
@@ -57,15 +57,15 @@ LANGUAGE SQL;
 INSERT INTO utentes.actividades_cultivos as ac (
     cult_id,
     actividade,
-    cultivo, 
+    cultivo,
     rega,
     eficiencia,
     area,
-    c_estimado, 
+    c_estimado,
     observacio,
     the_geom
 )
-SELECT 
+SELECT
     cult_id,
     fn_get_actividade_id(fn_get_exploracao_id(fn_get_exp_id(cult_id))),
     cultivo,
@@ -77,7 +77,7 @@ SELECT
     ST_Multi(geom)
 FROM public.${TABLE_CULTIVOS_TMP}
 ON CONFLICT (cult_id)
-DO UPDATE SET 
+DO UPDATE SET
     the_geom = ST_Multi(Excluded.the_geom),
     rega = Excluded.rega,
     eficiencia = fn_get_eficiencia(Excluded.rega),
@@ -88,7 +88,7 @@ DO UPDATE SET
 WITH actividades_in_shp AS (
     SELECT a.gid FROM utentes.actividades a LEFT JOIN utentes.exploracaos e on e.gid = a.exploracao WHERE e.exp_id in (SELECT tmp.e_exp_id FROM public.${TABLE_EXPLORACAOS_TMP} tmp)
 )
-UPDATE utentes.actividades_agricultura_rega a SET 
+UPDATE utentes.actividades_agricultura_rega a SET
 	n_cul_tot = (SELECT count(*) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid),
 	c_estimado = (SELECT COALESCE(sum(c_estimado), 0) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid),
 	area_medi = (SELECT COALESCE(sum(area), 0) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid)
@@ -96,7 +96,7 @@ WHERE a.gid IN(select act.gid FROM actividades_in_shp act);
 
 -- modificar el c_estimado de la explotación
 WITH actividades_in_shp AS (
-    SELECT a.gid as actividade_id, e.gid as exploracao_id, aar.c_estimado FROM utentes.actividades a 
+    SELECT a.gid as actividade_id, e.gid as exploracao_id, aar.c_estimado FROM utentes.actividades a
     	LEFT JOIN utentes.actividades_agricultura_rega aar on aar.gid = a.gid
     	LEFT JOIN utentes.exploracaos e on e.gid = a.exploracao WHERE e.exp_id in (SELECT tmp.e_exp_id FROM public.${TABLE_EXPLORACAOS_TMP} tmp)
 )

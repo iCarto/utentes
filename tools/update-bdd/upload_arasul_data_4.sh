@@ -455,7 +455,7 @@ WITH tmp AS (
         b.exp_id as exp_id,
         a.cultivo,
         COALESCE(a.rega, 'Aspersão') as rega,
-        CASE COALESCE(a.rega, 'Aspersão') WHEN 'Aspersão' THEN 0.76 WHEN 'Goteo' THEN 0.85 WHEN 'Gravidade' THEN 0.62 WHEN 'Regional' THEN NULL ELSE NULL END as eficiencia,
+        CASE COALESCE(a.rega, 'Aspersão') WHEN 'Aspersão' THEN 0.76 WHEN 'Gota a gota' THEN 0.85 WHEN 'Gravidade' THEN 0.62 WHEN 'Regional' THEN NULL ELSE NULL END as eficiencia,
         a.area,
         a.observacio,
         row_number() OVER (PARTITION BY a.enlace)
@@ -490,7 +490,7 @@ WITH tmp AS (
         b.exp_id as exp_id,
         a.cultivo,
         COALESCE(a.rega, 'Aspersão') as rega,
-        CASE COALESCE(a.rega, 'Aspersão') WHEN 'Aspersão' THEN 0.76 WHEN 'Goteo' THEN 0.85 WHEN 'Gravidade' THEN 0.62 WHEN 'Regional' THEN NULL ELSE NULL END as eficiencia,
+        CASE COALESCE(a.rega, 'Aspersão') WHEN 'Aspersão' THEN 0.76 WHEN 'Gota a gota' THEN 0.85 WHEN 'Gravidade' THEN 0.62 WHEN 'Regional' THEN NULL ELSE NULL END as eficiencia,
         a.area,
         a.observacio,
         a.geom
