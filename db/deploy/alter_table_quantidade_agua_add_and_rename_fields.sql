@@ -10,6 +10,11 @@ ALTER TABLE inventario.quantidade_agua ADD COLUMN n_freatic numeric(10,2);
 ALTER TABLE inventario.quantidade_agua ADD COLUMN n_semi_co numeric(10,2);
 ALTER TABLE inventario.quantidade_agua ADD COLUMN q_extraer numeric(10,2);
 
+ALTER TABLE inventario.quantidade_agua ALTER COLUMN data_ens DROP NOT NULL;
+ALTER TABLE inventario.quantidade_agua ALTER COLUMN nivel_agua DROP NOT NULL;
+ALTER TABLE inventario.quantidade_agua ALTER COLUMN prof_campo DROP NOT NULL;
+
+ALTER TABLE inventario.quantidade_agua ALTER COLUMN cadastro TYPE character varying(254);
 
 
 COMMIT;
