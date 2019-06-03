@@ -8,27 +8,12 @@ from pathlib import Path
 import pandas as pd
 import pyexcel
 
-import json
+from ietl.spreadsheet_metadata import BookMetadata, SheetMetadata
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # pandas does no read directly ods. https://stackoverflow.com/questions/17834995/
-"""
-records = pe.iget_records(file_name="your_file.xls")
-for record in records:
-    print("%s is aged at %d" % (record['Name'], record['Age']))
-pe.free_resources()
-"""
-"""
-Otro par de detalles que no me di cuenta en el correo anterior.
-
-
-"""
-"""
-pestañas: Utentes, Fontes, Cultivos
-"""
-
 
 def sanitize_path(p, strict=True):
     """
@@ -51,81 +36,7 @@ def save_file_to_other_format(infile, outfile):
     """
     pyexcel.save_book_as(
         file_name=os.fspath(infile), dest_file_name=os.fspath(outfile))
-
-
-SHEETS = ['Utentes', 'Cultivos', 'Reses', 'Fontes']
-
-SHEET_INFO = {
-    'Utentes': {
-        'header': 3 - 1
-    },
-    'Cultivos': {
-        'header': 3 - 1
-    },
-    'Reses': {
-        'header': 3 - 1
-    },
-    'Fontes': {
-        'header': 3 - 1
-    }
-}
-
-class BookMetadata:
-    """
-    Debería haber la posibilidad de usar un json o clases y convertir entre
-    ellas
-    start_column, end_column. Deberían admitir número, texto (header), o callable que determine cuando parar
-    start_row, end_row
-        La numeración empieza en 0 y se define el primero o el último que debe ser incluido
-    """
-    def __init__(self, file):
-        f = open(file)
-        self.d = json.load(f)
-        f.close()
-        
-    def fieldnames(self, sheetname):
-        sheet = [s for s in self.d if s['sheetname'] == sheetname][0]
-        return [f['name'] for f in sheet['fields'] if not f.get('ignore')]
-        
-    def header_row(self, sheetname):
-        sheet = [s for s in self.d if s['sheetname'] == sheetname][0]
-        return sheet['header']
-        
-    def end_column(self, sheetname):
-        sheet = [s for s in self.d if s['sheetname'] == sheetname][0]
-        return sheet.get('end_column')
-
-        
-    def sheet_metadata(self, sheetname):
-        sheet = [s for s in self.d if s['sheetname'] == sheetname][0]
-        return SheetMetadata(self, sheetname)
-    
-    def sheets_metadata(self):
-        return [SheetMetadata(self, s['sheetname']) for s in self.d if not s.get('ignore')]
-
-    @property
-    def sheetnames(self):
-        return [s['sheetname'] for s in self.d]
-        
-    
-
-
-class SheetMetadata:
-    def __init__(self, book, sheetname):
-        self.book = book
-        self.sheetname = sheetname
-    
-    def fieldnames(self):
-        return self.book.fieldnames(self.sheetname)
-        
-    def header_row(self):
-        return self.book.header_row(self.sheetname)
-        
-    def end_column(self):
-        return self.book.end_column(self.sheetname)
-
-        
-    
+  
 
 def check_header(book, metadata):
     for s in metadata.sheets_metadata():
@@ -144,8 +55,6 @@ def check_header(book, metadata):
             '''
             raise Exception(msg)
         
-
-
     
     
 def convert_file(xls_file, metadata_file):
@@ -165,9 +74,10 @@ def convert_file(xls_file, metadata_file):
     metadata = BookMetadata(metadata_file)
     # check_header(book, metadata)
 
-    new_book = OrderedDict((s, book.get(s, [])) for s in SHEETS)
-    for s in SHEETS:
-        new_book[s] = new_book[s][SHEET_INFO[s]['header']:]
+    new_book = OrderedDict((s, book.get(s, [])) for s in metadata.sheetnames)
+    for s in metadata.sheetnames:
+        header_row = metadata.header_row(s)
+        new_book[s] = new_book[s][header_row:]
         
     for sheetname in new_book:
         end_column = metadata.sheet_metadata(sheetname).end_column()

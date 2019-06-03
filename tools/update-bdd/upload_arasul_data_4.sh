@@ -1,9 +1,5 @@
 #!/bin/bash
 
-###### USAGE ####
-# bash upload_arasul_data_4.sh FECHA/Exploracoes.shp hoja_de_calculo.xlsx
-#################
-
 
 set -e
 source ../../server/variables.ini
@@ -13,8 +9,12 @@ SHP="${1}"
 BASE_SPREADSHEET="${2}"
 DATABASE="${3}"
 METADATA_FILE="${4}"
+ARA="${5}"
+# El gid de la última explotación antes de arrancar este proceso cuando se
+# estén mezclando con existentes.
+LAST_EXP_GID=${6}
 
-ARA="ARAZ"
+
 
 
 PG_CONNECTION="-h localhost -p $PG_PORT -d ${DATABASE} -U postgres"
@@ -31,10 +31,12 @@ if [ ! -f "$SHP" ]; then
 fi
 
 FOLDER="$(dirname "$SHP")/output"
+rm -rf "${FOLDER}"
 mkdir -p "${FOLDER}"
 cp "${BASE_SPREADSHEET}" "${FOLDER}"
 BASE_SPREADSHEET="${FOLDER}/$(basename "${BASE_SPREADSHEET}")"
 XLSX="${FOLDER}/working.ods"
+
 
 
 # La hoja de cálculo debe tener formato .ods de este punto en adelante, tener
@@ -47,9 +49,9 @@ python p.py "${BASE_SPREADSHEET}" "${METADATA_FILE}"
 upload() {
     file=$1
     table=$2
-    echo "$file"
+    echo "Subiendo ${file} a ${table}"
     $PSQL $PG_CONNECTION -c "DROP TABLE IF EXISTS $table;"
-    ENCODING="LATIN1"
+    ENCODING="UTF-8"
     shp2pgsql -s 32737 -W "${ENCODING}" -g geom "$file" "$table" | $PSQL $PG_CONNECTION
 }
 
@@ -62,6 +64,7 @@ workaround_clear_utente_loc_fields_for_testing_purposes() {
     done
     $PSQL $PG_CONNECTION -c "$sql_clear_utente_loc_fields"
 }
+
 
 fix_domains_fuzzy() {
 $PSQL $PG_CONNECTION -c "
@@ -148,12 +151,6 @@ fi
 
         UPDATE tmp_utentes a SET loc_bacia = b.key FROM domains.bacia b where trim(lower(a.loc_bacia)) = lower(b.key);
         UPDATE tmp_utentes a SET loc_subaci = b.key FROM domains.subacia b where trim(lower(a.loc_subaci)) = lower(b.key);
-
-
-        -- UPDATE tmp_fontes SET tipo_fonte = 'Rio' WHERE tipo_fonte = 'Río';
-        -- UPDATE tmp_cultivos SET cultivo = 'Frutícola' WHERE cultivo = 'Fruticola';
-        -- UPDATE tmp_utentes a SET loc_distr2 = 'Moamba' WHERE loc_distr2 = 'MO0AMBA';
-        -- UPDATE tmp_utentes a SET loc_distri = 'Moamba' WHERE loc_distri = 'MO0AMBA';
     "
 }
 
@@ -207,17 +204,69 @@ check_bad_domains() {
     fi
 }
 
-clean_previous_database() {
+fix_field_types() {
+    echo "Fix field types"
     $PSQL $PG_CONNECTION -c "
-        delete from utentes.utentes;
-        delete from utentes.version;
-        delete from utentes.settings;
+    -- An example to be used when typecasting weird varchars to numeric
+    -- ALTER TABLE tmp_fontes ALTER COLUMN c_soli TYPE NUMERIC(10, 2) USING to_number(replace(replace(c_soli, '.', ''), ',', '.'), '99999999999.99');
+    -- the typecast to numeric with USING <field>::numeric(10,2) is needed when all values are null
+
+    -- SELECT exp_name, d_emissao, to_date(d_emissao, 'YYYY/mm/dd'), to_date(d_emissao, 'YYYY-mm-dd') from tmp_utentes
+    -- foo │ 2010/10/06 │ 2010-10-06 │ 2010-10-06
+
+    -- Las fechas sólo deberían transformarse si están en formato texto. O
+    -- encontrar un sistema genérico. Ahora es un rollo esto, hay que comentar
+    -- y descomentar líneas y cambiar formatos de entrada todo el rato
+
+    -- Idem con intentar hacer cambios sobre tablas/shps/hojas que no existe
+
+    ALTER TABLE tmp_fontes ALTER COLUMN d_dado TYPE date USING to_date(d_dado, 'YYYY-mm-dd');
+    ALTER TABLE tmp_fontes ALTER COLUMN c_soli TYPE NUMERIC(10, 2) USING c_soli::numeric(10,2);
+    ALTER TABLE tmp_fontes ALTER COLUMN c_real TYPE NUMERIC(10, 2) USING c_real::numeric(10,2);
+    ALTER TABLE tmp_fontes ALTER COLUMN c_max TYPE NUMERIC(10, 2) USING c_max::numeric(10,2);
+
+    ALTER TABLE tmp_utentes ALTER COLUMN d_soli TYPE date USING to_date(d_soli, 'YYYY-mm-dd');
+    -- SELECT 't'::boolean; devuelve true. y SELECT 'f'::boolean devuelve false
+    ALTER TABLE tmp_utentes ALTER COLUMN pago_lice TYPE boolean USING pago_lice::boolean;
+    UPDATE tmp_utentes SET pago_lice = FALSE where pago_lice is null;
+    ALTER TABLE tmp_utentes ALTER COLUMN pagos TYPE boolean USING pagos::boolean;
+    UPDATE tmp_utentes SET pagos = FALSE where pagos is null;
+    ALTER TABLE tmp_utentes ALTER COLUMN eval_impac TYPE boolean USING eval_impac::boolean;
+    UPDATE tmp_utentes SET eval_impac = FALSE where eval_impac is null;
+
+    ALTER TABLE tmp_utentes ALTER COLUMN habitantes TYPE integer USING habitantes::integer;
+    ALTER TABLE tmp_utentes ALTER COLUMN area_pot TYPE NUMERIC(10, 4) USING area_pot::numeric(10,4);
+    ALTER TABLE tmp_utentes ALTER COLUMN area_irri TYPE NUMERIC(10, 4) USING area_irri::numeric(10,4);
+    ALTER TABLE tmp_utentes ALTER COLUMN area_medi TYPE NUMERIC(10, 4) USING area_medi::numeric(10,4);
+    -- ALTER TABLE tmp_utentes ALTER COLUMN d_emissao TYPE date USING to_date(d_emissao, 'YYYY-mm-dd');
+    -- ALTER TABLE tmp_utentes ALTER COLUMN d_validade TYPE date USING to_date(d_validade, 'YYYY-mm-dd');
+    ALTER TABLE tmp_utentes ALTER COLUMN taxa_fixa TYPE NUMERIC(10, 2) USING taxa_fixa::numeric(10,2);
+    ALTER TABLE tmp_utentes ALTER COLUMN taxa_uso TYPE NUMERIC(10, 2) USING taxa_uso::numeric(10,2);
+    ALTER TABLE tmp_utentes ALTER COLUMN pago_mes TYPE NUMERIC(10, 2) USING pago_mes::numeric(10,2);
+    ALTER TABLE tmp_utentes ALTER COLUMN iva TYPE NUMERIC(10, 2) USING iva::numeric(10,2);
+    ALTER TABLE tmp_utentes ALTER COLUMN pago_iva TYPE NUMERIC(10, 2) USING pago_iva::numeric(10,2);
+    ALTER TABLE tmp_utentes ALTER COLUMN c_licencia TYPE NUMERIC(10, 2) USING c_licencia::numeric(10,2);
+    ALTER TABLE tmp_utentes ALTER COLUMN c_factura TYPE NUMERIC(10, 2) USING c_factura::numeric(10,2);
+
+    -- No se usa el campo. Se re-calcula
+    -- ALTER TABLE tmp_utentes ALTER COLUMN c_estimado TYPE NUMERIC(10, 2) USING c_estimado::numeric(10,2);
+
+
+
+    -- UNCOMMENT NEXT LINE WHEN THERE IS CULTIVOS OR FIX HOW .DBF IS GENERATED.
+    -- CHECK: https://github.com/OSGeo/gdal/issues/1238
+    -- ALTER TABLE tmp_cultivos ALTER COLUMN area TYPE NUMERIC(10, 4) USING area::numeric(10,4);
+
+
+    -- ALTER TABLE cultivos_geom ALTER COLUMN eficiencia TYPE NUMERIC(10, 2) USING eficiencia::numeric(10, 2);
+    -- ALTER TABLE cultivos_geom ALTER COLUMN area TYPE NUMERIC(10, 2) USING area::numeric(10, 4);
+    -- ALTER TABLE cultivos_geom ALTER COLUMN c_estimad TYPE NUMERIC(10, 2) USING c_estimad::numeric(10, 2);
     "
 }
 
 
 
-rm -rf "${FOLDER}/dbfs"
+
 ogr2ogr -f "ESRI Shapefile" "${FOLDER}/dbfs" "$XLSX"  -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
 
 upload "$SHP" "public.exploracaos_geoms"
@@ -228,57 +277,8 @@ upload "${FOLDER}/dbfs/Utentes.dbf" "public.tmp_utentes"
 upload "${FOLDER}/dbfs/Reses.dbf" "public.tmp_reses"     # uten_n; id_exp; lic_n; tipo_res; n_reses
 
 
+fix_field_types
 
-
-# FIXES FIELD TYPES
-$PSQL $PG_CONNECTION -c "
--- An example to be used when typecasting weird varchars to numeric
--- ALTER TABLE tmp_fontes ALTER COLUMN c_soli TYPE NUMERIC(10, 2) USING to_number(replace(replace(c_soli, '.', ''), ',', '.'), '99999999999.99');
--- the typecast to numeric with USING <field>::numeric(10,2) is needed when all values are null
-
--- SELECT exp_name, d_emissao, to_date(d_emissao, 'YYYY/mm/dd'), to_date(d_emissao, 'YYYY-mm-dd') from tmp_utentes
--- foo │ 2010/10/06 │ 2010-10-06 │ 2010-10-06
-
-ALTER TABLE tmp_fontes ALTER COLUMN d_dado TYPE date USING to_date(d_dado, 'YYYY-mm-dd');
-ALTER TABLE tmp_fontes ALTER COLUMN c_soli TYPE NUMERIC(10, 2) USING c_soli::numeric(10,2);
-ALTER TABLE tmp_fontes ALTER COLUMN c_real TYPE NUMERIC(10, 2) USING c_real::numeric(10,2);
-ALTER TABLE tmp_fontes ALTER COLUMN c_max TYPE NUMERIC(10, 2) USING c_max::numeric(10,2);
-
-ALTER TABLE tmp_utentes ALTER COLUMN d_soli TYPE date USING to_date(d_soli, 'YYYY-mm-dd');
--- SELECT 't'::boolean; devuelve true. y SELECT 'f'::boolean devuelve false
-ALTER TABLE tmp_utentes ALTER COLUMN pago_lice TYPE boolean USING pago_lice::boolean;
-UPDATE tmp_utentes SET pago_lice = FALSE where pago_lice is null;
-ALTER TABLE tmp_utentes ALTER COLUMN pagos TYPE boolean USING pagos::boolean;
-UPDATE tmp_utentes SET pagos = FALSE where pagos is null;
-ALTER TABLE tmp_utentes ALTER COLUMN eval_impac TYPE boolean USING eval_impac::boolean;
-UPDATE tmp_utentes SET eval_impac = FALSE where eval_impac is null;
-
-ALTER TABLE tmp_utentes ALTER COLUMN habitantes TYPE integer USING habitantes::integer;
-ALTER TABLE tmp_utentes ALTER COLUMN area_pot TYPE NUMERIC(10, 4) USING area_pot::numeric(10,4);
-ALTER TABLE tmp_utentes ALTER COLUMN area_irri TYPE NUMERIC(10, 4) USING area_irri::numeric(10,4);
-ALTER TABLE tmp_utentes ALTER COLUMN area_medi TYPE NUMERIC(10, 4) USING area_medi::numeric(10,4);
-ALTER TABLE tmp_utentes ALTER COLUMN d_emissao TYPE date USING to_date(d_emissao, 'YYYY-mm-dd');
-ALTER TABLE tmp_utentes ALTER COLUMN d_validade TYPE date USING to_date(d_validade, 'YYYY-mm-dd');
-ALTER TABLE tmp_utentes ALTER COLUMN taxa_fixa TYPE NUMERIC(10, 2) USING taxa_fixa::numeric(10,2);
-ALTER TABLE tmp_utentes ALTER COLUMN taxa_uso TYPE NUMERIC(10, 2) USING taxa_uso::numeric(10,2);
-ALTER TABLE tmp_utentes ALTER COLUMN pago_mes TYPE NUMERIC(10, 2) USING pago_mes::numeric(10,2);
-ALTER TABLE tmp_utentes ALTER COLUMN iva TYPE NUMERIC(10, 2) USING iva::numeric(10,2);
-ALTER TABLE tmp_utentes ALTER COLUMN pago_iva TYPE NUMERIC(10, 2) USING pago_iva::numeric(10,2);
-ALTER TABLE tmp_utentes ALTER COLUMN c_licencia TYPE NUMERIC(10, 2) USING c_licencia::numeric(10,2);
-ALTER TABLE tmp_utentes ALTER COLUMN c_factura TYPE NUMERIC(10, 2) USING c_factura::numeric(10,2);
-ALTER TABLE tmp_utentes ALTER COLUMN c_estimado TYPE NUMERIC(10, 2) USING c_estimado::numeric(10,2);
-
-
-
--- UNCOMMENT NEXT LINE WHEN THERE IS CULTIVOS OR FIX HOW .DBF IS GENERATED.
--- CHECK: https://github.com/OSGeo/gdal/issues/1238
--- ALTER TABLE tmp_cultivos ALTER COLUMN area TYPE NUMERIC(10, 4) USING area::numeric(10,4);
-
-
-ALTER TABLE cultivos_geom ALTER COLUMN eficiencia TYPE NUMERIC(10, 2) USING eficiencia::numeric(10, 2);
-ALTER TABLE cultivos_geom ALTER COLUMN area TYPE NUMERIC(10, 2) USING area::numeric(10, 4);
-ALTER TABLE cultivos_geom ALTER COLUMN c_estimad TYPE NUMERIC(10, 2) USING c_estimad::numeric(10, 2);
-"
 
 
 UTENTES_DUPLICADOS=$($PSQL $PG_CONNECTION -tA -c "
@@ -286,7 +286,7 @@ UTENTES_DUPLICADOS=$($PSQL $PG_CONNECTION -tA -c "
     WITH foo AS (
         SELECT nome
         FROM tmp_utentes
-        GROUP BY nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo, contacto, telefone, email, reg_comer, reg_zona, loc_endere
+        GROUP BY nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo, contacto, telefone, email, reg_comerc, reg_zona, loc_endere
     ) SELECT nome, count(*) FROM foo GROUP BY nome HAVING count(*) > 1 ORDER BY 2, 1 ;
 ")
 if [[ -n "${UTENTES_DUPLICADOS}" ]]; then
@@ -307,31 +307,30 @@ fi
 echo -e "\nSi hay Agro-Pecuaria o Pecuaria hay que gestionar las reses"
 $PSQL $PG_CONNECTION -c "select distinct tipo from tmp_utentes;"
 
-clean_previous_database   ##############################
 
+# source 190102_aranorte/workarounds.sh ; workaround_for_190118_Utentes_ARAN_rev_fpuga ; workaround_for_new_sheets
 fix_domains
 check_bad_domains
+
+exit
 
 
 ############################################################## TOOOOODDDDDDDDDDDDDDOOOOOOOOOOOOOO #########
 # CHEQUEAR QUE ENGANCHA POR ENLACE Y NO HAY CODIGOS DE LICENCIA MAL, Y DE PASO SACAR POR PANTALLA SI ESTÁN TODOS O CUANTOS ENLAZAN
-# Geometrías que no enlazan por nombre. No pasa nada. SELECT a.gid, a.enlace, a.exp_name, b.gid, b.enlace, b.nome FROM tmp_utentes a FULL OUTER JOIN exploracaos_geom b ON a.exp_name = b.nome WHERE a.gid IS NULL;
-# Geometrías que no enlazan por enlace. No puede pasar. SELECT a.gid, a.enlace, a.exp_name, b.gid, b.enlace, b.nome FROM tmp_utentes a FULL OUTER JOIN exploracaos_geom b ON a.enlace = b.enlace WHERE a.gid IS NULL;
+# Geometrías que no enlazan por nombre. No pasa nada. SELECT a.gid, a.enlace, a.exp_name, b.gid, b.enlace, b.nome FROM tmp_utentes a FULL OUTER JOIN exploracaos_geoms b ON a.exp_name = b.nome WHERE a.gid IS NULL;
+# Geometrías que no enlazan por enlace. No puede pasar. SELECT a.gid, a.enlace, a.exp_name, b.gid, b.enlace, b.nome FROM tmp_utentes a FULL OUTER JOIN exploracaos_geoms b ON a.enlace = b.enlace WHERE a.gid IS NULL;
 
 $PSQL $PG_CONNECTION -c "
 ALTER TABLE tmp_utentes ADD COLUMN geom geometry(MultiPolygon,32737);
 UPDATE tmp_utentes a SET geom = ST_Transform(b.geom, 32737) FROM exploracaos_geoms b where a.enlace = b.enlace;
 "
 
-exit 1
 
 # workaround_clear_utente_loc_fields_for_testing_purposes
-
-# workaround
 # fix_domains_fuzzy
 # fix_domains
 
-
+exit 1
 
 ! read -d '' main_sql <<"EOF"
 BEGIN;
@@ -340,10 +339,11 @@ BEGIN;
 INSERT INTO utentes.utentes
 (nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo, contacto, telefone, email, reg_comerc, reg_zona, loc_endere)
 SELECT
-nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo, contacto, telefone, email, reg_comer, reg_zona, loc_endere
+nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo, contacto, telefone, email, reg_comerc, reg_zona, loc_endere
 FROM tmp_utentes
+WHERE nome != 'SUNI RESOURCES SUPERFICIAL' -- no hay problema porque era igual
 group by
-nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo, contacto, telefone, email, reg_comer, reg_zona, loc_endere
+nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo, contacto, telefone, email, reg_comerc, reg_zona, loc_endere
 ;
 
 
@@ -352,13 +352,13 @@ nome, uten_tipo, nuit, uten_gere, loc_provin, loc_distri, loc_posto, loc_nucleo,
 INSERT INTO utentes.exploracaos
 (exp_id, exp_name,  d_soli, pago_lic, pagos, observacio, loc_provin, loc_distri, loc_posto, loc_nucleo, loc_endere, loc_unidad, loc_bacia, loc_subaci, loc_rio, ara, the_geom, utente, area, req_obs, estado_lic, cadastro_uni, fact_tipo)
 SELECT
-    exp_id, exp_name, d_soli, pago_lice, pagos, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_unidad, loc_bacia, loc_subaci, loc_rio, 'ARAZ', geom
+    exp_id, exp_name, d_soli, pago_lice, pagos, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_unidad, loc_bacia, loc_subaci, loc_rio, '', geom
     , (select gid from utentes.utentes u where u.nome = t.nome)
-    , ST_Area(geom) / 10000, '[{"created_at": null, "autor": null, "text": null, "state": null}, {"created_at": null, "autor": null, "text": null, "state": null}]', estado, cadastro_uni
+    , ST_Area(geom) / 10000, '[{"created_at": null, "autor": null, "text": null, "state": null}, {"created_at": null, "autor": null, "text": null, "state": null}]', estado, t.cadastro_uni
     , fact_tipo
 FROM tmp_utentes t
 GROUP BY
-exp_id, exp_name, d_soli, pago_lice, pagos, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_unidad, loc_bacia, loc_subaci, loc_rio, geom, (select gid from utentes.utentes u where u.nome = t.nome) , ST_Area(geom) / 10000, estado, cadastro_uni, fact_tipo
+exp_id, exp_name, d_soli, pago_lice, pagos, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_unidad, loc_bacia, loc_subaci, loc_rio, geom, (select gid from utentes.utentes u where u.nome = t.nome) , ST_Area(geom) / 10000, estado, t.cadastro_uni, fact_tipo
 ;
 
 
@@ -517,9 +517,9 @@ SELECT
 FROM tmp;
 
 
-UPDATE utentes.actividades_agricultura_rega a SET n_cul_tot = (SELECT count(*) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid);
-UPDATE utentes.actividades_agricultura_rega a SET c_estimado = (SELECT sum(c_estimado) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid);
-UPDATE utentes.actividades_agricultura_rega a SET area_medi = (SELECT sum(area) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid) WHERE area_medi IS NULL;
+UPDATE utentes.actividades_agricultura_rega a SET n_cul_tot = (SELECT count(*) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid); -- no editable por usuario
+UPDATE utentes.actividades_agricultura_rega a SET c_estimado = (SELECT sum(c_estimado) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid); -- no editable por usuario
+UPDATE utentes.actividades_agricultura_rega a SET area_medi = (SELECT sum(area) FROM utentes.actividades_cultivos c WHERE c.actividade = a.gid) WHERE area_medi IS NULL; -- editable, pero tiene sentido sin filtrado extra
 
 
 WITH actv AS (
@@ -539,21 +539,25 @@ WITH actv AS (
 ), actv_exp AS (
     SELECT a.actividad, a.c_estimado, b.exploracao FROM actv a JOIN utentes.actividades b ON a.actividad = b.gid
 )
-UPDATE utentes.exploracaos e SET c_estimado = actv_exp.c_estimado FROM actv_exp WHERE e.gid = actv_exp.exploracao;
+UPDATE utentes.exploracaos e SET
+    c_estimado = actv_exp.c_estimado
+FROM actv_exp
+WHERE
+    e.gid = actv_exp.exploracao
+    AND e.gid > ${LAST_EXP_GID};
 
 
 -- TODO. Comprobar enlaces
--- select gid, count(*) from utentes.fontes group by gid order by 2; Chequear si hay más de una fonte por explotación por si no funciona lo de catastro.
 INSERT INTO utentes.fontes
     (tipo_agua, tipo_fonte, d_dado, sist_med, c_real, lat_lon, observacio
     , cadastro
     , exploracao)
 SELECT
     tipo_agua, tipo_fonte, d_dado, sist_med, c_real, lat_lon, observacio
-    , (SELECT cadastro FROM tmp_utentes u WHERE u.enlace = t.enlace GROUP BY exp_id, cadastro)
+    , (SELECT cadastro_uni FROM tmp_utentes u WHERE u.enlace = t.enlace GROUP BY exp_id, cadastro_uni)
     , (select e.gid from tmp_utentes u join utentes.exploracaos e on u.exp_id = e.exp_id where u.enlace = t.enlace GROUP BY e.gid, u.exp_id, u.enlace)
+    -- , t.enlace
 FROM tmp_fontes t;
-
 
 
 
@@ -594,7 +598,10 @@ ORDER BY 1;
 
 
 WITH tmp AS (
-    SELECT exploracao, tipo_agua, sum(COALESCE(c_soli, 0)) as con_soli, sum(COALESCE(c_real, 0)) as con_real FROM utentes.fontes GROUP BY exploracao, tipo_agua
+    SELECT exploracao, tipo_agua, sum(COALESCE(c_soli, 0)) as con_soli, sum(COALESCE(c_real, 0)) as con_real
+    FROM utentes.fontes
+    WHERE exploracao > ${LAST_EXP_GID}
+    GROUP BY exploracao, tipo_agua
 )
     UPDATE utentes.licencias l SET c_soli_fon = con_soli, c_real_fon = con_real FROM tmp WHERE l.exploracao = tmp.exploracao AND l.tipo_agua = tmp.tipo_agua
 ;
@@ -602,6 +609,7 @@ WITH tmp AS (
 UPDATE utentes.licencias SET
     c_soli_tot = COALESCE(c_soli_int, 0) + COALESCE(c_soli_fon, 0),
     c_real_tot = COALESCE(c_real_int, 0) + COALESCE(c_real_fon, 0)
+WHERE exploracao > ${LAST_EXP_GID}
 ;
 
 
@@ -612,7 +620,10 @@ UPDATE utentes.exploracaos e SET
     c_licencia = c_li,
     c_soli = c_sol_t,
     c_real = c_r_t
-FROM tmp WHERE tmp.exploracao = e.gid
+FROM tmp
+WHERE
+    tmp.exploracao = e.gid
+    AND e.gid > ${LAST_EXP_GID}
 ;
 
 UPDATE utentes.licencias SET taxa_fixa = 0 where taxa_fixa is null;
@@ -632,6 +643,7 @@ EOF
 
 $PSQL $PG_CONNECTION -c "$main_sql"
 
+$PSQL $PG_CONNECTION -c "UPDATE utentes.exploracaos SET ara = '${ARA}'";
 
 $PSQL $PG_CONNECTION -c "
 DROP TABLE IF EXISTS public.exploracaos_geoms;
@@ -643,7 +655,7 @@ DROP TABLE IF EXISTS public.tmp_reses;
 
 TODAY=$(date +%y%m%d)
 PGOPTIONS='--client-min-messages=warning' $PSQL $PG_CONNECTION -c "DELETE FROM utentes.version;INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
-# PGOPTIONS='--client-min-messages=warning' $PSQL $PG_CONNECTION -c "VACUUM ANALYZE;"
+# PGOPTIONS='--client-min-messages=warning' $PSQL $PG_CONNECTION -c "VACUUM FULL ANALYZE;"
 # VACUUM FULL
 # ANALYZE
 exit
@@ -673,15 +685,4 @@ UPDATE utentes.actividades_pecuaria a SET c_estimado = (SELECT sum(c_estimado) F
 
 
 COMMIT;
-"
-
-
-
-
-C="
-
-WITH postos AS (
-    select parent, array_agg(key) AS postos from domains.posto group by parent
-)
-select a.gid, a.exp_id, a.loc_dist_1, a.loc_posto2 from tmp_utentes a LEFT OUTER JOIN postos ON a.loc_dist_1 = postos.parent where a.loc_posto2 is null;
 "
