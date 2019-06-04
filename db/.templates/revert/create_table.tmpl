@@ -1,0 +1,7 @@
+-- Revert [% change %]
+
+BEGIN;
+
+DROP TABLE [% schema %].[% table %];
+
+COMMIT;
