@@ -168,3 +168,4 @@ basic_gis_permissions 2019-05-28T18:46:28Z Francisco Puga <fpuga@icarto.es> # ba
 changes_for_inventario_tables_201905 2019-05-28T20:37:29Z Francisco Puga <fpuga@icarto.es> # changes
 fixes_elle_wizard_maps_190520 2019-05-29T11:59:07Z Francisco Puga <fpuga@icarto.es> # fixes for elle maps
 use_indentity_instead_of_serial 2019-06-04T10:28:11Z Francisco Puga <fpuga@icarto.es> # Use identity column instead of serial
+add_domain_value_termo_to_energia_tipo 2019-06-25T14:37:10Z Francisco Puga <fpuga@icarto.es> # Adds a domain to energia_tipo
