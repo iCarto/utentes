@@ -7,7 +7,7 @@
 # 2. Just in case something usefull is still in the database a backup is made and named as: `"${DBNAME}_tmp_${TODAY}"`
 # 3. Usually, in the same working session, the first time the backup is make, it will contain usefull information. But
 #    the following times in the same day that the script is executed, `"${DBNAME}` will not contain usefull data.
-#    These following executions of the script will be produce for error-iteration. Just in case, by default, if
+#    So the following executions of the script will be produce for error-iteration. Just in case, by default, if
 #    `"${DBNAME}_tmp_${TODAY}"` exists, the script will fail. But variable `FAIL_IF_TODAY_BCK_EXISTS` can be modified
 #    to "respect" the original backup, and don't try to create a new one (wich will fail). A "TODO", will be allow the
 #    creation of others backups automatically like `"${DBNAME}_tmp_${TODAY}_1"`, and handle it via parameters
@@ -16,7 +16,8 @@
 #    a yymmdd_DBNAME that can be used as template, if `"${DBNAME}` gets "corrupted".
 
 # Backups begins with database name instead of date, because they are intented to be dropped in "little time", and
-# using a different "prefix" that the "production versions", seems to avoid errors derived from typings and hurries
+# using a different "prefix" (the name) that the "production versions" (the date), seems to avoid errors derived from
+# typings and hurries
 
 set -e
 . ../server/variables.ini
