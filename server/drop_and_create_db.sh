@@ -22,6 +22,8 @@
 set -e
 . ../server/variables.ini
 
+
+
 # TODO: Improve checks
 if [[ (-f "${1}") && ( "${1}" =~ [0-9][0-9][0-9][0-9][0-9][0-9]_$DBNAME.dump ) ]]; then
     DUMP_FILE="${1}"
@@ -40,7 +42,7 @@ $PSQL -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "select pg_termina
 
 # Other way to check if the database exists
 # if ! sudo -u postgres psql -d ${DBNAME} -c "select 1" > /dev/null 2>&1; then
-#     sudo -u postgres createdb -O senderos -E UTF-8 ${DBNAME}
+#     sudo -u postgres createdb -O ${DBOWNER} -E UTF-8 ${DBNAME}
 # fi
 MAIN_DB_EXISTS=$($PSQL -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${DBNAME}';")
 TODAY_MAIN_DB_BACKUP_EXISTS=$($PSQL -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${TODAY_MAIN_DB_BACKUP}';")

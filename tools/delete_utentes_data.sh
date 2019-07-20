@@ -17,5 +17,4 @@ $PSQL -h localhost -d "${DATABASE}"  -U postgres -c "
     delete from utentes.users;
     delete from utentes.utentes;
     delete from utentes.version;
-    delete from utentes.datos_aras;
 "
