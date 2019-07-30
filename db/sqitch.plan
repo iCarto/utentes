@@ -171,3 +171,5 @@ use_indentity_instead_of_serial 2019-06-04T10:28:11Z Francisco Puga <fpuga@icart
 add_domain_value_termo_to_energia_tipo 2019-06-25T14:37:10Z Francisco Puga <fpuga@icarto.es> # Adds a domain to energia_tipo
 rename_domain_azucar_to_cana_azucar 2019-07-09T11:48:27Z Francisco Puga <fpuga@icarto.es> # Renames açucar to cana de açucar
 new_column_tipo_aqui_to_analise_fonte 2019-07-10T13:53:14Z Francisco Puga <fpuga@icarto.es> # Add column "tipo_aqui" to "fontes_analise"\n\nrefs #1689
+new_version_190730 2019-07-30T15:21:18Z Francisco Puga <fpuga@icarto.es> # New version 190730
+@190730 2019-07-30T15:28:38Z Francisco Puga <fpuga@icarto.es> # tag 190730
