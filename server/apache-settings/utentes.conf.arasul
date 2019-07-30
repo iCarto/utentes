@@ -2,9 +2,9 @@
 
    # ServerName localhost
    # ServerAlias localhost
-   ServerAdmin fpuga@icarto.es
+   ServerAdmin info@icarto.es
 
-    DocumentRoot /var/www
+    DocumentRoot /home/icarto
 
     LogLevel info
 
@@ -12,11 +12,11 @@
     ## mod_wsgi ##
     WSGIApplicationGroup %{GLOBAL}
     WSGIPassAuthorization On
-    WSGIDaemonProcess utentes python-path=/var/www/utentes python-home=/home/icarto/.virtualenvs/utentes/ lang='en_ZA.utf8' locale='en_ZA.utf8'
+    WSGIDaemonProcess utentes python-path=/home/icarto/utentes python-home=/home/icarto/.virtualenvs/utentes/ lang='en_ZA.utf8' locale='en_ZA.utf8'
     WSGIProcessGroup utentes
-    WSGIScriptAlias / /var/www/utentes/wsgi.py
+    WSGIScriptAlias / /home/icarto/utentes/wsgi.py
 
-    <Directory /var/www/utentes>
+    <Directory /home/icarto/utentes>
         <Files wsgi.py>
 	    Require all granted
         </Files>
@@ -24,10 +24,10 @@
 
 
     ## static files if served by Apache ##
-    Alias /static/ /var/www/utentes/utentes/static/
+    Alias /static/ /home/icarto/utentes/utentes/static/
 
 
-    <Directory /var/www/utentes/utentes/static>
+    <Directory /home/icarto/utentes/utentes/static>
         Require all granted
     </Directory>
 
