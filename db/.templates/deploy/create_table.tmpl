@@ -33,9 +33,9 @@ CREATE INDEX ON [% schema %].[% table %] USING GIST (geom);
 -- GRANT ALL ON TABLE [% schema %].[% table %] TO :"owner";
 REVOKE ALL ON TABLE [% schema %].[% table %] FROM PUBLIC;
 [% IF schema == 'domains' or schema == 'cbase' or schema == 'cbase_ara' -%]
-GRANT SELECT ON TABLE [% schema %].[% table %] TO sirha_base_user;
+GRANT SELECT ON TABLE [% schema %].[% table %] TO :base_user;
 [% ELSE -%]
-GRANT SELECT, INSERT, UPDATE, DELETE ON [% schema %].[% table %] TO sirha_base_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON [% schema %].[% table %] TO :base_user;
 [%- END -%]
 
 [% IF schema == 'domains' %]
