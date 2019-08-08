@@ -173,3 +173,5 @@ rename_domain_azucar_to_cana_azucar 2019-07-09T11:48:27Z Francisco Puga <fpuga@i
 new_column_tipo_aqui_to_analise_fonte 2019-07-10T13:53:14Z Francisco Puga <fpuga@icarto.es> # Add column "tipo_aqui" to "fontes_analise"\n\nrefs #1689
 new_version_190730 2019-07-30T15:21:18Z Francisco Puga <fpuga@icarto.es> # New version 190730
 @190730 2019-07-30T15:28:38Z Francisco Puga <fpuga@icarto.es> # tag 190730
+
+rename_license_code 2019-08-07T17:00:27Z Francisco Puga <fpuga@icarto.es> # Rename License Code
