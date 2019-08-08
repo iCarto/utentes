@@ -6,18 +6,18 @@ source variables.ini
 
 PLATFORM="${1}"
 
-if [ "${PLATFORM}" = "32" ] ; then
+if [ "${PLATFORM}" = "32" ]; then
     JAVA_FILE="jdk-6u45-linux-i586.bin"
-elif [ "${PLATFORM}" = "64" ] ; then
+elif [ "${PLATFORM}" = "64" ]; then
     JAVA_FILE="jdk-6u45-linux-x64.bin"
-else 
+else
     echo "La plataforma de java deber ser: 32 o 64"
     exit 1
 fi
 
 if [ ! -f "/vagrant/${JAVA_FILE}" ]; then
-   echo "El fichero de java /vagrant/${JAVA_FILE} no existe"
-   exit 1
+    echo "El fichero de java /vagrant/${JAVA_FILE} no existe"
+    exit 1
 fi
 
 chmod a+x "/vagrant/${JAVA_FILE}"

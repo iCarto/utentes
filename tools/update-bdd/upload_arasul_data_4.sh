@@ -1,9 +1,7 @@
 #!/bin/bash
 
-
 set -e
 source ../../server/variables.ini
-
 
 SHP="${1}"
 BASE_SPREADSHEET="${2}"
@@ -14,11 +12,7 @@ ARA="${5}"
 # estén mezclando con existentes.
 LAST_EXP_GID=${6}
 
-
-
-
 PG_CONNECTION="-h localhost -p $PG_PORT -d ${DATABASE} -U postgres"
-
 
 if [ ! -f "${BASE_SPREADSHEET}" ]; then
     echo "Fichero no encontrado: ${BASE_SPREADSHEET}"
@@ -36,8 +30,6 @@ mkdir -p "${FOLDER}"
 cp "${BASE_SPREADSHEET}" "${FOLDER}"
 BASE_SPREADSHEET="${FOLDER}/$(basename "${BASE_SPREADSHEET}")"
 XLSX="${FOLDER}/working.ods"
-
-
 
 # La hoja de cálculo debe tener formato .ods de este punto en adelante, tener
 # una única fila de cabecera en cada hoja, llamarse `working.ods` y tener
@@ -65,9 +57,8 @@ workaround_clear_utente_loc_fields_for_testing_purposes() {
     $PSQL $PG_CONNECTION -c "$sql_clear_utente_loc_fields"
 }
 
-
 fix_domains_fuzzy() {
-$PSQL $PG_CONNECTION -c "
+    $PSQL $PG_CONNECTION -c "
 create EXTENSION pg_trgm ;
 select set_limit(0.4);
 
@@ -107,38 +98,38 @@ fix_domains() {
     LOC_BACIA=$($PSQL $PG_CONNECTION -tA -c "SELECT gid, exp_id, loc_bacia FROM tmp_utentes WHERE trim(lower(loc_bacia)) NOT IN (SELECT lower(key) FROM domains.bacia);")
     LOC_SUBACI=$($PSQL $PG_CONNECTION -tA -c "SELECT gid, exp_id, loc_subaci FROM tmp_utentes WHERE trim(lower(loc_subaci)) NOT IN (SELECT lower(key) FROM domains.subacia);")
 
-if [[ -n "${LOC_PROVIN}" ]]; then
-    echo -e "\nAVISO: LOC_PROVIN, será corregido automáticamente"
-    echo "${LOC_PROVIN}"
-fi
-if [[ -n "${LOC_DISTRI}" ]]; then
-    echo -e "\nAVISO: LOC_DISTRI, será corregido automáticamente"
-    echo "${LOC_DISTRI}"
-fi
-if [[ -n "${LOC_POSTO}" ]]; then
-    echo -e "\nAVISO: LOC_POSTO, será corregido automáticamente"
-    echo "${LOC_POSTO}"
-fi
-if [[ -n "${loc_prov_1}" ]]; then
-    echo -e "\nAVISO: loc_prov_1, será corregido automáticamente"
-    echo "${loc_prov_1}"
-fi
-if [[ -n "${loc_dist_1}" ]]; then
-    echo -e "\nAVISO: loc_dist_1, será corregido automáticamente"
-    echo "${loc_dist_1}"
-fi
-if [[ -n "${LOC_POSTO2}" ]]; then
-    echo -e "\nAVISO: LOC_POSTO2, será corregido automáticamente"
-    echo "${LOC_POSTO2}"
-fi
-if [[ -n "${LOC_BACIA}" ]]; then
-    echo -e "\nAVISO: LOC_BACIA, será corregido automáticamente"
-    echo "${LOC_BACIA}"
-fi
-if [[ -n "${LOC_SUBACI}" ]]; then
-    echo -e "\nAVISO: LOC_SUBACI, será corregido automáticamente"
-    echo "${LOC_SUBACI}"
-fi
+    if [[ -n "${LOC_PROVIN}" ]]; then
+        echo -e "\nAVISO: LOC_PROVIN, será corregido automáticamente"
+        echo "${LOC_PROVIN}"
+    fi
+    if [[ -n "${LOC_DISTRI}" ]]; then
+        echo -e "\nAVISO: LOC_DISTRI, será corregido automáticamente"
+        echo "${LOC_DISTRI}"
+    fi
+    if [[ -n "${LOC_POSTO}" ]]; then
+        echo -e "\nAVISO: LOC_POSTO, será corregido automáticamente"
+        echo "${LOC_POSTO}"
+    fi
+    if [[ -n "${loc_prov_1}" ]]; then
+        echo -e "\nAVISO: loc_prov_1, será corregido automáticamente"
+        echo "${loc_prov_1}"
+    fi
+    if [[ -n "${loc_dist_1}" ]]; then
+        echo -e "\nAVISO: loc_dist_1, será corregido automáticamente"
+        echo "${loc_dist_1}"
+    fi
+    if [[ -n "${LOC_POSTO2}" ]]; then
+        echo -e "\nAVISO: LOC_POSTO2, será corregido automáticamente"
+        echo "${LOC_POSTO2}"
+    fi
+    if [[ -n "${LOC_BACIA}" ]]; then
+        echo -e "\nAVISO: LOC_BACIA, será corregido automáticamente"
+        echo "${LOC_BACIA}"
+    fi
+    if [[ -n "${LOC_SUBACI}" ]]; then
+        echo -e "\nAVISO: LOC_SUBACI, será corregido automáticamente"
+        echo "${LOC_SUBACI}"
+    fi
 
     $PSQL $PG_CONNECTION -c "
         UPDATE tmp_utentes a SET loc_provin = b.key FROM domains.provincia b where trim(lower(a.loc_provin)) = lower(b.key);
@@ -264,22 +255,16 @@ fix_field_types() {
     "
 }
 
-
-
-
-ogr2ogr -f "ESRI Shapefile" "${FOLDER}/dbfs" "$XLSX"  -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
+ogr2ogr -f "ESRI Shapefile" "${FOLDER}/dbfs" "$XLSX" -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
 
 upload "$SHP" "public.exploracaos_geoms"
 upload "$CULTIVOS_SHP" "public.cultivos_geoms"
 upload "${FOLDER}/dbfs/Fontes.dbf" "public.tmp_fontes"
 upload "${FOLDER}/dbfs/Cultivos.dbf" "public.tmp_cultivos" # uten_n; id_exp; lic_n; tipo; tipo_rega; area; observacio
 upload "${FOLDER}/dbfs/Utentes.dbf" "public.tmp_utentes"
-upload "${FOLDER}/dbfs/Reses.dbf" "public.tmp_reses"     # uten_n; id_exp; lic_n; tipo_res; n_reses
-
+upload "${FOLDER}/dbfs/Reses.dbf" "public.tmp_reses" # uten_n; id_exp; lic_n; tipo_res; n_reses
 
 fix_field_types
-
-
 
 UTENTES_DUPLICADOS=$($PSQL $PG_CONNECTION -tA -c "
     -- DETECTAR UTENTES CON MISMO NOMBRE Y DISTINTOS DATOS
@@ -307,13 +292,11 @@ fi
 echo -e "\nSi hay Agro-Pecuaria o Pecuaria hay que gestionar las reses"
 $PSQL $PG_CONNECTION -c "select distinct tipo from tmp_utentes;"
 
-
 # source 190102_aranorte/workarounds.sh ; workaround_for_190118_Utentes_ARAN_rev_fpuga ; workaround_for_new_sheets
 fix_domains
 check_bad_domains
 
 exit
-
 
 ############################################################## TOOOOODDDDDDDDDDDDDDOOOOOOOOOOOOOO #########
 # CHEQUEAR QUE ENGANCHA POR ENLACE Y NO HAY CODIGOS DE LICENCIA MAL, Y DE PASO SACAR POR PANTALLA SI ESTÁN TODOS O CUANTOS ENLAZAN
@@ -325,14 +308,13 @@ ALTER TABLE tmp_utentes ADD COLUMN geom geometry(MultiPolygon,32737);
 UPDATE tmp_utentes a SET geom = ST_Transform(b.geom, 32737) FROM exploracaos_geoms b where a.enlace = b.enlace;
 "
 
-
 # workaround_clear_utente_loc_fields_for_testing_purposes
 # fix_domains_fuzzy
 # fix_domains
 
 exit 1
 
-! read -d '' main_sql <<"EOF"
+! read -d '' main_sql << "EOF"
 BEGIN;
 
 
@@ -639,11 +621,9 @@ update utentes.actividades_piscicultura set c_estimado = 0 where c_estimado is n
 COMMIT;
 EOF
 
-
-
 $PSQL $PG_CONNECTION -c "$main_sql"
 
-$PSQL $PG_CONNECTION -c "UPDATE utentes.exploracaos SET ara = '${ARA}'";
+$PSQL $PG_CONNECTION -c "UPDATE utentes.exploracaos SET ara = '${ARA}'"
 
 $PSQL $PG_CONNECTION -c "
 DROP TABLE IF EXISTS public.exploracaos_geoms;

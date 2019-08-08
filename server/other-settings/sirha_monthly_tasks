@@ -17,7 +17,6 @@ BACKUP_FOLDER=${BASE_BACKUP_FOLDER}/sirha_${DBNAME}/backups
 rm -rf ${BACKUP_FOLDER}
 mkdir -p ${BACKUP_FOLDER}
 
-
 pg_dump -h localhost -p ${PG_PORT} -U postgres -Fc -Z9 -E UTF-8 -f ${BACKUP_FOLDER}/${DBNAME}_bck_$(date +%y%m%d).dump ${DBNAME} 2> ${BACKUP_FOLDER}/pgdump.log
 tar czf ${BACKUP_FOLDER}/${DBNAME}_files_bck_$(date +%y%m%d).tgz ${BASE_MEDIA_FOLDER}/media 2> ${BACKUP_FOLDER}/tar_files.log
 

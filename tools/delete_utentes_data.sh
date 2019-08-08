@@ -10,7 +10,7 @@ if [ -z "${DATABASE}" ]; then
     exit 64
 fi
 
-$PSQL -h localhost -d "${DATABASE}"  -U postgres -c "
+$PSQL -h localhost -d "${DATABASE}" -U postgres -c "
     delete from utentes.documentos;
     delete from utentes.inventario_fontes;
     delete from utentes.settings;

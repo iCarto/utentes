@@ -2,8 +2,7 @@
 
 # Instala los paquetes de idioma en castellano
 
-
-if locale -a | grep pt_PT > /dev/null ; then
+if locale -a | grep pt_PT > /dev/null; then
     exit 0
 fi
 

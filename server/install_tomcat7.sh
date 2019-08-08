@@ -2,7 +2,6 @@
 
 source variables.ini
 
-
 apt-get remove -y --purge tomcat6
 rm -rf /usr/share/tomcat6
 

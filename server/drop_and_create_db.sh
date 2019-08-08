@@ -22,21 +22,17 @@
 set -e
 . ../server/variables.ini
 
-
-
 # TODO: Improve checks
-if [[ (-f "${1}") && ( "${1}" =~ [0-9][0-9][0-9][0-9][0-9][0-9]_$DBNAME.dump ) ]]; then
+if [[ (-f "${1}") && ("${1}" =~ [0-9][0-9][0-9][0-9][0-9][0-9]_$DBNAME.dump) ]]; then
     DUMP_FILE="${1}"
 fi
 
-FAIL_IF_TODAY_BCK_EXISTS="True"  # Setear cualquier otro valor para cambiar
+FAIL_IF_TODAY_BCK_EXISTS="True" # Setear cualquier otro valor para cambiar
 
 TODAY_MAIN_DB_BACKUP="${DBNAME}_tmp_${TODAY}"
 
 ## Kills all connections to the database to make the backup ##
 $PSQL -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DBNAME}';"
-
-
 
 ## Renames the database to make a backup ##
 
@@ -47,8 +43,7 @@ $PSQL -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "select pg_termina
 MAIN_DB_EXISTS=$($PSQL -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${DBNAME}';")
 TODAY_MAIN_DB_BACKUP_EXISTS=$($PSQL -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${TODAY_MAIN_DB_BACKUP}';")
 
-
-if [[ "${MAIN_DB_EXISTS}" == "True" && "${TODAY_MAIN_DB_BACKUP_EXISTS}" != "True" || ("${TODAY_MAIN_DB_BACKUP_EXISTS}" == "True" && ${FAIL_IF_TODAY_BCK_EXISTS} == "True") ]] ; then
+if [[ "${MAIN_DB_EXISTS}" == "True" && "${TODAY_MAIN_DB_BACKUP_EXISTS}" != "True" || ("${TODAY_MAIN_DB_BACKUP_EXISTS}" == "True" && ${FAIL_IF_TODAY_BCK_EXISTS} == "True") ]]; then
     echo "Renombrando ${DBNAME} a ${TODAY_MAIN_DB_BACKUP}"
     $PSQL -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "ALTER DATABASE \"${DBNAME}\" RENAME TO \"${TODAY_MAIN_DB_BACKUP}\";"
 fi
@@ -58,7 +53,7 @@ if [[ "${MAIN_DB_EXISTS}" == "True" ]]; then
     # Si entramos aquí es porque la base de datos antigua no se ha renombrado
     # En lugar de este if, prodríamos usar el parámetro `--if-exists`. Pero perdemos la info de logging. Toda esta parte hay que refactorizarla
     echo "Eliminando ${DBNAME}"
-    dropdb  -h localhost -p "${PG_PORT}" -U postgres "${DBNAME}"
+    dropdb -h localhost -p "${PG_PORT}" -U postgres "${DBNAME}"
 fi
 
 ## Creates the database again ##

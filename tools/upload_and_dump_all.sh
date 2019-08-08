@@ -7,7 +7,6 @@ source ../server/variables.ini
 SUCCESS=0
 TODAY=$(date +%y%m%d)
 
-
 foo() {
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${1}" -f "acuiferos.sql.$2"
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${1}" -f "fontes.sql.$2"
@@ -25,9 +24,8 @@ dump() {
     DATABASE=$1
     BACKUP_FOLDER=/tmp/${TODAY}
     mkdir -p "${BACKUP_FOLDER}"
-    [ "${FLAG_DUMP}" -eq 1 ] && ${PGDUMP} -h localhost -U postgres -Fc -Z 9 -E UTF-8 -f "${BACKUP_FOLDER}/${TODAY}_BDD_${1}.backup"  -O -x "${DATABASE}"
+    [ "${FLAG_DUMP}" -eq 1 ] && ${PGDUMP} -h localhost -U postgres -Fc -Z 9 -E UTF-8 -f "${BACKUP_FOLDER}/${TODAY}_BDD_${1}.backup" -O -x "${DATABASE}"
 }
-
 
 # $1 = DATABASE
 # $2 = TAG OR @HEAD
@@ -57,7 +55,7 @@ for_each_database() {
     ${PSQL} -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname = '${DATABASE}';"
     $DROPDB -h localhost -U postgres --if-exists "${DATABASE}"
     $CREATEDB -h localhost -U postgres -T "$TEMPLATE" -E UTF8 -O postgres "${DATABASE}"
-    if [[ -n "$CBASE_VERSION" ]] ; then
+    if [[ -n "$CBASE_VERSION" ]]; then
         PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -f "./datos/cbase.sql.${CBASE_VERSION}"
     fi
 }
@@ -79,31 +77,28 @@ fill_data() {
     # introducir datos de analise antes que datos de fuente y se produce un error
     # https://stackoverflow.com/questions/5359968/restore-postgresql-db-from-backup-without-foreign-key-constraint-issue
     # http://blog.fabianbecker.eu/pg_restore-and-foreign-key-constraints/
-    if [ -f "${BACKUP_INVENTARIO}" ] ; then
+    if [ -f "${BACKUP_INVENTARIO}" ]; then
         $PGRESTORE -h localhost -U postgres -d "${DATABASE}" --data-only --single-transaction --exit-on-error --disable-triggers "${BACKUP_INVENTARIO}"
     fi
 
     ARA_DOMAIN=""
     case "${DATABASE}" in
-        'aranorte') ARA_DOMAIN='Norte';;
-        'arasul') ARA_DOMAIN='Sul';;
-        'arazambeze') ARA_DOMAIN='Zambeze';;
-        'dpmaip') ARA_DOMAIN='DPMAIP';;
+        'aranorte') ARA_DOMAIN='Norte' ;;
+        'arasul') ARA_DOMAIN='Sul' ;;
+        'arazambeze') ARA_DOMAIN='Zambeze' ;;
+        'dpmaip') ARA_DOMAIN='DPMAIP' ;;
     esac
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM domains.ara; INSERT INTO domains.ara VALUES ('ara', '$ARA_DOMAIN', '$ARA_DOMAIN', NULL, NULL, NULL); REFRESH MATERIALIZED VIEW domains.domains;"
 
-
-
-
     if [[ "${ARA_DOMAIN}" == 'Zambeze' ]]; then
-         echo -e '\nGestionado caso especial: Zambeze'
-         $PGRESTORE -h localhost -U postgres -d "${DATABASE}" --data-only --single-transaction --schema=utentes --exit-on-error --disable-triggers ./datos/181031_BDD_arazambeze_pro.dump
-         $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.users;"
+        echo -e '\nGestionado caso especial: Zambeze'
+        $PGRESTORE -h localhost -U postgres -d "${DATABASE}" --data-only --single-transaction --schema=utentes --exit-on-error --disable-triggers ./datos/181031_BDD_arazambeze_pro.dump
+        $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.users;"
     elif [[ "${ARA_DOMAIN}" == 'DPMAIP' ]]; then
-         echo -e '\nGestionado caso especial: dpmaip'
+        echo -e '\nGestionado caso especial: dpmaip'
         $PGRESTORE -h localhost -U postgres -d "${DATABASE}" --data-only --single-transaction --exit-on-error --disable-triggers ./datos/180711_BDD_dpmaip_pro.dump
     else
-        if [ -f "${BACKUP_UTENTES}.dump" ] ; then
+        if [ -f "${BACKUP_UTENTES}.dump" ]; then
             $PGRESTORE -h localhost -U postgres -d "${DATABASE}" --data-only --single-transaction --exit-on-error --disable-triggers "${BACKUP_UTENTES}.dump"
         else
             PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${1}" -f "${BACKUP_UTENTES}.sql"
@@ -160,7 +155,6 @@ aranorte() {
     echo 'finish aranorte'
 }
 
-
 arasul() {
     DATABASE=arasul
     SUR_DATA_VERSION=20170417.Sul
@@ -180,7 +174,6 @@ arasul() {
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM domains.ara; INSERT INTO domains.ara VALUES ('ara', 'Sul', 'Sul', NULL, NULL, NULL); REFRESH MATERIALIZED VIEW domains.domains;"
     write_version_and_dump "$DATABASE"
 }
-
 
 arazambeze() {
     DATABASE=arazambeze
@@ -206,14 +199,12 @@ arazambeze() {
     write_version_and_dump "$DATABASE"
 }
 
-
 dpmaip() {
     DATABASE=dpmaip
     INVENTARIO_VERSION="NONE"
     UTENTES_VERSION=180711 # 180711_BDD_dpmaip_pro.dump
     CBASE_VERSION=""
     FOTOS_VERSION=""
-
 
     for_each_database "${DB_TEMPLATE}" "${DATABASE}" "${CBASE_VERSION}"
     fill_data ${DATABASE} ${INVENTARIO_VERSION} ${UTENTES_VERSION} "${FOTOS_VERSION}"
@@ -228,7 +219,6 @@ dpmaip() {
 
     write_version_and_dump "$DATABASE"
 }
-
 
 main() {
     PGOPTIONS_BCK="${PGOPTIONS}"
@@ -264,10 +254,10 @@ FLAG_DUMP=0
 while [ $# -gt 0 ]; do
     case $1 in
 
-    --dump)
-        FLAG_DUMP=1
-        shift
-        ;;
+        --dump)
+            FLAG_DUMP=1
+            shift
+            ;;
     esac
 done
 

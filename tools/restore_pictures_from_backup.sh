@@ -1,13 +1,11 @@
 #!/bin/sh
 
-
 BACKUP_FILE="${1}"
 DATABASE=${2}
 
 source ../server/variables.ini
 
-
-if [ ! -f $BACKUP_FILE ] ; then
+if [ ! -f $BACKUP_FILE ]; then
     echo "El fichero de backup debe existir"
     exit
 fi

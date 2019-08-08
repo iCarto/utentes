@@ -7,4 +7,3 @@ chown ${DEFAULT_USER}:${DEFAULT_USER} ~/.psqlrc
 echo "*:${PG_PORT}:*:postgres:${PG_POSTGRES_PASSWD}" > ~/.pgpass
 chown ${DEFAULT_USER}:${DEFAULT_USER} ~/.pgpass
 chmod 600 ~/.pgpass
-

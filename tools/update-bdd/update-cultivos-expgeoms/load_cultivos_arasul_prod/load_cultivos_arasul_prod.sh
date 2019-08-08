@@ -3,11 +3,11 @@
 set -x
 . ./variables.ini
 
-explotaciones_no_existentes=`$PSQL -t -X -A $PG_CONNECTION -c "
+explotaciones_no_existentes=$($PSQL -t -X -A $PG_CONNECTION -c "
 select count(*) from public.${TABLE_EXPLORACAOS_TMP} tmp
 	left join utentes.exploracaos expl on tmp.e_exp_id = expl.exp_id and tmp.e_exp_name = expl.exp_name
 where expl.gid is null
-"`
+")
 if [ $explotaciones_no_existentes -ne 0 ]; then
     echo "Explotaciones no existentes en BBDD: ${explotaciones_no_existentes}"
     exit 1

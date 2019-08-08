@@ -4,7 +4,7 @@ set -x
 . ../server/variables.ini
 
 DROP_FILE="-d"
-if [[ "${1}" == "--drop_and_create_db" ]] ; then
+if [[ "${1}" == "--drop_and_create_db" ]]; then
     DROP_FILE="-c"
     $PSQL -h "${PG_HOST}" -p "${PG_PORT}" -U "${PG_USER}" -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DBNAME}';"
     dropdb -h "${PG_HOST}" -p "${PG_PORT}" -U "${PG_USER}" "${DBNAME}"
@@ -14,7 +14,7 @@ fi
 
 check_if_file_exists() {
     echo "Checking: ${1}"
-    if [ ! -f  "${1}" ]; then
+    if [ ! -f "${1}" ]; then
         echo "File not found!: ${1}"
         exit -1
     fi
@@ -27,11 +27,11 @@ check_if_file_exists "${SHP_EXPLORACAOS}"
 # Crear fichero de mapping
 shp2pgsql -s 32737 -S -c -g geom -I -t 2D "${SHP_EXPLORACAOS}" "${TABLE_EXPLORACAOS_TMP}" | $PSQL $PG_CONNECTION
 
-explotaciones_no_existentes=`$PSQL -t -X -A $PG_CONNECTION -c "
+explotaciones_no_existentes=$($PSQL -t -X -A $PG_CONNECTION -c "
 select count(*) from ${TABLE_EXPLORACAOS_TMP} tmp
 	left join utentes.exploracaos expl on tmp.e_exp_id = expl.exp_id and tmp.e_exp_name = expl.exp_name
 where expl.gid is null
-"`
+")
 if [ $explotaciones_no_existentes -ne 0 ]; then
     echo "Explotaciones no existentes en BBDD: ${explotaciones_no_existentes}"
     exit 1
@@ -45,7 +45,6 @@ SET
 FROM ${TABLE_EXPLORACAOS_TMP} tmp
 WHERE exp.exp_id = tmp.e_exp_id
 "
-
 
 SHP_CULTIVOS="../data/190328/1903_Cultivos_Bea.shp"
 TABLE_CULTIVOS_TMP="public.cultivos_tmp"

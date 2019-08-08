@@ -5,7 +5,6 @@
 # cd "${DIR}"
 cd /vagrant/server
 
-
 source ./variables.ini
 
 apt-get update
@@ -22,7 +21,7 @@ export LC_TYPE="${LOCALE}"
 sed -i 's%.*history-search-backward%"\\e[5~": history-search-backward%' /etc/inputrc
 sed -i 's%.*history-search-forward%"\\e[6~": history-search-forward%' /etc/inputrc
 
-apt-get install -y emacs-nox build-essential unzip binutils libproj-dev gdal-bin python-gdal 
+apt-get install -y emacs-nox build-essential unzip binutils libproj-dev gdal-bin python-gdal
 
 ./install_postgres.sh
 ./install_pgtap.sh
@@ -33,7 +32,6 @@ apt-get install -y emacs-nox build-essential unzip binutils libproj-dev gdal-bin
 # ./install_apache.sh    # Los .conf hay que ajustarlos a mano
 
 ./install_nginx_y_visor.sh
-
 
 ./own_settings.sh
 

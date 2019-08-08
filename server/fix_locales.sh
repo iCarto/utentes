@@ -13,8 +13,6 @@ export LC_TYPE="en_US.utf8"
 
 # dpkg-reconfigure -f noninteractive locales
 
-
-
 # Check our system locale -- make sure it is set to UTF-8
 # This also means we need to run 'dpkg-reconfigure' to avoid "unable to re-open stdin" errors (see http://serverfault.com/a/500778)
 # For now, we have a hardcoded locale of "en_US.UTF-8"

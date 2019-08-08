@@ -16,13 +16,11 @@ apt-get install aptitude -y
 aptitude upgrade -y
 aptitude install $basicApps -y
 
-
 ###
 ### enable webserver in systemd
 ###
 
 systemctl enable nginx
-
 
 ###
 ### setting up ssh
@@ -30,14 +28,13 @@ systemctl enable nginx
 
 # TODO: configure ssh key in order to can use git repository
 
-
 ###
 ### Updating project source code
 ###
 
 if [ -d $repoDir ]; then
-	mkdir -p $parentRepoDir
-	cd $parentRepoDir
+    mkdir -p $parentRepoDir
+    cd $parentRepoDir
     git clone git@gitlab.com:icarto-private/sixhiara-visor.git
     git clone git@gitlab.com:icarto-private/dngrh-visor.git
 fi

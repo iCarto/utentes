@@ -42,8 +42,6 @@ timedatectl set-timezone "${MY_TIMEZONE}"
 apt-get install -y unattended-upgrades
 # https://help.ubuntu.com/lts/serverguide/automatic-updates.html
 
-
-
 sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
 sed -i 's/#*PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 echo 'AddressFamily inet' | tee -a /etc/ssh/sshd_config
@@ -63,7 +61,7 @@ ufw default deny incoming
 ufw default allow outgoing
 ufw delete deny ssh
 ufw allow $SSH_PORT/tcp
-if $PG_ALLOW_EXTERNAL_CON ; then
+if $PG_ALLOW_EXTERNAL_CON; then
     ufw allow $PG_PORT/tcp
 fi
 ufw allow http
