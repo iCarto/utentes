@@ -4,7 +4,7 @@ source variables.ini
 
 if [[ "${PYTHON_VERSION}" == "2.7" ]]; then
     # mod-wsgi for python 2.7
-    apt-get install -y apache2 apache2-mpm-prefork apache2-utils ssl-cert libapache2-mod-wsgi
+    apt-get install -y apache2 apache2-utils ssl-cert libapache2-mod-wsgi
 else
     # https://devops.profitbricks.com/tutorials/install-and-configure-mod_wsgi-on-ubuntu-1604-1/
     apt-get install -y apache2 apache2-utils libexpat1 ssl-cert python libapache2-mod-wsgi-py3
@@ -29,6 +29,8 @@ cp ${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl-test.conf /etc/apache2/sites-
 # cd ${WWW_PATH}
 # ln -s lib/python2.7/site-packages/expedientes-9.4-py2.7.egg/expedientes/static/
 # chown -R ${DEFAULT_USER}:www-data ${WWW_PATH}
+
+a2enmod deflate
 
 a2enmod ssl
 a2ensite ${PROJECT_NAME}

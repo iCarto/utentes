@@ -31,4 +31,5 @@
         Require all granted
     </Directory>
 
+    AddOutputFilterByType DEFLATE application/json
 </VirtualHost>
