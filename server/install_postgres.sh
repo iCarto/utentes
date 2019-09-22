@@ -24,7 +24,6 @@ else
     apt-get install -y --no-install-recommends postgis
 fi
 
-systemctl restart postgresql # on some systems cluster is not booted by default
 mv /etc/postgresql/${PG_VERSION}/main/postgresql.conf /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org
 grep -v '^#' /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org | grep '^[ ]*[a-z0-9]' > /etc/postgresql/${PG_VERSION}/main/postgresql.conf
 grep -v '^#' /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org | grep '^[ ]*[a-z0-9]' > /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org.no_comments
@@ -42,10 +41,10 @@ chmod a-w /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org
 chmod a-w /etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org.no_comments
 chmod a-w /etc/postgresql/${PG_VERSION}/main/pg_hba.conf.${PG_VERSION}.org
 
-sudo -u postgres psql postgres -c "ALTER USER postgres WITH PASSWORD '${PG_POSTGRES_PASSWD}';"
-# sudo -u postgres psql postgres -v pwd=$"{PG_POSTGRES_PASSWD}" -c "ALTER USER postgres WITH PASSWORD :'pwd';"
-
 # https://stackoverflow.com/questions/1988249/how-do-i-use-su-to-execute-the-rest-of-the-bash-script-as-that-user
 sudo -u "${DEFAULT_USER}" -H ./config_postgres_dotfiles.sh
 
 systemctl restart postgresql
+
+sudo -u postgres psql postgres -c "ALTER USER postgres WITH PASSWORD '${PG_POSTGRES_PASSWD}';"
+# sudo -u postgres psql postgres -v pwd=$"{PG_POSTGRES_PASSWD}" -c "ALTER USER postgres WITH PASSWORD :'pwd';"

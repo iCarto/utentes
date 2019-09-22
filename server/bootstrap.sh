@@ -1,11 +1,19 @@
 #!/bin/bash
 
-# FIX ME
-# DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-# cd "${DIR}"
+set -e
+
 cd /vagrant/server
 
 source ./variables.ini
+
+# https://serverfault.com/questions/500764/
+# https://unix.stackexchange.com/questions/22820
+# https://unix.stackexchange.com/questions/146283/
+# Take care DEBIAN_FRONTEND and -o Dpkg::Options::=--force-confnew can
+# set not desired configurations. Maybe set it in each needed call will be
+# better
+export DEBIAN_FRONTEND=noninteractive
+export UCF_FORCE_CONFFNEW=1
 
 apt-get update
 
@@ -28,7 +36,7 @@ apt-get install -y emacs-nox build-essential unzip binutils libproj-dev gdal-bin
 ./install_sqitch.sh
 ./install_git.sh
 
-./create_python${PYTHON_VERSION}_virtualenv_project.sh
+./create_python_virtualenv_project.sh
 # ./install_apache.sh    # Los .conf hay que ajustarlos a mano
 
 ./install_nginx_y_visor.sh

@@ -17,4 +17,5 @@ mkvirtualenv -a $WWW_PATH $PROJECT_NAME
 
 echo 'cdproject' >> ~/.virtualenvs/postactivate
 
+workon $PROJECT_NAME
 [ -f $WWW_PATH/requirements.txt ] && pip install -r $WWW_PATH/requirements.txt
