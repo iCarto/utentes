@@ -18,7 +18,7 @@ WITH foo AS (
     FROM domains.cultivo_tipo
     WHERE key != 'Outras'
 )
-UPDATE domains.energia_tipo
+UPDATE domains.cultivo_tipo
 SET ordering = row_number
 FROM foo
 WHERE key = fookey ;

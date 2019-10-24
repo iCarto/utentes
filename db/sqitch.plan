@@ -179,3 +179,4 @@ adds_missing_postos_lincom_risunodo_velha 2019-09-09T10:00:54Z Francisco Puga <f
 modify_domain_hidroelectrica 2019-09-26T18:24:24Z Francisco Puga <fpuga@icarto.es> # Modify domain Hidroelectrica
 set_default_for_req_obs 2019-09-27T17:51:02Z Francisco Puga <fpuga@icarto.es> # Sets a correct default for req_obs\n\nrefs #1809
 modify_ara_domain_and_code_validations 2019-09-28T14:50:23Z Francisco Puga <fpuga@icarto.es> # Modify domains.ara, exp_id and lic_nro validation
+estacoes_and_related_changes_for_aras_1761 2019-10-22T09:03:48Z Francisco Puga <fpuga@icarto.es> # Changes for estacoes and related_tables
