@@ -3,11 +3,12 @@
 set -e
 
 source ../server/variables.ini
+source exit_codes.sh
 
 DATABASE="${1}"
 if [ -z "${DATABASE}" ]; then
     echo "ERROR. Introduzca el nombre de la base de datos"
-    exit 64
+    exit $EX_USAGE
 fi
 
 $PSQL -h localhost -d "${DATABASE}" -U postgres -c "

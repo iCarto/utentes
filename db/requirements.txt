@@ -1,0 +1,5 @@
+pyexcel==0.5.15
+pyexcel-xlsx==0.5.7
+pyexcel-ods==0.5.6
+fs==2.4.11 # pyfilesystem
+-e git+git@gitlab.com:icarto-private/ietl.git#egg=ietl

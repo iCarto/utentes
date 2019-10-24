@@ -1,5 +1,11 @@
 #!/bin/bash
 
+set -e
+source ../server/variables.ini
+source db_utils.sh
+source bash_utils.sh
+source exit_codes.sh
+
 # Norte $1 = PATH_TO/160414_SIG_SIXHIARA/
 
 # Sul. $1 = 1701_BDD_ARA_Sul
@@ -11,23 +17,16 @@ DBF_FOLDER="${1}/02_Tablas_embebida/"
 
 rsync -azvP --delete --exclude="00_Proceso" fpuga@gallactica:${ORG_FOLDER} ${DEST_FOLDER}
 
-if [ ! -d $SHAPE_FOLDER ]; then
-    echo "El directorio $SHAPE_FOLDER debe existir"
-    exit
-fi
+ensure_folder_exists "${SHAPE_FOLDER}"
 
-if [ ! -d $DBF_FOLDER ]; then
-    echo "El directorio $DBF_FOLDER debe existir"
-    exit
-fi
+ensure_folder_exists "${DBF_FOLDER}"
 
 ARA=$2
 if [ -z "$ARA" ]; then
     echo "Indique a que ARA pertenecen los datos Sul/Norte"
-    exit
+    exit $EX_USAGE
 fi
 
-TODAY=$(date +%Y%m%d)
 CBASE=./cbase.sql.$TODAY.${ARA}
 ACUIFEROS=./acuiferos.sql.$TODAY.${ARA}
 FONTES=./fontes.sql.$TODAY.${ARA}

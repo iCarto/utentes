@@ -4,11 +4,9 @@ BACKUP_FILE="${1}"
 DATABASE=${2}
 
 source ../server/variables.ini
+source bash_utils.sh
 
-if [ ! -f $BACKUP_FILE ]; then
-    echo "El fichero de backup debe existir"
-    exit
-fi
+ensure_file_exists "${BACKUP_FILE}"
 
 PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d ${DATABASE} -c "DELETE FROM inventario.acuiferos_imagenes; DELETE FROM inventario.barragens_imagenes; DELETE FROM inventario.estacoes_imagenes; DELETE FROM inventario.fontes_imagenes;"
 

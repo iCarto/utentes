@@ -5,7 +5,6 @@ set -e
 source ../server/variables.ini
 
 SUCCESS=0
-TODAY=$(date +%y%m%d)
 
 foo() {
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${1}" -f "acuiferos.sql.$2"
@@ -37,7 +36,7 @@ sqitch_deploy() {
         echo 'Sqitch no ha finalizado correctamente'
         echo "$1, $2"
         echo "Saliendo"
-        exit
+        exit $EX_1
     fi
     cd scripts || error 'ERROR: finalizando sqitch deploy'
 }

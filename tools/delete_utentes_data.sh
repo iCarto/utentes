@@ -11,10 +11,12 @@ if [ -z "${DATABASE}" ]; then
 fi
 
 $PSQL -h localhost -d "${DATABASE}" -U postgres -c "
-    delete from utentes.documentos;
-    delete from utentes.inventario_fontes;
-    delete from utentes.settings;
-    delete from utentes.users;
-    delete from utentes.utentes;
-    delete from utentes.version;
+  delete from utentes.documentos;
+  delete from utentes.inventario_fontes;
+  delete from utentes.settings;
+  delete from utentes.users;
+  delete from utentes.utentes;
+  delete from utentes.version;
 "
+
+echo "foo" > bar
