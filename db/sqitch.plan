@@ -182,3 +182,4 @@ modify_ara_domain_and_code_validations 2019-09-28T14:50:23Z Francisco Puga <fpug
 estacoes_and_related_changes_for_aras_1761 2019-10-22T09:03:48Z Francisco Puga <fpuga@icarto.es> # Changes for estacoes and related_tables
 estacoes_estado_domain_ampliado_to_estado 2019-10-31T18:38:49Z Francisco Puga <fpuga@icarto.es> # changes estacoes.estado from domains.estado_ampliado to domains.estado
 drop_trigger_calcular_pagos_licencias 2019-11-07T22:57:59Z Francisco Puga <fpuga@icarto.es> # drop_trigger_calcular_pagos_licencias
+new_version_191107 2019-11-07T16:49:53Z ,,, <utentes@utentes> # new_version_191107
