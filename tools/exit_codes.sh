@@ -6,6 +6,7 @@ EX_OK=0    # successful termination
 # user-defined exit codes should use the range 79 - 113
 #
 EX_FILE=79 # File or Folder does not exist
+EX_PARAM=80 # Bad or missing parameter for a command or script
 
 #
 # # https://brandur.org/exit-status

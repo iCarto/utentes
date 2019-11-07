@@ -7,7 +7,10 @@ source ../server/variables.ini
 drop_db_and_kickout_users() {
     local DATABASE="${1}"
     $PSQL -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DATABASE}';"
-    $DROPDB -h localhost -U postgres --if-exists "${DATABASE}"
+    
+    # To avoid problems. Uncomment if following a flow where is
+    # really needed
+    # $DROPDB -h localhost -U postgres --if-exists "${DATABASE}"
 }
 
 create_db_from_template() {
@@ -21,8 +24,12 @@ create_db_from_template() {
 create_db_from_template_and_dump() {
     local TEMPLATE="${1}"
     local DATABASE="${2}"
+    # https://stackoverflow.com/a/2013589/930271
+    # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+    local BCK_FOLDER="${3:-$(pwd)}"
+    
     create_db_from_template "${TEMPLATE}" "${DATABASE}"
-    $PGDUMP -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${DATABASE}.dump" "${DATABASE}"
+    $PGDUMP -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${BCK_FOLDER}/${DATABASE}.dump" "${DATABASE}"
 }
 
 create_last_db() {
@@ -33,17 +40,7 @@ create_last_db() {
     $PGRESTORE -h localhost -U postgres -d "${DATABASE}" "${DUMP}"
 }
 
-create_pre_db_backup() {
-    local TEMPLATE="${1}"
-    local DATABASE="${1}_pre_${TODAY}"
-    create_db_from_template "${TEMPLATE}" "${DATABASE}"
-}
 
-create_post_db_backup() {
-    local TEMPLATE="${1}"
-    local DATABASE="${1}_post_${TODAY}"
-    create_db_from_template "${TEMPLATE}" "${DATABASE}"
-}
 
 dump_db() {
     local DATABASE="${1}"
