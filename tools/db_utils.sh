@@ -3,6 +3,7 @@
 # set -e  # Porqué si se lanza desde cli se cierra el terminal
 
 source ../server/variables.ini
+source exit_codes.sh
 
 drop_db_and_kickout_users() {
     local DATABASE="${1}"
@@ -52,4 +53,39 @@ dump_db_prod() {
     # Hay que mejorarlo
     local DATABASE="${1}"
     $PGDUMP -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${TODAY}_prod_${DATABASE}.dump" "${DATABASE}"
+}
+
+delete_all_data_in_schema() {
+    # https://stackoverflow.com/questions/13223820/postgresql-delete-all-content
+    # https://stackoverflow.com/questions/2829158/truncating-all-tables-in-a-postgres-database
+    # https://stackoverflow.com/questions/58940086/is-it-possible-to-combine-c-and-v-in-psql
+    local DATABASE="${1}"
+    local SCHEMA="${2}"
+
+    if [ -z "${DATABASE}" ]; then
+        echo "ERROR. Introduzca el nombre de la base de datos"
+        return $EX_USAGE
+    fi
+
+    if [ -z "${SCHEMA}" ]; then
+        echo "ERROR. Introduzca el esquema"
+        return $EX_USAGE
+    fi
+
+    ! read -d '' sql_query << EOF
+DO
+\$func\$
+BEGIN
+   -- RAISE NOTICE '%', 
+   EXECUTE
+   (SELECT 'TRUNCATE TABLE ' || string_agg(oid::regclass::text, ', ') || ' CASCADE'
+    FROM   pg_class
+    WHERE  relkind = 'r'  -- only tables
+    AND    relnamespace = '${SCHEMA}'::regnamespace
+   );
+END
+\$func\$;    
+EOF
+
+    $PSQLC -h localhost -U postgres -d "${DATABASE}" -c "${sql_query}"
 }

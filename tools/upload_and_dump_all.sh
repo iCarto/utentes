@@ -3,6 +3,7 @@
 set -e
 
 source ../server/variables.ini
+source db_utils.sh
 
 SUCCESS=0
 
@@ -41,10 +42,6 @@ sqitch_deploy() {
     cd scripts || error 'ERROR: finalizando sqitch deploy'
 }
 
-clean_data_inventario() {
-    PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${1}" -c "DO $$ DECLARE query text; BEGIN FOR query IN SELECT 'DELETE FROM ' || schemaname || '.' || tablename  from pg_tables where schemaname = 'inventario' LOOP EXECUTE query; END LOOP; END $$;"
-}
-
 for_each_database() {
     TEMPLATE=$1
     DATABASE=$2
@@ -68,7 +65,7 @@ fill_data() {
 
     # PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.utentes; DELETE FROM utentes.settings; DELETE FROM utentes.users;"
     PGOPTIONS='--client-min-messages=warning' $PSQL -h localhost -U postgres -d "${DATABASE}" -c "DELETE FROM utentes.utentes; DELETE FROM utentes.settings;"
-    # clean_data_inventario "${DATABASE}"
+    # delete_all_data_in_schema "${DATABASE}" "inventario"
 
     # --jobs 2 # No compatible con --single-transaction
     # En lugar de disable-triggers estaria bien poder hacer un SET ALL CONSTRAINTS DEFERRED, para dar más seguridad a que
