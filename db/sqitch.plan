@@ -187,3 +187,4 @@ new_version_191107 2019-11-07T16:49:53Z ,,, <utentes@utentes> # new_version_1911
 
 add_ara_centro_and_centronorte 2020-01-14T08:59:59Z Francisco Puga <fpuga@icarto.es> # Add ARAC and ARACN
 create_tables_cbase_unidades 2020-01-15T08:59:59Z Francisco Puga <fpuga@icarto.es> # Creates cbase.unidades and cbase_ara.unidades
+fill_cbase_ara_schema_from_cbase_schema 2020-01-24T09:43:15Z Francisco Puga <fpuga@icarto.es> # Fills tables in cbase_ara from values in cbase
