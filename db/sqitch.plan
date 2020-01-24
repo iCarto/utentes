@@ -184,3 +184,5 @@ estacoes_estado_domain_ampliado_to_estado 2019-10-31T18:38:49Z Francisco Puga <f
 drop_trigger_calcular_pagos_licencias 2019-11-07T22:57:59Z Francisco Puga <fpuga@icarto.es> # drop_trigger_calcular_pagos_licencias
 new_version_191107 2019-11-07T16:49:53Z ,,, <utentes@utentes> # new_version_191107
 @191107 2019-11-26T15:33:56Z Francisco Puga <fpuga@icarto.es> # tag 191107
+
+add_ara_centro_and_centronorte 2020-01-14T08:59:59Z Francisco Puga <fpuga@icarto.es> # Add ARAC and ARACN
