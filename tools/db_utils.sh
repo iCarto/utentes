@@ -8,7 +8,7 @@ source exit_codes.sh
 drop_db_and_kickout_users() {
     local DATABASE="${1}"
     $PSQL -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DATABASE}';"
-    
+
     # To avoid problems. Uncomment if following a flow where is
     # really needed
     # $DROPDB -h localhost -U postgres --if-exists "${DATABASE}"
@@ -18,7 +18,6 @@ create_db_from_template() {
     local TEMPLATE="${1}"
     local DATABASE="${2}"
     drop_db_and_kickout_users "${DATABASE}"
-    $PSQL -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${TEMPLATE}';"
     $CREATEDB -h localhost -U postgres -T "${TEMPLATE}" "${DATABASE}"
 }
 
@@ -28,7 +27,7 @@ create_db_from_template_and_dump() {
     # https://stackoverflow.com/a/2013589/930271
     # https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
     local BCK_FOLDER="${3:-$(pwd)}"
-    
+
     create_db_from_template "${TEMPLATE}" "${DATABASE}"
     $PGDUMP -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${BCK_FOLDER}/${DATABASE}.dump" "${DATABASE}"
 }
@@ -40,8 +39,6 @@ create_last_db() {
     $CREATEDB -h localhost -U postgres "${DATABASE}"
     $PGRESTORE -h localhost -U postgres -d "${DATABASE}" "${DUMP}"
 }
-
-
 
 dump_db() {
     local DATABASE="${1}"
@@ -76,7 +73,7 @@ delete_all_data_in_schema() {
 DO
 \$func\$
 BEGIN
-   -- RAISE NOTICE '%', 
+   -- RAISE NOTICE '%',
    EXECUTE
    (SELECT 'TRUNCATE TABLE ' || string_agg(oid::regclass::text, ', ') || ' CASCADE'
     FROM   pg_class
@@ -84,7 +81,7 @@ BEGIN
     AND    relnamespace = '${SCHEMA}'::regnamespace
    );
 END
-\$func\$;    
+\$func\$;
 EOF
 
     $PSQLC -h localhost -U postgres -d "${DATABASE}" -c "${sql_query}"
