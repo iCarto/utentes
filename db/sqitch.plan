@@ -190,3 +190,4 @@ create_tables_cbase_unidades 2020-01-15T08:59:59Z Francisco Puga <fpuga@icarto.e
 fill_cbase_ara_schema_from_cbase_schema 2020-01-24T09:43:15Z Francisco Puga <fpuga@icarto.es> # Fills tables in cbase_ara from values in cbase
 fill_domains_from_cbase 2020-01-24T11:44:55Z Francisco Puga <fpuga@icarto.es> # Fill localization (hidro and admin) tables in schema domains from schema cbase
 
+updates_datos_arac_aracn 2020-01-27T10:54:49Z Francisco Puga <fpuga@icarto.es> # Adds data for ARAC and ARAN to domains.datos_aras
