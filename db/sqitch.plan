@@ -191,3 +191,4 @@ fill_cbase_ara_schema_from_cbase_schema 2020-01-24T09:43:15Z Francisco Puga <fpu
 fill_domains_from_cbase 2020-01-24T11:44:55Z Francisco Puga <fpuga@icarto.es> # Fill localization (hidro and admin) tables in schema domains from schema cbase
 
 updates_datos_arac_aracn 2020-01-27T10:54:49Z Francisco Puga <fpuga@icarto.es> # Adds data for ARAC and ARAN to domains.datos_aras
+drop_table_utentes_inventario_fontes 2020-04-28T17:29:11Z Francisco Puga <fpuga@icarto.es> # Drop utentes inventario fonte
