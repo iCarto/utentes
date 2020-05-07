@@ -16,18 +16,18 @@ INSERT INTO domains.datos_aras (
 ) VALUES (
     'ARAC'
     , 'Administração Regional de Águas do Centro'
-    , 'PENDENTE'
+    , '600000276'
     , '{
         Rua Sancho de Toar, n° 67\,
         ,
         Bairro da Ponta-Gea\, Cidade da Beira\, Moçambique.
       }'
-    , '{"entidade":"PENDENTE", "n_conta":"PENDENTE", "iban":"PENDENTE"}'
+    , '{"entidade":"Banco Millenium Bim", "n_conta":"0005165764257", "iban":"MZ59000100000005165764257"}'
     , '{
-        "visao": "PENDENTE"
+        "visao": "Ser uma instituição de referência na gestão e promoção do uso sustentável dos Recursos Hídricos."
         ,
-        "missao": "PENDENTE"}'
-    , '["PENDENTE", "PENDENTE", "PENDENTE", "PENDENTE"]'
+        "missao": "Garantir a gestão integrada e participativa, protecção e desenvolvimento dos recursos hídricos para a satisfação das necessidades actuais e futuras dos utentes."}'
+    , '["Compromisso.", "Integridade.", "Eficiência e eficácia.", "Solidariedade."]'
     , '{
         "nome": "ARA CENTRO",
         "datos": {
@@ -42,24 +42,24 @@ INSERT INTO domains.datos_aras (
     , '[
         {"nome": "UGBP - UNIDADE DE GESTÃO DA BACIA DO PUNGUE",
         "datos": {
-            "Localidade": "",
-            "Provincia": "",
+            "Localidade": "Catandica",
+            "Provincia": "Manica",
             "Telefone": "",
             "Fax": ""
             }
         },
         {"nome": "UGBB - UNIDADE DE GESTÃO DA BACIA DO BÚZI",
         "datos": {
-            "Localidade": "",
-            "Provincia": "",
+            "Localidade": "Goonda",
+            "Provincia": "Sofala",
             "Telefone": "",
             "Fax": ""
             }
         },
         {"nome": "UGBS - UNIDADE DE GESTÃO DA BACIA DO SAVE",
         "datos": {
-            "Localidade": "",
-            "Provincia": "",
+            "Localidade": "Vila Franca do Save (Govuro)",
+            "Provincia": "Inhambane",
             "Telefone": "",
             "Fax": ""
             }
@@ -82,13 +82,13 @@ INSERT INTO domains.datos_aras (
 ) VALUES (
     'ARACN'
     , 'Administração Regional de Águas do Centro-Norte'
-    , 'PENDENTE'
+    , '500024569'
     , '{
-        Avenida 25 de setembro, nº 80\,
+        EN nº1\, U/Comunal Namuatho-B\,
         ,
-        bairro central\, Cidade de Nampula\, Moçambique.
+        Bairro Mutauanha\, Muatala\, Moçambique.
       }'
-    , '{"entidade":"PENDENTE", "n_conta":"PENDENTE", "iban":"PENDENTE"}'
+    , '{"entidade":"BCI / BIM", "n_conta":"1631734110001 / 140084394.", "iban":"MZ59 0008 0000 16317341101 80 / MZ59 0001 0000 00140084394 57."}'
     , '{
         "visao": "Proporcionar uma melhor gestão integrada e sustentável dos recursos hídricos em benefício das comunidades."
         ,
@@ -99,35 +99,35 @@ INSERT INTO domains.datos_aras (
         "datos": {
             "Localidade": "Cidade de Nampula",
             "Provincia": "Nampula",
-            "Telefone": "",
-            "Fax": "",
-            "Email": "",
-            "Website": ""
+            "Telefone": "+258 26217326",
+            "Fax": "+258 26217318",
+            "Email": "aracentronorte@ara-centronorte.gov.mz",
+            "Website": "www.ara-centronorte.gov.mz"
         }
     }'
     , '[
         {"nome": "UGBL - UNIDADE DE GESTÃO DA BACIA DO LÚRIO",
         "datos": {
-            "Localidade": "",
-            "Provincia": "",
-            "Telefone": "",
-            "Fax": ""
+            "Localidade": "Vila sede de Namapa",
+            "Provincia": "Nampula",
+            "Telefone": "+258 876217317",
+            "Fax": "N/A"
             }
         },
         {"nome": "UGBO - UNIDADE DE GESTÃO DE BACIAS DO OESTE",
         "datos": {
-            "Localidade": "",
-            "Provincia": "",
-            "Telefone": "",
-            "Fax": ""
+            "Localidade": "Mocuba",
+            "Provincia": "Zambézia",
+            "Telefone": "+258 24810757",
+            "Fax": "N/A"
             }
         },
         {"nome": "UGBE - UNIDADE DE GESTÃO DE BACIAS DO ESTE",
         "datos": {
-            "Localidade": "",
-            "Provincia": "",
-            "Telefone": "",
-            "Fax": ""
+            "Localidade": "Nacala-Porto",
+            "Provincia": "Nampula",
+            "Telefone": "+258 863391115",
+            "Fax": "N/A"
             }
         }
     ]'

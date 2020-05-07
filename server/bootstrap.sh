@@ -2,6 +2,9 @@
 
 set -e
 
+# FIX ME
+# DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+# cd "${DIR}"
 cd /vagrant/server
 
 source ./variables.ini
@@ -17,12 +20,13 @@ export UCF_FORCE_CONFFNEW=1
 
 apt-get update
 
-# ./fix_locales.sh
-sed -i "s/^# ${LOCALE} UTF-8/${LOCALE} UTF-8/" /etc/locale.gen
-locale-gen
-update-locale --reset LANG="${LOCALE}" LC_CTYPE="${LOCALE}"
-export LANG="${LOCALE}"
-export LC_TYPE="${LOCALE}"
+# https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt/
+apt-mark hold '^grub*'
+
+# ./fix_locales_en.sh
+# ./fix_locales_es.sh
+# ./fix_locales_pt.sh
+./fix_locales.sh
 
 ./disable_not_needed_services.sh
 
@@ -37,14 +41,12 @@ apt-get install -y emacs-nox build-essential unzip binutils libproj-dev gdal-bin
 ./install_git.sh
 
 ./create_python_virtualenv_project.sh
-# ./install_apache.sh    # Los .conf hay que ajustarlos a mano
+./install_apache.sh # Los .conf hay que ajustarlos a mano
 
-./install_nginx_y_visor.sh
+# ./install_nginx_y_visor.sh
 
 ./own_settings.sh
 
-# https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt/
-apt-mark hold '^grub*'
 apt-get upgrade -y
 
 apt-get autoremove
@@ -52,3 +54,9 @@ apt-get autoclean
 
 # Workaround
 service apache2 restart
+
+is_installed() {
+    if dpkg -s "$P" > /dev/null 2>&1; then
+        echo "is installed"
+    fi
+}

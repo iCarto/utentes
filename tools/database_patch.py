@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-
 import datetime
+import os
 import re
 
 
@@ -17,7 +16,9 @@ with open("../sqitch.plan") as f:
         if line.startswith(tag):
             flag = True
 
-with open("/tmp/" + today[2:] + "/from_" + tag[1:] + "_to_" + today + ".sql", "w") as f:
+os.makedirs(f"/tmp/{today[2:]}", exist_ok=True)
+file_path = f"/tmp/{today[2:]}/from_{tag[1:]}_to_{today}.sql"
+with open(file_path, "w") as f:
     f.write("BEGIN;\n")
     for file in files:
         with open("../deploy/" + file + ".sql") as input_file:

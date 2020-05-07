@@ -13,8 +13,16 @@ Vagrant.configure(2) do |config|
     config.vm.box_check_update = false
 
     if Vagrant.has_plugin?("vagrant-cachier")
-        config.cache.scope = :box
+        # https://askubuntu.com/questions/908800/
+        config.cache.synced_folder_opts = {
+            owner: "_apt",
+        }
+        config.cache.scope = :machine
         config.cache.auto_detect = false
+        config.cache.enable :apt
+        config.cache.enable :apt_lists
+        # config.cache.enable :npm
+        # config.cache.enable :pip
     end
 
     if Vagrant.has_plugin?("vagrant-vbguest")
@@ -23,12 +31,21 @@ Vagrant.configure(2) do |config|
         config.vbguest.auto_update = false
     end
 
-    config.vm.network "forwarded_port", guest: 6543, host: 9000
-    config.vm.network "forwarded_port", guest: 5432, host: 9001
+    config.vm.network "forwarded_port", guest: 80, host: 8000
+    config.vm.network "forwarded_port", guest: 9001, host: 9001
+
+    # FIX ME https://stackoverflow.com/questions/17966365/vagrant-chicken-and-egg-shared-folder-with-uid-apache-user
+    config.vm.synced_folder "../utentes-api", "/var/www/utentes",
+        disabled: !provisioned?,
+        create: true,
+        owner: "vagrant",
+        group: "www-data"
 
     config.vm.provider "virtualbox" do |vb|
         vb.gui = false
-        vb.memory = "1512"
+        vb.memory = "2048"
+        vb.cpus = 2
+        vb.customize ["modifyvm", :id, "--cpuexecutioncap", "85"]
     end
 
     config.vm.provision "shell", path:"server/bootstrap.sh"

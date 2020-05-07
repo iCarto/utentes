@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python36
 
 import os
 import sys
@@ -19,7 +19,7 @@ shp_to_standard_type = {"str": "TEXT", "float": "NUMERIC", "int": "INTEGER"}
 
 
 def compare_fields(book, b, shp_path):
-    print (b)
+    print(b)
     header = book[b][0]
     idx_nombre = header.index("NOMBRE BD")
     idx_tipo = header.index("TIPO DE CAMPO I (Txt, entero, real, fecha, si/no)")

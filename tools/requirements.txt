@@ -2,7 +2,7 @@ pyexcel==0.5.15
 pyexcel-xlsx==0.5.7
 pyexcel-ods==0.5.6
 fs==2.4.11 # pyfilesystem
--e git+git@gitlab.com:icarto-private/ietl.git@018b99af95d7e2f4a7b34446695269201efb2286#egg=ietl
+-e git+git@gitlab.com:icarto-private/ietl.git@baa2f96d9f8edb5da60c1c3f7c2c2b37a390700a#egg=ietl
 
 jupyterlab==1.2.6
 matplotlib==3.1.2

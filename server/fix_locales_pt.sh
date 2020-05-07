@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Instala los paquetes de idioma en castellano
+# Instala los paquetes de idioma en portugués
 
 if locale -a | grep pt_PT > /dev/null; then
     exit 0

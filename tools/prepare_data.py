@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import sys
 
 from ietl import calculate_encoding, common_checks
 

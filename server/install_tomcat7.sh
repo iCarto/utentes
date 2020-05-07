@@ -1,4 +1,6 @@
 #!/bin/bash
+# http://tecadmin.net/install-tomcat-7-on-ubuntu/
+# https://askubuntu.com/questions/339169/how-to-install-tomcat-7-0-42-on-ubuntu-12-04-3-lts
 
 source variables.ini
 
