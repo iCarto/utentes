@@ -193,3 +193,5 @@ fill_domains_from_cbase 2020-01-24T11:44:55Z Francisco Puga <fpuga@icarto.es> # 
 updates_datos_arac_aracn 2020-01-27T10:54:49Z Francisco Puga <fpuga@icarto.es> # Adds data for ARAC and ARAN to domains.datos_aras
 drop_table_utentes_inventario_fontes 2020-04-28T17:29:11Z Francisco Puga <fpuga@icarto.es> # Drop utentes inventario fonte
 moves_c_estimado_to_actividade 2020-05-23T08:24:00Z Francisco Puga <fpuga@icarto.es> # Moves 'c_estimado' from childs to parent 'actividade'
+new_version_200527 2020-05-27T15:26:34Z Francisco Puga <fpuga@icarto.es> # new_version_200527
+@200527 2020-05-27T15:30:28Z Francisco Puga <fpuga@icarto.es> # tag 200527
