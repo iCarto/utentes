@@ -4,7 +4,7 @@ source variables.ini
 
 cd /vagrant/server
 
-sudo -u postgres psql -f ${SETTINGS}/own-settings/database_roles.sql
+sudo -u postgres psql -f "${SETTINGS}/own-settings/database_roles.sql"
 
 # cp ${SETTINGS}/own-settings/pg_hba.conf /etc/postgresql/${PG_VERSION}/main/
 # cp ${SETTINGS}/own-settings/postgresql.conf /etc/postgresql/${PG_VERSION}/main/

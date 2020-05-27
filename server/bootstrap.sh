@@ -56,7 +56,7 @@ apt-get autoclean
 service apache2 restart
 
 is_installed() {
-    if dpkg -s "$P" > /dev/null 2>&1; then
+    if dpkg -s "${1}" > /dev/null 2>&1; then
         echo "is installed"
     fi
 }

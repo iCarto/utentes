@@ -18,15 +18,18 @@ from_source() {
     # this can be improved
     # https://github.com/GrahamDumpleton/mod_wsgi
     apt-get install -y apache2 apache2-dev apache2-utils libexpat1 ssl-cert
-    sudo -u vagrant -H -i "${SETTINGS}"/install_mod_wsgi_into_virtualenv.sh
-    /home/vagrant/.virtualenvs/utentes/bin/python /home/vagrant/.virtualenvs/utentes/bin/mod_wsgi-express install-module
+    sudo -u "${DEFAULT_USER}" -H -i "${SETTINGS}"/install_mod_wsgi_into_virtualenv.sh
+    "/home/${DEFAULT_USER}/.virtualenvs/${DEFAULT_USER}/bin/python" "/home/${DEFAULT_USER}/.virtualenvs/${PROJECT_NAME}/bin/mod_wsgi-express" install-module
 }
 
 # from_apt
 from_source
-usermod -a -G www-data $DEFAULT_USER
+usermod -a -G www-data "${DEFAULT_USER}"
 mkdir -p $WWW_PATH
-chown -R $DEFAULT_USER:www-data $WWW_PATH
+chown -R "${DEFAULT_USER}":www-data "${WWW_PATH}"
+
+mkdir -p /var/www/media
+chown -R "${DEFAULT_USER}":www-data /var/www/media
 
 # sudo $DEFAULT_USER
 # git clone $GIT_REPO ${WWW_PATH}/${PROJECT_NAME}
@@ -34,18 +37,18 @@ chown -R $DEFAULT_USER:www-data $WWW_PATH
 # python setup.py install
 # exit
 
-if [[ ${ENTORNO} == "DEV" ]]; then
-    cp ${SETTINGS}/apache-settings/${PROJECT_NAME}-test.conf /etc/apache2/sites-available/${PROJECT_NAME}.conf
+if [[ "${ENTORNO}" == "DEV" ]]; then
+    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}-test.conf" "/etc/apache2/sites-available/${PROJECT_NAME}.conf"
     # cp ${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl-test.conf /etc/apache2/sites-available/${PROJECT_NAME}-ssl.conf
 else
-    cp ${SETTINGS}/apache-settings/${PROJECT_NAME}.conf /etc/apache2/sites-available/
-    cp ${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl.conf /etc/apache2/sites-available/
+    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}.conf" /etc/apache2/sites-available/
+    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl.conf" /etc/apache2/sites-available/
 fi
 
 a2enmod deflate
 
 a2enmod ssl
-a2ensite ${PROJECT_NAME}
+a2ensite "${PROJECT_NAME}"
 # a2ensite ${PROJECT_NAME}-ssl
 a2dissite 000-default
 

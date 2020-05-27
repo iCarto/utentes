@@ -32,7 +32,7 @@ from_source() {
 
 from_apt() {
     # http://railslide.io/virtualenvwrapper-python3.html
-    apt-get install -o Dpkg::Options::=--force-confnew -y python${PYTHON_VERSION} python3-pip
+    apt-get install -o Dpkg::Options::=--force-confnew -y "python${PYTHON_VERSION}" python3-pip
     # pip3 install --upgrade pip
     # hash -r pip # Workaround https://github.com/pypa/pip/issues/5240
 }

@@ -19,7 +19,7 @@
 # using a different "prefix" that the "production versions", seems to avoid errors derived from typings and hurries
 
 set -e
-. ../server/variables.ini
+source ../server/variables.ini
 
 # TODO: Improve checks
 if [[ (-f "${1}") && ("${1}" =~ [0-9][0-9][0-9][0-9][0-9][0-9]_$DBNAME.dump) ]]; then
@@ -31,7 +31,7 @@ FAIL_IF_TODAY_BCK_EXISTS="True" # Setear cualquier otro valor para cambiar
 TODAY_MAIN_DB_BACKUP="${DBNAME}_tmp_${TODAY}"
 
 ## Kills all connections to the database to make the backup ##
-$PSQL -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DBNAME}';"
+${PSQL} -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DBNAME}';"
 
 ## Renames the database to make a backup ##
 
@@ -39,15 +39,15 @@ $PSQL -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "select pg_termina
 # if ! sudo -u postgres psql -d ${DBNAME} -c "select 1" > /dev/null 2>&1; then
 #     sudo -u postgres createdb -O ${DBOWNER} -E UTF-8 ${DBNAME}
 # fi
-MAIN_DB_EXISTS=$($PSQL -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${DBNAME}';")
-TODAY_MAIN_DB_BACKUP_EXISTS=$($PSQL -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${TODAY_MAIN_DB_BACKUP}';")
+MAIN_DB_EXISTS=$(${PSQL} -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${DBNAME}';")
+TODAY_MAIN_DB_BACKUP_EXISTS=$(${PSQL} -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${TODAY_MAIN_DB_BACKUP}';")
 
 if [[ "${MAIN_DB_EXISTS}" == "True" && "${TODAY_MAIN_DB_BACKUP_EXISTS}" != "True" || ("${TODAY_MAIN_DB_BACKUP_EXISTS}" == "True" && ${FAIL_IF_TODAY_BCK_EXISTS} == "True") ]]; then
     echo "Renombrando ${DBNAME} a ${TODAY_MAIN_DB_BACKUP}"
-    $PSQL -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "ALTER DATABASE \"${DBNAME}\" RENAME TO \"${TODAY_MAIN_DB_BACKUP}\";"
+    ${PSQL} -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "ALTER DATABASE \"${DBNAME}\" RENAME TO \"${TODAY_MAIN_DB_BACKUP}\";"
 fi
 
-MAIN_DB_EXISTS=$($PSQL -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${DBNAME}';")
+MAIN_DB_EXISTS=$(${PSQL} -A -t -h localhost -p "${PG_PORT}" -U postgres -d postgres -c "SELECT 'True' FROM pg_database WHERE datname='${DBNAME}';")
 if [[ "${MAIN_DB_EXISTS}" == "True" ]]; then
     # Si entramos aquí es porque la base de datos antigua no se ha renombrado
     # En lugar de este if, prodríamos usar el parámetro `--if-exists`. Pero perdemos la info de logging. Toda esta parte hay que refactorizarla
@@ -62,9 +62,9 @@ createdb -h localhost -p "${PG_PORT}" -U postgres -T template0 -O "${DBOWNER}" -
 
 if ! [ -z "${DUMP_FILE}" ]; then
     echo "Restaurando ${DUMP_FILE} en ${DBNAME}"
-    $PGRESTORE -h localhost -p "${PG_PORT}" -U postgres -d "${DBNAME}" --single-transaction --exit-on-error --disable-triggers "${DUMP_FILE}"
+    ${PGRESTORE} -h localhost -p "${PG_PORT}" -U postgres -d "${DBNAME}" --single-transaction --exit-on-error --disable-triggers "${DUMP_FILE}"
     echo "Creando $(basename "${DUMP_FILE%.dump}")"
     createdb -h localhost -p "${PG_PORT}" -U postgres -T "${DBNAME}" -O "${DBOWNER}" -E UTF-8 -l "${LOCALE}" "$(basename "${DUMP_FILE%.dump}")"
 else
-    $PSQL -h localhost -p "${PG_PORT}" -U postgres -d "${DBNAME}" -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+    ${PSQL} -h localhost -p "${PG_PORT}" -U postgres -d "${DBNAME}" -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 fi
