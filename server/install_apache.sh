@@ -19,7 +19,7 @@ from_source() {
     # https://github.com/GrahamDumpleton/mod_wsgi
     apt-get install -y apache2 apache2-dev apache2-utils libexpat1 ssl-cert
     sudo -u "${DEFAULT_USER}" -H -i "${SETTINGS}"/install_mod_wsgi_into_virtualenv.sh
-    "/home/${DEFAULT_USER}/.virtualenvs/${DEFAULT_USER}/bin/python" "/home/${DEFAULT_USER}/.virtualenvs/${PROJECT_NAME}/bin/mod_wsgi-express" install-module
+    "/home/${DEFAULT_USER}/.virtualenvs/${PROJECT_NAME}/bin/python" "/home/${DEFAULT_USER}/.virtualenvs/${PROJECT_NAME}/bin/mod_wsgi-express" install-module
 }
 
 # from_apt

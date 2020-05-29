@@ -49,11 +49,11 @@ apt-get install -y emacs-nox build-essential unzip binutils libproj-dev gdal-bin
 
 apt-get upgrade -y
 
-apt-get autoremove
-apt-get autoclean
+apt-get autoremove -y
+apt-get autoclean -y
 
 # Workaround
-service apache2 restart
+systemctl restart apache2
 
 is_installed() {
     if dpkg -s "${1}" > /dev/null 2>&1; then

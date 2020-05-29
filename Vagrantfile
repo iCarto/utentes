@@ -19,8 +19,8 @@ Vagrant.configure(2) do |config|
         }
         config.cache.scope = :machine
         config.cache.auto_detect = false
-        config.cache.enable :apt
-        config.cache.enable :apt_lists
+        # config.cache.enable :apt
+        # config.cache.enable :apt_lists
         # config.cache.enable :npm
         # config.cache.enable :pip
     end
