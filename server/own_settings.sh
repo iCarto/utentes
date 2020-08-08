@@ -2,7 +2,7 @@
 
 source variables.ini
 
-cd /vagrant/server
+cd /vagrant/server || exit 1
 
 sudo -u postgres psql -f "${SETTINGS}/own-settings/database_roles.sql"
 

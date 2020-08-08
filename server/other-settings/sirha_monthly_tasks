@@ -6,10 +6,11 @@ set -e
 SCP_USER=
 PG_PORT=
 DBNAME=
-WEB_PORT=
 TOKEN=
 BASE_BACKUP_FOLDER=
 BASE_MEDIA_FOLDER=
+WEB_PORT=
+WEB_URL=
 export PGPASSWORD=
 
 # Remove old backups
@@ -20,6 +21,6 @@ mkdir -p ${BACKUP_FOLDER}
 pg_dump -h localhost -p ${PG_PORT} -U postgres -Fc -Z9 -E UTF-8 -f ${BACKUP_FOLDER}/${DBNAME}_bck_$(date +%y%m%d).dump ${DBNAME} 2> ${BACKUP_FOLDER}/pgdump.log
 tar czf ${BACKUP_FOLDER}/${DBNAME}_files_bck_$(date +%y%m%d).tgz ${BASE_MEDIA_FOLDER}/media 2> ${BACKUP_FOLDER}/tar_files.log
 
-curl "http://localhost:${WEB_PORT}/api/nuevo_ciclo_facturacion?token_new_fact_cycle=${TOKEN}" > ${BACKUP_FOLDER}/nuevo_ciclo_facturacion.log 2>&1
+curl "${WEB_URL}:${WEB_PORT}/api/nuevo_ciclo_facturacion?token_new_fact_cycle=${TOKEN}" > ${BACKUP_FOLDER}/nuevo_ciclo_facturacion.log 2>&1
 
 chown -R ${SCP_USER}:${SCP_USER} ${BACKUP_FOLDER}

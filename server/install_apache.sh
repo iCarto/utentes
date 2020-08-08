@@ -22,39 +22,43 @@ from_source() {
     "/home/${DEFAULT_USER}/.virtualenvs/${PROJECT_NAME}/bin/python" "/home/${DEFAULT_USER}/.virtualenvs/${PROJECT_NAME}/bin/mod_wsgi-express" install-module
 }
 
-# from_apt
-from_source
+from_where=${1:="from_apt"}
+if [ "${from_where}" == "from_apt" ]; then
+    from_apt
+elif [ "${from_where}" == "from_source" ]; then
+    from_source
+else
+    echo "Error de parámetro" && exit 1
+fi
+
 usermod -a -G www-data "${DEFAULT_USER}"
-mkdir -p $WWW_PATH
+mkdir -p "${WWW_PATH}"
 chown -R "${DEFAULT_USER}":www-data "${WWW_PATH}"
 
 mkdir -p /var/www/media
 chown -R "${DEFAULT_USER}":www-data /var/www/media
 
-# sudo $DEFAULT_USER
-# git clone $GIT_REPO ${WWW_PATH}/${PROJECT_NAME}
-# cd ${WWW_PATH}/${PROJECT_NAME}
-# python setup.py install
-# exit
-
-if [[ "${ENTORNO}" == "DEV" ]]; then
-    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}-test.conf" "/etc/apache2/sites-available/${PROJECT_NAME}.conf"
-    # cp ${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl-test.conf /etc/apache2/sites-available/${PROJECT_NAME}-ssl.conf
-else
-    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}.conf" /etc/apache2/sites-available/
-    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl.conf" /etc/apache2/sites-available/
-fi
+# En producción clonar repo en "${WWW_PATH}"
 
 a2enmod deflate
-
 a2enmod ssl
-a2ensite "${PROJECT_NAME}"
-# a2ensite ${PROJECT_NAME}-ssl
 a2dissite 000-default
+
+if [[ ${ENTORNO} == "DEV" ]]; then
+    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}.conf.dev" "/etc/apache2/sites-available/${PROJECT_NAME}.conf"
+    # cp ${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl.conf.dev /etc/apache2/sites-available/${PROJECT_NAME}-ssl.conf
+    a2ensite "${PROJECT_NAME}.conf"
+    # a2ensite ${PROJECT_NAME}-ssl
+else
+    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}.conf.prod" /etc/apache2/sites-available/
+    cp "${SETTINGS}/apache-settings/${PROJECT_NAME}-ssl.conf.prod" /etc/apache2/sites-available/
+    a2ensite "${PROJECT_NAME}"
+    a2ensite "${PROJECT_NAME}-ssl"
+fi
 
 # /etc/init.d/apache2 restart
 if lsb_release --codename | grep "precise" > /dev/null; then
     service apache2 reload
 else
-    systemctl reload apache2
+    systemctl restart apache2
 fi

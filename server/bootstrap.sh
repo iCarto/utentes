@@ -7,6 +7,10 @@ set -e
 # cd "${DIR}"
 cd /vagrant/server
 
+# Descargamos aquí paquetes a modo de cache. Se puede borrar el directorio
+# cuando se quiera
+mkdir -p /vagrant/server/downloads
+
 source ./variables.ini
 
 # https://serverfault.com/questions/500764/
@@ -20,40 +24,34 @@ export UCF_FORCE_CONFFNEW=1
 
 apt-get update
 
-# https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt/
-apt-mark hold '^grub*'
-
 # ./fix_locales_en.sh
 # ./fix_locales_es.sh
-# ./fix_locales_pt.sh
 ./fix_locales.sh
 
+bash config_time.sh
+
 ./disable_not_needed_services.sh
+
+./config_ssh.sh
 
 sed -i 's%.*history-search-backward%"\\e[5~": history-search-backward%' /etc/inputrc
 sed -i 's%.*history-search-forward%"\\e[6~": history-search-forward%' /etc/inputrc
 
-apt-get install -y emacs-nox build-essential unzip binutils libproj-dev gdal-bin python-gdal
+./install_others.sh
+./install_git.sh
 
 ./install_postgres.sh
 ./install_pgtap.sh
 ./install_sqitch.sh
-./install_git.sh
 
-./create_python_virtualenv_project.sh
-./install_apache.sh # Los .conf hay que ajustarlos a mano
+./create_python_virtualenv_project.sh from_source
+./install_apache.sh from_source
 
 # ./install_nginx_y_visor.sh
 
 ./own_settings.sh
 
-apt-get upgrade -y
-
-apt-get autoremove -y
-apt-get autoclean -y
-
-# Workaround
-systemctl restart apache2
+bash do_dist_upgrade.sh
 
 is_installed() {
     if dpkg -s "${1}" > /dev/null 2>&1; then

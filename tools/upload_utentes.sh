@@ -16,7 +16,7 @@ CULTIVOS_SHP="${5}"
 # UTENTES_TO_EXCLUDE_AND_DROP="WHERE nome NOT IN ('Ncondezi Coal Company', 'Hidroeléctrica de Cahora Bassa - Songo', 'Ouça Moçambique (Espanhois)', 'JSPL Mozambique Minerais, Lda (Jindal)', 'Episteme Moç, Lda', 'Al Bustan Farms Lda', 'Hoyo-Hoyo', 'ENRC Mozambique, Lda') -- gestionado aparte"
 
 IETL_REPO="${HOME}/development/ietl/ietl"
-PG_CONNECTION="-h localhost -p $PG_PORT -d ${DATABASE} -U postgres"
+PG_CONNECTION="-h localhost -p ${PG_PORT} -d ${DATABASE} -U postgres"
 
 WARNINGS_FILE="${TODAY}_warnings_file.txt"
 echo "" > "${WARNINGS_FILE}"
@@ -29,8 +29,8 @@ echo "" > "${WARNINGS_FILE}"
 
 # El gid de la última explotación antes de arrancar este proceso cuando se
 # estén mezclando con existentes.
-LAST_EXP_GID=$($PSQL $PG_CONNECTION -c "SELECT COALESCE(max(gid), 0) FROM utentes.exploracaos")
-LAST_UT_GID=$($PSQL $PG_CONNECTION -c "SELECT COALESCE(max(gid), 0) FROM utentes.utentes")
+LAST_EXP_GID=$(${PSQL} ${PG_CONNECTION} -c "SELECT COALESCE(max(gid), 0) FROM utentes.exploracaos")
+LAST_UT_GID=$(${PSQL} ${PG_CONNECTION} -c "SELECT COALESCE(max(gid), 0) FROM utentes.utentes")
 
 printf 'Último exp-gid existente: %s. Último ute-gid existente %s\n' "${LAST_EXP_GID}" "${LAST_UT_GID}"
 
@@ -59,13 +59,13 @@ upload "${FOLDER}/dbfs/Reses.dbf" "public.tmp_reses" # uten_n; id_exp; lic_n; ti
 
 if [ -n "${FILTER_UTENTES_FROM_EXCEL}" ]; then
     echo "Filtrando utentes: ${FILTER_UTENTES_FROM_EXCEL}"
-    $PSQL $PG_CONNECTION -c "${FILTER_UTENTES_FROM_EXCEL}"
+    ${PSQL} ${PG_CONNECTION} -c "${FILTER_UTENTES_FROM_EXCEL}"
 fi
 
 rename_and_create_columns
 fix_field_types
 
-UTENTES_DUPLICADOS=$($PSQL $PG_CONNECTION -c "
+UTENTES_DUPLICADOS=$(${PSQL} ${PG_CONNECTION} -c "
     -- DETECTAR UTENTES CON MISMO NOMBRE Y DISTINTOS DATOS
     WITH foo AS (
         SELECT nome
@@ -79,10 +79,10 @@ if [[ -n "${UTENTES_DUPLICADOS}" ]]; then
     exit 1
 fi
 
-EXP_ID_DUPLICADOS_A=$($PSQL $PG_CONNECTION -c "
+EXP_ID_DUPLICADOS_A=$(${PSQL} ${PG_CONNECTION} -c "
     select exp_id, count(*) from tmp_utentes group by exp_id having count(*) > 1 order by 2 asc, 1;
 ")
-EXP_ID_DUPLICADOS_B=$($PSQL $PG_CONNECTION -c "
+EXP_ID_DUPLICADOS_B=$(${PSQL} ${PG_CONNECTION} -c "
 WITH foo AS (
     SELECT exp_id, count(*)
     FROM tmp_utentes
@@ -105,7 +105,7 @@ if [[ -n "${EXP_ID_DUPLICADOS_A}" ]]; then
 fi
 
 # Igual habría que usar "enlace" en lugar de "exp_id"
-EXP_ID_DUPLICADOS=$($PSQL $PG_CONNECTION -c "
+EXP_ID_DUPLICADOS=$(${PSQL} ${PG_CONNECTION} -c "
     select exp_id from exploracaos_geoms group by exp_id having count(*) > 1;
 ")
 if [[ -n "${EXP_ID_DUPLICADOS}" ]]; then
@@ -114,7 +114,7 @@ if [[ -n "${EXP_ID_DUPLICADOS}" ]]; then
     exit 1
 fi
 
-CULT_ID_DUPLICADOS=$($PSQL $PG_CONNECTION -c "
+CULT_ID_DUPLICADOS=$(${PSQL} ${PG_CONNECTION} -c "
     select cult_id from tmp_cultivos group by cult_id having count(*) > 1;
 ")
 if [[ -n "${CULT_ID_DUPLICADOS}" ]]; then
@@ -123,7 +123,7 @@ if [[ -n "${CULT_ID_DUPLICADOS}" ]]; then
     exit 1
 fi
 
-CULT_ID_DUPLICADOS=$($PSQL $PG_CONNECTION -c "
+CULT_ID_DUPLICADOS=$(${PSQL} ${PG_CONNECTION} -c "
     select cult_id from cultivos_geoms group by cult_id having count(*) > 1;
 ")
 if [[ -n "${CULT_ID_DUPLICADOS}" ]]; then
@@ -132,7 +132,7 @@ if [[ -n "${CULT_ID_DUPLICADOS}" ]]; then
     exit 1
 fi
 
-HAY_PECUARIA=$($PSQL $PG_CONNECTION -c "select 1 from tmp_utentes WHERE tipo ilike '%pecu%' limit 1;")
+HAY_PECUARIA=$(${PSQL} ${PG_CONNECTION} -c "select 1 from tmp_utentes WHERE tipo ilike '%pecu%' limit 1;")
 if [[ -n "${HAY_PECUARIA}" ]]; then
     echo -e "\nHay Agro-Pecuaria o Pecuaria hay que gestionar las reses"
     echo "Aún así continuamos"
@@ -149,9 +149,9 @@ fix_domains
 fix_other_domains
 check_bad_domains
 
-N_GEOMS_ENLAZAN=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM tmp_utentes a FULL OUTER JOIN exploracaos_geoms b ON a.enlace = b.enlace WHERE a.gid IS NOT NULL AND b.gid IS NOT NULL;")
-N_GEOMS_TOTALES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM exploracaos_geoms;")
-N_EXPS_TOTALES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM tmp_utentes;")
+N_GEOMS_ENLAZAN=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM tmp_utentes a FULL OUTER JOIN exploracaos_geoms b ON a.enlace = b.enlace WHERE a.gid IS NOT NULL AND b.gid IS NOT NULL;")
+N_GEOMS_TOTALES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM exploracaos_geoms;")
+N_EXPS_TOTALES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM tmp_utentes;")
 printf '
 Número de geometrías que enlazan: %s
 Número de geometrías totales: %s
@@ -162,21 +162,21 @@ Número de explotaciones totales: %s
 # Geometrías que no enlazan por nombre. No pasa nada. SELECT a.gid, a.enlace, a.exp_name, b.gid, b.enlace, b.nome FROM tmp_utentes a FULL OUTER JOIN exploracaos_geoms b ON a.exp_name = b.nome WHERE a.gid IS NULL;
 
 # Geometrías que no enlazan por "enlace". No debería pasar nunca pero puede pasar. Si el shape a sabiendas tiene geometrías que no se corresponden con las explotaciones.
-ENLACE_GEOM_MAL=$($PSQL $PG_CONNECTION -c "SELECT a.gid, a.enlace, a.exp_name, b.gid, b.enlace, b.exp_name FROM tmp_utentes a FULL OUTER JOIN exploracaos_geoms b ON a.enlace = b.enlace WHERE a.gid IS NULL;")
+ENLACE_GEOM_MAL=$(${PSQL} ${PG_CONNECTION} -c "SELECT a.gid, a.enlace, a.exp_name, b.gid, b.enlace, b.exp_name FROM tmp_utentes a FULL OUTER JOIN exploracaos_geoms b ON a.enlace = b.enlace WHERE a.gid IS NULL;")
 if [[ -n "${ENLACE_GEOM_MAL}" ]]; then
     echo -e "\nHay geometrías que no están enlazando"
     echo -e "${ENLACE_GEOM_MAL}"
     exit 1
 fi
 
-$PSQL $PG_CONNECTION -c "
+${PSQL} ${PG_CONNECTION} -c "
 UPDATE tmp_utentes a SET geom = ST_Transform(b.geom, 32737) FROM exploracaos_geoms b where a.enlace = b.enlace;
 "
 
 # GEOMETRÍAS CULTIVOS
-N_GEOMS_ENLAZAN=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM tmp_cultivos a FULL OUTER JOIN cultivos_geoms b ON a.cult_id = b.cult_id WHERE a.gid IS NOT NULL AND b.gid IS NOT NULL;")
-N_GEOMS_TOTALES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM cultivos_geoms;")
-N_EXPS_TOTALES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM tmp_cultivos;")
+N_GEOMS_ENLAZAN=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM tmp_cultivos a FULL OUTER JOIN cultivos_geoms b ON a.cult_id = b.cult_id WHERE a.gid IS NOT NULL AND b.gid IS NOT NULL;")
+N_GEOMS_TOTALES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM cultivos_geoms;")
+N_EXPS_TOTALES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM tmp_cultivos;")
 printf '
 Cultivos. Si hay más geometrías enlazando que totales, hay algún problema. Si es al revés no.
 Número de geometrías que enlazan: %s
@@ -187,13 +187,13 @@ Número de explotaciones totales: %s
 
 # Geometrías de cultivos que no enlazan
 unset ENLACE_GEOM_MAL
-ENLACE_GEOM_MAL=$($PSQL $PG_CONNECTION -c "SELECT a.gid, a.enlace, a.cult_id, b.gid, b.enlace, b.cult_id FROM tmp_cultivos a FULL OUTER JOIN cultivos_geoms b ON a.cult_id = b.cult_id WHERE a.gid IS NULL;")
+ENLACE_GEOM_MAL=$(${PSQL} ${PG_CONNECTION} -c "SELECT a.gid, a.enlace, a.cult_id, b.gid, b.enlace, b.cult_id FROM tmp_cultivos a FULL OUTER JOIN cultivos_geoms b ON a.cult_id = b.cult_id WHERE a.gid IS NULL;")
 if [[ -n "${ENLACE_GEOM_MAL}" ]]; then
     echo -e "\nHay geometrías que no están enlazando"
     echo -e "${ENLACE_GEOM_MAL}"
     exit 1
 fi
-$PSQL $PG_CONNECTION -c "
+${PSQL} ${PG_CONNECTION} -c "
 UPDATE tmp_cultivos a SET geom = ST_Transform(b.geom, 32737) FROM cultivos_geoms b where a.cult_id = b.cult_id;
 "
 
@@ -201,10 +201,10 @@ UPDATE tmp_cultivos a SET geom = ST_Transform(b.geom, 32737) FROM cultivos_geoms
 #       rellenar tmp_utentes a partir de cultivos_geoms
 
 echo "FALTA ACORDAR UN MÉTODO DE GESTIONAR LOS CULTIVOS. CUIDADO CON ESTO"
-N_CULTIVOS_ANTES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.actividades_cultivos;")
-N_EXPS_ANTES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.exploracaos;")
-N_LICS_ANTES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.licencias;")
-N_FONTES_ANTES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.fontes;")
+N_CULTIVOS_ANTES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.actividades_cultivos;")
+N_EXPS_ANTES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.exploracaos;")
+N_LICS_ANTES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.licencias;")
+N_FONTES_ANTES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.fontes;")
 
 # Recordatorio, no se puede usar -c "" con especifidades de psql, es decir no se puede
 # substituir ${LAST_EXP_GID} por :last_exp_gid
@@ -550,14 +550,14 @@ UPDATE utentes.actividades_piscicultura b SET c_estimado = 0 FROM utentes.activi
 
 EOF
 
-$PSQL $PG_CONNECTION -c "$main_sql"
+${PSQL} ${PG_CONNECTION} -c "$main_sql"
 
-N_CULTIVOS_DESPUES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.actividades_cultivos;")
-N_EXPS_DESPUES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.exploracaos;")
+N_CULTIVOS_DESPUES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.actividades_cultivos;")
+N_EXPS_DESPUES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.exploracaos;")
 N_EXPS_ANADIDAS=$((N_EXPS_DESPUES - N_EXPS_ANTES))
-N_LICS_DESPUES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.licencias;")
+N_LICS_DESPUES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.licencias;")
 N_LICS_ANADIDAS=$((N_LICS_DESPUES - N_LICS_ANTES))
-N_FONTES_DESPUES=$($PSQL $PG_CONNECTION -c "SELECT count(*) FROM utentes.fontes")
+N_FONTES_DESPUES=$(${PSQL} ${PG_CONNECTION} -c "SELECT count(*) FROM utentes.fontes")
 N_FONTES_ANADIDAS=$((N_FONTES_DESPUES - N_FONTES_ANTES))
 
 printf 'Cultivos: Había %s. Hay %s\n' "${N_CULTIVOS_ANTES}" "${N_CULTIVOS_DESPUES}"
@@ -565,7 +565,7 @@ printf 'Explotaciones: Había %s. Hay %s. Se han añadido: %s\n' "${N_EXPS_ANTES
 printf 'Licencias: Había %s Hay %s. Se han añadido: %s\n' "${N_LICS_ANTES}" "${N_LICS_DESPUES}" "${N_LICS_ANADIDAS}"
 printf 'Fontes: Había %s Hay %s. Se han añadido: %s\n' "${N_FONtES_ANTES}" "${N_FONTES_DESPUES}" "${N_FONTES_ANADIDAS}"
 
-$PSQL $PG_CONNECTION -c "
+${PSQL} ${PG_CONNECTION} -c "
 DROP TABLE IF EXISTS public.exploracaos_geoms;
 DROP TABLE IF EXISTS public.tmp_utentes;
 DROP TABLE IF EXISTS public.tmp_fontes;
@@ -574,8 +574,8 @@ DROP TABLE IF EXISTS public.tmp_reses;
 DROP TABLE IF EXISTS public.cultivos_geoms;
 "
 
-PGOPTIONS='--client-min-messages=warning' $PSQL $PG_CONNECTION -c "DELETE FROM utentes.version;INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
-PGOPTIONS='--client-min-messages=warning' $PSQLC $PG_CONNECTION -c "VACUUM FULL ANALYZE;"
+PGOPTIONS='--client-min-messages=warning' ${PSQL} ${PG_CONNECTION} -c "DELETE FROM utentes.version;INSERT INTO utentes.version (version) VALUES ('${TODAY}');"
+PGOPTIONS='--client-min-messages=warning' $PSQLC ${PG_CONNECTION} -c "VACUUM FULL ANALYZE;"
 
 FOO="
 --WITH tmp AS (
@@ -608,12 +608,12 @@ workaround_post_insert
 # Si es una actualización de datos. Creo una bd nueva, elimino lo existente
 # y dumpeo los nuevos datos para poder generar un sql con el que actualizar
 create_db_from_template "${DATABASE}" nueva_borrar
-$PSQL -h localhost -p $PG_PORT -U postgres -d nueva_borrar -c "
+${PSQL} -h localhost -p "${PG_PORT}" -U postgres -d nueva_borrar -c "
 DELETE FROM utentes.exploracaos WHERE gid <= ${LAST_EXP_GID};
 DELETE FROM utentes.utentes WHERE gid IN (select u.gid as utente_gid FROM utentes.utentes u LEFT OUTER JOIN utentes.exploracaos e ON e.utente = u.gid WHERE e.gid IS NULL ORDER BY u.gid);
 "
-pg_dump -Fp --table='utentes.utentes' --table='utentes.exploracaos' --table='utentes.actividades*' --table='utentes.fontes' --table='utentes.licencias' -a -E UTF-8 -f update_${TODAY}_${DATABASE}_utentes.sql -h localhost -p $PG_PORT -U postgres -d nueva_borrar
+pg_dump -Fp --table='utentes.utentes' --table='utentes.exploracaos' --table='utentes.actividades*' --table='utentes.fontes' --table='utentes.licencias' -a -E UTF-8 -f "update_${TODAY}_${DATABASE}_utentes.sql" -h localhost -p "${PG_PORT}" -U postgres -d nueva_borrar
 
-cat ${METADATA_FOLDER}/post_update_sql.sql >> update_${TODAY}_${DATABASE}_utentes.sql
+cat "${METADATA_FOLDER}/post_update_sql.sql" >> "update_${TODAY}_${DATABASE}_utentes.sql"
 
 echo "Eliminar a mano del fichero de actualización las utentes ${UTENTES_TO_EXCLUDE_AND_DROP}. Obtener su gid del dump y actualizar las explocationes con ese gid (en caso de ser necesario que no debería)"

@@ -19,10 +19,10 @@
 # using a different "prefix" that the "production versions", seems to avoid errors derived from typings and hurries
 
 set -e
-source ../server/variables.ini
+. ../server/variables.ini
 
 # TODO: Improve checks
-if [[ (-f "${1}") && ("${1}" =~ [0-9][0-9][0-9][0-9][0-9][0-9]_$DBNAME.dump) ]]; then
+if [[ (-f "${1}") && ("${1}" =~ [0-9][0-9][0-9][0-9][0-9][0-9]_${DBNAME}.dump) ]]; then
     DUMP_FILE="${1}"
 fi
 
@@ -60,7 +60,7 @@ fi
 echo "Creando ${DBNAME}"
 createdb -h localhost -p "${PG_PORT}" -U postgres -T template0 -O "${DBOWNER}" -E UTF-8 -l "${LOCALE}" "${DBNAME}"
 
-if ! [ -z "${DUMP_FILE}" ]; then
+if [ -n "${DUMP_FILE}" ]; then
     echo "Restaurando ${DUMP_FILE} en ${DBNAME}"
     ${PGRESTORE} -h localhost -p "${PG_PORT}" -U postgres -d "${DBNAME}" --single-transaction --exit-on-error --disable-triggers "${DUMP_FILE}"
     echo "Creando $(basename "${DUMP_FILE%.dump}")"

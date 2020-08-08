@@ -12,19 +12,6 @@ Vagrant.configure(2) do |config|
     config.vm.box_url = "https://app.vagrantup.com/debian/boxes/contrib-stretch64"
     config.vm.box_check_update = false
 
-    if Vagrant.has_plugin?("vagrant-cachier")
-        # https://askubuntu.com/questions/908800/
-        config.cache.synced_folder_opts = {
-            owner: "_apt",
-        }
-        config.cache.scope = :machine
-        config.cache.auto_detect = false
-        # config.cache.enable :apt
-        # config.cache.enable :apt_lists
-        # config.cache.enable :npm
-        # config.cache.enable :pip
-    end
-
     if Vagrant.has_plugin?("vagrant-vbguest")
         # Disable it if problems with shared folders or guest additions appears
         # or if you want to speed up `vagrant up` a bit

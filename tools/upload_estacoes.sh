@@ -58,5 +58,5 @@ echo "
 COMMIT;
 " >> "${OUTPUT}"
 
-# $PSQL -h localhost -U postgres -d "${DATABASE}" -f new_sql_data/${DATABASE}_tmp_barragens.sql
-# $PSQL -h localhost -U postgres -d "${DATABASE}" -f new_sql_data/process_barragens.sql
+# ${PSQL} -h localhost -U postgres -d "${DATABASE}" -f new_sql_data/${DATABASE}_tmp_barragens.sql
+# ${PSQL} -h localhost -U postgres -d "${DATABASE}" -f new_sql_data/process_barragens.sql

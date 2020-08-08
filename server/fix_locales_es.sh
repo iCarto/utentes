@@ -1,10 +1,14 @@
 #!/bin/bash
 
-# Instala los paquetes de idioma en castellano
+source variables.ini
 
-if locale -a | grep es_ES > /dev/null; then
-    exit 0
-fi
+MAIN_LOCALE="${LOCALE%_*}"
 
-apt-get install -y language-pack-es language-pack-es-base
-apt-get remove -y --purge firefox-locale-es
+apt-get install -y "language-pack-${MAIN_LOCALE}" "language-pack-${MAIN_LOCALE}-base"
+apt-get remove -y --purge "firefox-locale-${MAIN_LOCALE}"
+
+locale-gen "${LOCALE}"
+dpkg-reconfigure -f noninteractive locales
+update-locale --reset LANG="${LOCALE}" LC_CTYPE="${LOCALE}"
+export LANG="${LOCALE}"
+export LC_TYPE="${LOCALE}"

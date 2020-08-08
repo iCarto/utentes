@@ -7,7 +7,7 @@ source exit_codes.sh
 
 drop_db_and_kickout_users() {
     local DATABASE="${1}"
-    $PSQL -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DATABASE}';"
+    ${PSQL} -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DATABASE}';"
 
     # To avoid problems. Uncomment if following a flow where is
     # really needed
