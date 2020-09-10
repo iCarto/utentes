@@ -195,3 +195,5 @@ drop_table_utentes_inventario_fontes 2020-04-28T17:29:11Z Francisco Puga <fpuga@
 moves_c_estimado_to_actividade 2020-05-23T08:24:00Z Francisco Puga <fpuga@icarto.es> # Moves 'c_estimado' from childs to parent 'actividade'
 new_version_200527 2020-05-27T15:26:34Z Francisco Puga <fpuga@icarto.es> # new_version_200527
 @200527 2020-05-27T15:30:28Z Francisco Puga <fpuga@icarto.es> # tag 200527
+
+update_table_datos_aras_with_rigth_unidades 2020-09-09T20:45:16Z Francisco Puga <fpuga@icarto.es> # Update table datos_aras with fixes about unidades
