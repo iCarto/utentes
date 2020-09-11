@@ -199,3 +199,4 @@ new_version_200527 2020-05-27T15:26:34Z Francisco Puga <fpuga@icarto.es> # new_v
 update_table_datos_aras_with_rigth_unidades 2020-09-09T20:45:16Z Francisco Puga <fpuga@icarto.es> # Update table datos_aras with fixes about unidades
 adds_bi_columns_to_utente 2020-09-10T14:58:03Z Francisco Puga <fpuga@icarto.es> # Adds BI columns to utentes
 adds_duat_fields_to_exploracao 2020-09-10T16:58:52Z Francisco Puga <fpuga@icarto.es> # Adds DUAT fields to exploracao
+alter_table_utentes_fontes_with_inventario_columns 2020-09-11T15:57:49Z Francisco Puga <fpuga@icarto.es> # Adds columns to utentes.fontes to match inventario.fontes
