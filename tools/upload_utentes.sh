@@ -36,19 +36,17 @@ printf 'Último exp-gid existente: %s. Último ute-gid existente %s\n' "${LAST_E
 
 python prepare_data.py "${BASE_SPREADSHEET}" "${DATABASE}" "${METADATA_FILE}" "${LAST_EXP_GID}" --shp "${SHP}"
 
-FOLDER="$(dirname "$SHP")/output"
+FOLDER="$(dirname "${SHP}")/output"
 rm -rf "${FOLDER}"
 mkdir -p "${FOLDER}"
 cp "${BASE_SPREADSHEET}" "${FOLDER}"
 BASE_SPREADSHEET="${FOLDER}/$(basename "${BASE_SPREADSHEET}")"
 XLSX="${FOLDER}/working.ods"
-METADATA_FOLDER=$(dirname ${METADATA_FILE})
+METADATA_FOLDER="$(dirname "${METADATA_FILE}")"
 
 # TODO. Always check if --ignore_header is what you want
-# python "${IETL_REPO}/sanitize_spreadsheet.py" --bdd "${BASE_SPREADSHEET}" --metadata "${METADATA_FILE}" --ignore_header
 python "${IETL_REPO}/sanitize_spreadsheet.py" --bdd "${BASE_SPREADSHEET}" --metadata "${METADATA_FILE}"
-
-ogr2ogr -f "ESRI Shapefile" "${FOLDER}/dbfs" "$XLSX" -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
+ogr2ogr -f "ESRI Shapefile" "${FOLDER}/dbfs" "${XLSX}" -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
 
 upload "$SHP" "public.exploracaos_geoms"
 upload "$CULTIVOS_SHP" "public.cultivos_geoms"

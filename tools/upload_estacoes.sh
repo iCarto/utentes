@@ -12,7 +12,7 @@ ANALISE_SHEETNAME="Estacoes_analise_FINAL"
 DATABASE="${3}"
 
 METADATA_FILE="datos/191022_estaciones_aras/foo"
-METADATA_FOLDER=$(dirname ${METADATA_FILE})
+METADATA_FOLDER=$(dirname "${METADATA_FILE}")
 
 IETL_REPO="${HOME}/development/ietl/ietl"
 
@@ -34,15 +34,16 @@ OUTPUT=update_${TODAY}_${DATABASE}_estacoes.sql
 # vaya sólo el COPY en la transacción, por esto esta historia.
 # Pensar como mejorarlo.
 
-echo "
-SET CLIENT_ENCODING TO UTF8;
-SET STANDARD_CONFORMING_STRINGS TO ON;
+{
+    echo "
+        SET CLIENT_ENCODING TO UTF8;
+        SET STANDARD_CONFORMING_STRINGS TO ON;
 
-BEGIN;
+        BEGIN;
 
-" > "${OUTPUT}"
-
-cat "${METADATA_FOLDER}/pre_update_sql.sql" >> "${OUTPUT}"
+    "
+    cat "${METADATA_FOLDER}/pre_update_sql.sql"
+} > "${OUTPUT}"
 
 ACTION="-a" # -d, -a, -c, -p
 shp2pgsql "${ACTION}" -s "${EPSG}" -g geom -D -m mapping/estacoes.mapping -W "${ENCODING}" -N abort "${SHP}" inventario.estacoes \
@@ -50,7 +51,7 @@ shp2pgsql "${ACTION}" -s "${EPSG}" -g geom -D -m mapping/estacoes.mapping -W "${
     | sed 's/COMMIT;//' \
     | sed 's/^SET.*//' >> "${OUTPUT}"
 
-python $IETL_REPO/generate_insert_sql_from_spreadsheet.py "${ANALISE_SPREADSHEET}" "${ANALISE_SHEETNAME}" 'inventario.estacoes_analise' --header 2 --usecols 'B:BJ' >> "${OUTPUT}"
+python "${IETL_REPO}/generate_insert_sql_from_spreadsheet.py" "${ANALISE_SPREADSHEET}" "${ANALISE_SHEETNAME}" 'inventario.estacoes_analise' --header 2 --usecols 'B:BJ' >> "${OUTPUT}"
 
 cat "${METADATA_FOLDER}/post_update_sql.sql" >> "${OUTPUT}"
 

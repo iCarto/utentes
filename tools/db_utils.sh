@@ -11,14 +11,14 @@ drop_db_and_kickout_users() {
 
     # To avoid problems. Uncomment if following a flow where is
     # really needed
-    # $DROPDB -h localhost -U postgres --if-exists "${DATABASE}"
+    # ${DROPDB} -h localhost -U postgres --if-exists "${DATABASE}"
 }
 
 create_db_from_template() {
     local TEMPLATE="${1}"
     local DATABASE="${2}"
     drop_db_and_kickout_users "${DATABASE}"
-    $CREATEDB -h localhost -U postgres -T "${TEMPLATE}" "${DATABASE}"
+    ${CREATEDB} -h localhost -U postgres -T "${TEMPLATE}" "${DATABASE}"
 }
 
 create_db_from_template_and_dump() {
@@ -29,27 +29,27 @@ create_db_from_template_and_dump() {
     local BCK_FOLDER="${3:-$(pwd)}"
 
     create_db_from_template "${TEMPLATE}" "${DATABASE}"
-    $PGDUMP -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${BCK_FOLDER}/${DATABASE}.dump" "${DATABASE}"
+    ${PGDUMP} -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${BCK_FOLDER}/${DATABASE}.dump" "${DATABASE}"
 }
 
 create_last_db() {
     local DATABASE="${1}"
     local DUMP="${2}"
     drop_db_and_kickout_users "${DATABASE}"
-    $CREATEDB -h localhost -U postgres "${DATABASE}"
-    $PGRESTORE -h localhost -U postgres -d "${DATABASE}" "${DUMP}"
+    ${CREATEDB} -h localhost -U postgres "${DATABASE}"
+    ${PGRESTORE} -h localhost -U postgres -d "${DATABASE}" "${DUMP}"
 }
 
 dump_db() {
     local DATABASE="${1}"
-    $PGDUMP -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${TODAY}_${DATABASE}.dump" "${DATABASE}"
+    ${PGDUMP} -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${TODAY}_${DATABASE}.dump" "${DATABASE}"
 }
 
 dump_db_prod() {
     # Simplemente por unificar los nombres
     # Hay que mejorarlo
     local DATABASE="${1}"
-    $PGDUMP -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${TODAY}_prod_${DATABASE}.dump" "${DATABASE}"
+    ${PGDUMP} -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${TODAY}_prod_${DATABASE}.dump" "${DATABASE}"
 }
 
 delete_all_data_in_schema() {
@@ -61,12 +61,12 @@ delete_all_data_in_schema() {
 
     if [ -z "${DATABASE}" ]; then
         echo "ERROR. Introduzca el nombre de la base de datos"
-        return $EX_USAGE
+        return "${EX_USAGE}"
     fi
 
     if [ -z "${SCHEMA}" ]; then
         echo "ERROR. Introduzca el esquema"
-        return $EX_USAGE
+        return "${EX_USAGE}"
     fi
 
     ! read -d '' sql_query << EOF
@@ -84,5 +84,5 @@ END
 \$func\$;
 EOF
 
-    $PSQLC -h localhost -U postgres -d "${DATABASE}" -c "${sql_query}"
+    ${PSQLC} -h localhost -U postgres -d "${DATABASE}" -c "${sql_query}"
 }
