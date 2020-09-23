@@ -1,15 +1,19 @@
 #!/bin/bash
 
-set -e
-
-# TODO: Comprobar el srs de las capas con geometría
-upload() {
-    file=$1
-    table=$2
-    echo "Subiendo ${file} a ${table}"
-    ${PSQL} ${PG_CONNECTION} -c "DROP TABLE IF EXISTS $table;"
-    ENCODING="UTF-8"
-    shp2pgsql -s 32737 -W "${ENCODING}" -g geom "$file" "$table" | ${PSQL} $PG_CONNECTION
+fix_field_types_fontes() {
+    echo "Fix field types for tmp_fontes"
+    ${PSQL} ${PG_CONNECTION} -c "
+    UPDATE tmp_fontes SET d_dado = replace(d_dado, '/', '-');
+    ALTER TABLE tmp_fontes ALTER COLUMN d_dado TYPE date USING to_date(d_dado, 'YYYY-mm-dd');
+    -- ALTER TABLE tmp_fontes ALTER COLUMN d_dado TYPE date USING to_date(d_dado, 'dd-mm-YYYY');
+    ALTER TABLE tmp_fontes ALTER COLUMN c_soli TYPE NUMERIC(10, 2) USING c_soli::numeric(10,2);
+    ALTER TABLE tmp_fontes ALTER COLUMN c_real TYPE NUMERIC(10, 2) USING c_real::numeric(10,2);
+    ALTER TABLE tmp_fontes ALTER COLUMN c_max TYPE NUMERIC(10, 2) USING c_max::numeric(10,2);
+    ALTER TABLE tmp_fontes ALTER COLUMN prof_pozo TYPE NUMERIC(10, 2) USING prof_pozo::numeric(10,2);
+    ALTER TABLE tmp_fontes ALTER COLUMN diametro TYPE NUMERIC(10, 2) USING diametro::numeric(10,2);
+    -- 'F' = false; NULL = NULL; 'T' = true
+    ALTER TABLE tmp_fontes ALTER COLUMN bombeo TYPE boolean USING bombeo::boolean;
+    "
 }
 
 fix_field_types() {
@@ -30,12 +34,6 @@ fix_field_types() {
     -- Idem con intentar hacer cambios sobre tablas/shps/hojas que no existe
 
 
-    UPDATE tmp_fontes SET d_dado = replace(d_dado, '/', '-');
-    --ALTER TABLE tmp_fontes ALTER COLUMN d_dado TYPE date USING to_date(d_dado, 'YYYY-mm-dd');
-    ALTER TABLE tmp_fontes ALTER COLUMN d_dado TYPE date USING to_date(d_dado, 'dd-mm-YYYY');
-    ALTER TABLE tmp_fontes ALTER COLUMN c_soli TYPE NUMERIC(10, 2) USING c_soli::numeric(10,2);
-    ALTER TABLE tmp_fontes ALTER COLUMN c_real TYPE NUMERIC(10, 2) USING c_real::numeric(10,2);
-    ALTER TABLE tmp_fontes ALTER COLUMN c_max TYPE NUMERIC(10, 2) USING c_max::numeric(10,2);
 
     UPDATE tmp_utentes SET d_soli = replace(d_soli, '/', '-');
     ALTER TABLE tmp_utentes ALTER COLUMN d_soli TYPE date USING to_date(d_soli, 'YYYY-mm-dd');
@@ -49,10 +47,10 @@ fix_field_types() {
     ALTER TABLE tmp_utentes ALTER COLUMN area_pot TYPE NUMERIC(10, 4) USING area_pot::numeric(10,4);
     ALTER TABLE tmp_utentes ALTER COLUMN area_irri TYPE NUMERIC(10, 4) USING area_irri::numeric(10,4);
     ALTER TABLE tmp_utentes ALTER COLUMN area_medi TYPE NUMERIC(10, 4) USING area_medi::numeric(10,4);
-    -- UPDATE tmp_utentes SET d_emissao = replace(d_emissao, '/', '-');
-    -- ALTER TABLE tmp_utentes ALTER COLUMN d_emissao TYPE date USING to_date(d_emissao, 'YYYY-mm-dd');
-    -- UPDATE tmp_utentes SET d_emissao = replace(d_emissao, '/', '-');
-    -- ALTER TABLE tmp_utentes ALTER COLUMN d_validade TYPE date USING to_date(d_validade, 'YYYY-mm-dd');
+    UPDATE tmp_utentes SET d_emissao = replace(d_emissao, '/', '-');
+    ALTER TABLE tmp_utentes ALTER COLUMN d_emissao TYPE date USING to_date(d_emissao, 'YYYY-mm-dd');
+    UPDATE tmp_utentes SET d_validade = replace(d_validade, '/', '-');
+    ALTER TABLE tmp_utentes ALTER COLUMN d_validade TYPE date USING to_date(d_validade, 'YYYY-mm-dd');
     ALTER TABLE tmp_utentes ALTER COLUMN taxa_fixa TYPE NUMERIC(10, 2) USING taxa_fixa::numeric(10,2);
     ALTER TABLE tmp_utentes ALTER COLUMN taxa_uso TYPE NUMERIC(10, 2) USING taxa_uso::numeric(10,2);
     ALTER TABLE tmp_utentes ALTER COLUMN pago_mes TYPE NUMERIC(10, 2) USING pago_mes::numeric(10,2);
@@ -73,9 +71,9 @@ fix_field_types() {
     -- CHECK: https://github.com/OSGeo/gdal/issues/1238
     ALTER TABLE tmp_cultivos ALTER COLUMN area TYPE NUMERIC(10, 4) USING area::numeric(10,4);
 
-    ALTER TABLE cultivos_geoms ALTER COLUMN eficiencia TYPE NUMERIC(10, 2) USING eficiencia::numeric(10, 2);
+    -- ALTER TABLE cultivos_geoms ALTER COLUMN eficiencia TYPE NUMERIC(10, 2) USING eficiencia::numeric(10, 2);
     ALTER TABLE cultivos_geoms ALTER COLUMN area TYPE NUMERIC(10, 2) USING area::numeric(10, 4);
-    ALTER TABLE cultivos_geoms ALTER COLUMN c_estimado TYPE NUMERIC(10, 2) USING c_estimado::numeric(10, 2);
+    -- ALTER TABLE cultivos_geoms ALTER COLUMN c_estimado TYPE NUMERIC(10, 2) USING c_estimado::numeric(10, 2);
     "
 }
 

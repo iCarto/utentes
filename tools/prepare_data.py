@@ -3,7 +3,8 @@
 import argparse
 import os
 
-from ietl import calculate_encoding, common_checks
+from ietl import common_checks
+from ietl.shp import calculate_encoding
 
 
 class Main:

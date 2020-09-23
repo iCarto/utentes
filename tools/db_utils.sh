@@ -11,7 +11,7 @@ drop_db_and_kickout_users() {
 
     # To avoid problems. Uncomment if following a flow where is
     # really needed
-    # ${DROPDB} -h localhost -U postgres --if-exists "${DATABASE}"
+    ${DROPDB} -h localhost -U postgres --if-exists "${DATABASE}"
 }
 
 create_db_from_template() {
