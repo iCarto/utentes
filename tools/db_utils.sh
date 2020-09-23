@@ -84,5 +84,5 @@ END
 \$func\$;
 EOF
 
-    ${PSQLC} -h localhost -U postgres -d "${DATABASE}" -c "${sql_query}"
+    ${PSQL} -h localhost -U postgres -d "${DATABASE}" -c "${sql_query}"
 }
