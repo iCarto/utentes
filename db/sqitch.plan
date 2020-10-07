@@ -200,3 +200,4 @@ update_table_datos_aras_with_rigth_unidades 2020-09-09T20:45:16Z Francisco Puga 
 adds_bi_columns_to_utente 2020-09-10T14:58:03Z Francisco Puga <fpuga@icarto.es> # Adds BI columns to utentes
 adds_duat_fields_to_exploracao 2020-09-10T16:58:52Z Francisco Puga <fpuga@icarto.es> # Adds DUAT fields to exploracao
 alter_table_utentes_fontes_with_inventario_columns 2020-09-11T15:57:49Z Francisco Puga <fpuga@icarto.es> # Adds columns to utentes.fontes to match inventario.fontes
+@201007 2020-10-07T07:28:11Z Francisco Puga <fpuga@icarto.es> # tag 201007
