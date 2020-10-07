@@ -5,18 +5,25 @@
 source ../server/variables.ini
 source exit_codes.sh
 
-drop_db_and_kickout_users() {
+kickout_users() {
     local DATABASE="${1}"
     ${PSQL} -h localhost -U postgres -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DATABASE}';"
+}
+
+drop_db_and_kickout_users() {
+    local DATABASE="${1}"
+
+    kickout_users "${DATABASE}"
 
     # To avoid problems. Uncomment if following a flow where is
     # really needed
-    ${DROPDB} -h localhost -U postgres --if-exists "${DATABASE}"
+    # ${DROPDB} -h localhost -U postgres --if-exists "${DATABASE}"
 }
 
 create_db_from_template() {
     local TEMPLATE="${1}"
     local DATABASE="${2}"
+    kickout_users "${TEMPLATE}"
     drop_db_and_kickout_users "${DATABASE}"
     ${CREATEDB} -h localhost -U postgres -T "${TEMPLATE}" "${DATABASE}"
 }

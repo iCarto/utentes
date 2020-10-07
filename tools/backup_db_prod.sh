@@ -8,7 +8,7 @@ source db_utils.sh
 
 WHEN=$1 # pre | post
 
-BACKUP_FOLDER="${HOME}/backup-entregas/${TODAY}/"
+BACKUP_FOLDER="/var/www/sirha_${DBNAME}/backups/backup-entregas/${TODAY}/"
 
 if [[ "${WHEN}" != 'pre' ]] && [[ "${WHEN}" != 'post' ]]; then
     echo "Parámetro no válido (pre|post): ${WHEN}"
@@ -27,6 +27,3 @@ BACKUP_DB="${DBNAME}_${WHEN}_${TODAY}"
 
 create_db_from_template_and_dump "${DBNAME}" "${BACKUP_DB}" "${BACKUP_FOLDER}"
 pg_dumpall --clean --roles-only -h localhost -p ${PG_PORT} -U postgres -f "${BACKUP_FOLDER}/${DBNAME}_${WHEN}_${TODAY}_roles.sql"
-
-
-
