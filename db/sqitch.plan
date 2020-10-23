@@ -201,3 +201,6 @@ adds_bi_columns_to_utente 2020-09-10T14:58:03Z Francisco Puga <fpuga@icarto.es> 
 adds_duat_fields_to_exploracao 2020-09-10T16:58:52Z Francisco Puga <fpuga@icarto.es> # Adds DUAT fields to exploracao
 alter_table_utentes_fontes_with_inventario_columns 2020-09-11T15:57:49Z Francisco Puga <fpuga@icarto.es> # Adds columns to utentes.fontes to match inventario.fontes
 @201007 2020-10-07T07:28:11Z Francisco Puga <fpuga@icarto.es> # tag 201007
+
+add_field_recolha_to_estacoes 2020-10-22T16:20:41Z Francisco Puga <fpuga@icarto.es> # Add field 'recolha' to 'estacoes'
+modify_values_of_domain_tip_barra 2020-10-22T16:21:40Z Francisco Puga <fpuga@icarto.es> # Modify values of inventario_dominios.tip_barra
