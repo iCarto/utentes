@@ -205,3 +205,4 @@ alter_table_utentes_fontes_with_inventario_columns 2020-09-11T15:57:49Z Francisc
 add_field_recolha_to_estacoes 2020-10-22T16:20:41Z Francisco Puga <fpuga@icarto.es> # Add field 'recolha' to 'estacoes'
 modify_values_of_domain_tip_barra 2020-10-22T16:21:40Z Francisco Puga <fpuga@icarto.es> # Modify values of inventario_dominios.tip_barra
 changes_estacoes_rendering_expression_in_elle 2020-11-26T08:45:59Z Francisco Puga <fpuga@icarto.es> # Changes the expression that defines how to render estacoes layer in elle
+create_table_cbase_unidades_weap 2020-12-20T15:29:42Z Francisco Puga <fpuga@icarto.es> # Create table cbase.unidades_weap
