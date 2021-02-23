@@ -1,7 +1,6 @@
 import unittest
 
 from pyramid.httpexceptions import HTTPBadRequest
-from pytest import Session
 
 from utentes.api.tanques_piscicolas import tanques_piscicolas_update
 from utentes.models.tanques_piscicolas import ActividadesTanquesPiscicolas as Entity
@@ -104,7 +103,7 @@ class TanquesPiscicolasUpdateTests(DBIntegrationTest):
         self.request.json_body.update({"cumprimen": "un texto en lugar de un número"})
         self.assertRaises(HTTPBadRequest, tanques_piscicolas_update, self.request)
 
-    def _get_actual(self, db: Session) -> Entity:
+    def _get_actual(self, db) -> Entity:
         return db.query(Entity).filter(Entity.gid == self.expected_gid).first()
 
 

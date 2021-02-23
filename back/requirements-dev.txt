@@ -1,0 +1,9 @@
+# Testing
+selenium==3.141.0
+webdriver-manager==3.7.1
+
+# Para que pserve consuma menos recursos
+# https://docs.pylonsproject.org/projects/pyramid/en/1.8-branch/whatsnew-1.8.html
+watchdog==2.1.9
+pyramid-debugtoolbar==4.6.1
+waitress==1.4.3

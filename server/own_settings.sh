@@ -2,8 +2,6 @@
 
 source variables.ini
 
-cd /vagrant/server || exit 1
-
 sudo -u postgres psql -f "${SETTINGS}/own-settings/database_roles.sql"
 
 # cp ${SETTINGS}/own-settings/pg_hba.conf /etc/postgresql/${PG_VERSION}/main/
@@ -13,9 +11,9 @@ sudo -u postgres psql -f "${SETTINGS}/own-settings/database_roles.sql"
 # chmod 640 /etc/postgresql/${PG_VERSION}/main/pg_hba.conf
 # chmod 644 /etc/postgresql/${PG_VERSION}/main/postgresql.conf
 #
-# service postgresql restart
+# systemctrl restart postgresql
 
-if [[ ${ENTORNO} == "PROD" ]]; then
+if [[ "${DEPLOYMENT}" == "PROD" ]]; then
     apt-get install anacron
     cp "${SETTINGS}/other-settings/sirha_monthly_tasks" /etc/cron.daily/
     chmod a+x /etc/cron.daily/sirha_monthly_tasks

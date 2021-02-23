@@ -8,8 +8,8 @@ def provisioned?(vm_name='default', provider='virtualbox')
 end
 
 Vagrant.configure(2) do |config|
-    config.vm.box = "debian/contrib-stretch64"
-    config.vm.box_url = "https://app.vagrantup.com/debian/boxes/contrib-stretch64"
+    config.vm.box = "ubuntu/focal64"
+    config.vm.box_version = "20220711.0.0"
     config.vm.box_check_update = false
 
     if Vagrant.has_plugin?("vagrant-vbguest")
@@ -20,13 +20,6 @@ Vagrant.configure(2) do |config|
 
     config.vm.network "forwarded_port", guest: 80, host: 8000
     config.vm.network "forwarded_port", guest: 9001, host: 9001
-
-    # FIX ME https://stackoverflow.com/questions/17966365/vagrant-chicken-and-egg-shared-folder-with-uid-apache-user
-    config.vm.synced_folder "../utentes-api", "/var/www/utentes",
-        disabled: !provisioned?,
-        create: true,
-        owner: "vagrant",
-        group: "www-data"
 
     config.vm.provider "virtualbox" do |vb|
         vb.gui = false

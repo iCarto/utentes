@@ -27,6 +27,6 @@ ubuntu-*-cloudimg-console.log
 
 
 # Project
-utentes/static/.webassets-cache/
-utentes/static/dist/
-utentes/media
+back/utentes/static/.webassets-cache/
+back/utentes/static/dist/
+back/utentes/media

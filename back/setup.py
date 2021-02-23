@@ -17,12 +17,11 @@ requires = [
     "python-dateutil==2.8.1",
     "transaction==3.0.0",
     "zope.sqlalchemy==1.3",
-    "waitress==1.4.3",  # Esto sólo debería hacer falta en desarrollo.
     "bcrypt==3.1.7",
     "Jinja2==2.11.2",
     "pyramid-jinja2==2.8",
     "cssutils==1.0.2",
-    "rjsmin==1.1.0",  # la versión incluída en webassets está desactualizada
+    "rjsmin==1.1.0",  # version included in webassets is outdated
     "numpy==1.19.5",
     "openpyxl==3.0.5",
     "pandas==1.1.5",

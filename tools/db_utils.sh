@@ -2,12 +2,12 @@
 
 # set -e  # Porqué si se lanza desde cli se cierra el terminal
 
-this_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
-
+db_utils_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
 # shellcheck source=../server/variables.ini
-source "${this_dir}/../server/variables.ini"
+source "${db_utils_dir}/../server/variables.ini"
 # shellcheck source=exit_codes.sh
-source "${this_dir}/exit_codes.sh"
+source "${db_utils_dir}/exit_codes.sh"
+unset db_utils_dir
 
 kickout_users() {
     local DBNAME="${1}"

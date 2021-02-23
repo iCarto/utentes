@@ -24,19 +24,20 @@ package-lock.json
 
 
 # Project
-utentes/static/.webassets-cache/
-utentes/static/dist/
-utentes/media
+back/utentes/static/.webassets-cache/
+back/utentes/static/dist/
+back/utentes/media
 
 
 # Formatter & Linters
-utentes/static/vendor
-utentes/static/lib/bootstrap/
-utentes/static/lib/moment-2.11.2/
-utentes/static/lib/chart/chart.js
-utentes/static/lib/excel-libs/
-utentes/static/lib/jquery-fileupload
-utentes/static/lib/jquery-ui/jquery-ui.min.js
-utentes/static/lib/jquery/
-utentes/static/lib/shpwrite.js
-utentes/static/lib/twitter-bootstrap-wizard/
+back/utentes/static/vendor
+back/utentes/static/lib/leaflet-table/vendor
+back/utentes/static/lib/bootstrap/
+back/utentes/static/lib/moment-2.11.2/
+back/utentes/static/lib/chart/chart.js
+back/utentes/static/lib/excel-libs/
+back/utentes/static/lib/jquery-fileupload
+back/utentes/static/lib/jquery-ui/jquery-ui.min.js
+back/utentes/static/lib/jquery/
+back/utentes/static/lib/shpwrite.js
+back/utentes/static/lib/twitter-bootstrap-wizard/
