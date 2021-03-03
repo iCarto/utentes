@@ -3,15 +3,12 @@ import logging
 
 from pyramid.view import view_config
 
-import utentes.constants.perms as perm
-import utentes.models.constants as c
+from utentes.constants import perms
+from utentes.models.base import unauthorized_exception
+from utentes.models.constants import INVOIZABLE_STATES, K_SUPERFICIAL
 from utentes.models.exploracao import ExploracaoConFacturacao
 from utentes.models.facturacao import Facturacao
-from utentes.models.facturacao_fact_estado import (
-    PENDING_CONSUMPTION,
-    PENDING_INVOICE,
-    FacturacaoFactEstado,
-)
+from utentes.models.facturacao_fact_estado import PENDING_CONSUMPTION, PENDING_INVOICE
 
 
 log = logging.getLogger(__name__)
@@ -21,26 +18,24 @@ def diff_month(d1, d2):
     return (d1.year - d2.year) * 12 + d1.month - d2.month
 
 
-@view_config(
-    route_name="nuevo_ciclo_facturacion", request_method="GET", renderer="json"
-)
-# admin || financieiro
-def nuevo_ciclo_facturacion(request):
+def raise_if_not_authorized(request):
     request_token = request.GET.get("token_new_fact_cycle")
     settings_token = request.registry.settings["token_new_fact_cycle"]
     authorized_by_token = request_token == settings_token
-    authorized_by_perm = request.has_permission(perm.PERM_NEW_INVOICE_CYCLE)
+    authorized_by_perm = request.has_permission(perms.PERM_NEW_INVOICE_CYCLE)
     authorized = authorized_by_token or authorized_by_perm
-
     if not authorized:
-        from utentes.models.base import unauthorized_exception
-
         raise unauthorized_exception()
 
-    states = FacturacaoFactEstado.ESTADOS_FACTURABLES
+
+@view_config(
+    route_name="nuevo_ciclo_facturacion", request_method="GET", renderer="json"
+)
+def nuevo_ciclo_facturacion(request):
+    raise_if_not_authorized(request)
     exps = (
         request.db.query(ExploracaoConFacturacao)
-        .filter(ExploracaoConFacturacao.estado_lic.in_(states))
+        .filter(ExploracaoConFacturacao.estado_lic.in_(INVOIZABLE_STATES))
         .all()
     )
     today = datetime.datetime.now()
@@ -72,8 +67,8 @@ def nuevo_ciclo_facturacion(request):
         if (
             lic_sup.consumo_tipo == "Fixo"
             or lic_sub.consumo_tipo == "Fixo"
-            or lic_sup.tipo_agua == c.K_SUPERFICIAL
-            or lic_sub.tipo_agua == c.K_SUPERFICIAL
+            or lic_sup.tipo_agua == K_SUPERFICIAL
+            or lic_sub.tipo_agua == K_SUPERFICIAL
         ):
             f.fact_estado = PENDING_INVOICE
             n_exps_pending_invoice += 1
@@ -127,7 +122,6 @@ def nuevo_ciclo_facturacion(request):
             f.pago_mes = ((f.pago_mes_sub or 0) + (f.pago_mes_sup or 0)) or None
             f.pago_iva = ((f.pago_iva_sub or 0) + (f.pago_iva_sup or 0)) or None
 
-        # f.observacio = '[{"created_at": null, "autor": null, "text": null, "state": null}]'
         f.observacio = [
             {"created_at": None, "autor": None, "text": None, "state": None}
         ]
@@ -143,7 +137,3 @@ def nuevo_ciclo_facturacion(request):
         "n_exps_pending_invoice": n_exps_pending_invoice,
         "n_exps_pending_consumption": n_exps_pending_consumption,
     }
-
-
-def decimal_adapter(obj):
-    return float(obj) if obj or (obj == 0) else None

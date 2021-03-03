@@ -65,15 +65,14 @@ var exploracaosFetched = function() {
         totalResults: _.size(exploracaos),
     });
 
-    new Backbone.SIXHIARA.ButtonExportXLSView({
-        el: $("#projects-header .export-buttons"),
-        listView: listView,
-    }).render();
-
-    new Backbone.SIXHIARA.ButtonExportSHPView({
-        el: $("#projects-header .export-buttons"),
-        listView: listView,
-    }).render();
+    if (SIRHA.FEATURES.ERP_EXPORT) {
+        $("#projects-header .export-buttons").append(
+            '<a class="btn btn-default btn-xs" href="/api/erp/clients" role="button">Clientes</a>'
+        );
+        $("#projects-header .export-buttons").append(
+            '<a class="btn btn-default btn-xs" href="/api/erp/invoices" role="button">Facturas</a>'
+        );
+    }
 
     mapView = new Backbone.SIXHIARA.MapView({
         el: $("#map"),
@@ -123,7 +122,7 @@ estados.fetch({
     },
 });
 
-document.getElementById("projects").addEventListener("click", e => {
+document.getElementById("project_list").addEventListener("click", e => {
     if (e.target.tagName.toLowerCase() === "a") {
         var exp_id = e.target.parentNode.parentNode.id.replace("exp_id-", "");
         var exp = exploracaos.findWhere({exp_id: exp_id});
