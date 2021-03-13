@@ -3,15 +3,14 @@ import logging
 from pyramid.view import view_config
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
-import utentes.constants.perms as perm
+from utentes.api.error_msgs import error_msgs
+from utentes.constants import perms as perm
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.actividade import Actividade
 from utentes.models.actividades_schema import ActividadeSchema
 from utentes.models.base import badrequest_exception
 from utentes.models.cultivo import ActividadesCultivos
 from utentes.models.exploracao import Exploracao
-
-from .error_msgs import error_msgs
 
 
 log = logging.getLogger(__name__)

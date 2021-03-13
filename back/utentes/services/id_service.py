@@ -1,18 +1,18 @@
 import datetime
 import re
 
-import utentes.models.constants as c
+from utentes.models.constants import K_DE_FACTO, K_LICENSED, K_USOS_COMUNS
 from utentes.services import settings_service
 
 
 def code_for_state(state, separator="/"):
-    code = {c.K_DE_FACTO: "UF", c.K_USOS_COMUNS: "SL"}.get(state, "CL")
+    code = {K_DE_FACTO: "UF", K_USOS_COMUNS: "SL"}.get(state, "CL")
     return separator + code
 
 
-def calculate_new_exp_id(request, state=c.K_LICENSED):
+def calculate_new_exp_id(request, state=K_LICENSED):
     if not state:
-        state = c.K_LICENSED
+        state = K_LICENSED
 
     exp_id_tokens = {
         "seq_id": None,

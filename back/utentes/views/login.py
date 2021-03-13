@@ -4,12 +4,8 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
 from pyramid.view import view_config
 
-from utentes.user_utils import (
-    get_unique_user,
-    get_user_from_db,
-    is_single_user_mode,
-)
 from users import user_roles
+from utentes.user_utils import get_unique_user, get_user_from_db, is_single_user_mode
 
 
 @view_config(route_name="index", renderer="utentes:templates/login.jinja2")

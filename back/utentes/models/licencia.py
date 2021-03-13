@@ -1,8 +1,11 @@
 from sqlalchemy import Column, Date, ForeignKey, Integer, Numeric, Text, text
 
-import utentes.models.constants as c
 from utentes.lib.formatter.formatter import to_date, to_decimal
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base
+from utentes.models.constants import (
+    IMPLIES_VALIDADE_ACTIVITY_STATES,
+    IMPLIES_VALIDADE_FICHA_STATES,
+)
 
 
 class Licencia(Base):
@@ -105,25 +108,8 @@ class Licencia(Base):
     def implies_validate_activity(estado):
         # En realidad no deberían ser iguales validate_ficha y validate_activity
         # en validate_ficha sería sólo validar not null loc_provin, ...
-        return estado in [
-            c.K_IRREGULAR,
-            c.K_LICENSED,
-            c.K_PENDING_TECH_DECISION,
-            c.K_PENDING_EMIT_LICENSE,
-            c.K_PENDING_DIR_SIGN,
-            c.K_DE_FACTO,
-            None,
-        ]
+        return estado in IMPLIES_VALIDADE_ACTIVITY_STATES
 
     @staticmethod
     def implies_validate_ficha(estado):
-        return estado in [
-            c.K_IRREGULAR,
-            c.K_LICENSED,
-            c.K_PENDING_FIELD_VISIT,  #
-            c.K_PENDING_TECH_DECISION,
-            c.K_PENDING_EMIT_LICENSE,
-            c.K_PENDING_DIR_SIGN,
-            c.K_DE_FACTO,
-            None,
-        ]
+        return estado in IMPLIES_VALIDADE_FICHA_STATES

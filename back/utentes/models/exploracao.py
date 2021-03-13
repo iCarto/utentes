@@ -8,9 +8,9 @@ from sqlalchemy.dialects.postgresql.json import JSONB
 from sqlalchemy.orm import column_property, relationship
 from sqlalchemy.types import Boolean, Date, DateTime, Integer, Numeric, Text
 
-import utentes.models.constants as c
 from utentes.lib.formatter.formatter import to_decimal
 from utentes.lib.schema_validator.validation_exception import ValidationException
+from utentes.models import constants as c
 from utentes.models.actividade import Actividade
 from utentes.models.base import (
     PGSQL_SCHEMA_UTENTES,

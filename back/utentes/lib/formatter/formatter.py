@@ -1,6 +1,6 @@
 import decimal
 
-import dateutil.parser
+import dateutil
 
 
 def to_decimal(value):

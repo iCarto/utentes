@@ -1,6 +1,15 @@
 import os
+from os.path import expanduser
+from subprocess import DEVNULL, PIPE, Popen
 
-from .find_pg_executable import find_createdb_path, find_dropdb_path, find_psql_path
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from utentes.dbutils.scripts.find_pg_executable import (
+    find_createdb_path,
+    find_dropdb_path,
+    find_psql_path,
+)
 
 
 class DBUtilsException(Exception):
@@ -14,8 +23,6 @@ def home_directory(user=""):
     Returns the home directory of the current user if called without paremeters
     or the user passed as parameter
     """
-    from os.path import expanduser
-
     return expanduser(f"~{user}")
 
 
@@ -103,8 +110,6 @@ def execute_quitely(args, env=None):
     Returns the original exit status of the command used
     """
     # https://stackoverflow.com/questions/11269575/
-    from subprocess import DEVNULL, PIPE, Popen
-
     p = Popen(args, env=env, stdin=DEVNULL, stdout=DEVNULL, stderr=PIPE)
     err = p.communicate()
     # communicate() returns a tuple (stdout, stderr) that are bytes, so we need to convert this bytes literals
@@ -117,9 +122,6 @@ def execute_quitely(args, env=None):
 
 def _get_session(dbname="arasul"):
     # Utilitiy method
-    from sqlalchemy import create_engine
-    from sqlalchemy.orm import sessionmaker
-
     engine = create_engine(f"postgresql://postgres:postgres@localhost:9001/{dbname}")
     Session = sessionmaker(bind=engine)
     return Session()

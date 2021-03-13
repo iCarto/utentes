@@ -3,8 +3,8 @@ import datetime
 from pyramid.view import view_config
 from sqlalchemy import func, or_
 
-import utentes.constants.perms as perm
-import utentes.models.constants as c
+from utentes.constants import perms as perm
+from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL, K_USOS_COMUNS
 from utentes.models.exploracao import Exploracao
 from utentes.models.facturacao import Facturacao
 from utentes.models.facturacao_fact_estado import (
@@ -81,7 +81,7 @@ def usos_comuns(
     else:
         d_fim = datetime.date.today()
 
-    exps = request.db.query(Exploracao).filter(Exploracao.estado_lic == c.K_USOS_COMUNS)
+    exps = request.db.query(Exploracao).filter(Exploracao.estado_lic == K_USOS_COMUNS)
     for e in exps:
 
         if utentes and str(e.utente_rel.gid) not in utentes:
@@ -147,7 +147,7 @@ def usos_privativos(
                 func.sum(Facturacao.pago_iva).label("importe"),
             ]
         )
-    if tipo_agua == c.K_SUPERFICIAL:
+    if tipo_agua == K_SUPERFICIAL:
         fields.extend(
             [
                 func.sum(
@@ -163,7 +163,7 @@ def usos_privativos(
             ]
         )
 
-    if tipo_agua == c.K_SUBTERRANEA:
+    if tipo_agua == K_SUBTERRANEA:
         fields.extend(
             [
                 func.sum(
@@ -218,11 +218,11 @@ def usos_privativos(
         )
 
     if tipo_agua is not None:
-        if tipo_agua == c.K_SUPERFICIAL:
+        if tipo_agua == K_SUPERFICIAL:
             subquery_esperadas = subquery_esperadas.filter(
                 Facturacao.c_licencia_sup != None
             )
-        if tipo_agua == c.K_SUBTERRANEA:
+        if tipo_agua == K_SUBTERRANEA:
             subquery_esperadas = subquery_esperadas.filter(
                 Facturacao.c_licencia_sub != None
             )

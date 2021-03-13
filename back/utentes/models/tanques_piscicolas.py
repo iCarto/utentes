@@ -1,12 +1,13 @@
+import json
+
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, Integer, Numeric, Text, func, text
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import column_property
 
 from utentes.lib.schema_validator.validator import Validator
+from utentes.models.actividades_schema import ActividadeSchema
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base, update_area, update_geom
-
-from .actividades_schema import ActividadeSchema
 
 
 class ActividadesTanquesPiscicolas(Base):
@@ -59,28 +60,26 @@ class ActividadesTanquesPiscicolas(Base):
     )
 
     @staticmethod
-    def create_from_json(json):
+    def create_from_json(data):
         tanque = ActividadesTanquesPiscicolas()
-        tanque.update_from_json(json)
+        tanque.update_from_json(data)
         return tanque
 
-    def update_from_json(self, json):
+    def update_from_json(self, data):
         # actividade - handled by sqlalchemy relationship
         SPECIAL_CASES = ["gid", "the_geom"]
-        self.gid = json.get("id")
-        self.the_geom = update_geom(self.the_geom, json)
+        self.gid = data.get("id")
+        self.the_geom = update_geom(self.the_geom, data)
         for column in list(self.__mapper__.columns.keys()):
             if column in SPECIAL_CASES:
                 continue
-            setattr(self, column, json.get(column))
-        update_area(self, json, 1, "area_gps")
+            setattr(self, column, data.get(column))
+        update_area(self, data, 1, "area_gps")
 
     def __json__(self, request):
         SPECIAL_CASES = ["gid", "the_geom"]
         the_geom = None
         if self.the_geom is not None:
-            import json
-
             the_geom = json.loads(self.geom_as_geojson)
 
         payload = {
@@ -95,6 +94,6 @@ class ActividadesTanquesPiscicolas(Base):
 
         return payload
 
-    def validate(self, json):
+    def validate(self, data):
         validator = Validator(ActividadeSchema["TanquesPiscicolas"])
-        return validator.validate(json)
+        return validator.validate(data)

@@ -1,7 +1,7 @@
 import datetime
 import math
 
-import dateutil.parser
+import dateutil
 
 
 class IsNotNull:

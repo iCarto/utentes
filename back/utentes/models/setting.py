@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Text
 
-from .base import PGSQL_SCHEMA_UTENTES, DeclarativeBase
+from utentes.models.base import PGSQL_SCHEMA_UTENTES, DeclarativeBase
 
 
 class Setting(DeclarativeBase):

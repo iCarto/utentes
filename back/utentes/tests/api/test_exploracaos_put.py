@@ -2,9 +2,9 @@ import unittest
 
 from pyramid.httpexceptions import HTTPBadRequest
 
-import utentes.models.constants as c
 from utentes.api.exploracaos import exploracaos_update
-from utentes.models.actividade import Actividade
+from utentes.models.actividade import Actividade, ActividadesAgriculturaRega
+from utentes.models.constants import K_SANEAMENTO, K_SUBTERRANEA, K_SUPERFICIAL
 from utentes.models.exploracao import Exploracao
 from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
@@ -39,20 +39,6 @@ def build_json(request, exploracao):
             for f in expected_json["actividade"]["tanques_piscicolas"]
         ]
     return expected_json
-
-
-def create_new_session():
-    # La idea de generar una sesión distinta para este último chequeo
-    # es que no haya cosas cacheadas en la sesión original
-    from pyramid.paster import get_appsettings
-    from sqlalchemy import engine_from_config
-    from sqlalchemy.orm import sessionmaker
-
-    settings = get_appsettings("development.ini", "main")
-    engine = engine_from_config(settings, "sqlalchemy.")
-    session = sessionmaker()
-    session.configure(bind=engine)
-    return session()
 
 
 class ExploracaoUpdateTests(DBIntegrationTest):
@@ -172,7 +158,7 @@ class ExploracaoUpdateFonteTests(DBIntegrationTest):
         count = len(expected_json["fontes"])
         expected_json["fontes"].append(
             {
-                "tipo_agua": c.K_SUBTERRANEA,
+                "tipo_agua": K_SUBTERRANEA,
                 "red_monit": "NO",
                 "tipo_fonte": "Furo",
                 "lat_lon": "23,23 42,21",
@@ -267,9 +253,7 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
         expected_json = build_json(self.request, expected)
         existent_tipo_agua = expected.licencias[0].tipo_agua
         new_tipo_agua = (
-            c.K_SUPERFICIAL
-            if existent_tipo_agua == c.K_SUBTERRANEA
-            else c.K_SUBTERRANEA
+            K_SUPERFICIAL if existent_tipo_agua == K_SUBTERRANEA else K_SUBTERRANEA
         )
         expected_json["licencias"].append(
             {
@@ -299,7 +283,7 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
         expected_json["licencias"].append({"tipo_agua": "Superficial", "estado": None})
         self.request.json_body = expected_json
         self.assertRaises(HTTPBadRequest, exploracaos_update, self.request)
-        s = create_new_session()
+        s = self.create_new_session()
         actual = s.query(Exploracao).filter(Exploracao.gid == gid).all()[0]
         self.assertEqual(1, len(actual.licencias))
 
@@ -544,8 +528,6 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         expected_json["licencias"][0]["estado"] = "Licenciada"
         expected_json["actividade"]["c_estimado"] = "TEXT"
         self.request.json_body = expected_json
-        from pyramid.httpexceptions import HTTPBadRequest
-
         self.assertRaises(HTTPBadRequest, exploracaos_update, self.request)
         s = self.create_new_session()
         actual = s.query(Exploracao).filter(Exploracao.gid == gid).all()[0]
@@ -580,7 +562,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         # change from industria to saneamento
         expected_json["actividade"] = {
             "id": None,
-            "tipo": c.K_SANEAMENTO,
+            "tipo": K_SANEAMENTO,
             "c_estimado": 23,
             "habitantes": 42,
         }
@@ -747,8 +729,6 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         self.assertEqual(reses[2].c_res, 5000)
 
     def test_update_exploracao_update_actividade_regadia_create_cultivo(self):
-        from utentes.models.actividade import ActividadesAgriculturaRega
-
         actv = self.request.db.query(ActividadesAgriculturaRega).all()[0]
 
         expected = (

@@ -2,7 +2,7 @@ import logging
 
 from pyramid.view import view_config
 
-import utentes.constants.perms as perm
+from utentes.constants import perms as perm
 from utentes.dbutils.scripts.dump import dump
 from utentes.dbutils.scripts.restore import restore
 from utentes.dbutils.scripts.utils import DBUtilsException

@@ -1,9 +1,17 @@
-import utentes.models.constants as c
+from utentes.models.constants import (
+    K_ABASTECIMENTO,
+    K_AGRICULTURA,
+    K_ENERGIA,
+    K_INDUSTRIA,
+    K_PECUARIA,
+    K_PISCICULTURA,
+    K_SANEAMENTO,
+)
 
 
 ActividadeSchema = {}
 
-ActividadeSchema[c.K_ABASTECIMENTO] = [
+ActividadeSchema[K_ABASTECIMENTO] = [
     {
         "fieldname": "tipo",
         "message": 'O "tipo de actividade não pode estar vazio',
@@ -26,7 +34,7 @@ ActividadeSchema[c.K_ABASTECIMENTO] = [
     },
 ]
 
-ActividadeSchema[c.K_AGRICULTURA] = [
+ActividadeSchema[K_AGRICULTURA] = [
     {
         "fieldname": "tipo",
         "message": 'O "tipo de actividade" não pode estar vazio',
@@ -87,7 +95,7 @@ ActividadeSchema["Cultivos"] = [
     },
 ]
 
-ActividadeSchema[c.K_INDUSTRIA] = [
+ActividadeSchema[K_INDUSTRIA] = [
     {
         "fieldname": "tipo",
         "message": 'O "tipo de actividade" não pode estar vazio',
@@ -105,7 +113,7 @@ ActividadeSchema[c.K_INDUSTRIA] = [
     },
 ]
 
-ActividadeSchema[c.K_PECUARIA] = [
+ActividadeSchema[K_PECUARIA] = [
     {
         "fieldname": "tipo",
         "message": 'O "tipo de actividade" não pode estar vazio',
@@ -146,7 +154,7 @@ ActividadeSchema["Reses"] = [
     },
 ]
 
-ActividadeSchema[c.K_PISCICULTURA] = [
+ActividadeSchema[K_PISCICULTURA] = [
     {
         "fieldname": "tipo",
         "message": 'O "tipo de actividade" não pode estar vazio',
@@ -253,7 +261,7 @@ ActividadeSchema["TanquesPiscicolas"] = [
     },
 ]
 
-ActividadeSchema[c.K_ENERGIA] = [
+ActividadeSchema[K_ENERGIA] = [
     {
         "fieldname": "tipo",
         "message": 'O "tipo de actividade" não pode estar vazio',
@@ -281,7 +289,7 @@ ActividadeSchema[c.K_ENERGIA] = [
     },
 ]
 
-ActividadeSchema[c.K_SANEAMENTO] = [
+ActividadeSchema[K_SANEAMENTO] = [
     {
         "fieldname": "tipo",
         "message": 'O "tipo de actividade" não pode estar vazio',

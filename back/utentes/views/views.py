@@ -1,7 +1,7 @@
 from pyramid.view import view_config
 
-import utentes.constants.perms as perm
-import utentes.models.constants as c
+from utentes.constants import perms as perm
+from utentes.models.constants import K_USOS_COMUNS
 from utentes.services.exp_service import get_license_state
 
 
@@ -25,7 +25,7 @@ def exploracao_show(request):
     return {
         "next_state": estado_lic,
         "d_soli_label": "Data de cadastramento"
-        if estado_lic == c.K_USOS_COMUNS
+        if estado_lic == K_USOS_COMUNS
         else "Data de solicitação",
     }
 

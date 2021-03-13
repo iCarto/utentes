@@ -1,7 +1,8 @@
 from pyramid.view import view_config
 
-import utentes.constants.perms as perm
+from utentes.constants import perms as perm
 from utentes.models import cartography
+from utentes.models.base import notfound_exception
 from utentes.models.exploracao import ExploracaoGeom
 
 
@@ -31,8 +32,6 @@ def api_cartography(request):
         "exploracaos": ExploracaoGeom,
     }.get(layer)
     if not model:
-        from utentes.models.base import notfound_exception
-
         raise notfound_exception(
             {"error": "El recurso no existe en el servidor", "layer": layer}
         )

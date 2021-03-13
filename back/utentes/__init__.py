@@ -16,7 +16,6 @@ from utentes.constants import perms as perm
 from utentes.dbutils.scripts.utils import home_directory
 from utentes.lib import webassets_filters
 from utentes.tenant_custom_code import adjust_settings
-
 from utentes.user_utils import get_user_from_request, get_user_role, is_single_user_mode
 
 

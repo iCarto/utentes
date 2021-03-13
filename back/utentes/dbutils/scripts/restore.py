@@ -1,8 +1,10 @@
 import datetime
 import os
+import re
+import subprocess
 
-from .find_pg_executable import find_pg_restore_path
-from .utils import (
+from utentes.dbutils.scripts.find_pg_executable import find_pg_restore_path
+from utentes.dbutils.scripts.utils import (
     DBUtilsException,
     clone_database,
     connection_parameters,
@@ -59,7 +61,6 @@ def restore(session, dumpfile):
 
 
 def ensure_correct_filename(dumpfile, params):
-    import re
 
     if not os.path.exists(dumpfile):
         raise DBUtilsException("O arquivo indicado não existe")
@@ -107,8 +108,6 @@ def get_last_version_from_dump(dumpfile):
 
 
 def get_all_versions_from_dump(dumpfile):
-    import subprocess
-
     pg_restore = find_pg_restore_path()
     args_str = "--schema=utentes --table=version -a"
     args = [pg_restore]
@@ -131,12 +130,3 @@ def get_all_versions_from_dump(dumpfile):
             continue
         dump_filtered.append(l)
     return dump_filtered[1:-1]
-
-
-if __name__ == "__main__":
-    from .utils import _get_session
-
-    _session = _get_session("arasul")
-    dumpfile = "/tmp/m.backup"
-    dumpfile = "/tmp/180920_BDD_arasul_schema_utentes_pro.dump"
-    restore(_session, dumpfile)

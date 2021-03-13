@@ -5,10 +5,10 @@ from dateutil.relativedelta import relativedelta
 from pyramid.view import view_config
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
-import utentes.constants.perms as perm
-import utentes.models.constants as c
 from utentes.api.error_msgs import error_msgs
+from utentes.constants import perms as perm
 from utentes.models.base import badrequest_exception
+from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL
 from utentes.models.estado_renovacao import (
     DE_FACTO,
     LICENSED,
@@ -99,12 +99,12 @@ def fill_renovacao_from_exploracao(exp):
     renovacao["estado"] = PENDING_RENOV_LICENSE
 
     for lic in exp["properties"]["licencias"]:
-        if lic["tipo_agua"] == c.K_SUBTERRANEA:
+        if lic["tipo_agua"] == K_SUBTERRANEA:
             renovacao["tipo_lic_sub_old"] = lic["tipo_lic"]
             renovacao["d_emissao_sub_old"] = lic["d_emissao"]
             renovacao["d_validade_sub_old"] = lic["d_validade"]
             renovacao["c_licencia_sub_old"] = lic["c_licencia"]
-        if lic["tipo_agua"] == c.K_SUPERFICIAL:
+        if lic["tipo_agua"] == K_SUPERFICIAL:
             renovacao["tipo_lic_sup_old"] = lic["tipo_lic"]
             renovacao["d_emissao_sup_old"] = lic["d_emissao"]
             renovacao["d_validade_sup_old"] = lic["d_validade"]

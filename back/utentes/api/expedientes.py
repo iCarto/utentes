@@ -2,7 +2,7 @@ import logging
 
 from pyramid.view import view_config
 
-import utentes.constants.perms as perm
+from utentes.constants import perms as perm
 from utentes.models.exploracao import Exploracao
 from utentes.services.id_service import calculate_new_exp_id
 

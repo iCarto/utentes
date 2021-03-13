@@ -3,8 +3,8 @@ import logging
 from pyramid.view import view_config
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
-import utentes.constants.perms as perm
 from utentes.api.error_msgs import error_msgs
+from utentes.constants import perms as perm
 from utentes.models.ara import Ara
 from utentes.models.base import badrequest_exception
 from utentes.models.exploracao import Exploracao

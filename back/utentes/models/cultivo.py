@@ -1,11 +1,12 @@
+import json
+
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, ForeignKey, Integer, Numeric, Text, func, text
 from sqlalchemy.orm import column_property
 
 from utentes.lib.schema_validator.validator import Validator
+from utentes.models.actividades_schema import ActividadeSchema
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base, update_area, update_geom
-
-from .actividades_schema import ActividadeSchema
 
 
 class ActividadesCultivos(Base):
@@ -40,25 +41,25 @@ class ActividadesCultivos(Base):
     )
 
     @staticmethod
-    def create_from_json(json):
+    def create_from_json(data):
         cultivo = ActividadesCultivos()
-        cultivo.update_from_json(json)
+        cultivo.update_from_json(data)
         return cultivo
 
-    def update_from_json(self, json):
+    def update_from_json(self, data):
         # actividade - handled by sqlalchemy relationship
-        self.gid = json.get("id")
-        self.cult_id = json.get("cult_id")
-        self.c_estimado = json.get("c_estimado")
-        self.cultivo = json.get("cultivo")
-        self.rega = json.get("rega")
-        self.eficiencia = json.get("eficiencia")
-        self.area = json.get("area")
-        self.observacio = json.get("observacio")
-        self.the_geom = update_geom(self.the_geom, json)
-        update_area(self, json)
+        self.gid = data.get("id")
+        self.cult_id = data.get("cult_id")
+        self.c_estimado = data.get("c_estimado")
+        self.cultivo = data.get("cultivo")
+        self.rega = data.get("rega")
+        self.eficiencia = data.get("eficiencia")
+        self.area = data.get("area")
+        self.observacio = data.get("observacio")
+        self.the_geom = update_geom(self.the_geom, data)
+        update_area(self, data)
 
-        if json.get("geometry_edited"):
+        if data.get("geometry_edited"):
             if self.area is None:
                 self.c_estimado = 0
             elif self.rega == "Regional":
@@ -73,8 +74,6 @@ class ActividadesCultivos(Base):
     def __json__(self, request):
         the_geom = None
         if self.the_geom is not None:
-            import json
-
             the_geom = json.loads(self.geom_as_geojson)
         return {
             "type": "Feature",
@@ -92,6 +91,6 @@ class ActividadesCultivos(Base):
             "geometry": the_geom,
         }
 
-    def validate(self, json):
+    def validate(self, data):
         validator = Validator(ActividadeSchema["Cultivos"])
-        return validator.validate(json)
+        return validator.validate(data)

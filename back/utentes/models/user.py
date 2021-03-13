@@ -5,8 +5,7 @@ from users.user_roles import UNIDAD_DELEGACION
 from utentes.lib.schema_validator.validation_exception import ValidationException
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.base import PGSQL_SCHEMA_USERS, Base
-
-from .user_schema import USER_SCHEMA
+from utentes.models.user_schema import USER_SCHEMA
 
 
 class User(Base):

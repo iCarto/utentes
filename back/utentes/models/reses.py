@@ -1,9 +1,8 @@
 from sqlalchemy import Column, ForeignKey, Integer, Numeric, Text, text
 
 from utentes.lib.schema_validator.validator import Validator
-
-from . import actividades_schema
-from .base import PGSQL_SCHEMA_UTENTES, Base
+from utentes.models.actividades_schema import ActividadeSchema
+from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base
 
 
 class ActividadesReses(Base):
@@ -49,5 +48,5 @@ class ActividadesReses(Base):
         return json
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema["Reses"])
+        validator = Validator(ActividadeSchema["Reses"])
         return validator.validate(json)

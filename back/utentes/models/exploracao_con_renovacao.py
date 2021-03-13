@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy.orm import relationship
 
 from utentes.models.exploracao import ExploracaoConFacturacao
@@ -22,17 +24,15 @@ class ExpConRenovacao(ExploracaoConFacturacao):
         passive_deletes=True,
     )
 
-    def update_from_json_renovacao(self, json):
-        self.exploracao = json.get("id")
-        renovacao = json.get("renovacao")
+    def update_from_json_renovacao(self, data):
+        self.exploracao = data.get("id")
+        renovacao = data.get("renovacao")
         for column in set(Renovacao.__mapper__.columns.keys()) - {"gid"}:
             setattr(self, column, renovacao.get(column))
 
     def __json__(self, request):
         the_geom = None
         if self.the_geom is not None:
-            import json
-
             the_geom = json.loads(self.geom_as_geojson)
 
         renovacao = self.renovacao or {}

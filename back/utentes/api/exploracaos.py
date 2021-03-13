@@ -3,8 +3,8 @@ import logging
 from pyramid.view import view_config
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
-import utentes.constants.perms as perm
 from utentes.api.error_msgs import error_msgs
+from utentes.constants import perms as perm
 from utentes.lib.schema_validator.validation_exception import ValidationException
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.base import badrequest_exception
@@ -19,6 +19,7 @@ from utentes.models.licencia import Licencia
 from utentes.models.licencia_schema import LICENCIA_SCHEMA
 from utentes.models.utente import Utente
 from utentes.models.utente_schema import UTENTE_SCHEMA
+from utentes.services.id_service import is_not_valid_exp_id, is_not_valid_lic_nro
 
 
 log = logging.getLogger(__name__)
@@ -210,7 +211,6 @@ def activity_fail(v):
 
 
 def validate_entities(request, body):
-    from utentes.services.id_service import is_not_valid_exp_id, is_not_valid_lic_nro
 
     validatorExploracao = Validator(EXPLORACAO_SCHEMA)
 

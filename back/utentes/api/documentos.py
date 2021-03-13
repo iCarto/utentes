@@ -1,16 +1,20 @@
-from pyramid.response import FileResponse
+import os
+import tempfile
+import zipfile
+
+from pyramid.response import FileIter, FileResponse, Response
 from pyramid.view import view_config
 from sqlalchemy import func
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.sql import label
 
-import utentes.constants.perms as perm
+from users import user_roles
 from utentes.api.error_msgs import error_msgs
+from utentes.constants import perms as perm
 from utentes.models.base import badrequest_exception
 from utentes.models.documento import Documento
 from utentes.models.domain import Domain
 from utentes.models.exploracao import Exploracao
-from users import user_roles
 
 
 @view_config(
@@ -435,8 +439,6 @@ def exploracao_documentos_zip(request):
 
     tzip = create_zip_file(request, documentos, departamento, unidade)
 
-    from pyramid.response import FileIter, Response
-
     response = Response()
     response.content_type = "application/zip"
     response.content_disposition = 'attachment; filename="' + filename + '.zip"'
@@ -458,9 +460,6 @@ def create_zip_file(request, documentos, departamento, unidade):
     # https://stackoverflow.com/questions/11967720/
     # https://stackoverflow.com/questions/23212435/
     # https://stackoverflow.com/questions/12881294/
-    import os
-    import tempfile
-    import zipfile
 
     tmp = tempfile.NamedTemporaryFile()
     with zipfile.ZipFile(tmp, "w", compression=zipfile.ZIP_DEFLATED) as zip:

@@ -1,4 +1,7 @@
 import os
+from os.path import normcase, normpath, realpath
+
+from utentes.dbutils.scripts.which import which
 
 
 def find_pg_executable_path_by_harcoded(name):
@@ -20,8 +23,6 @@ def find_pg_executable_path_by_settings(name):
 
 
 def find_pg_executable_path_by_env_var(name):
-    from .which import which
-
     return which(name)
 
 
@@ -72,8 +73,6 @@ def normalize_path(p):
     Not sure, what is the best cross-platforma approach. So all posible
     os.path functions are used
     """
-    from os.path import normcase, normpath, realpath
-
     return normcase(normpath(realpath(p)))
 
 

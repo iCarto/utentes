@@ -3,14 +3,13 @@ import logging
 from pyramid.view import view_config
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
-import utentes.constants.perms as perm
+from utentes.api.error_msgs import error_msgs
+from utentes.constants import perms as perm
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.base import badrequest_exception
 from utentes.models.documento import delete_exploracao_documentos
 from utentes.models.utente import Utente
 from utentes.models.utente_schema import UTENTE_SCHEMA
-
-from .error_msgs import error_msgs
 
 
 log = logging.getLogger(__name__)

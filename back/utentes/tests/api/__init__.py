@@ -2,12 +2,15 @@ import unittest
 
 from pyramid import testing
 from pyramid.paster import get_appsettings
-from sqlalchemy import engine_from_config
+from sqlalchemy import engine_from_config, func, select
 from sqlalchemy.orm import sessionmaker
 from webob.multidict import MultiDict
 
 from utentes.models.exploracao import Exploracao
-from utentes.models.utente import Utente
+from utentes.models.fonte import Fonte
+from utentes.models.licencia import Licencia
+from utentes.models.utente import Utente  # noqa: F401
+from utentes.tests.e2e.testing_database import create_exp_piscicola
 
 
 settings = get_appsettings("development.ini", "main")
@@ -33,10 +36,6 @@ class DBIntegrationTest(unittest.TestCase):
         self.connection.close()
 
     def get_test_exploracao(self):
-        from sqlalchemy import func, select
-
-        from utentes.models.fonte import Fonte
-        from utentes.models.licencia import Licencia
 
         # Explotación licenciada con al menos una fuente y una sóla licencia
         at_lest_one_source = (
@@ -63,10 +62,6 @@ class DBIntegrationTest(unittest.TestCase):
     def create_new_session(self):
         # La idea de generar una sesión distinta para este último chequeo
         # es que no haya cosas cacheadas en la sesión original
-        from pyramid.paster import get_appsettings
-        from sqlalchemy import engine_from_config
-        from sqlalchemy.orm import sessionmaker
-
         settings = get_appsettings("development.ini", "main")
         engine = engine_from_config(settings, "sqlalchemy.")
         session = sessionmaker()
@@ -88,8 +83,6 @@ class DBIntegrationTest(unittest.TestCase):
 
 class TanquesPiscicolasTests(DBIntegrationTest):
     def create_tanque_test(self, commit=False):
-        from utentes.tests.e2e.testing_database import create_exp_piscicola
-
         e_test = create_exp_piscicola(self.request)
         actv = e_test.actividade
         # actv = self.request.db.query(ActividadesPiscicultura).all()[0]

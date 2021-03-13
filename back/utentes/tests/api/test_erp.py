@@ -2,7 +2,7 @@ import datetime
 import logging
 import unittest
 
-from sqlalchemy.orm import Session
+from pyramid.httpexceptions import HTTPBadRequest
 
 from utentes.erp.model import ExploracaosERP, FacturacaoERP
 from utentes.models.constants import K_IRREGULAR, K_SUBTERRANEA, K_SUPERFICIAL
@@ -178,8 +178,6 @@ class ERPIntegrationTests(DBIntegrationTest):
         self.assertEqual(invoice_for_exp_sub_exists["Superficial"], "Superficial")
 
     def test_export_invoice_without_export_client(self):
-        from pyramid.httpexceptions import HTTPBadRequest
-
         from utentes.erp.invoices import get_and_update_bd
 
         self.data_for_clients()

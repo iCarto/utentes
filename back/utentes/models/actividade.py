@@ -4,15 +4,22 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, Numeric, Text, text
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import relationship
 
-import utentes.models.constants as c
 from utentes.lib.schema_validator.validator import Validator
+from utentes.models.actividades_schema import ActividadeSchema
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base, update_array
+from utentes.models.constants import (
+    K_ABASTECIMENTO,
+    K_AGRICULTURA,
+    K_ENERGIA,
+    K_INDUSTRIA,
+    K_PECUARIA,
+    K_PISCICULTURA,
+    K_SANEAMENTO,
+)
 from utentes.models.cultivo import ActividadesCultivos
 from utentes.models.reses import ActividadesReses
 from utentes.models.tanques_piscicolas import ActividadesTanquesPiscicolas
 from utentes.services import id_service
-
-from . import actividades_schema
 
 
 class ActividadeBase(Base):
@@ -42,13 +49,13 @@ class ActividadeBase(Base):
     @staticmethod
     def create_from_json(json):
         classes = {
-            c.K_ABASTECIMENTO: ActividadesAbastecemento,
-            c.K_AGRICULTURA: ActividadesAgriculturaRega,
-            c.K_INDUSTRIA: ActividadesIndustria,
-            c.K_PECUARIA: ActividadesPecuaria,
-            c.K_PISCICULTURA: ActividadesPiscicultura,
-            c.K_ENERGIA: ActividadesProduccaoEnergia,
-            c.K_SANEAMENTO: ActividadesSaneamento,
+            K_ABASTECIMENTO: ActividadesAbastecemento,
+            K_AGRICULTURA: ActividadesAgriculturaRega,
+            K_INDUSTRIA: ActividadesIndustria,
+            K_PECUARIA: ActividadesPecuaria,
+            K_PISCICULTURA: ActividadesPiscicultura,
+            K_ENERGIA: ActividadesProduccaoEnergia,
+            K_SANEAMENTO: ActividadesSaneamento,
         }
         tipo = json.get("tipo")
         a = classes[tipo]()
@@ -83,7 +90,7 @@ class ActividadesAbastecemento(Actividade):
     )  # , server_default=text("20"))
     dotacao = Column(Integer, doc="Dotação (l/pessoa/dia)")
 
-    __mapper_args__ = {"polymorphic_identity": c.K_ABASTECIMENTO}
+    __mapper_args__ = {"polymorphic_identity": K_ABASTECIMENTO}
 
     def update_from_json(self, json):
         self.gid = json.get("id")
@@ -93,7 +100,7 @@ class ActividadesAbastecemento(Actividade):
         self.dotacao = json.get("dotacao")
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema[c.K_ABASTECIMENTO])
+        validator = Validator(ActividadeSchema[K_ABASTECIMENTO])
         return validator.validate(json)
 
 
@@ -110,7 +117,7 @@ class ActividadesAgriculturaRega(Actividade):
     area_irri = Column(Numeric(10, 4), doc="Área irrigada")
     area_medi = Column(Numeric(10, 4), doc="Área medida")
 
-    __mapper_args__ = {"polymorphic_identity": c.K_AGRICULTURA}
+    __mapper_args__ = {"polymorphic_identity": K_AGRICULTURA}
 
     cultivos = relationship(
         "ActividadesCultivos",
@@ -147,7 +154,7 @@ class ActividadesAgriculturaRega(Actividade):
         self.area_medi = json.get("area_medi")
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema[c.K_AGRICULTURA])
+        validator = Validator(ActividadeSchema[K_AGRICULTURA])
         return validator.validate(json)
 
 
@@ -166,7 +173,7 @@ class ActividadesIndustria(Actividade):
     tratamento = Column(Text, doc="Méios de tratamento da água")
     eval_impac = Column(Boolean, doc="Evaluação de Impacto Ambiental")
 
-    __mapper_args__ = {"polymorphic_identity": c.K_INDUSTRIA}
+    __mapper_args__ = {"polymorphic_identity": K_INDUSTRIA}
 
     def update_from_json(self, json):
         self.gid = json.get("id")
@@ -179,7 +186,7 @@ class ActividadesIndustria(Actividade):
         self.eval_impac = json.get("eval_impac")
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema[c.K_INDUSTRIA])
+        validator = Validator(ActividadeSchema[K_INDUSTRIA])
         return validator.validate(json)
 
 
@@ -193,7 +200,7 @@ class ActividadesPecuaria(Actividade):
     )
     n_res_tot = Column(Integer, doc="Número de reses total")
 
-    __mapper_args__ = {"polymorphic_identity": c.K_PECUARIA}
+    __mapper_args__ = {"polymorphic_identity": K_PECUARIA}
 
     reses = relationship(
         "ActividadesReses",
@@ -218,7 +225,7 @@ class ActividadesPecuaria(Actividade):
         update_array(self.reses, json.get("reses"), ActividadesReses.create_from_json)
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema[c.K_PECUARIA])
+        validator = Validator(ActividadeSchema[K_PECUARIA])
         return validator.validate(json)
 
 
@@ -252,7 +259,7 @@ class ActividadesPiscicultura(Actividade):
     problemas = Column(Text, doc="A exploraçaõ tem problemas")
     prob_prin = Column(Text, doc="Principais problemas")
 
-    __mapper_args__ = {"polymorphic_identity": c.K_PISCICULTURA}
+    __mapper_args__ = {"polymorphic_identity": K_PISCICULTURA}
 
     tanques_piscicolas = relationship(
         "ActividadesTanquesPiscicolas",
@@ -295,7 +302,7 @@ class ActividadesPiscicultura(Actividade):
             self.area = json.get("area_exploracao_for_calcs")
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema[c.K_PISCICULTURA])
+        validator = Validator(ActividadeSchema[K_PISCICULTURA])
         return validator.validate(json)
 
 
@@ -314,7 +321,7 @@ class ActividadesProduccaoEnergia(Actividade):
     equipo = Column(Text, doc="Tipo de equipamento")
     eval_impac = Column(Boolean, doc="Evaluação de Impacto Ambiental")
 
-    __mapper_args__ = {"polymorphic_identity": c.K_ENERGIA}
+    __mapper_args__ = {"polymorphic_identity": K_ENERGIA}
 
     def update_from_json(self, json):
         self.gid = json.get("id")
@@ -327,7 +334,7 @@ class ActividadesProduccaoEnergia(Actividade):
         self.eval_impac = json.get("eval_impac")
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema[c.K_ENERGIA])
+        validator = Validator(ActividadeSchema[K_ENERGIA])
         return validator.validate(json)
 
 
@@ -341,7 +348,7 @@ class ActividadesSaneamento(Actividade):
     )
     habitantes = Column(Integer, doc="Número de habitantes (Utilizadores)")
 
-    __mapper_args__ = {"polymorphic_identity": c.K_SANEAMENTO}
+    __mapper_args__ = {"polymorphic_identity": K_SANEAMENTO}
 
     def update_from_json(self, json):
         self.gid = json.get("id")
@@ -350,5 +357,5 @@ class ActividadesSaneamento(Actividade):
         self.habitantes = json.get("habitantes")
 
     def validate(self, json):
-        validator = Validator(actividades_schema.ActividadeSchema[c.K_SANEAMENTO])
+        validator = Validator(ActividadeSchema[K_SANEAMENTO])
         return validator.validate(json)

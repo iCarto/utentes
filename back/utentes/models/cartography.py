@@ -1,3 +1,5 @@
+import json
+
 from geoalchemy2 import Geometry
 from sqlalchemy import Column, Integer, Text, func
 from sqlalchemy.orm import column_property
@@ -23,8 +25,6 @@ class CartographyBase(Base):
         }
         geom = None
         if self.geom is not None:
-            import json
-
             geom = json.loads(self.geom_as_geojson)
         return {"type": "Feature", "properties": properties, "geometry": geom}
 
