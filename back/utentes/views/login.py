@@ -5,11 +5,11 @@ from pyramid.security import remember
 from pyramid.view import view_config
 
 from utentes.user_utils import (
-    ROL_FINANCIERO,
     get_unique_user,
     get_user_from_db,
     is_single_user_mode,
 )
+from users import user_roles
 
 
 @view_config(route_name="index", renderer="utentes:templates/login.jinja2")
@@ -56,7 +56,7 @@ def login(request):
         user = get_user_from_db(request)
         if user:
             headers = remember(request, user.username)
-            if user.usergroup == ROL_FINANCIERO and next == request.route_url(
+            if user.usergroup == user_roles.FINANCIERO and next == request.route_url(
                 request.registry.settings.get("users.after_login_url")
             ):
                 next = request.route_url("facturacao")

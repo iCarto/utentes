@@ -2,21 +2,11 @@ import json
 
 from geoalchemy2 import Geometry
 from geoalchemy2.functions import GenericFunction
-from sqlalchemy import (
-    Boolean,
-    Column,
-    Date,
-    DateTime,
-    ForeignKey,
-    Integer,
-    Numeric,
-    Text,
-    func,
-    text,
-)
+from sqlalchemy import Column, ForeignKey, func, text
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.dialects.postgresql.json import JSONB
 from sqlalchemy.orm import column_property, relationship
+from sqlalchemy.types import Boolean, Date, DateTime, Integer, Numeric, Text
 
 import utentes.models.constants as c
 from utentes.lib.formatter.formatter import to_decimal

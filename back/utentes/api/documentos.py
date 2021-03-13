@@ -10,15 +10,7 @@ from utentes.models.base import badrequest_exception
 from utentes.models.documento import Documento
 from utentes.models.domain import Domain
 from utentes.models.exploracao import Exploracao
-from utentes.user_utils import (
-    ROL_ADMIN,
-    ROL_ADMINISTRATIVO,
-    ROL_FINANCIERO,
-    ROL_JURIDICO,
-    ROL_SINGLE,
-    ROL_TECNICO,
-    ROL_UNIDAD_DELEGACION,
-)
+from users import user_roles
 
 
 @view_config(
@@ -110,7 +102,7 @@ def exploracao_documentacao_files(request):
     else:
         if path_info["unidade"] is None:
             departamento = path_info["departamento"]
-            if departamento != ROL_UNIDAD_DELEGACION:
+            if departamento != user_roles.UNIDAD_DELEGACION:
                 return exploracao_get_departamento_files(
                     request,
                     path_info["exploracao_id"],
@@ -159,14 +151,14 @@ def exploracao_get_exploracao_folders(request, exploracao_id):
 
 def init_departamentos_json_array(request, exploracao_id):
     departamentos = [
-        ROL_ADMINISTRATIVO,
-        ROL_FINANCIERO,
-        ROL_JURIDICO,
-        ROL_TECNICO,
-        ROL_UNIDAD_DELEGACION,
+        user_roles.ADMINISTRATIVO,
+        user_roles.FINANCIERO,
+        user_roles.JURIDICO,
+        user_roles.TECNICO,
+        user_roles.UNIDAD_DELEGACION,
     ]
     if request.registry.settings.get("ara") == "DPMAIP":
-        departamentos = [ROL_TECNICO]
+        departamentos = [user_roles.TECNICO]
 
     departamentos_json_array = []
     for departamento in departamentos:
@@ -238,15 +230,27 @@ def init_unidades_json_array(request, exploracao_id):
                 "name": unidade.key,
                 "url": request.route_url(
                     "api_exploracao_documentacao",
-                    subpath=[exploracao_id, ROL_UNIDAD_DELEGACION, unidade.key],
+                    subpath=[
+                        exploracao_id,
+                        user_roles.UNIDAD_DELEGACION,
+                        unidade.key,
+                    ],
                 ),
                 "path": request.route_url(
                     "api_exploracao_documentacao_path",
-                    subpath=[exploracao_id, ROL_UNIDAD_DELEGACION, unidade.key],
+                    subpath=[
+                        exploracao_id,
+                        user_roles.UNIDAD_DELEGACION,
+                        unidade.key,
+                    ],
                 ),
                 "files": request.route_url(
                     "api_exploracao_documentacao_files",
-                    subpath=[exploracao_id, ROL_UNIDAD_DELEGACION, unidade.key],
+                    subpath=[
+                        exploracao_id,
+                        user_roles.UNIDAD_DELEGACION,
+                        unidade.key,
+                    ],
                 ),
             }
         )
@@ -315,7 +319,7 @@ def documento_file_upload(request, path_info):
     documento.set_path_root(request.registry.settings["media_root"])
     documento.upload_file(input_file.file)
 
-    if request.user.usergroup not in [ROL_ADMIN, ROL_SINGLE]:
+    if request.user.usergroup not in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
         if request.user.usergroup != path_info["departamento"] or (
             path_info["unidade"] is not None
             and request.user.unidade != path_info["unidade"]
@@ -375,7 +379,7 @@ def documento_file_delete(request):
     file_name = subpath[-1]
     path_info = parse_subpath(subpath[:-1])
 
-    if request.user.usergroup not in [ROL_ADMIN, ROL_SINGLE]:
+    if request.user.usergroup not in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
         if request.user.usergroup != path_info["departamento"] or (
             path_info["unidade"] is not None
             and request.user.unidade != path_info["unidade"]
@@ -521,12 +525,12 @@ def format_subpath(path_info):
 
 def get_folder_permissions(request, departamento, unidade):
     if departamento is None or (
-        departamento == ROL_UNIDAD_DELEGACION and unidade is None
+        departamento == user_roles.UNIDAD_DELEGACION and unidade is None
     ):
         return ["perm_download"]
-    if request.user.usergroup in [ROL_ADMIN, ROL_SINGLE]:
+    if request.user.usergroup in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
         return ["perm_upload", "perm_download", "perm_delete"]
-    if departamento == ROL_UNIDAD_DELEGACION:
+    if departamento == user_roles.UNIDAD_DELEGACION:
         if request.user.unidade == unidade:
             return ["perm_upload", "perm_download", "perm_delete"]
     elif request.user.usergroup == departamento:
@@ -535,9 +539,9 @@ def get_folder_permissions(request, departamento, unidade):
 
 
 def get_file_permissions(request, departamento, unidade):
-    if request.user.usergroup in [ROL_ADMIN, ROL_SINGLE]:
+    if request.user.usergroup in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
         return ["perm_download", "perm_delete"]
-    if departamento == ROL_UNIDAD_DELEGACION:
+    if departamento == user_roles.UNIDAD_DELEGACION:
         if request.user.unidade == unidade:
             return ["perm_download", "perm_delete"]
     elif request.user.usergroup == departamento:

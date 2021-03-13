@@ -1,7 +1,7 @@
 import bcrypt
 from sqlalchemy import TIMESTAMP, Column, DateTime, Integer, Text, func, text
 
-from users.user_roles import ROL_UNIDAD_DELEGACION
+from users.user_roles import UNIDAD_DELEGACION
 from utentes.lib.schema_validator.validation_exception import ValidationException
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.base import PGSQL_SCHEMA_USERS, Base
@@ -42,10 +42,7 @@ class User(Base):
             self.set_password(json.get("password"))
         if json.get("unidade"):
             self.unidade = json.get("unidade")
-        if (
-            previous_group == ROL_UNIDAD_DELEGACION
-            and self.usergroup != ROL_UNIDAD_DELEGACION
-        ):
+        if previous_group == UNIDAD_DELEGACION and self.usergroup != UNIDAD_DELEGACION:
             self.unidade = None
 
     def set_password(self, pw):

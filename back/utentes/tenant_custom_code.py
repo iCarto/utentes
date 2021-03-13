@@ -1,20 +1,15 @@
-from users.user_roles import (
-    GROUPS_TO_ROLES,
-    ROL_ADMINISTRATIVO,
-    ROL_DIRECCION,
-    ROL_JURIDICO,
-)
+from users.user_roles import ADMINISTRATIVO, DIRECCION, GROUPS_TO_ROLES, JURIDICO
 
 
 def group_to_roles(ara):
     base_group_to_roles = dict(GROUPS_TO_ROLES)
     if ara == "ARAS":
-        base_group_to_roles[ROL_JURIDICO] = [ROL_JURIDICO, ROL_DIRECCION]
+        base_group_to_roles[JURIDICO] = [JURIDICO, DIRECCION]
     if ara in {"ARAZ", "ARAC", "ARACN", "ARAN"}:
-        base_group_to_roles[ROL_JURIDICO] = [
-            ROL_JURIDICO,
-            ROL_DIRECCION,
-            ROL_ADMINISTRATIVO,
+        base_group_to_roles[JURIDICO] = [
+            JURIDICO,
+            DIRECCION,
+            ADMINISTRATIVO,
         ]
     return base_group_to_roles
 

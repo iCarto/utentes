@@ -1,19 +1,8 @@
-from sqlalchemy import (
-    Boolean,
-    Column,
-    Date,
-    DateTime,
-    ForeignKey,
-    Integer,
-    Numeric,
-    Text,
-    UniqueConstraint,
-    func,
-    text,
-)
+from sqlalchemy import Column, ForeignKey, UniqueConstraint, func, text
 from sqlalchemy.dialects.postgresql.json import JSONB
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.sql.expression import and_, case, null
+from sqlalchemy.types import Boolean, Date, DateTime, Integer, Numeric, Text
 
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base
 from utentes.models.facturacao_fact_estado import PENDING_CONSUMPTION
