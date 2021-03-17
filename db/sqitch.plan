@@ -208,4 +208,5 @@ changes_estacoes_rendering_expression_in_elle 2020-11-26T08:45:59Z Francisco Pug
 create_table_cbase_unidades_weap 2020-12-20T15:29:42Z Francisco Puga <fpuga@icarto.es> # Create table cbase.unidades_weap
 add_export_to_weap_checkbox 2021-01-14T18:35:08Z Francisco Puga <fpuga@icarto.es> # add checkbox export to weap
 erp_integration 2021-02-16T17:48:35Z Francisco Puga <fpuga@icarto.es> # Changes for erp integration
-
+new_version_210317 2021-03-17T15:22:03Z Francisco Puga <fpuga@icarto.es> # new_version_210317
+@210317 2021-03-17T15:25:01Z Francisco Puga <fpuga@icarto.es> # tag 210317
