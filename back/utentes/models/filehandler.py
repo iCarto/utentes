@@ -6,7 +6,7 @@ import os
 log = logging.getLogger(__name__)
 
 
-class FileHandler:
+class FileHandler(object):
     def save(self, filename, content):
         if filename is None:
             raise Exception("No filename was provided in save method")
@@ -30,7 +30,7 @@ class FileHandler:
         try:
             os.remove(filename)
         except OSError as e:
-            log.error("El fichero no existe:" + filename)
+            log.error(f"El fichero no existe: {filename}")
             if e.errno != errno.ENOENT:
                 raise
             return False

@@ -63,7 +63,7 @@ def cultivos_update(request):
         raise badrequest_exception({"error": error_msgs["gid_obligatory"]})
 
     msgs = validate_entities(request.json_body)
-    if len(msgs) > 0:
+    if msgs:
         raise badrequest_exception({"error": msgs})
 
     try:

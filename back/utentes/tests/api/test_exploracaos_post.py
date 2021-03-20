@@ -16,7 +16,7 @@ from utentes.models.constants import (
 )
 from utentes.models.exploracao import Exploracao
 from utentes.models.utente import Utente
-from utentes.services.id_service import calculate_new_exp_id
+from utentes.services.id_service import calculate_new_exp_id, calculate_lic_nro
 from utentes.tests.api import DBIntegrationTest
 
 
@@ -60,7 +60,7 @@ class ExploracaoCreateTests(DBIntegrationTest):
         }
         expected["licencias"] = [
             {
-                "lic_nro": expected["exp_id"] + "/" + K_SUBTERRANEA[:3],
+                "lic_nro": calculate_lic_nro(expected["exp_id"], K_SUBTERRANEA),
                 "tipo_agua": K_SUBTERRANEA,
                 "estado": "Licenciada",
                 "d_emissao": "2020-2-2",
@@ -134,7 +134,7 @@ class ExploracaoCreateTests(DBIntegrationTest):
         self.assertEqual(K_SANEAMENTO, actual.actividade.tipo)
         self.assertEqual(3, actual.actividade.c_estimado)
         self.assertEqual(120000, actual.actividade.habitantes)
-        self.assertEqual(actual.exp_id + "/Sub", licencia.lic_nro)
+        self.assertEqual(f"{actual.exp_id}/Sub", licencia.lic_nro)
         self.assertEqual(K_SUBTERRANEA, licencia.tipo_agua)
         self.assertEqual("Licenciada", licencia.estado)
         self.assertEqual("2020-02-02", licencia.d_emissao.isoformat())

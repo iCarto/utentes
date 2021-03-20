@@ -9,6 +9,7 @@ from utentes.models.exploracao import Exploracao
 from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
 from utentes.models.utente import Utente
+from utentes.services.id_service import calculate_lic_nro
 from utentes.tests.api import DBIntegrationTest
 
 
@@ -258,7 +259,7 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
         expected_json["licencias"].append(
             {
                 # lic_nro is built from client side, so shouldn't be null
-                "lic_nro": expected_json["exp_id"] + "/" + new_tipo_agua[:3],
+                "lic_nro": calculate_lic_nro(expected_json["exp_id"], new_tipo_agua),
                 "tipo_agua": new_tipo_agua,
                 "estado": "Irregular",
                 "d_emissao": "2020-2-2",
@@ -577,7 +578,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
             .count()
         )
         self.assertEqual(0, count_actividade)  # was deleted
-        self.assertEqual(c.K_SANEAMENTO, actual.actividade.tipo)
+        self.assertEqual(K_SANEAMENTO, actual.actividade.tipo)
         self.assertEqual(23, actual.actividade.c_estimado)
         self.assertEqual(42, actual.actividade.habitantes)
 

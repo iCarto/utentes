@@ -22,6 +22,14 @@ def is_case_sensitive_filesystem():
 _IS_CASE_SENSITIVE_FILESYSTEM = is_case_sensitive_filesystem()
 
 
+def file_has_extension(filename):
+    """
+    Returns the extension of the file according to splittext rules, or an empty string
+    It can be used directly in comparisson to know if the file has an extension.
+    """
+    return os.path.splitext(filename)[1]
+
+
 def which(program, case_sensitive=_IS_CASE_SENSITIVE_FILESYSTEM):
     # https://stackoverflow.com/a/18547150/930271
     """ Simulates unix `which` command. Returns absolute path if program found """
@@ -85,7 +93,7 @@ def which(program, case_sensitive=_IS_CASE_SENSITIVE_FILESYSTEM):
                 return exe_file
 
     # try search program name with 'soft' extension search
-    if len(os.path.splitext(fname)[1]) == 0:
+    if not file_has_extension(fname):
         for path in paths:
             file_exts = list_file_exts(path, fname, not case_sensitive)
             for file_ext in file_exts:

@@ -13,6 +13,7 @@ from utentes.models.facturacao import Facturacao
 from utentes.models.facturacao_fact_estado import PENDING_PAYMENT
 from utentes.models.licencia import Licencia
 from utentes.models.utente import Utente
+from utentes.services.id_service import calculate_lic_nro
 
 
 class GIDGenerator(object):
@@ -65,7 +66,7 @@ def create_test_licencia(exp_id, **kwargs):
     licencia.estado = K_LICENSED  # Utente de facto UF
     for k, v in kwargs.items():
         setattr(licencia, k, v)
-    licencia.lic_nro = f"{exp_id}/{licencia.tipo_agua[:3]}"
+    licencia.lic_nro = calculate_lic_nro(exp_id, licencia.tipo_agua)
     # licencia.exploracao =
     return licencia
 

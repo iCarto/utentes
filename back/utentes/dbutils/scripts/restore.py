@@ -35,10 +35,8 @@ def restore(session, dumpfile):
 
     # TODO:
     # Cachear, memoization de los paths
-
-    exitcode, err = clone_database(
-        session, version() + "_auto_tmp_" + params["database"], drop_if_exists=True
-    )
+    cloned_dbname = f"{version()}_auto_tmp_{params['database']}"
+    exitcode, err = clone_database(session, cloned_dbname, drop_if_exists=True)
     if exitcode != 0:
         raise DBUtilsException(
             "Não foi possível salvar o banco de dados atual com êxito", err

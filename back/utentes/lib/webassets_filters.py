@@ -5,4 +5,5 @@ class StrictMode(Filter):
     name = "strict_mode"
 
     def output(self, _in, out, **kwargs):
-        out.write('"use strict";\n' + _in.read())
+        out_text = f'"use strict";\n{_in.read()}'
+        out.write(out_text)

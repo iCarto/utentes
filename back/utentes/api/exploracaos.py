@@ -91,7 +91,7 @@ def upsert_utente(request, body):
 
     validatorUtente = Validator(UTENTE_SCHEMA)
     msgs = validatorUtente.validate(body["utente"])
-    if len(msgs) > 0:
+    if msgs:
         raise badrequest_exception({"error": msgs})
     u = Utente.create_from_json(body["utente"])
     request.db.add(u)
@@ -112,7 +112,7 @@ def exploracaos_update(request):
     try:
         body = request.json_body
         msgs = validate_entities(request, body)
-        if len(msgs) > 0:
+        if msgs:
             raise badrequest_exception({"error": msgs})
 
         e = request.db.query(Exploracao).filter(Exploracao.gid == gid).one()
@@ -165,7 +165,7 @@ def exploracaos_create(request):
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
 
     msgs = validate_entities(request, body)
-    if len(msgs) > 0:
+    if msgs:
         raise badrequest_exception({"error": msgs})
 
     e = (
@@ -181,7 +181,7 @@ def exploracaos_create(request):
     if not u:
         validatorUtente = Validator(UTENTE_SCHEMA)
         msgs = validatorUtente.validate(body["utente"])
-        if len(msgs) > 0:
+        if msgs:
             raise badrequest_exception({"error": msgs})
         u = Utente.create_from_json(body["utente"])
         request.db.add(u)

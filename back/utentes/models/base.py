@@ -100,7 +100,7 @@ def update_array(olds, news_json, factory):
     for n in news_json:
         new = factory(n)
         msgs = new.validate(n)
-        if len(msgs) > 0:
+        if msgs:
             raise ValidationException({"error": msgs})
         news.append(new)
         if n.get("id"):

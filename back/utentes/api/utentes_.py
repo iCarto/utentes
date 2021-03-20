@@ -74,7 +74,7 @@ def utentes_update(request):
         raise badrequest_exception({"error": error_msgs["gid_obligatory"]})
 
     msgs = validate_entities(request.json_body)
-    if len(msgs) > 0:
+    if msgs:
         raise badrequest_exception({"error": msgs})
 
     try:
@@ -106,7 +106,7 @@ def utentes_create(request):
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
 
     msgs = validate_entities(body)
-    if len(msgs) > 0:
+    if msgs:
         raise badrequest_exception({"error": msgs})
 
     # TODO:320 is this not covered by schema validations?

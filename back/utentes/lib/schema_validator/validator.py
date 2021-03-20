@@ -4,14 +4,14 @@ import math
 import dateutil
 
 
-class IsNotNull:
+class IsNotNull(object):
     def fails(self, value):
         if value is None:
             return True
         return False
 
 
-class IsDate:
+class IsDate(object):
     """
     The received value is a valid datetime.date object or can be parsed with
     dateutil.parser. This allows strings in ISO8601 or RFC3329 or others
@@ -30,7 +30,7 @@ class IsDate:
         return False
 
 
-class IsNumeric:
+class IsNumeric(object):
     """
     The received value is the representation of a number.
     So '5' is considered valid
@@ -46,7 +46,7 @@ class IsNumeric:
         return False
 
 
-class IntLessThan8:
+class IntLessThan8(object):
     """
     The int part of the received number has less that
     8 digits
@@ -62,7 +62,7 @@ class IntLessThan8:
         return intLength > 8
 
 
-class IsBoolean:
+class IsBoolean(object):
     """
     Value is a proper boolean.
     """
@@ -71,14 +71,14 @@ class IsBoolean:
         return value not in [True, False, None]
 
 
-class IsArrayNotVoid:
+class IsArrayNotVoid(object):
     def fails(self, value):
-        if isinstance(value, list) and (len(value) > 0):
+        if isinstance(value, list) and value:
             return False
         return True
 
 
-class Validator:
+class Validator(object):
     def __init__(self, schemaValidateFrom):
         self.messages = []
         self.schema = schemaValidateFrom

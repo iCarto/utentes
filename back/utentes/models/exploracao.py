@@ -577,12 +577,12 @@ class Exploracao(ExploracaoGeom):
         if not self.actividade:
             actv = Actividade.create_from_json(actividade_json)
             msgs = self.validate_activity(actv, json.get("actividade"), json)
-            if len(msgs) > 0:
+            if msgs:
                 raise ValidationException({"error": msgs})
             self.actividade = actv
         elif self.actividade:
             msgs = self.validate_activity(self.actividade, actividade_json, json)
-            if len(msgs) > 0:
+            if msgs:
                 raise ValidationException({"error": msgs})
             self.actividade.update_from_json(actividade_json)
 

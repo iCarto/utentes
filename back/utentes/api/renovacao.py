@@ -110,7 +110,7 @@ def fill_renovacao_from_exploracao(exp):
             renovacao["d_validade_sup_old"] = lic["d_validade"]
             renovacao["c_licencia_sup_old"] = lic["c_licencia"]
 
-    if len(exp["properties"]["facturacao"]):
+    if exp["properties"]["facturacao"]:
         f = exp["properties"]["facturacao"][-1]
         if f["consumo_fact_sub"]:
             exp["properties"]["consumo_fact_sub_old"] = f["consumo_fact_sub"]
@@ -151,7 +151,7 @@ def renovacao_update(request):
             }
         )
 
-    if len(valid) == 0:
+    if not valid:
         r = Renovacao()
         r.update_from_json_renovacao(body)
     elif len(valid) == 1:

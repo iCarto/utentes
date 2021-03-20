@@ -41,7 +41,7 @@ def is_valid_exp_id(exp_id):
 
 
 def _is_valid_exp_id(exp_id, ara):
-    exp_id_format_regexp = r"^\d{3}/" + ara + r"/\d{4}/(UF|SL|CL)$"
+    exp_id_format_regexp = r"^\d{3}/" + ara + r"/\d{4}/(UF|SL|CL)$"  # noqa: WPS336
     return exp_id and re.match(exp_id_format_regexp, exp_id)
 
 
@@ -55,7 +55,7 @@ def replace_exp_id_in_code(code, new_exp_id):
     return new_exp_id + code[i:]
 
 
-def calculate_lic_nro(exp_id: str, tipo_agua: str) -> str:
+def calculate_lic_nro(exp_id: str, _tipo_agua: str) -> str:
     """
     Return the correct license number.
 
@@ -64,7 +64,8 @@ def calculate_lic_nro(exp_id: str, tipo_agua: str) -> str:
 
     It is safe to call it even to replace the already valid `lic_nro`.
     """
-    return f"{exp_id}/{tipo_agua[0:3].capitalize()}"
+    tipo_agua = _tipo_agua[:3].capitalize()
+    return f"{exp_id}/{tipo_agua}"
 
 
 def is_valid_lic_nro(lic_nro):
@@ -81,7 +82,7 @@ def next_child_seq(childs, id_name):
         for seq in childs
         if getattr(seq, id_name)
     ]
-    if len(id_sequence) == 0:
+    if not id_sequence:
         return 1
 
     return max(id_sequence) + 1

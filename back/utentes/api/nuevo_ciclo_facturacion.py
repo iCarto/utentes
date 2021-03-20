@@ -45,7 +45,7 @@ def nuevo_ciclo_facturacion(request):
     n_exps_pending_consumption = 0
     for e in exps:
         n_exps_invoizables_total += 1
-        if len(e.facturacao) > 0:
+        if e.facturacao:
             d_months = diff_month(today, e.facturacao[-1].created_at)
             if (
                 (e.fact_tipo == "Mensal" and d_months < 1)
@@ -85,7 +85,7 @@ def nuevo_ciclo_facturacion(request):
         # si no para la explotación para tenerlo en cuenta para las siguientes
         # facturas y no para la actual
         f.fact_tipo = e.fact_tipo or "Mensal"
-        if len(e.facturacao) > 0:
+        if e.facturacao:
             f.pago_lic = e.facturacao[-1].pago_lic
             if lic_sup.estado:
                 f.consumo_fact_sup = e.facturacao[-1].consumo_fact_sup

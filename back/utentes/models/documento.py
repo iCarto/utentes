@@ -102,7 +102,7 @@ class Documento(Base):
             filehandler.save(filename, content)
             self.save_file()
         except Exception:
-            logging.exception("Error saving file in uploads folder: " + self.name)
+            logging.exception(f"Error saving file in uploads folder: {self.name}")
             raise
 
     def delete_file(self):
@@ -120,5 +120,5 @@ class Documento(Base):
                 filehandler.rename(src, dst)
                 self.saved = True
             except Exception:
-                logging.exception("Error renaming file from " + src + " to " + dst)
+                logging.exception(f"Error renaming file from {src} to {dst}")
                 raise

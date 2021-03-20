@@ -414,7 +414,7 @@ def exploracao_documentos_zip(request):
     path_info = parse_subpath(subpath)
 
     exploracao_id = path_info["exploracao_id"]
-    filename = "documentos_" + exploracao_id
+    filename = f"documentos_{exploracao_id}"
 
     departamento = path_info["departamento"]
     unidade = path_info["unidade"]
@@ -441,7 +441,7 @@ def exploracao_documentos_zip(request):
 
     response = Response()
     response.content_type = "application/zip"
-    response.content_disposition = 'attachment; filename="' + filename + '.zip"'
+    response.content_disposition = f'attachment; filename="{filename}.zip"'
     response.app_iter = FileIter(tzip)
 
     return response

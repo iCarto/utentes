@@ -12,7 +12,7 @@ from utentes.services.exp_service import get_license_state
 
 
 @view_defaults(renderer="utentes:templates/exploracao-new.jinja2")
-class Adicionar:
+class Adicionar(object):
     def __init__(self, request):
         self.request = request
 

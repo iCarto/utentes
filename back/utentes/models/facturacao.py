@@ -89,36 +89,38 @@ class Facturacao(Base):
         Check that InvoiceService.js provides the same implementation
         """
         billing_cycle = self.fact_tipo
-        month = int(self.mes)
-        year = int(self.ano)
+        current_month = self.mes
+        current_year = int(self.ano)
+        previous_month = str(int(self.mes) - 1).zfill(2)
+        previous_year = str(int(self.ano) - 1)
 
         if billing_cycle == "Mensal":
-            if month == 1:
-                return f"12/{year - 1}"
+            if current_month == "01":
+                return f"12/{previous_year}"
 
-            return f"{str(month - 1).zfill(2)}/{year}"
+            return f"{previous_month}/{current_year}"
 
         if billing_cycle == "Trimestral":
-            if month == 4:
-                return f"01/{year} - 03/{year}"
+            if current_month == "04":
+                return f"01/{current_year} - 03/{current_year}"
 
-            if month == 7:
-                return f"04/{year} - 06/{year}"
+            if current_month == "07":
+                return f"04/{current_year} - 06/{current_year}"
 
-            if month == 10:
-                return f"07/{year} - 09/{year}"
+            if current_month == "10":
+                return f"07/{current_year} - 09/{current_year}"
 
-            if month == 1:
-                return f"10/{year - 1} - 12/{year - 1}"
+            if current_month == "01":
+                return f"10/{previous_year} - 12/{previous_year}"
 
         if billing_cycle == "Anual":
-            return f"{year - 1}"
+            return f"{previous_year}"
 
         raise Exception(
             "Invalid input data to calculate the billing period",
             billing_cycle,
-            year,
-            month,
+            current_year,
+            current_month,
         )
 
     @hybrid_property
