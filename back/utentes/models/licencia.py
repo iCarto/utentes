@@ -49,6 +49,16 @@ class Licencia(Base):
         l.update_from_json(json)
         return l
 
+    @staticmethod
+    def implies_validate_activity(estado):
+        # En realidad no deberían ser iguales validate_ficha y validate_activity
+        # en validate_ficha sería sólo validar not null loc_provin, ...
+        return estado in IMPLIES_VALIDADE_ACTIVITY_STATES
+
+    @staticmethod
+    def implies_validate_ficha(estado):
+        return estado in IMPLIES_VALIDADE_FICHA_STATES
+
     def update_from_json(self, json):
         self.gid = json.get("id")
         self.lic_nro = json.get("lic_nro")
@@ -73,6 +83,9 @@ class Licencia(Base):
         self.pago_iva = to_decimal(json.get("pago_iva"))
         self.consumo_tipo = json.get("consumo_tipo") or "Fixo"
         self.consumo_fact = to_decimal(json.get("consumo_fact"))
+
+    def validate(self, json):
+        return []
 
     def __json__(self, request):
         return {
@@ -100,16 +113,3 @@ class Licencia(Base):
             "consumo_fact": self.consumo_fact,
             "exploracao": self.exploracao,
         }
-
-    def validate(self, json):
-        return []
-
-    @staticmethod
-    def implies_validate_activity(estado):
-        # En realidad no deberían ser iguales validate_ficha y validate_activity
-        # en validate_ficha sería sólo validar not null loc_provin, ...
-        return estado in IMPLIES_VALIDADE_ACTIVITY_STATES
-
-    @staticmethod
-    def implies_validate_ficha(estado):
-        return estado in IMPLIES_VALIDADE_FICHA_STATES

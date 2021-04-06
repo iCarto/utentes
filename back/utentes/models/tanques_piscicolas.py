@@ -76,6 +76,10 @@ class ActividadesTanquesPiscicolas(Base):
             setattr(self, column, data.get(column))
         update_area(self, data, 1, "area_gps")
 
+    def validate(self, data):
+        validator = Validator(ActividadeSchema["TanquesPiscicolas"])
+        return validator.validate(data)
+
     def __json__(self, request):
         SPECIAL_CASES = ["gid", "the_geom"]
         the_geom = None
@@ -93,7 +97,3 @@ class ActividadesTanquesPiscicolas(Base):
             payload["properties"][column] = getattr(self, column)
 
         return payload
-
-    def validate(self, data):
-        validator = Validator(ActividadeSchema["TanquesPiscicolas"])
-        return validator.validate(data)

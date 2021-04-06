@@ -127,13 +127,6 @@ class ActividadesAgriculturaRega(Actividade):
         passive_deletes=True,
     )
 
-    def __json__(self, request):
-        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
-        del json["gid"]
-        json["id"] = self.gid
-        json["cultivos"] = {"type": "FeatureCollection", "features": self.cultivos}
-        return json
-
     def update_from_json(self, json):
         self.gid = json.get("id")
         self.tipo = json.get("tipo")
@@ -156,6 +149,13 @@ class ActividadesAgriculturaRega(Actividade):
     def validate(self, json):
         validator = Validator(ActividadeSchema[K_AGRICULTURA])
         return validator.validate(json)
+
+    def __json__(self, request):
+        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
+        del json["gid"]
+        json["id"] = self.gid
+        json["cultivos"] = {"type": "FeatureCollection", "features": self.cultivos}
+        return json
 
 
 class ActividadesIndustria(Actividade):
@@ -210,13 +210,6 @@ class ActividadesPecuaria(Actividade):
         passive_deletes=True,
     )
 
-    def __json__(self, request):
-        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
-        del json["gid"]
-        json["id"] = self.gid
-        json["reses"] = self.reses
-        return json
-
     def update_from_json(self, json):
         self.gid = json.get("id")
         self.tipo = json.get("tipo")
@@ -227,6 +220,13 @@ class ActividadesPecuaria(Actividade):
     def validate(self, json):
         validator = Validator(ActividadeSchema[K_PECUARIA])
         return validator.validate(json)
+
+    def __json__(self, request):
+        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
+        del json["gid"]
+        json["id"] = self.gid
+        json["reses"] = self.reses
+        return json
 
 
 class ActividadesPiscicultura(Actividade):
@@ -269,16 +269,6 @@ class ActividadesPiscicultura(Actividade):
         passive_deletes=True,
     )
 
-    def __json__(self, request):
-        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
-        del json["gid"]
-        json["id"] = self.gid
-        json["tanques_piscicolas"] = {
-            "type": "FeatureCollection",
-            "features": self.tanques_piscicolas,
-        }
-        return json
-
     def update_from_json(self, json, area_exp=None):
         # actividade - handled by sqlalchemy relationship
         SPECIAL_CASES = ["gid", "tanques_piscicolas"]
@@ -304,6 +294,16 @@ class ActividadesPiscicultura(Actividade):
     def validate(self, json):
         validator = Validator(ActividadeSchema[K_PISCICULTURA])
         return validator.validate(json)
+
+    def __json__(self, request):
+        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
+        del json["gid"]
+        json["id"] = self.gid
+        json["tanques_piscicolas"] = {
+            "type": "FeatureCollection",
+            "features": self.tanques_piscicolas,
+        }
+        return json
 
 
 class ActividadesProduccaoEnergia(Actividade):

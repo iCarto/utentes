@@ -380,30 +380,17 @@ class Exploracao(ExploracaoGeom):
         "Fonte", cascade="all, delete-orphan", lazy="joined", passive_deletes=True
     )
 
+    @staticmethod
+    def create_from_json(request, body):
+        e = Exploracao()
+        e.update_from_json(request, body)
+        return e
+
     def get_licencia(self, tipo):
         for lic in self.licencias:
             if lic.tipo_agua.upper().startswith(tipo.upper()):
                 return lic
         return Licencia()
-
-    def _which_exp_id_should_be_used(self, request, body):
-        new_state = body.get("state_to_set_after_validation") or body.get("estado_lic")
-        if not self.exp_id and not body.get("exp_id"):
-            return id_service.calculate_new_exp_id(request, new_state)
-
-        if new_state == self.estado_lic:
-            return body.get("exp_id")
-
-        if not self.estado_lic:
-            return id_service.calculate_new_exp_id(request, new_state)
-
-        if new_state == c.K_DE_FACTO or self.estado_lic == c.K_DE_FACTO:
-            return id_service.calculate_new_exp_id(request, new_state)
-
-        if new_state == c.K_USOS_COMUNS or self.estado_lic == c.K_USOS_COMUNS:
-            return id_service.calculate_new_exp_id(request, new_state)
-
-        return body.get("exp_id")
 
     def setLicStateAndExpId(self, request, body):
         exp_id_to_use = self._which_exp_id_should_be_used(request, body)
@@ -445,10 +432,6 @@ class Exploracao(ExploracaoGeom):
         self.fact_estado = "Não facturable"
         self.fact_tipo = "Mensal"
         self.pago_lic = False
-
-    def _update_requerimento_fields(self, json):
-        for column in set(self.REQUERIMENTO_FIELDS) - set(self.READ_ONLY):
-            setattr(self, column, json.get(column))
 
     def update_from_json_renovacao(self, request, json):
         self.setLicStateAndExpId(request, json)
@@ -599,12 +582,6 @@ class Exploracao(ExploracaoGeom):
             msgs = activity.validate(attributes)
         return msgs
 
-    @staticmethod
-    def create_from_json(request, body):
-        e = Exploracao()
-        e.update_from_json(request, body)
-        return e
-
     def __json__(self, request):
         the_geom = None
         if self.the_geom is not None:
@@ -638,6 +615,29 @@ class Exploracao(ExploracaoGeom):
             payload["properties"]["utente"] = self.utente_rel.own_columns_as_dict()
 
         return payload
+
+    def _update_requerimento_fields(self, json):
+        for column in set(self.REQUERIMENTO_FIELDS) - set(self.READ_ONLY):
+            setattr(self, column, json.get(column))
+
+    def _which_exp_id_should_be_used(self, request, body):
+        new_state = body.get("state_to_set_after_validation") or body.get("estado_lic")
+        if not self.exp_id and not body.get("exp_id"):
+            return id_service.calculate_new_exp_id(request, new_state)
+
+        if new_state == self.estado_lic:
+            return body.get("exp_id")
+
+        if not self.estado_lic:
+            return id_service.calculate_new_exp_id(request, new_state)
+
+        if new_state == c.K_DE_FACTO or self.estado_lic == c.K_DE_FACTO:
+            return id_service.calculate_new_exp_id(request, new_state)
+
+        if new_state == c.K_USOS_COMUNS or self.estado_lic == c.K_USOS_COMUNS:
+            return id_service.calculate_new_exp_id(request, new_state)
+
+        return body.get("exp_id")
 
 
 class ExploracaoConFacturacao(Exploracao):

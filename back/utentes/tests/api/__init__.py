@@ -108,5 +108,6 @@ class TanquesPiscicolasTests(DBIntegrationTest):
         actv_json["tanques_piscicolas"] = tanques
         actv.update_from_json(actv_json)
         self.request.db.add(actv)
-        commit and self.request.db.commit()
+        if commit:
+            self.request.db.commit()
         return actv.tanques_piscicolas[-1]

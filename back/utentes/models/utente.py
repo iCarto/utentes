@@ -55,11 +55,6 @@ class Utente(Base):
                 continue
             setattr(self, column, json.get(column))
 
-    def __json__(self, request):
-        payload = self.own_columns_as_dict()
-        payload["exploracaos"] = self.exploracaos
-        return payload
-
     def own_columns_as_dict(self):
         SPECIAL_CASES = ["gid"]
         payload = {"id": self.gid}
@@ -68,4 +63,9 @@ class Utente(Base):
                 continue
             payload[column] = getattr(self, column)
 
+        return payload
+
+    def __json__(self, request):
+        payload = self.own_columns_as_dict()
+        payload["exploracaos"] = self.exploracaos
         return payload

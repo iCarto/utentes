@@ -71,6 +71,10 @@ class ActividadesCultivos(Base):
                     1000 * self.eficiencia
                 )
 
+    def validate(self, data):
+        validator = Validator(ActividadeSchema["Cultivos"])
+        return validator.validate(data)
+
     def __json__(self, request):
         the_geom = None
         if self.the_geom is not None:
@@ -90,7 +94,3 @@ class ActividadesCultivos(Base):
             },
             "geometry": the_geom,
         }
-
-    def validate(self, data):
-        validator = Validator(ActividadeSchema["Cultivos"])
-        return validator.validate(data)

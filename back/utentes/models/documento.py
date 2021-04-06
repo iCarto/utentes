@@ -20,9 +20,8 @@ def delete_exploracao_documentos(request, exploracao_gid):
         exploracao_folder = documento.get_documento_entity_folder()
         documento.delete_file()
         request.db.delete(documento)
-    exploracao_folder and shutil.rmtree(
-        exploracao_folder.encode(sys.getfilesystemencoding())
-    )
+    if exploracao_folder:
+        shutil.rmtree(exploracao_folder.encode(sys.getfilesystemencoding()))
 
 
 class Documento(Base):
@@ -51,25 +50,6 @@ class Documento(Base):
 
     def set_path_root(self, path_root):
         self.defaults["path_root"] = path_root
-
-    def __json__(self, request):
-        url = ""
-        if request:
-            subpath = [self.exploracao, self.departamento]
-            if self.unidade is not None:
-                subpath.append(self.unidade)
-            subpath.append(self.name)
-            url = request.route_url("api_exploracao_file", subpath=subpath)
-        return {
-            "id": self.name,
-            "gid": self.gid,
-            "url": url,
-            "name": self.name,
-            "size": self.size,
-            "departamento": self.departamento,
-            "unidade": self.unidade,
-            "date": self.created_at,
-        }
 
     def get_file_path_upload(self):
         # by default: packagedir/utentes/static/files/uploads/{id}/{name}
@@ -122,3 +102,22 @@ class Documento(Base):
             except Exception:
                 logging.exception(f"Error renaming file from {src} to {dst}")
                 raise
+
+    def __json__(self, request):
+        url = ""
+        if request:
+            subpath = [self.exploracao, self.departamento]
+            if self.unidade is not None:
+                subpath.append(self.unidade)
+            subpath.append(self.name)
+            url = request.route_url("api_exploracao_file", subpath=subpath)
+        return {
+            "id": self.name,
+            "gid": self.gid,
+            "url": url,
+            "name": self.name,
+            "size": self.size,
+            "departamento": self.departamento,
+            "unidade": self.unidade,
+            "date": self.created_at,
+        }

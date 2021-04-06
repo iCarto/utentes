@@ -41,12 +41,12 @@ class ActividadesReses(Base):
         self.c_res = json.get("c_res")
         self.observacio = json.get("observacio")
 
+    def validate(self, json):
+        validator = Validator(ActividadeSchema["Reses"])
+        return validator.validate(json)
+
     def __json__(self, request):
         json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
         del json["gid"]
         json["id"] = self.gid
         return json
-
-    def validate(self, json):
-        validator = Validator(ActividadeSchema["Reses"])
-        return validator.validate(json)

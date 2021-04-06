@@ -47,6 +47,9 @@ class Fonte(Base):
                 continue
             setattr(self, column, json.get(column))
 
+    def validate(self, json):
+        return []
+
     def __json__(self, request):
         SPECIAL_CASES = ["gid"]
         payload = {"id": self.gid}
@@ -56,6 +59,3 @@ class Fonte(Base):
             payload[column] = getattr(self, column)
 
         return payload
-
-    def validate(self, json):
-        return []
