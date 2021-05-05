@@ -11,12 +11,12 @@ from utentes.models.user import User
     renderer="utentes:templates/user.jinja2",
 )
 def user(request):
-    user = (
+    user_in_request = (
         request.db.query(User)
         .filter(User.username == request.authenticated_userid)
         .one()
     )
-    return HTTPFound(location=request.route_url("user_id", id=user.id))
+    return HTTPFound(location=request.route_url("user_id", id=user_in_request.id))
 
 
 @view_config(

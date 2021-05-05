@@ -62,10 +62,10 @@ class DBIntegrationTest(unittest.TestCase):
     def create_new_session(self):
         # La idea de generar una sesión distinta para este último chequeo
         # es que no haya cosas cacheadas en la sesión original
-        settings = get_appsettings("development.ini", "main")
-        engine = engine_from_config(settings, "sqlalchemy.")
+        new_settings = get_appsettings("development.ini", "main")
+        new_engine = engine_from_config(new_settings, "sqlalchemy.")
         session = sessionmaker()
-        session.configure(bind=engine)
+        session.configure(bind=new_engine)
         return session()
 
     def delete_exp_id(self, exp_id):

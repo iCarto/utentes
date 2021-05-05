@@ -426,40 +426,40 @@ class Exploracao(ExploracaoGeom):
             new_state = body.get("estado_lic")
             self.estado_lic = new_state
 
-    def update_from_json_requerimento(self, request, json):
-        self._update_requerimento_fields(json)
-        self.setLicStateAndExpId(request, json)
+    def update_from_json_requerimento(self, request, data):
+        self._update_requerimento_fields(data)
+        self.setLicStateAndExpId(request, data)
         self.fact_estado = "Não facturable"
         self.fact_tipo = "Mensal"
         self.pago_lic = False
 
-    def update_from_json_renovacao(self, request, json):
-        self.setLicStateAndExpId(request, json)
+    def update_from_json_renovacao(self, request, data):
+        self.setLicStateAndExpId(request, data)
 
         # Si no son nulos habré pasado por JuridicoDatos/Pendente Datos Renovacao
         # y al llegar a uno de estos estados debo actualizar datos en la exp.
         # Para no llamar directamente a api/exploracaos (puedo no tener todos los
         # campo de la exp) lo hago aqui.
-        self.d_soli = json.get("d_soli")
-        self.d_ultima_entrega_doc = json.get("d_ultima_entrega_doc")
-        self.c_licencia = json.get("c_licencia")
-        for json_lic in json.get("licencias"):
+        self.d_soli = data.get("d_soli")
+        self.d_ultima_entrega_doc = data.get("d_ultima_entrega_doc")
+        self.c_licencia = data.get("c_licencia")
+        for json_lic in data.get("licencias"):
             lic = self.get_licencia(json_lic["tipo_agua"])
             lic.tipo_lic = json_lic.get("tipo_lic")
             lic.d_emissao = json_lic.get("d_emissao")
             lic.d_validade = json_lic.get("d_validade")
             lic.c_licencia = to_decimal(json_lic.get("c_licencia"))
 
-    def update_from_json_facturacao(self, json):
-        self.fact_estado = self.get_lower_state(json["facturacao"])
-        self.fact_tipo = json["fact_tipo"]
-        self.pago_lic = json["pago_lic"]
+    def update_from_json_facturacao(self, data):
+        self.fact_estado = self.get_lower_state(data["facturacao"])
+        self.fact_tipo = data["fact_tipo"]
+        self.pago_lic = data["pago_lic"]
 
         # get last factura emited order by date desc
-        json["facturacao"] = sorted(
-            json["facturacao"], key=Facturacao.json_fact_order_key, reverse=True
+        data["facturacao"] = sorted(
+            data["facturacao"], key=Facturacao.json_fact_order_key, reverse=True
         )
-        json_fact = json["facturacao"][0]
+        json_fact = data["facturacao"][0]
 
         # complete licenca data with last factura values
         lic_sup = self.get_licencia("sup")
@@ -518,53 +518,53 @@ class Exploracao(ExploracaoGeom):
                 lower_state = factura["fact_estado"]
         return lower_state
 
-    def update_from_json(self, request, json):
-        self.gid = json.get("id")
-        self.update_some_fields(request, json)
-        self.the_geom = update_geom(self.the_geom, json)
-        self.fact_estado = json.get("fact_estado") or "Não facturable"
-        self.fact_tipo = json.get("fact_tipo") or "Mensal"
-        self.pago_lic = json.get("pago_lic") or False
+    def update_from_json(self, request, data):
+        self.gid = data.get("id")
+        self.update_some_fields(request, data)
+        self.the_geom = update_geom(self.the_geom, data)
+        self.fact_estado = data.get("fact_estado") or "Não facturable"
+        self.fact_tipo = data.get("fact_tipo") or "Mensal"
+        self.pago_lic = data.get("pago_lic") or False
 
-        self._update_requerimento_fields(json)
-        update_area(self, json)
-        self.update_and_validate_activity(json)
+        self._update_requerimento_fields(data)
+        update_area(self, data)
+        self.update_and_validate_activity(data)
 
         # update relationships
-        update_array(self.fontes, json.get("fontes"), Fonte.create_from_json)
+        update_array(self.fontes, data.get("fontes"), Fonte.create_from_json)
 
-        update_array(self.licencias, json.get("licencias"), Licencia.create_from_json)
+        update_array(self.licencias, data.get("licencias"), Licencia.create_from_json)
 
-        self.setLicStateAndExpId(request, json)
+        self.setLicStateAndExpId(request, data)
 
-    def update_some_fields(self, request, json):
+    def update_some_fields(self, request, data):
         # Probablmente se podrían gestionar aquí sin problemas otras columnas
         # como c_soli que hace el to_decimal, pero no se ha probado. Queda para
         # futuros refactorings
         SPECIAL_CASES = ["gid"]
 
-        self.gid = json.get("id")
+        self.gid = data.get("id")
         for column in list(self.__mapper__.columns.keys()):
             if column in SPECIAL_CASES:
                 continue
             if column not in self.NORMAL_FIELDS:
                 continue
-            setattr(self, column, json.get(column))
+            setattr(self, column, data.get(column))
 
-    def update_and_validate_activity(self, json):
-        actividade_json = json.get("actividade")
-        if json.get("geometry_edited"):
+    def update_and_validate_activity(self, data):
+        actividade_json = data.get("actividade")
+        if data.get("geometry_edited"):
             actividade_json["area_exploracao_for_calcs"] = self.area
-        actividade_json["exp_id"] = json.get("exp_id")
+        actividade_json["exp_id"] = data.get("exp_id")
 
         if not self.actividade:
             actv = Actividade.create_from_json(actividade_json)
-            msgs = self.validate_activity(actv, json.get("actividade"), json)
+            msgs = self.validate_activity(actv, data.get("actividade"), data)
             if msgs:
                 raise ValidationException({"error": msgs})
             self.actividade = actv
         elif self.actividade:
-            msgs = self.validate_activity(self.actividade, actividade_json, json)
+            msgs = self.validate_activity(self.actividade, actividade_json, data)
             if msgs:
                 raise ValidationException({"error": msgs})
             self.actividade.update_from_json(actividade_json)
@@ -572,11 +572,11 @@ class Exploracao(ExploracaoGeom):
         if actividade_json.get("tipo") == c.K_AGRICULTURA:
             self.c_estimado = self.actividade.c_estimado
 
-    def validate_activity(self, activity, attributes, json):
+    def validate_activity(self, activity, attributes, data):
         msgs = []
         statuses = [
             Licencia.implies_validate_activity(lic["estado"])
-            for lic in json["licencias"]
+            for lic in data["licencias"]
         ]
         if any(statuses):
             msgs = activity.validate(attributes)
@@ -616,9 +616,9 @@ class Exploracao(ExploracaoGeom):
 
         return payload
 
-    def _update_requerimento_fields(self, json):
+    def _update_requerimento_fields(self, data):
         for column in set(self.REQUERIMENTO_FIELDS) - set(self.READ_ONLY):
-            setattr(self, column, json.get(column))
+            setattr(self, column, data.get(column))
 
     def _which_exp_id_should_be_used(self, request, body):
         new_state = body.get("state_to_set_after_validation") or body.get("estado_lic")

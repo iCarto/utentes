@@ -124,20 +124,20 @@ def update_array(olds, news_json, factory):
         olds.append(new)
 
 
-def update_geom(org_geom, json):
-    to_update = json.get("geometry_edited")
+def update_geom(org_geom, data):
+    to_update = data.get("geometry_edited")
     if not to_update:
         return org_geom
 
-    g = json.get("geometry")
+    g = data.get("geometry")
     if not g:
         return None
     the_geom = WKTElement(wkt.dumps(g), srid=4326)
     return the_geom.ST_Multi().ST_Transform(32737)
 
 
-def update_area(model, json, divisor=10000, fieldname="area"):
-    if json.get("geometry_edited"):
+def update_area(model, data, divisor=10000, fieldname="area"):
+    if data.get("geometry_edited"):
         if model.the_geom is None:
             setattr(model, fieldname, None)
         else:
