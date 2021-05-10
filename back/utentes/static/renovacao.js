@@ -1,4 +1,8 @@
 var where = new Backbone.SIXHIARA.Where();
+_.extend(
+    Backbone.SIXHIARA.RenovacaoCollection.prototype,
+    SIRHA.Utils.genderCollectionComparator
+);
 var renovacoes = new Backbone.SIXHIARA.RenovacaoCollection();
 var renovacoesFiltered = new Backbone.SIXHIARA.RenovacaoCollection();
 var domains = new Backbone.UILib.DomainCollection();

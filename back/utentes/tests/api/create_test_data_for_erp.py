@@ -79,6 +79,7 @@ def create_test_utente():
     utente.nuit = "012345678"
     utente.telefone = "827821780/873081514"
     utente.email = "utente@test.com"
+    utente.sexo_gerente = "Outros"
     return utente
 
 
@@ -110,6 +111,9 @@ def create_test_exploracao(**kwargs):
     exp.actividade = create_test_actividade()
     exp.utente_rel = create_test_utente()
     exp.licencias.append(create_test_licencia(exp.exp_id))
+
+    exp.sexo_gerente = "Outros"
+
     for k, v in kwargs.items():
         setattr(exp, k, v)
     return exp

@@ -118,6 +118,7 @@ def exploracaos_update(request):
         e = request.db.query(Exploracao).filter(Exploracao.gid == gid).one()
         u = upsert_utente(request, body)
         e.utente_rel = u
+        e.utente_rel.sexo_gerente = body.get("utente").get("sexo_gerente")
 
         if _tipo_actividade_changes(e, request.json_body):
             request.db.delete(e.actividade)

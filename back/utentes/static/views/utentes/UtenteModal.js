@@ -50,6 +50,12 @@ Backbone.SIXHIARA.UtenteModal = Backbone.UILib.ModalView.extend({
         }).render();
         this._addAuxView(selectUtenteTipo);
 
+        var selectSelectSexo = new Backbone.UILib.SelectView({
+            el: this.$("#sexo_gerente"),
+            collection: this.options.domains.byCategory("sexo"),
+        }).render();
+        this._addAuxView(selectSelectSexo);
+
         iAuth.disabledWidgets("#editUtenteModal");
     },
 });

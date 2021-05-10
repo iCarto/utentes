@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#wizard-exp").bootstrapWizard({
         withVisible: false,
     });
-    document.body.style.cursor = "wait";
+    document.body.classList.add("wait");
 });
 
 var exploracao = new Backbone.SIXHIARA.Exploracao();
@@ -83,13 +83,14 @@ Promise.all(fetchPromises(id))
         console.log(error);
     })
     .finally(function() {
-        document.body.style.cursor = "default";
+        document.body.classList.remove("wait");
     });
 
 function doIt() {
     new Backbone.SIXHIARA.UtenteView({
         el: document.getElementById("utente"),
         collection: utentes,
+        model: exploracao,
     });
 
     new Backbone.SIXHIARA.InfoView({
@@ -107,12 +108,6 @@ function doIt() {
     new Backbone.UILib.WidgetsView({
         el: $("#info"),
         model: exploracao,
-    }).render();
-
-    // page utente
-    new Backbone.UILib.WidgetsView({
-        el: $("#utente"),
-        model: exploracao.get("utente"),
     }).render();
 
     // page licencias & fontes: superficial
@@ -188,5 +183,10 @@ function fillComponentsWithDomains() {
     var selectUtenteTipo = new Backbone.UILib.SelectView({
         el: $("#uten_tipo"),
         collection: domains.byCategory("utentes_uten_tipo"),
+    }).render();
+
+    var selectSexo = new Backbone.UILib.SelectView({
+        el: $("#sexo_gerente"),
+        collection: domains.byCategory("sexo"),
     }).render();
 }

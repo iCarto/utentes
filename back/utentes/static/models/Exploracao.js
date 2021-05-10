@@ -69,6 +69,7 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
         doc_legal: false,
         p_juri: false,
         p_rel: false,
+        sexo_gerente: null,
         req_obs: [
             {create_at: null, author: null, text: null, state: null},
             {create_at: null, author: null, text: null, state: null},

@@ -70,7 +70,7 @@
               <div><%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[0] %></div>
               <div><%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[1] %></div>
           </small>
-      </div>
+      </div> <i class="<%= utente.sexo_gerente !== 'Feminino' ? 'hidden' : '' %> fas fa-venus pull-right" style="margin-right: 20px; color:rgb(165 5 243);"></i>
     </span>
   </li>
 </script>
@@ -208,6 +208,7 @@
 
     "utils/MyLeafletEvent.js",
     "utils/nextExpToShow.js",
+    "utils/GenderCollectionComparator.js",
     "renovacao.js",
 
     output="dist/renovacao.js", filters="rjsmin" %}

@@ -32,6 +32,7 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
         // update widgets
         var selectedOption = e.target.selectedOptions[0].value;
         this.fillInputs(selectedOption);
+        this.checkGenderField(true);
     },
 
     fillInputs: function(selectedOption) {
@@ -52,6 +53,32 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
                 $(widget).trigger("input");
             });
             if (this.model) this.model.set("utente", utente);
+        }
+    },
+
+    checkGenderField: function(changeSelectValue) {
+        let sexoGerente = this.options.sexoGerente;
+        if (!sexoGerente.valueInProcess) {
+            return;
+        }
+        if (sexoGerente.widget.value !== sexoGerente.valueInProcess) {
+            sexoGerente.warningWidget.classList.remove("hidden");
+            sexoGerente.warningWidget.innerHTML = `<strong>Atenção! </strong> O <strong>Sexo do Gerente/Presidente</strong> que acrescentou o DA é "<strong>${sexoGerente.valueInProcess}</strong>", mais no Utente aparece como "<strong>${sexoGerente.widget.value}</strong>". O campo foi alterado. Verifique se a alteração está correta.`;
+            if (changeSelectValue) {
+                sexoGerente.widget.value = sexoGerente.valueInProcess;
+                sexoGerente.utenteModel.set(
+                    "sexo_gerente",
+                    sexoGerente.valueInProcess,
+                    {silent: true}
+                );
+                sexoGerente.widget.disabled = false;
+            }
+        } else {
+            sexoGerente.warningWidget.classList.add("hidden");
+            sexoGerente.warningWidget.innerHTML = "";
+            if (changeSelectValue) {
+                sexoGerente.widget.disabled = true;
+            }
         }
     },
 });

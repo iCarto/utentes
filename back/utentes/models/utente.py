@@ -4,6 +4,9 @@ from sqlalchemy.orm import relationship
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base
 
 
+SPECIAL_CASES = ("gid",)
+
+
 class Utente(Base):
     __tablename__ = "utentes"
     __table_args__ = {"schema": PGSQL_SCHEMA_UTENTES}
@@ -17,6 +20,7 @@ class Utente(Base):
     uten_tipo = Column(Text, doc="Tipo de utente")
     nuit = Column(Text, unique=True, doc="Nuit")
     uten_gere = Column(Text, doc="Nome do Gerente/Presidente")
+    sexo_gerente = Column(Text, nullable=False, doc="Sexo do Gerente/Presidente")
     uten_memb = Column(Integer, doc="Número de membros")
     uten_mulh = Column(Integer, doc="Número de mulheres")
     contacto = Column(Text, doc="Pessoa de contacto")
@@ -48,7 +52,6 @@ class Utente(Base):
         return u
 
     def update_from_json(self, json):
-        SPECIAL_CASES = ["gid"]
         self.gid = json.get("id")
         for column in list(self.__mapper__.columns.keys()):
             if column in SPECIAL_CASES:
@@ -56,7 +59,6 @@ class Utente(Base):
             setattr(self, column, json.get(column))
 
     def own_columns_as_dict(self):
-        SPECIAL_CASES = ["gid"]
         payload = {"id": self.gid}
         for column in list(self.__mapper__.columns.keys()):
             if column in SPECIAL_CASES:

@@ -124,7 +124,8 @@ td.draw.disabled {
     font-style: italic;
 }
 
-input:invalid {
+input:invalid,
+select:invalid {
     border: 1px solid #a94442 !important;
     box-shadow: 0 0 4px #a94442 !important;
 }
@@ -332,4 +333,10 @@ with or whithout another 'observacio-anteriores' textarea
 
 .redcolor {
     color: #d9534f;
+}
+
+/* https://stackoverflow.com/questions/192900/ */
+.wait,
+.wait * {
+    cursor: wait !important;
 }

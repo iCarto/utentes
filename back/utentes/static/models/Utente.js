@@ -8,6 +8,7 @@ Backbone.SIXHIARA.Utente = Backbone.Model.extend({
         uten_tipo: null,
         nuit: null,
         uten_gere: null,
+        sexo_gerente: null,
         uten_memb: null,
         uten_mulh: null,
         contacto: null,

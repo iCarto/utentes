@@ -6,6 +6,9 @@
         _ARA: '{{ request.registry.settings.get("ara") }}',
         getARA: function() { return this._ARA; },
         is_single_user_mode: function() { return ['DPMAIP'].includes(this._ARA); },
+        CONSTANTS: {
+          SEXO_FEMININO: "Feminino",
+        },
         ESTADO: {
             LICENSED: 'Licenciada',
             DE_FACTO: 'Utente de facto',

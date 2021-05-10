@@ -1,6 +1,17 @@
 var expedientes = new Backbone.SIXHIARA.Expediente();
 expedientes.fetch();
 
+var domains = new Backbone.UILib.DomainCollection();
+var domainsFetched = function(collection, response, options) {
+    new Backbone.UILib.SelectView({
+        el: $("#sexo_gerente"),
+        collection: domains.byCategory("sexo"),
+    }).render();
+};
+domains.fetch({
+    success: domainsFetched,
+});
+
 var fileModalView = new Backbone.DMS.FileModalView({
     openElementId: "#file-modal",
     title: "Arquivo Electr&oacute;nico",
@@ -13,6 +24,7 @@ function init() {
         input.addEventListener("change", enableBts);
     });
     document.getElementById("exp_name").addEventListener("input", enableBts);
+    document.getElementById("sexo_gerente").addEventListener("change", enableBts);
     document.getElementById("d_soli").addEventListener("input", enableBts);
 
     document.getElementById("js-btns-next").addEventListener("click", function(e) {
@@ -46,7 +58,7 @@ function validateName(name) {
 
 function enableBts() {
     var exp_name = document.getElementById("exp_name");
-
+    var sexo_gerente = document.getElementById("sexo_gerente");
     var dateWidget = document.getElementById("d_soli");
     var dateObj = formatter().unformatDate(dateWidget.value);
     var validDate =
@@ -61,7 +73,8 @@ function enableBts() {
         );
     }
 
-    var enableBtNo = exp_name.value && exp_name.value.length > 3 && validDate;
+    var enableBtNo =
+        exp_name.value && exp_name.value.length > 3 && sexo_gerente.value && validDate;
 
     document.getElementById("bt-no").disabled = !enableBtNo;
 
@@ -113,6 +126,7 @@ function fillExploracao(e, autosave) {
     });
 
     exploracao.set("exp_name", document.getElementById("exp_name").value);
+    exploracao.set("sexo_gerente", document.getElementById("sexo_gerente").value);
 
     var nextState = wf.whichNextState(exploracao.get("estado_lic"), e);
     var currentComment = exploracao.get("req_obs").slice(-1)[0];

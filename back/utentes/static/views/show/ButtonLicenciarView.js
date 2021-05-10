@@ -5,6 +5,10 @@ Backbone.SIXHIARA.ButtonLicenciarView = Backbone.View.extend({
     },
 
     doClick: function() {
+        if (!this.model.isValid()) {
+            bootbox.alert(this.model.validationError.join("\n"));
+            return;
+        }
         var self = this;
         var ModalUltimaEntregaDoc = Backbone.SIXHIARA.UltimaEntregaDocModalView.extend({
             okButtonClicked: function() {

@@ -5,6 +5,11 @@ UTENTE_SCHEMA = [
         "rules": ["NOT_NULL"],
     },
     {
+        "fieldname": "sexo_gerente",
+        "message": 'O "Sexo do Gerente/Presidente" não pode estar vazio',
+        "rules": ["NOT_NULL"],
+    },
+    {
         "fieldname": "uten_memb",
         "message": 'O "número de membros" não tem o formato correcto',
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8"],

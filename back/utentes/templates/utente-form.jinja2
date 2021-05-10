@@ -26,6 +26,23 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-xs-6">
+                        <label for="uten_gere">Nome do Gerente/Presidente</label>
+                        <input
+                            type="text"
+                            id="uten_gere"
+                            class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
+                        >
+                    </div>
+                    <div class="form-group col-xs-6">
+                        <label for="sexo_gerente">Sexo do Gerente/Presidente</label>
+                        <select
+                            id="sexo_gerente"
+                            class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
+                        ></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-xs-6">
                         <label for="nuit">NUIT</label>
                         <input
                             type="text"
@@ -33,34 +50,7 @@
                             class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
                         >
                     </div>
-                    <div class="form-group col-xs-6">
-                        <label for="uten_tipo">Nome do Gerente/Presidente</label>
-                        <input
-                            type="text"
-                            id="uten_gere"
-                            class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
-                        >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-xs-6">
-                        <label for="uten_tipo">Número de membros</label>
-                        <input
-                            type="text"
-                            id="uten_memb"
-                            class="form-control widget widget-number widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
-                            pattern="[0-9]{1,8}"
-                        >
-                    </div>
-                    <div class="form-group col-xs-6">
-                        <label for="uten_tipo">Número de mulheres</label>
-                        <input
-                            type="text"
-                            id="uten_mulh"
-                            class="form-control widget widget-number widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
-                            pattern="[0-9]{1,8}"
-                        >
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -214,29 +204,43 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><strong>Outros</strong></h3>
             </div>
-            <div id="panel-body-outros" class="panel-body">
+            <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <label for="reg_comerc">Número de Registo Comercial</label>
-                            <input
-                                type="text"
-                                id="reg_comerc"
-                                class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
-                            >
-                        </div>
+                    <div class="form-group col-xs-6">
+                        <label for="reg_comerc">Número de Registo Comercial</label>
+                        <input
+                            type="text"
+                            id="reg_comerc"
+                            class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
+                        >
+                    </div>
+                    <div class="form-group col-xs-6">
+                        <label for="reg_zona">Local do registo</label>
+                        <input
+                            type="text"
+                            id="reg_zona"
+                            class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
+                        >
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <label for="reg_zona">Local do registo</label>
-                            <input
-                                type="text"
-                                id="reg_zona"
-                                class="form-control widget widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
-                            >
-                        </div>
+                    <div class="form-group col-xs-6">
+                        <label for="uten_memb">Número de membros</label>
+                        <input
+                            type="text"
+                            id="uten_memb"
+                            class="form-control widget widget-number widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
+                            pattern="[0-9]{1,8}"
+                        >
+                    </div>
+                    <div class="form-group col-xs-6">
+                        <label for="uten_mulh">Número de mulheres</label>
+                        <input
+                            type="text"
+                            id="uten_mulh"
+                            class="form-control widget widget-number widget-utente uilib-enability uilib-enable-role-administrador uilib-enable-role-tecnico uilib-enable-role-juridico"
+                            pattern="[0-9]{1,8}"
+                        >
                     </div>
                 </div>
                 <div class="row">

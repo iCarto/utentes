@@ -36,6 +36,75 @@ class ST_Multi(GenericFunction):
     type = Geometry
 
 
+SPECIAL_CASES = ("gid",)
+
+REQUERIMENTO_FIELDS = (
+    "carta_re",
+    "ficha_pe",
+    "ident_pro",
+    "certi_reg",
+    "duat",
+    "licen_am",
+    "mapa",
+    "licen_fu",
+    "r_perf",
+    "b_a_agua",
+    "carta_re_v",
+    "ficha_pe_v",
+    "ident_pro_v",
+    "certi_reg_v",
+    "duat_v",
+    "licen_am_v",
+    "mapa_v",
+    "licen_fu_v",
+    "r_perf_v",
+    "b_a_agua_v",
+    "anali_doc",
+    "soli_visit",
+    "p_unid",
+    "p_tec",
+    "p_tec_disp_hidrica",
+    "doc_legal",
+    "p_juri",
+    "p_rel",
+    "sexo_gerente",
+    "req_obs",
+    "created_at",
+    "exp_name",
+    "lic_imp",
+    "d_soli",
+    "d_ultima_entrega_doc",
+)
+
+FACTURACAO_FIELDS = ("fact_estado", "fact_tipo", "pago_lic")
+NORMAL_FIELDS = (
+    "observacio",
+    "loc_provin",
+    "loc_distri",
+    "loc_posto",
+    "loc_nucleo",
+    "loc_endere",
+    "loc_unidad",
+    "loc_bacia",
+    "loc_subaci",
+    "loc_rio",
+    "cadastro_uni",
+    "d_titulo",
+    "d_proceso",
+    "d_folha",
+    "d_parcela",
+    "d_area",
+    "d_d_emis",
+    "d_l_emis",
+    "c_soli",
+    "c_licencia",
+    "c_real",
+    "c_estimado",
+)
+
+READ_ONLY = ("created_at",)
+
+
 class ExploracaoBase(Base):
     __tablename__ = "exploracaos"
     __table_args__ = {"schema": PGSQL_SCHEMA_UTENTES}
@@ -96,71 +165,7 @@ class ExploracaoGeom(ExploracaoBase):
 
 
 class Exploracao(ExploracaoGeom):
-    REQUERIMENTO_FIELDS = [
-        "carta_re",
-        "ficha_pe",
-        "ident_pro",
-        "certi_reg",
-        "duat",
-        "licen_am",
-        "mapa",
-        "licen_fu",
-        "r_perf",
-        "b_a_agua",
-        "carta_re_v",
-        "ficha_pe_v",
-        "ident_pro_v",
-        "certi_reg_v",
-        "duat_v",
-        "licen_am_v",
-        "mapa_v",
-        "licen_fu_v",
-        "r_perf_v",
-        "b_a_agua_v",
-        "anali_doc",
-        "soli_visit",
-        "p_unid",
-        "p_tec",
-        "p_tec_disp_hidrica",
-        "doc_legal",
-        "p_juri",
-        "p_rel",
-        "req_obs",
-        "created_at",
-        "exp_name",
-        "lic_imp",
-        "d_soli",
-        "d_ultima_entrega_doc",
-    ]
 
-    FACTURACAO_FIELDS = ["fact_estado", "fact_tipo", "pago_lic"]
-
-    NORMAL_FIELDS = [
-        "observacio",
-        "loc_provin",
-        "loc_distri",
-        "loc_posto",
-        "loc_nucleo",
-        "loc_endere",
-        "loc_unidad",
-        "loc_bacia",
-        "loc_subaci",
-        "loc_rio",
-        "cadastro_uni",
-        "d_titulo",
-        "d_proceso",
-        "d_folha",
-        "d_parcela",
-        "d_area",
-        "d_d_emis",
-        "d_l_emis",
-        "c_soli",
-        "c_licencia",
-        "c_real",
-        "c_estimado",
-    ]
-
-    READ_ONLY = ["created_at"]
     d_soli = Column(
         Date, nullable=False, server_default=text("now()"), doc="Data da solicitação"
     )
@@ -348,6 +353,10 @@ class Exploracao(ExploracaoGeom):
         nullable=False,
         server_default=text("false"),
         doc="Parecer de instituições relevantes",
+    )
+
+    sexo_gerente = Column(
+        Text, nullable=False, server_default="Outros", doc="Sexo do Gerente/Presidente"
     )
     req_obs = Column(JSONB, doc="Observações requerimento")
     ara = Column(Text, nullable=False, doc="ARA")
@@ -541,13 +550,11 @@ class Exploracao(ExploracaoGeom):
         # Probablmente se podrían gestionar aquí sin problemas otras columnas
         # como c_soli que hace el to_decimal, pero no se ha probado. Queda para
         # futuros refactorings
-        SPECIAL_CASES = ["gid"]
-
         self.gid = data.get("id")
         for column in list(self.__mapper__.columns.keys()):
             if column in SPECIAL_CASES:
                 continue
-            if column not in self.NORMAL_FIELDS:
+            if column not in NORMAL_FIELDS:
                 continue
             setattr(self, column, data.get(column))
 
@@ -585,8 +592,8 @@ class Exploracao(ExploracaoGeom):
     def __json__(self, request):
         the_geom = None
         if self.the_geom is not None:
-
             the_geom = json.loads(self.geom_as_geojson)
+
         payload = {
             "type": "Feature",
             "properties": {
@@ -602,13 +609,13 @@ class Exploracao(ExploracaoGeom):
             "geometry": the_geom,
         }
 
-        for column in self.REQUERIMENTO_FIELDS:
+        for column in REQUERIMENTO_FIELDS:
             payload["properties"][column] = getattr(self, column)
 
-        for column in self.FACTURACAO_FIELDS:
+        for column in FACTURACAO_FIELDS:
             payload["properties"][column] = getattr(self, column)
 
-        for column in self.NORMAL_FIELDS:
+        for column in NORMAL_FIELDS:
             payload["properties"][column] = getattr(self, column)
 
         if self.utente_rel:
@@ -617,8 +624,10 @@ class Exploracao(ExploracaoGeom):
         return payload
 
     def _update_requerimento_fields(self, data):
-        for column in set(self.REQUERIMENTO_FIELDS) - set(self.READ_ONLY):
+        for column in set(REQUERIMENTO_FIELDS) - set(READ_ONLY):
             setattr(self, column, data.get(column))
+        if not self.sexo_gerente:
+            self.sexo_gerente = data.get("utente", {}).get("sexo_gerente")
 
     def _which_exp_id_should_be_used(self, request, body):
         new_state = body.get("state_to_set_after_validation") or body.get("estado_lic")
