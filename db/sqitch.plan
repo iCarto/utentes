@@ -210,3 +210,6 @@ add_export_to_weap_checkbox 2021-01-14T18:35:08Z Francisco Puga <fpuga@icarto.es
 erp_integration 2021-02-16T17:48:35Z Francisco Puga <fpuga@icarto.es> # Changes for erp integration
 new_version_210317 2021-03-17T15:22:03Z Francisco Puga <fpuga@icarto.es> # new_version_210317
 @210317 2021-03-17T15:25:01Z Francisco Puga <fpuga@icarto.es> # tag 210317
+
+add_columns_created_updated 2020-11-30T11:22:34Z Francisco Puga <fpuga@icarto.es> # Adds columns 'created_at' and 'updated_at' to many tables
+# adds_field_sexo 2021-05-05T17:45:20Z Francisco Puga <fpuga@icarto.es> # Adds field sexo
