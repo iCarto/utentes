@@ -2,15 +2,16 @@ import unittest
 
 from utentes.api.tanques_piscicolas import tanques_piscicolas_get
 from utentes.models.tanques_piscicolas import ActividadesTanquesPiscicolas
-from utentes.tests.api import TanquesPiscicolasTests
+from utentes.tests.api import DBIntegrationTest
+from utentes.tests.utils.utils import create_tanque_test
 
 
-class TanquesPiscicolasGET_IntegrationTests(TanquesPiscicolasTests):
+class TanquesPiscicolasGET_IntegrationTests(DBIntegrationTest):
     def test_tanque_get_length(self):
         actual = tanques_piscicolas_get(self.request)
         previous_count = self.request.db.query(ActividadesTanquesPiscicolas).count()
         self.assertEqual(len(actual["features"]), previous_count)
-        self.create_tanque_test()
+        create_tanque_test(self.request)
         actual = tanques_piscicolas_get(self.request)
         count = self.request.db.query(ActividadesTanquesPiscicolas).count()
         self.assertEqual(len(actual["features"]), count)
@@ -23,7 +24,7 @@ class TanquesPiscicolasGET_IntegrationTests(TanquesPiscicolasTests):
         self.assertEqual("FeatureCollection", actual["type"])
 
     def test_tanque_get_id_returns_a_geojson(self):
-        expected = self.create_tanque_test(commit=True)
+        expected = create_tanque_test(self.request, commit=True)
         self.request.matchdict.update(dict(id=expected.gid))
         actual = tanques_piscicolas_get(self.request).__json__(self.request)
         self.assertTrue("geometry" in actual)

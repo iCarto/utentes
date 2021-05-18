@@ -33,10 +33,13 @@ def delete_exp(request, exp_id):
 
 def create_exp(request, data):
     delete_exp(request, data["exp_id"])
+    # TOOD: Esto hay que eliminarlo
+    which_exp_id_should_be_used_old = Exploracao._which_exp_id_should_be_used
     Exploracao._which_exp_id_should_be_used = lambda other, request, body: data.get(
         "exp_id"
     )
     e = Exploracao.create_from_json(request, data)
+    Exploracao._which_exp_id_should_be_used = which_exp_id_should_be_used_old
     e.utente = 588
     request.db.add(e)
     request.db.commit()
