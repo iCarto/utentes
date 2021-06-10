@@ -490,7 +490,7 @@ class Exploracao(ExploracaoGeom):
         lic_sub.pago_iva = json_fact["pago_iva_sub"]
 
         # update all facturacao elements
-        for index, json_fact in enumerate(json["facturacao"]):
+        for index, json_fact in enumerate(data["facturacao"]):
             fact = next(
                 (
                     factura
