@@ -2,8 +2,12 @@
 
 # set -e  # Porqué si se lanza desde cli se cierra el terminal
 
-source ../server/variables.ini
-source exit_codes.sh
+this_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
+
+# shellcheck source=../server/variables.ini
+source "${this_dir}/../server/variables.ini"
+# shellcheck source=exit_codes.sh
+source "${this_dir}/exit_codes.sh"
 
 kickout_users() {
     local DATABASE="${1}"
@@ -76,20 +80,6 @@ delete_all_data_in_schema() {
         return "${EX_USAGE}"
     fi
 
-    ! read -d '' sql_query << EOF
-DO
-\$func\$
-BEGIN
-   -- RAISE NOTICE '%',
-   EXECUTE
-   (SELECT 'TRUNCATE TABLE ' || string_agg(oid::regclass::text, ', ') || ' CASCADE'
-    FROM   pg_class
-    WHERE  relkind = 'r'  -- only tables
-    AND    relnamespace = '${SCHEMA}'::regnamespace
-   );
-END
-\$func\$;
-EOF
-
+    sql_query=$(bash "${this_dir}/sql-functions/delete_all_data_in_schema.sh" "${SCHEMA}")
     ${PSQL} -h localhost -U postgres -d "${DATABASE}" -c "${sql_query}"
 }
