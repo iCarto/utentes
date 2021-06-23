@@ -31,12 +31,12 @@ def tanques_piscicolas_get(request):
     if request.matchdict:
         gid = request.matchdict["id"] or None
 
-    if gid:  # return single item
+    if gid:
         try:
             return request.db.query(UsedModel).filter(UsedModel.gid == gid).one()
         except (MultipleResultsFound, NoResultFound):
             raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
-    else:  # return collection
+    else:
         return {
             "type": "FeatureCollection",
             "features": request.db.query(UsedModel).order_by(UsedModel.tanque_id).all(),

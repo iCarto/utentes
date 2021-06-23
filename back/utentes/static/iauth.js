@@ -26,7 +26,6 @@ var IAuth = {
         role = decodeURIComponent(role);
         if (
             ![
-                SIRHA.ROLE.SINGLE,
                 SIRHA.ROLE.ADMIN,
                 SIRHA.ROLE.OBSERVADOR,
                 SIRHA.ROLE.UNIDAD,
@@ -104,8 +103,6 @@ var IAuth = {
                 return "unidade";
             case SIRHA.ROLE.JURIDICO:
                 return "juridico";
-            case SIRHA.ROLE.SINGLE:
-                return "single";
         }
     },
 

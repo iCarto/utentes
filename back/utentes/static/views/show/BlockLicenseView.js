@@ -37,8 +37,7 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
             if (
                 this.license.get("estado") == SIRHA.ESTADO.LICENSED ||
                 this.license.get("estado") == SIRHA.ESTADO.PENDING_DIR_SIGN ||
-                this.license.get("estado") == SIRHA.ESTADO.PENDING_EMIT_LICENSE ||
-                window.SIRHA.is_single_user_mode()
+                this.license.get("estado") == SIRHA.ESTADO.PENDING_EMIT_LICENSE
             ) {
                 this.$("#printLicense").removeClass("hidden");
             }

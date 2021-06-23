@@ -27,7 +27,7 @@ var fetchPromises = function fetchPromises(id) {
     }
     jqxhr.push(mock.fetch({parse: true}));
 
-    // "utenet de usos comuns" o "utente de facto"
+    // "utente de usos comuns" o "utente de facto"
     var backendNextState = document.getElementById("next_state").value;
     var newExpIdDeferred = SIRHA.Services.IdService.getNewExpIdFromApi(
         backendNextState
@@ -53,17 +53,14 @@ var configureBasedOnId = function configureBasedOnId(id) {
     } else {
         exploracao.set("exp_id", newExpId, {silent: true});
         document.getElementById("exp_id").placeholder = newExpId;
-
-        if (!window.SIRHA.is_single_user_mode()) {
-            var backendNextState = document.getElementById("next_state").value;
-            exploracao.set(
-                {
-                    estado_lic: SIRHA.ESTADO.PENDING_FIELD_VISIT,
-                    state_to_set_after_validation: backendNextState,
-                },
-                {silent: true}
-            );
-        }
+        var backendNextState = document.getElementById("next_state").value;
+        exploracao.set(
+            {
+                estado_lic: SIRHA.ESTADO.PENDING_FIELD_VISIT,
+                state_to_set_after_validation: backendNextState,
+            },
+            {silent: true}
+        );
     }
 };
 

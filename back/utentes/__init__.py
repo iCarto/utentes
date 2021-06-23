@@ -16,7 +16,7 @@ from utentes.constants import perms as perm
 from utentes.dbutils.scripts.utils import home_directory
 from utentes.lib import webassets_filters
 from utentes.tenant_custom_code import adjust_settings
-from utentes.user_utils import get_user_from_request, get_user_role, is_single_user_mode
+from utentes.user_utils import get_user_from_request, get_user_role
 
 
 ONE_HOUR = 3600  # in seconds
@@ -46,10 +46,6 @@ def decimal_adapter(obj, request):
 
 
 def main(global_config, **settings):
-    if is_single_user_mode(settings):
-        media_root = os.path.join(home_directory(), settings.get("ara"), "media")
-        # media_root = media_root.decode(sys.getfilesystemencoding())
-        settings["media_root"] = media_root
 
     engine = engine_from_config(settings, "sqlalchemy.")
     session_factory = sessionmaker(bind=engine)
@@ -90,7 +86,6 @@ def main(global_config, **settings):
     assets_env = config.get_webassets_env()
     jinja2_env = config.get_jinja2_environment()
     jinja2_env.assets_environment = assets_env
-    jinja2_env.globals["is_single_user_mode"] = is_single_user_mode
     jinja2_env.globals["perm"] = perm
 
     config.add_static_view("static", "static", cache_max_age=ONE_HOUR)
@@ -109,7 +104,6 @@ def add_routes_views(config):
     config.add_route("user", "/utilizador")
     config.add_route("user_id", "/utilizador/{id}")
     config.add_route("users", "/utilizadores")
-    config.add_route("adicionar_exploracao", "/adicionar_exploracao")
     config.add_route("adicionar_ficha", "/adicionar_ficha")
     config.add_route("adicionar_usos_comuns", "/adicionar_utente_usos_comuns")
     config.add_route("adicionar_utente_facto", "/adicionar_utente_facto")

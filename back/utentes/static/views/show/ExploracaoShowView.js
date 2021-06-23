@@ -11,41 +11,38 @@ Backbone.SIXHIARA.ExploracaoShowView = Backbone.View.extend({
     },
 
     workaroundForEstadoCombo: function(domains) {
-        // TODO. Do not hide this here
-        /* En el modo no-escritorio, el combo de estado en la ficha de la licencia
-        sólo puede mostrar o bien el estado actual de la licencia, cuando todavía está
-        en proceso. O bien uno de los posibles estados post-lic "de facto", "irregular",
-        "licenciada"
+        /*
+        El combo de estado en la ficha de la licencia sólo puede mostrar o bien el
+        estado actual de la licencia, cuando todavía está en proceso. O bien uno de los
+        posibles estados post-lic "de facto", "irregular", "licenciada"
 
         Y si es de usos comuns sólo ese estado
         */
-        if (!window.SIRHA.is_single_user_mode()) {
-            var actualState = domains.where({
-                text: this.model.get("estado_lic"),
-                category: "licencia_estado",
-            })[0];
-            var isUsosComuns = actualState.get("text") === SIRHA.ESTADO.USOS_COMUNS;
-            domains.forEach(function(d) {
-                if (d.get("category") === "licencia_estado") {
-                    if (isUsosComuns) {
-                        if (d.get("text") !== actualState.get("text")) {
-                            d.set("category", "ignore", {silent: true});
-                        }
-                    } else if (actualState.get("parent") === "post-licenciada") {
-                        if (
-                            d.get("parent") !== "post-licenciada" ||
-                            d.get("text") === SIRHA.ESTADO.USOS_COMUNS
-                        ) {
-                            d.set("category", "ignore", {silent: true});
-                        }
-                    } else {
-                        if (d.get("text") !== actualState.get("text")) {
-                            d.set("category", "ignore", {silent: true});
-                        }
+        var actualState = domains.where({
+            text: this.model.get("estado_lic"),
+            category: "licencia_estado",
+        })[0];
+        var isUsosComuns = actualState.get("text") === SIRHA.ESTADO.USOS_COMUNS;
+        domains.forEach(function(d) {
+            if (d.get("category") === "licencia_estado") {
+                if (isUsosComuns) {
+                    if (d.get("text") !== actualState.get("text")) {
+                        d.set("category", "ignore", {silent: true});
+                    }
+                } else if (actualState.get("parent") === "post-licenciada") {
+                    if (
+                        d.get("parent") !== "post-licenciada" ||
+                        d.get("text") === SIRHA.ESTADO.USOS_COMUNS
+                    ) {
+                        d.set("category", "ignore", {silent: true});
+                    }
+                } else {
+                    if (d.get("text") !== actualState.get("text")) {
+                        d.set("category", "ignore", {silent: true});
                     }
                 }
-            });
-        }
+            }
+        });
     },
 
     render: function() {

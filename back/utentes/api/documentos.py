@@ -321,7 +321,7 @@ def documento_file_upload(request, path_info):
     documento.set_path_root(request.registry.settings["media_root"])
     documento.upload_file(input_file.file)
 
-    if request.user.usergroup not in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
+    if request.user.usergroup not in [user_roles.ADMIN]:
         if request.user.usergroup != path_info["departamento"] or (
             path_info["unidade"] is not None
             and request.user.unidade != path_info["unidade"]
@@ -381,7 +381,7 @@ def documento_file_delete(request):
     file_name = subpath[-1]
     path_info = parse_subpath(subpath[:-1])
 
-    if request.user.usergroup not in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
+    if request.user.usergroup not in [user_roles.ADMIN]:
         if request.user.usergroup != path_info["departamento"] or (
             path_info["unidade"] is not None
             and request.user.unidade != path_info["unidade"]
@@ -525,7 +525,7 @@ def get_folder_permissions(request, departamento, unidade):
         departamento == user_roles.UNIDAD_DELEGACION and unidade is None
     ):
         return ["perm_download"]
-    if request.user.usergroup in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
+    if request.user.usergroup in [user_roles.ADMIN]:
         return ["perm_upload", "perm_download", "perm_delete"]
     if departamento == user_roles.UNIDAD_DELEGACION:
         if request.user.unidade == unidade:
@@ -536,7 +536,7 @@ def get_folder_permissions(request, departamento, unidade):
 
 
 def get_file_permissions(request, departamento, unidade):
-    if request.user.usergroup in [user_roles.ADMIN, user_roles.ROL_SINGLE]:
+    if request.user.usergroup in [user_roles.ADMIN]:
         return ["perm_download", "perm_delete"]
     if departamento == user_roles.UNIDAD_DELEGACION:
         if request.user.unidade == unidade:

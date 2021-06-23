@@ -28,29 +28,21 @@ Backbone.SIXHIARA.EstadoCollection = Backbone.UILib.DomainCollection.extend({
     },
 
     _forLicencasPage: function() {
-        if (!window.SIRHA.is_single_user_mode()) {
-            var estadosFiltered = this.filter(function(e) {
-                return (
-                    e.get("parent") === "post-licenciada" &&
-                    e.get("text") !== SIRHA.ESTADO.USOS_COMUNS
-                );
-            });
-            return new Backbone.SIXHIARA.EstadoCollection(estadosFiltered);
-        } else {
-            return new Backbone.SIXHIARA.EstadoCollection(this.models);
-        }
+        var estadosFiltered = this.filter(function(e) {
+            return (
+                e.get("parent") === "post-licenciada" &&
+                e.get("text") !== SIRHA.ESTADO.USOS_COMUNS
+            );
+        });
+        return new Backbone.SIXHIARA.EstadoCollection(estadosFiltered);
     },
 
     forPendentesView: function() {
-        if (!window.SIRHA.is_single_user_mode()) {
-            var states = this.availablePendentesStates();
-            var foo = this.filter(function(e) {
-                return states.indexOf(e.get("text")) !== -1;
-            });
-            return new Backbone.SIXHIARA.EstadoCollection(foo);
-        } else {
-            return new Backbone.SIXHIARA.EstadoCollection(this.models);
-        }
+        var states = this.availablePendentesStates();
+        var foo = this.filter(function(e) {
+            return states.indexOf(e.get("text")) !== -1;
+        });
+        return new Backbone.SIXHIARA.EstadoCollection(foo);
     },
 
     availablePendentesStates: function() {

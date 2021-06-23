@@ -25,13 +25,6 @@ class Adicionar(object):
         return {}
 
     @view_config(
-        route_name="adicionar_exploracao",
-        permission=perm.PERM_PAGE_ADICIONAR_EXPLORACAO,
-    )
-    def adicionar_exploracao(self):
-        return {}
-
-    @view_config(
         route_name="adicionar_usos_comuns",
         permission=perm.PERM_PAGE_ADICIONAR_USOS_COMUNS,
     )

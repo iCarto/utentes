@@ -18,13 +18,6 @@
         <div class="form-group">
           <label><input type="checkbox"/> Licença activa?</label>
         </div>
-        {% if is_single_user_mode() %}
-        <div class="form-group">
-          <label for="estado" class="text-muted set-enability">Estado </label> <i class="help fa fa-question-circle" style="cursor: pointer;"></i>
-          <select class="form-control widget" id="estado" disabled>
-          </select>
-        </div>
-        {% endif %}
         {% endif %}
         <div class="form-group">
           <label for="c_soli_int" class="text-muted set-enability">Consumo solicitado intermédio <i class="units">(m<sup>3</sup>/mês)</i></label>

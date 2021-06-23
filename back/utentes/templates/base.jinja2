@@ -37,32 +37,30 @@
 
                   <li class="menu-group">&nbsp;</li>
 
-                    {% if not is_single_user_mode() and request.has_permission(perm.PERM_CREATE_REQUERIMENTO) %}
+                    {% if request.has_permission(perm.PERM_CREATE_REQUERIMENTO) %}
                     <li><a href="{{request.route_url('requerimento-new')}}">
                         <strong>CRIAR</strong>
                     </a></li>
                     {% endif %}
-                    {% if not is_single_user_mode() and request.has_permission(perm.PERM_REQUERIMENTO) %}
+                    {% if request.has_permission(perm.PERM_REQUERIMENTO) %}
                     <li><a href="{{request.route_url('requerimento-pendente')}}">
                         <strong>NOVAS LICENÇAS</strong>
                     </a></li>
                     {% endif %}
-                    {% if not is_single_user_mode() and request.has_permission(perm.PERM_EM_PROCESSO) %}
+                    {% if request.has_permission(perm.PERM_EM_PROCESSO) %}
                     <li><a href="{{request.route_url('exploracao-search')}}?em_processo">
                         <strong>EM PROCESSO</strong>
                     </a></li>
                     {% endif %}
-                    {% if not is_single_user_mode() and request.has_permission(perm.PERM_RENOVACAO) %}
+                    {% if request.has_permission(perm.PERM_RENOVACAO) %}
                     <li><a href="{{request.route_url('renovacao')}}">
                         <strong>RENOVAÇÕES</strong>
                     </a></li>
                     {% endif %}
 
-                    {% if not is_single_user_mode() %}
                     <li class="menu-group">&nbsp;</li>
-                    {% endif %}
 
-                    {% if not is_single_user_mode() and request.has_permission(perm.PERM_GET_USAGE_COMMON) %}
+                    {% if request.has_permission(perm.PERM_GET_USAGE_COMMON) %}
                     <li><a href="{{request.route_url('exploracao-search')}}?ambos_usos">
                         <strong>EXPLORAÇÕES</strong>
                     </a></li>
@@ -75,7 +73,6 @@
 
                     {% if request.has_permission(perm.PERM_PAGE_ADICIONAR_USOS_COMUNS)
                           or request.has_permission(perm.PERM_PAGE_ADICIONAR_UTENTE_FACTO)
-                          or request.has_permission(perm.PERM_PAGE_ADICIONAR_EXPLORACAO)
                           or request.has_permission(perm.PERM_UPDATE_CULTIVO_TANQUE)
                     %}
                     <li class="dropdown">
@@ -88,28 +85,20 @@
                           {% if request.has_permission(perm.PERM_PAGE_ADICIONAR_UTENTE_FACTO) %}
                           <li><a href="{{request.route_url('adicionar_utente_facto')}}"><strong>Exploração (Utente de facto)</strong></a></li>
                           {% endif %}
-                          {% if request.has_permission(perm.PERM_PAGE_ADICIONAR_EXPLORACAO) %}
-                          <li><a href="{{request.route_url('adicionar_exploracao')}}"><strong>EXPLORAÇAO</strong></a></li>
-                          {% endif %}
                         </ul>
                     </li>
                     {% endif %}
 
-                    {% if not is_single_user_mode() %}
                     <li class="menu-group">&nbsp;</li>
-                    {% endif %}
 
-                    {% if not is_single_user_mode() %}
                     <li><a href="{{request.route_url('facturacao-stats')}}">
                         <strong>ESTATÍSTICAS</strong>
                     </a></li>
-                    {% endif %}
 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        {% if not is_single_user_mode() %}
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false"><span id="user-info">{{request.user.username}}</span><span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -122,11 +111,6 @@
                           <li class="dropdown-header"></li>
                           <li><a href="{{request.route_url('logout')}}">Fechar sessão</a></li>
                         </ul>
-                        {% else %}
-                        <li id="nav-settings"><a href="#">
-                          Configuração&nbsp;<i class="fas fa-cog"></i>
-                        </a></li>
-                        {% endif %}
                     </li>
 
                 </ul>

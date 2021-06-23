@@ -2,7 +2,6 @@ Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.LicenseView = Backbone.UILib.BaseView.extend({
     events: {
         "click input:checkbox": "clickActive",
-        "click .help": "showModalEstadoLicencia",
     },
 
     initialize: function(options) {
@@ -22,15 +21,6 @@ Backbone.SIXHIARA.LicenseView = Backbone.UILib.BaseView.extend({
         this.$(this.options.selectorButtonAddFonte).on("click", function(e) {
             self.renderModal(e);
         });
-
-        this.estadosLicencia = this.options.domains
-            .byCategory("licencia_estado")
-            .byParent("precampo");
-        var estadosView = new Backbone.UILib.SelectView({
-            el: this.$("#estado"),
-            collection: this.estadosLicencia,
-        });
-        this.addView(estadosView);
     },
 
     createLicense: function() {
@@ -59,37 +49,11 @@ Backbone.SIXHIARA.LicenseView = Backbone.UILib.BaseView.extend({
         if (e.target.checked) {
             this.model.get("licencias").add(this.license);
             this.enableWidgets();
-            if (window.SIRHA.is_single_user_mode()) {
-                this.listenTo(this.license, "change:estado", function() {
-                    exploracao.set(
-                        {
-                            estado_lic: this.license.get("estado"),
-                        },
-                        {silent: true}
-                    );
-                });
-            }
         } else {
             this.model.get("licencias").remove(this.license);
             var fontes = this.model.get("fontes").where({tipo_agua: this.tipo_agua});
             this.model.get("fontes").remove(fontes);
             this.stopListening(this.license);
-            if (window.SIRHA.is_single_user_mode()) {
-                var ex_lic =
-                    this.model.get("licencias") &&
-                    this.model.get("licencias").length &&
-                    this.model.get("licencias").at(0);
-                var ex_state = SIRHA.ESTADO.UNKNOWN;
-                if (ex_lic) {
-                    ex_state = ex_lic.get("estado");
-                }
-                exploracao.set(
-                    {
-                        estado_lic: ex_state,
-                    },
-                    {silent: true}
-                );
-            }
             this.license = this.createLicense();
             this.updateModelView.model = this.license;
             this.updateModelView.render();
@@ -114,12 +78,6 @@ Backbone.SIXHIARA.LicenseView = Backbone.UILib.BaseView.extend({
         this.$(".widget-number").prop("disabled", this.isDisabled);
         this.$("button").prop("disabled", this.isDisabled);
     },
-
-    showModalEstadoLicencia: function() {
-        new Backbone.SIXHIARA.ModalTooltipEstadoLicenciaView({
-            collection: this.estadosLicencia,
-            actual_state: this.license.get("estado"),
-        }).show();
     },
 
     renderModal: function(e) {
