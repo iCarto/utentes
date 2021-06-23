@@ -215,3 +215,6 @@ add_columns_created_updated 2020-11-30T11:22:34Z Francisco Puga <fpuga@icarto.es
 adds_field_sexo 2021-05-05T17:45:20Z Francisco Puga <fpuga@icarto.es> # Adds field sexo
 new_version_210607 2021-06-07T15:01:28Z Francisco Puga <fpuga@icarto.es> # new_version_210607
 @210607 2021-06-07T15:03:25Z Francisco Puga <fpuga@icarto.es> # tag 210607
+
+aras_unification 2021-06-14T19:03:38Z Francisco Puga <fpuga@icarto.es> # ARAs unification
+aras_unification_update_datos_aras 2021-07-07T20:33:23Z Francisco Puga <fpuga@icarto.es> # ARAs unification updates datos_ara

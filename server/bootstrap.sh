@@ -38,6 +38,7 @@ sed -i 's%.*history-search-backward%"\\e[5~": history-search-backward%' /etc/inp
 sed -i 's%.*history-search-forward%"\\e[6~": history-search-forward%' /etc/inputrc
 
 ./install_others.sh
+bash install_gdal.sh
 ./install_git.sh
 
 ./install_postgres.sh

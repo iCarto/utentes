@@ -53,14 +53,10 @@ create_last_db() {
 
 dump_db() {
     local DATABASE="${1}"
-    ${PGDUMP} -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${TODAY}_${DATABASE}.dump" "${DATABASE}"
-}
+    local WHEN="${2:-bck}"
+    local BCK_FOLDER="${3:-$(pwd)}"
 
-dump_db_prod() {
-    # Simplemente por unificar los nombres
-    # Hay que mejorarlo
-    local DATABASE="${1}"
-    ${PGDUMP} -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${TODAY}_prod_${DATABASE}.dump" "${DATABASE}"
+    ${PGDUMP} -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${BCK_FOLDER}/${TODAY}_${WHEN}_${DATABASE}.dump" "${DATABASE}"
 }
 
 delete_all_data_in_schema() {
