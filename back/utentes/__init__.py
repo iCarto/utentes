@@ -1,6 +1,5 @@
 import datetime
 import decimal
-import os
 
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
@@ -13,7 +12,6 @@ from sqlalchemy.orm import sessionmaker
 from webassets.filter import register_filter
 
 from utentes.constants import perms as perm
-from utentes.dbutils.scripts.utils import home_directory
 from utentes.lib import webassets_filters
 from utentes.tenant_custom_code import adjust_settings
 from utentes.user_utils import get_user_from_request, get_user_role
@@ -75,7 +73,6 @@ def main(global_config, **settings):
 
     config.include("pyramid_jinja2")
     config.include("pyramid_webassets")
-    config.include("utentes.dbutils")
     # https://github.com/Pylons/pyramid_jinja2/issues/111
     config.commit()
 
@@ -93,7 +90,7 @@ def main(global_config, **settings):
     add_routes_views(config)
     add_routes_api(config)
 
-    config.scan(ignore=["utentes.test", "utentes.dbutils"])
+    config.scan(ignore=["utentes.test"])
     return config.make_wsgi_app()
 
 
@@ -165,11 +162,6 @@ def add_routes_api(config):
     # PUT    /api/tanques_piscicolas/{id} = Update a tank (geometry most of the times)
     config.add_route("api_tanques_piscicolas", "/api/tanques_piscicolas")
     config.add_route("api_tanques_piscicolas_id", "/api/tanques_piscicolas/{id}")
-
-    # GET    /api/settings      = Return all settings
-    # PUT    /api/settings/{property} = Update property
-    config.add_route("api_settings", "/api/settings")
-    config.add_route("api_settings_property", "/api/settings/{property}")
 
     # GET /domains = Return all domains (utentes included)
     config.add_route("api_domains", "/api/domains")

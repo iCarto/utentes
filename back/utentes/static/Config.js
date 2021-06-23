@@ -40,16 +40,6 @@ Backbone.SIXHIARA.MSG = {
     NO_ACTIVITY: "Actividade non declarada",
 };
 
-$(document).ready(function() {
-    $("#nav-settings").on("click", function(e) {
-        e.preventDefault();
-        var configModalView = new Backbone.SIXHIARA.ConfigModalView({
-            model: new Backbone.Model(),
-        });
-        configModalView.show();
-    });
-});
-
 Backbone.UILib.DomainCollection = Backbone.UILib.DomainCollection.extend({
     url: Backbone.SIXHIARA.Config.apiDomains,
 });

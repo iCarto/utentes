@@ -104,9 +104,6 @@
                         <ul class="dropdown-menu">
                           <li><a id="user-info-link" href="{{request.route_url('user')}}">Perfil</a></li>
                           <li class="uilib-enability uilib-show-role-administrador"><a href="{{request.route_url('users')}}">Utilizadores</a></li>
-                          <li id="nav-settings" class="uilib-enability uilib-show-role-administrador"><a href="#">
-                            Configuração&nbsp;<i class="fas fa-cog"></i>
-                          </a></li>
                           <li role="separator" class="divider"></li>
                           <li class="dropdown-header"></li>
                           <li><a href="{{request.route_url('logout')}}">Fechar sessão</a></li>
@@ -123,7 +120,6 @@
 {% include 'set-ara-variable.jinja2' %}
 
 {% assets
-"node-interaction.js",
 "iauth.js",
 "tenant-custom-code.js",
 "services/id_service.js",
