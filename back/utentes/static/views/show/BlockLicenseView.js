@@ -143,12 +143,8 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
         });
 
         modalView.render();
+        modalView.fillFactTipo(this.model.get("fact_tipo"));
 
-        if (modalView.$("#fact_tipo").length) {
-            // En dpmaip no tenemos #fact_tipo
-            // Igual se podrían ocualtar con uilib-enability
-            modalView.$("#fact_tipo")[0].value = this.model.get("fact_tipo");
-        }
         iAuth.disabledWidgets("#licenciaModal");
     },
 
@@ -184,10 +180,7 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
         });
 
         modalView.render();
-        if (modalView.$("#fact_tipo").length) {
-            // En dpmaip no tenemos #fact_tipo
-            modalView.$("#fact_tipo")[0].value = this.model.get("fact_tipo");
-        }
+        modalView.fillFactTipo(this.model.get("fact_tipo"));
 
         iAuth.disabledWidgets("#licenciaModal");
     },

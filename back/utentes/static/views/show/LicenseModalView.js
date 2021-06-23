@@ -42,6 +42,16 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
         });
     },
 
+    fillFactTipo: function(factTipoValue) {
+        // fact_tipo is in the `exploracao` and not in the `license`
+        // Las licencias de usos comuns no tienen #fact_tipo
+        // Igual se podrían ocualtar con uilib-enability
+        factTipoWidget = this.$("#fact_tipo");
+        if (factTipoWidget.length) {
+            factTipoWidget[0].value = factTipoValue;
+        }
+    },
+
     okButtonClicked: function() {
         var previousState = this.model.get("estado");
         Backbone.UILib.ModalView.prototype.okButtonClicked.call(this);

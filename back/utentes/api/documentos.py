@@ -161,8 +161,6 @@ def init_departamentos_json_array(request, exploracao_id):
         user_roles.TECNICO,
         user_roles.UNIDAD_DELEGACION,
     ]
-    if request.registry.settings.get("ara") == "DPMAIP":
-        departamentos = [user_roles.TECNICO]
 
     departamentos_json_array = []
     for departamento in departamentos:

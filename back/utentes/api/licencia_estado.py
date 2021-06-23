@@ -17,7 +17,6 @@ def domains_licencia_estado_get(request):
         "ARAZ": "Zambeze",
         "ARAC": "Centro",
         "ARACN": "Centro-Norte",
-        "DPMAIP": "DPMAIP",
     }[request.registry.settings.get("ara")]
     return (
         request.db.query(Estado)

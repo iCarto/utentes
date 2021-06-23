@@ -154,7 +154,7 @@ class RootFactory(object):
 
 def is_single_user_mode(settings=None):
     settings = settings or get_current_registry().settings
-    return settings.get("ara") == "DPMAIP"
+    return settings.get("ara") == ""
 
 
 def get_user_role(username, request):

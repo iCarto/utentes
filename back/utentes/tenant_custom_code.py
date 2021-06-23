@@ -31,5 +31,4 @@ def adjust_settings(settings):
         "ARAZ": "SIRHAZ: Utentes",
         "ARAC": "SIRHAC: Utentes",
         "ARACN": "SIRHACN: Utentes",
-        "DPMAIP": "DPMAIP",
     }[settings["ara"]]

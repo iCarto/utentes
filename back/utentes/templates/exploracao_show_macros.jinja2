@@ -10,44 +10,7 @@
 {%- endmacro %}
 
 
-{% macro modal_licencia_dpmaip() -%}
-<div class="col-xs-offset-2 col-xs-8">
-    <div class="row">
-        <div class="form-group col-xs-12">
-            <label for="c_licencia"><strong>Consumo licenciado <i class="units">(m<sup>3</sup>/mês)</i></strong></label>
-            <input type="text" class="form-control widget-number" id="c_licencia" pattern="[0-9]{1,8}([,][0-9]{1,2})?">
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-xs-12">
-            <label for="c_soli_int">Consumo solicitado intermedio <i class="units">(m<sup>3</sup>/mês)</i></label>
-            <input type="text" class="form-control widget-number" id="c_soli_int" pattern="[0-9]{1,8}([,][0-9]{1,2})?">
-        </div>
-    </div>
-</div>
-{%- endmacro %}
-
-
 {% macro modal_licencia_usos_comuns() -%}
-<!--
-<div class="row">
-  <div class="col-xs-offset-2 col-xs-8">
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title"><strong>Dados gerais</strong></h3>
-      </div>
-      <div class="panel-body">
-        <div class="row">
-          <div class="form-group col-xs-12">
-            <label for="estado">Estado</label>
-            <select type="text" class="form-control widget" id="estado" disabled></select>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
--->
 <div class="row">
   <div class="col-xs-offset-2 col-xs-8">
     <div class="panel panel-info">

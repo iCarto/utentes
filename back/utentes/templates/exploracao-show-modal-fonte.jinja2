@@ -107,12 +107,10 @@
                       <label for="c_soli">Consumo solicitado <i class="units">(m<sup>3</sup>/mês)</i></label>
                       <input type="text" class="form-control widget-number" id="c_soli" pattern="[0-9]{1,8}([,][0-9]{1,2})?">
                     </div>
-                    {% if request.registry.settings.get("ara") != 'DPMAIP' %}
                     <div class="form-group col-xs-6">
                       <label for="c_real">Consumo real <i class="units">(m<sup>3</sup>/mês)</i></label>
                       <input type="text" class="form-control widget-number" id="c_real" pattern="[0-9]{1,8}([,][0-9]{1,2})?">
                     </div>
-                    {% endif %}
                   </div>
                 </div>
               </div>

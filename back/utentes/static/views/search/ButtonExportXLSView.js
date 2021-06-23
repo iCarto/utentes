@@ -73,33 +73,6 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
         wb.SheetNames.push(ws_name);
         wb.Sheets[ws_name] = wsExploracaos;
 
-        if (window.SIRHA.getARA() === "DPMAIP") {
-            // filter by actividade Piscicultura
-            var exploracaosFiltered = _.filter(exploracaos, function(exp) {
-                return exp.get("actividade").get("tipo") === "Piscicultura";
-            });
-
-            var tanques = [];
-            exploracaosFiltered.forEach(function(exp) {
-                exp.get("actividade")
-                    .get("tanques_piscicolas")
-                    .forEach(function(tanque) {
-                        tanque.set("utente", exp.get("utente").get("nome"));
-                        tanque.set("exp_id", exp.get("exp_id"));
-                        tanques.push(tanque);
-                    });
-            });
-
-            var dataTanques = this.getData(tanques, "tanques");
-
-            // add a new sheet
-            var ws_name = "Tanques";
-            wb.SheetNames.push(ws_name);
-
-            var wsTanques = this.sheet_from_array_of_arrays(dataTanques);
-            wb.Sheets[ws_name] = wsTanques;
-        }
-
         var wbout = XLSX.write(wb, {bookType: "xlsx", bookSST: false, type: "binary"});
         saveAs(new Blob([this.s2ab(wbout)], {type: "application/octet-stream"}), file);
     },
@@ -125,30 +98,55 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
                     cell.v = this.datenum(cell.v);
                 } else cell.t = "s";
                 // this piece of code is used to format exported Excel on xlsx-style fork library. In case we would return to xlsx(sheet.js) library in the future this code won't work
-                if(R == 0){
-				            cell.s={ font:{ bold:true, color:{ rgb:"FFFFFF" }, sz:"11" },
-                             fill:{ fgColor:{ rgb:"337AB7" } },
-                             alignment:{ horizontal:"center", vertical:"center", wrapText:true },
-                             border: { top:{ style:"thin" }, bottom:{ style:"thin" }, left:{ style:"thin" }, right:{ style:"thin" } }
-                           }
-			                    }
-                if(R !== 0){
-                    cell.s={ font:{ sz:"10" },
-                             alignment:{ horizontal:"center", vertical:"center", wrapText:true }
-                           }
-                          }
-                if( (C == 0 || C == 5 || C == 11) & (R !== 0) ){
-                    cell.s={ font:{ sz:"10" },
-                             alignment:{ horizontal:"bottom", vertical:"center", wrapText:true }
-                           }
-                          }
-                if( (C == 32) & (R !== 0) ){
-                    cell.s={ font:{ sz:"10" },
-                             alignment:{ horizontal:"center", vertical:"center", wrapText:true },
-                             border: { right:{ style:"thin" } }
-                           }
-                          }
-              // End of xlsx-style library code. Remove or cancel in case we return to xlsx(sheetjs) library
+                if (R == 0) {
+                    cell.s = {
+                        font: {bold: true, color: {rgb: "FFFFFF"}, sz: "11"},
+                        fill: {fgColor: {rgb: "337AB7"}},
+                        alignment: {
+                            horizontal: "center",
+                            vertical: "center",
+                            wrapText: true,
+                        },
+                        border: {
+                            top: {style: "thin"},
+                            bottom: {style: "thin"},
+                            left: {style: "thin"},
+                            right: {style: "thin"},
+                        },
+                    };
+                }
+                if (R !== 0) {
+                    cell.s = {
+                        font: {sz: "10"},
+                        alignment: {
+                            horizontal: "center",
+                            vertical: "center",
+                            wrapText: true,
+                        },
+                    };
+                }
+                if ((C == 0 || C == 5 || C == 11) & (R !== 0)) {
+                    cell.s = {
+                        font: {sz: "10"},
+                        alignment: {
+                            horizontal: "bottom",
+                            vertical: "center",
+                            wrapText: true,
+                        },
+                    };
+                }
+                if ((C == 32) & (R !== 0)) {
+                    cell.s = {
+                        font: {sz: "10"},
+                        alignment: {
+                            horizontal: "center",
+                            vertical: "center",
+                            wrapText: true,
+                        },
+                        border: {right: {style: "thin"}},
+                    };
+                }
+                // End of xlsx-style library code. Remove or cancel in case we return to xlsx(sheetjs) library
                 ws[cell_ref] = cell;
             }
         }
