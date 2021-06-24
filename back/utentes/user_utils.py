@@ -1,11 +1,11 @@
-from pyramid.security import Allow, Authenticated, Deny
+from pyramid.security import Allow, Authenticated
 from pyramid.settings import asbool
-from pyramid.threadlocal import get_current_registry
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from users import user_roles
 from utentes.constants import perms as perm
 from utentes.models.user import User
+from utentes.services.settings_service import get_ara
 from utentes.tenant_custom_code import group_to_roles
 
 
@@ -142,9 +142,7 @@ class RootFactory(object):
 
 
 def get_user_role(username, request):
-    ara = request.registry.settings.get("ara")
-    current_group_to_roles = group_to_roles(ara)
-
+    current_group_to_roles = group_to_roles(get_ara(request))
     try:
         user = request.db.query(User).filter(User.username == username).one()
     except (MultipleResultsFound, NoResultFound):

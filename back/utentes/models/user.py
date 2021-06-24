@@ -8,6 +8,9 @@ from utentes.models.base import PGSQL_SCHEMA_USERS, Base
 from utentes.models.user_schema import USER_SCHEMA
 
 
+ENCODING = "utf8"
+
+
 class User(Base):
     __tablename__ = "users"
     __table_args__ = {"schema": PGSQL_SCHEMA_USERS}
@@ -45,13 +48,13 @@ class User(Base):
             self.unidade = None
 
     def set_password(self, pw):
-        pwhash = bcrypt.hashpw(pw.encode("utf8"), bcrypt.gensalt())
-        self.password = pwhash.decode("utf8")
+        pwhash = bcrypt.hashpw(pw.encode(ENCODING), bcrypt.gensalt())
+        self.password = pwhash.decode(ENCODING)
 
     def check_password(self, pw):
         if self.password is not None:
-            expected_hash = self.password.encode("utf8")
-            return bcrypt.checkpw(pw.encode("utf8"), expected_hash)
+            expected_hash = self.password.encode(ENCODING)
+            return bcrypt.checkpw(pw.encode(ENCODING), expected_hash)
         return False
 
     def __json__(self, request):

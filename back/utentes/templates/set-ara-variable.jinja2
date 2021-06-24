@@ -3,8 +3,7 @@
         Utils: {},
         Services: {},
         Error: {},
-        _ARA: '{{ request.registry.settings.get("ara") }}',
-        getARA: function() { return this._ARA; },
+        getARA: function() { return '{{ request.registry.settings.get("ara") }}'; },
         CONSTANTS: {
           SEXO_FEMININO: "Feminino",
         },

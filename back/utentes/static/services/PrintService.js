@@ -66,16 +66,10 @@ SIRHA.Services.PrintService = (function(formatter) {
             .concat(".docx");
 
         data.ara = dataARA;
-
-        if (data.loc_unidad === "ARAZ") {
-            // workaround for #1601
-            data.unidade_long_name = "UGBZ - UNIDADE DE GESTÃO DA BACIA DO ZAMBEZE";
-        } else {
-            data.unidade_long_name = data.ara.unidades.reduce(
-                (mem, u) => (u.nome.startsWith(data.loc_unidad) ? mem + u.nome : mem),
-                ""
-            );
-        }
+        data.unidade_long_name = data.ara.unidades.reduce(
+            (mem, u) => (u.nome.startsWith(data.loc_unidad) ? mem + u.nome : mem),
+            ""
+        );
 
         data.ara.logoUrl =
             "static/print-templates/images/" + window.SIRHA.getARA() + "_cabecera.png";

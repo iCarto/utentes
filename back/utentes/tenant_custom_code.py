@@ -4,13 +4,17 @@ from users.user_roles import ADMINISTRATIVO, DIRECCION, GROUPS_TO_ROLES, JURIDIC
 def group_to_roles(ara):
     base_group_to_roles = dict(GROUPS_TO_ROLES)
     if ara == "ARAS":
-        base_group_to_roles[JURIDICO] = [JURIDICO, DIRECCION]
-    if ara in {"ARAZ", "ARAC", "ARACN", "ARAN"}:
+        base_group_to_roles[JURIDICO] = [
+            JURIDICO,
+            DIRECCION,
+        ]
+    else:
         base_group_to_roles[JURIDICO] = [
             JURIDICO,
             DIRECCION,
             ADMINISTRATIVO,
         ]
+
     return base_group_to_roles
 
 
@@ -27,8 +31,6 @@ def adjust_settings(settings):
     """
     settings["ara_app_name"] = {
         "ARAN": "SIRHAN: Utentes",
-        "ARAS": "SIRHAS: Utentes",
-        "ARAZ": "SIRHAZ: Utentes",
         "ARAC": "SIRHAC: Utentes",
-        "ARACN": "SIRHACN: Utentes",
+        "ARAS": "SIRHAS: Utentes",
     }[settings["ara"]]

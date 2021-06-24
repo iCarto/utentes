@@ -78,7 +78,6 @@ Backbone.SIXHIARA.LicenseView = Backbone.UILib.BaseView.extend({
         this.$(".widget-number").prop("disabled", this.isDisabled);
         this.$("button").prop("disabled", this.isDisabled);
     },
-    },
 
     renderModal: function(e) {
         e.preventDefault();

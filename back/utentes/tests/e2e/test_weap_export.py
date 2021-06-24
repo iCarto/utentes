@@ -22,7 +22,7 @@ class TestWeapExport(BaseE2ETest):
                 "loc_provin": "Maputo",
                 "loc_distri": "Boane",
                 "loc_posto": "Boane",
-                "loc_unidad": "UGBU",
+                "loc_unidad": "DGBUM",
                 "loc_bacia": "Maputo",
             },
         )
@@ -44,7 +44,7 @@ class TestWeapExport(BaseE2ETest):
                 "loc_provin": "Maputo",
                 "loc_distri": "Boane",
                 "loc_posto": "Boane",
-                "loc_unidad": "UGBU",
+                "loc_unidad": "DGBUM",
                 "loc_bacia": "Umbelúzi",
             },
         )

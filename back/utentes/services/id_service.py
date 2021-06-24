@@ -5,6 +5,9 @@ from utentes.models.constants import K_DE_FACTO, K_LICENSED, K_USOS_COMUNS
 from utentes.services import settings_service
 
 
+_EXP_ID_LENGTH = 19
+
+
 def code_for_state(state, separator="/"):
     code = {K_DE_FACTO: "UF", K_USOS_COMUNS: "SL"}.get(state, "CL")
     return separator + code
@@ -22,7 +25,7 @@ def calculate_new_exp_id(request, state=K_LICENSED):
     }
 
     sql = r"""
-    SELECT substring(exp_id, 1, 3)::int + 1
+    SELECT left(exp_id, 3)::int + 1
     FROM utentes.exploracaos
     WHERE
         upper(ara) = :ara
@@ -31,9 +34,11 @@ def calculate_new_exp_id(request, state=K_LICENSED):
     ORDER BY 1 DESC
     LIMIT 1;
     """
-    exp_id_tokens["seq_id"] = (request.db.execute(sql, exp_id_tokens).first() or [1])[0]
+    seq_id_start_number = [1]
+    query_result = request.db.execute(sql, exp_id_tokens).first() or seq_id_start_number
+    exp_id_tokens["seq_id"] = query_result[0]
 
-    return "{seq_id:03d}/{ara}/{year}{code}".format(**exp_id_tokens)
+    return "{seq_id:03d}/{ara}-IP/{year}{code}".format(**exp_id_tokens)
 
 
 def is_valid_exp_id(exp_id):
@@ -41,7 +46,7 @@ def is_valid_exp_id(exp_id):
 
 
 def _is_valid_exp_id(exp_id, ara):
-    exp_id_format_regexp = r"^\d{3}/" + ara + r"/\d{4}/(UF|SL|CL)$"  # noqa: WPS336
+    exp_id_format_regexp = r"^\d{3}/" + ara + r"-IP/\d{4}/(UF|SL|CL)$"  # noqa: WPS336
     return exp_id and re.match(exp_id_format_regexp, exp_id)
 
 
@@ -49,15 +54,26 @@ def is_not_valid_exp_id(exp_id):
     return not is_valid_exp_id(exp_id)
 
 
-def replace_exp_id_in_code(code, new_exp_id):
-    i = 12 + len(settings_service.get_ara())
-    new_exp_id = new_exp_id[:i]
-    return new_exp_id + code[i:]
+def _extract_exp_id_from_code(code: str) -> str:
+    """Return the exp_id part of a code."""
+    return code[:_EXP_ID_LENGTH]
+
+
+def replace_exp_id_in_code(code: str, code_replacement: str) -> str:
+    """Replace the `exp_id` part in a code.
+
+    Given a code like cult_id, or another exp_id replaces the first len(exp_id)
+    characters of the code with the exp_id part of the new code.
+
+    See unittests por examples
+    """
+    new_exp_id = _extract_exp_id_from_code(code_replacement)
+    not_exp_id_part = code[_EXP_ID_LENGTH:]
+    return new_exp_id + not_exp_id_part
 
 
 def calculate_lic_nro(exp_id: str, _tipo_agua: str) -> str:
-    """
-    Return the correct license number.
+    """Return the correct license number.
 
     Given a valid `exp_id, ` and `tipo_agua` in any acceptable form like
     'Superficial', 'SUP', 'suP', ... returns the correct license number.
@@ -69,11 +85,13 @@ def calculate_lic_nro(exp_id: str, _tipo_agua: str) -> str:
 
 
 def is_valid_lic_nro(lic_nro):
-    return is_valid_exp_id(lic_nro[0:-4]) and lic_nro[-4:] in ["/Sub", "/Sup"]
+    lic_nro = lic_nro or ""  # convert to empty string when none
+    is_valid_tipo_agua = lic_nro[-4:] in {"/Sub", "/Sup"}
+    return is_valid_exp_id(lic_nro[:-4]) and is_valid_tipo_agua
 
 
 def is_not_valid_lic_nro(lic_nro):
-    return not is_valid_lic_nro
+    return not is_valid_lic_nro(lic_nro)
 
 
 def next_child_seq(childs, id_name):

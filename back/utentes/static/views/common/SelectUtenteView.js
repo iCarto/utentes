@@ -58,7 +58,8 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
 
     checkGenderField: function(changeSelectValue) {
         let sexoGerente = this.options.sexoGerente;
-        if (!sexoGerente.valueInProcess) {
+
+        if (!sexoGerente || !sexoGerente.valueInProcess) {
             return;
         }
         if (sexoGerente.widget.value !== sexoGerente.valueInProcess) {

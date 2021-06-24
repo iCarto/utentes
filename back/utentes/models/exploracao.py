@@ -401,7 +401,7 @@ class Exploracao(ExploracaoGeom):
                 return lic
         return Licencia()
 
-    def setLicStateAndExpId(self, request, body):
+    def set_lic_state_and_exp_id(self, request, body):
         exp_id_to_use = self._which_exp_id_should_be_used(request, body)
 
         if self.exp_id and exp_id_to_use != self.exp_id:
@@ -437,13 +437,13 @@ class Exploracao(ExploracaoGeom):
 
     def update_from_json_requerimento(self, request, data):
         self._update_requerimento_fields(data)
-        self.setLicStateAndExpId(request, data)
+        self.set_lic_state_and_exp_id(request, data)
         self.fact_estado = "Não facturable"
         self.fact_tipo = "Mensal"
         self.pago_lic = False
 
     def update_from_json_renovacao(self, request, data):
-        self.setLicStateAndExpId(request, data)
+        self.set_lic_state_and_exp_id(request, data)
 
         # Si no son nulos habré pasado por JuridicoDatos/Pendente Datos Renovacao
         # y al llegar a uno de estos estados debo actualizar datos en la exp.
@@ -490,7 +490,7 @@ class Exploracao(ExploracaoGeom):
         lic_sub.pago_iva = json_fact["pago_iva_sub"]
 
         # update all facturacao elements
-        for index, json_fact in enumerate(data["facturacao"]):
+        for json_fact in data["facturacao"]:
             fact = next(
                 (
                     factura
@@ -544,7 +544,7 @@ class Exploracao(ExploracaoGeom):
 
         update_array(self.licencias, data.get("licencias"), Licencia.create_from_json)
 
-        self.setLicStateAndExpId(request, data)
+        self.set_lic_state_and_exp_id(request, data)
 
     def update_some_fields(self, request, data):
         # Probablmente se podrían gestionar aquí sin problemas otras columnas

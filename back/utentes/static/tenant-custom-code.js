@@ -226,11 +226,45 @@ window.SIXHIARA.ESTADOS_FACT = [
 
 window.SIXHIARA.IVA = 17;
 
+/*
+WITH
+epsg4326 AS (
+    SELECT nome, ST_Envelope(ST_Transform(geom, 4326)) geom FROM cbase.aras
+), tmp AS (
+    SELECT
+        nome
+        , ST_X(ST_Centroid(geom)) center_x, ST_Y(ST_Centroid(geom)) center_y
+        , ST_XMin(geom) st_xmin, ST_YMin(geom) st_ymin
+        , ST_XMax(geom) st_xmax, ST_YMax(geom) st_ymax
+    FROM epsg4326
+)
+SELECT
+    nome
+    , format('center: [%s, %s]', center_y, center_x)
+    , format('southWest: [%s, %s]', st_ymin, st_xmin)
+    , format('northEast: [%s, %s]', st_ymax, st_xmax)
+FROM tmp;
+*/
 if (window.SIRHA.getARA() === "ARAN") {
     Object.assign(SIXHIARA, {
-        center: [-13, 38.505],
-        southWest: [-15.05, 34.89],
-        northEast: [-10.47, 40.65],
+        center: [-14.0816665004768, 37.8663802821955],
+        southWest: [-17.6920830007169, 34.8951205644252],
+        northEast: [-10.4712500002367, 40.8376399999658],
+    });
+
+    window.SIXHIARA.IVA = 0;
+    window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
+        SIRHA.ROLE.JURIDICO,
+        SIRHA.ROLE.ADMINISTRATIVO,
+        SIRHA.ROLE.DIRECCION,
+    ];
+}
+
+if (window.SIRHA.getARA() === "ARAC") {
+    Object.assign(SIXHIARA, {
+        center: [-16.4549616328385, 33.7573715061195],
+        southWest: [-21.3446634902801, 30.2173830126593],
+        northEast: [-11.5652597753968, 37.2973599995797],
     });
 
     window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
@@ -242,55 +276,13 @@ if (window.SIRHA.getARA() === "ARAN") {
 
 if (window.SIRHA.getARA() === "ARAS") {
     Object.assign(SIXHIARA, {
-        center: [-22.6, 33.8],
-        southWest: [-26.88, 31.3],
-        northEast: [-21.0, 35.8],
+        center: [-23.8762060191703, 33.4551624955176],
+        southWest: [-26.8686950002522, 31.3062989916333],
+        northEast: [-20.8837170380884, 35.604025999402],
     });
     window.SIXHIARA.IVA = 12.75;
     window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
         SIRHA.ROLE.JURIDICO,
-        SIRHA.ROLE.DIRECCION,
-    ];
-}
-
-if (window.SIRHA.getARA() === "ARAZ") {
-    Object.assign(SIXHIARA, {
-        center: [-16, 34.63],
-        southWest: [-18.99, 30.21],
-        northEast: [-11.56, 37.2],
-    });
-
-    window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
-        SIRHA.ROLE.JURIDICO,
-        SIRHA.ROLE.ADMINISTRATIVO,
-        SIRHA.ROLE.DIRECCION,
-    ];
-}
-
-if (window.SIRHA.getARA() === "ARAC") {
-    Object.assign(SIXHIARA, {
-        center: [-19.78, 34.01],
-        southWest: [-22.05, 32.03],
-        northEast: [-17.51, 35.91],
-    });
-
-    window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
-        SIRHA.ROLE.JURIDICO,
-        SIRHA.ROLE.ADMINISTRATIVO,
-        SIRHA.ROLE.DIRECCION,
-    ];
-}
-
-if (window.SIRHA.getARA() === "ARACN") {
-    Object.assign(SIXHIARA, {
-        center: [-15.34, 38.3],
-        southWest: [-17.86, 35.7],
-        northEast: [-13.29, 40.84],
-    });
-    window.SIXHIARA.IVA = 0;
-    window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
-        SIRHA.ROLE.JURIDICO,
-        SIRHA.ROLE.ADMINISTRATIVO,
         SIRHA.ROLE.DIRECCION,
     ];
 }

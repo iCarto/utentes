@@ -3,7 +3,7 @@
 <div class="col-xs-offset-1 col-xs-5">
   <div class="panel panel-info panel-disabled" id="licencia-{{type}}">
     <div class="panel-heading">
-      {% next_state != 'Utente de usos comuns' %}
+      {% if next_state != 'Utente de usos comuns' %}
       <h3 class="panel-title"><strong>{{name.capitalize()}}</strong></h3>
       {% else %}
       <h3 class="panel-title"><strong><input type="checkbox"/> Fontes de água {{name}}</strong></h3>

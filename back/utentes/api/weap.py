@@ -31,7 +31,7 @@ def build_spreadsheet_file(engine: Engine, exp_gid: int):
 
 
 def get_current_basin_demand(engine: Engine):
-    query = r"""
+    query = """
     WITH
     weap as (
         SELECT
@@ -176,7 +176,7 @@ def get_current_basin_demand(engine: Engine):
 
 def get_new_exp_demand(engine: Engine, exp_gid: int):
 
-    query = r"""
+    query = """
         WITH
         weap as (
             SELECT
@@ -245,6 +245,6 @@ def get_new_exp_demand(engine: Engine, exp_gid: int):
 
 
 def build_filename(exp_id):
-    today = datetime.date.today().strftime("%y%m%d")  # noqa: WPS323
+    today = datetime.date.today().strftime("%y%m%d")
     exp_id_sanitized = exp_id.replace("/", "_")
     return f"{today}_demanda_weap_{exp_id_sanitized}.xlsx"
