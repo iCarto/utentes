@@ -7,11 +7,12 @@ from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
 from utentes.models.utente import Utente
 from utentes.tests.api import DBIntegrationTest
+from utentes.tests.fixtures.create_exploracao import get_test_exploracao_from_db
 
 
 class ExploracaosDeleteTests(DBIntegrationTest):
     def test_delete_get_exploracaos_id(self):
-        exp = self.get_test_exploracao()
+        exp = get_test_exploracao_from_db(self.request.db)
         gid = exp.gid
         gid_utente = exp.utente_rel.gid
         self.request.matchdict.update({"id": gid})

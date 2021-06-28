@@ -5,7 +5,7 @@ from utentes.models.cultivo import ActividadesCultivos
 from utentes.tests.api import DBIntegrationTest
 
 
-class CultivosGET_IntegrationTests(DBIntegrationTest):
+class TestCultivosGET(DBIntegrationTest):
     def test_cultivo_get_length(self):
         actual = cultivos_get(self.request)
         count = self.request.db.query(ActividadesCultivos).count()

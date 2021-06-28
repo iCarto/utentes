@@ -70,14 +70,6 @@ def create_renovacao(request, state, other):
     request.db.commit()
 
 
-def create_exp_piscicola(request):
-    data = get_data()
-    file_data = get_data_file("piscicultura.json")
-    with open(file_data) as f:
-        data["actividade"] = json.load(f)
-    return create_exp(request, data)
-
-
 def validate_exp(self):
     expected = get_data()
     e = (

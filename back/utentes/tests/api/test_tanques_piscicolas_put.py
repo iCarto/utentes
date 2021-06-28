@@ -5,7 +5,7 @@ from pyramid.httpexceptions import HTTPBadRequest
 from utentes.api.tanques_piscicolas import tanques_piscicolas_update
 from utentes.models.tanques_piscicolas import ActividadesTanquesPiscicolas as Entity
 from utentes.tests.api import DBIntegrationTest
-from utentes.tests.utils.utils import create_tanque_test
+from utentes.tests.fixtures import create_tanque
 
 
 def build_json(request, entity):
@@ -16,7 +16,7 @@ def build_json(request, entity):
 
 class TanquesPiscicolasUpdateTests(DBIntegrationTest):
     def test_update_tanque(self):
-        expected = create_tanque_test(self.request, commit=True)
+        expected = create_tanque.from_file(self.request, commit=True)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
         expected_json = build_json(self.request, expected)
@@ -38,7 +38,7 @@ class TanquesPiscicolasUpdateTests(DBIntegrationTest):
         self.assertIsNone(actual.the_geom)
 
     def test_update_tanque_the_geom(self):
-        expected = create_tanque_test(self.request, commit=True)
+        expected = create_tanque.from_file(self.request, commit=True)
         gid = expected.gid
         self.assertIsNone(expected.the_geom)
         self.request.matchdict.update({"id": gid})
@@ -65,7 +65,7 @@ class TanquesPiscicolasUpdateTests(DBIntegrationTest):
         self.assertTrue(actual.the_geom is not None)
 
     def test_not_update_tanque_the_geom(self):
-        expected = create_tanque_test(self.request, commit=True)
+        expected = create_tanque.from_file(self.request, commit=True)
         gid = expected.gid
         self.assertIsNone(expected.the_geom)
         self.request.matchdict.update({"id": gid})
@@ -91,7 +91,7 @@ class TanquesPiscicolasUpdateTests(DBIntegrationTest):
         self.assertIsNone(actual.the_geom)
 
     def test_update_tanque_validation_fails(self):
-        expected = create_tanque_test(self.request, commit=True)
+        expected = create_tanque.from_file(self.request, commit=True)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
         expected_json = build_json(self.request, expected)

@@ -1,10 +1,31 @@
-from utentes.models.constants import K_LICENSED, K_SANEAMENTO, K_SUBTERRANEA
+import json
+
+from sqlalchemy import func, select
+from sqlalchemy.orm import Session
+
+from utentes.models.constants import (
+    K_LICENSED,
+    K_PISCICULTURA,
+    K_SANEAMENTO,
+    K_SUBTERRANEA,
+)
+from utentes.models.exploracao import Exploracao
+from utentes.models.fonte import Fonte
+from utentes.models.licencia import Licencia
 from utentes.services.id_service import calculate_lic_nro, calculate_new_exp_id
-from utentes.tests.e2e.testing_database import create_exp_piscicola
+from utentes.tests.e2e.testing_database import create_exp, get_data
+from utentes.tests.utils import domain_generator
+
+
+def piscicola(request):
+    data = get_data()
+    data["actividade"] = {"tipo": K_PISCICULTURA}
+    return create_exp(request, data)
 
 
 def build_json(request):
     estado_lic = K_LICENSED
+    hydro_location = domain_generator.hydro_location(loc_bacia="Megaruma")
     expected = {
         "exp_id": calculate_new_exp_id(request, estado_lic),
         "exp_name": "new name",
@@ -15,9 +36,9 @@ def build_json(request):
         "loc_posto": "Cobue",
         "loc_nucleo": "new loc_nucleo",
         "loc_endere": "new enderezo",
-        "loc_unidad": "UGBC",
-        "loc_bacia": "Megaruma",
-        "loc_subaci": "Megaruma",
+        "loc_unidad": hydro_location.loc_unidad,
+        "loc_bacia": hydro_location.loc_bacia,
+        "loc_subaci": hydro_location.loc_subaci,
         "loc_rio": "Megaruma",
         "c_soli": 19.02,
         "c_licencia": 29,
@@ -47,7 +68,7 @@ def build_json(request):
         {
             "lic_nro": calculate_lic_nro(expected["exp_id"], K_SUBTERRANEA),
             "tipo_agua": K_SUBTERRANEA,
-            "estado": "Licenciada",
+            "estado": K_LICENSED,
             "d_emissao": "2020-2-2",
             "d_validade": "2010-10-10",
             "c_soli_tot": 4.3,
@@ -79,32 +100,23 @@ def build_json(request):
     return expected
 
 
-def create_tanque_test(request, commit=False):
-    e_test = create_exp_piscicola(request)
-    actv = e_test.actividade
-    # actv = self.request.db.query(ActividadesPiscicultura).all()[0]
-    # query = "SELECT exp_id from utentes.exploracaos WHERE gid = " + str(
-    #     actv.exploracao
-    # )
-    # exp = list(self.request.db.execute(query))
-
-    actv_json = actv.__json__(request)
-    actv_json["exp_id"] = e_test.exp_id
-    tanques = [
-        f.__json__(request)["properties"]
-        for f in actv_json.get("tanques_piscicolas", {}).get("features", [])
-    ]
-    tanques.append(
-        {
-            "estado": "Operacional",
-            "esp_culti": "Peixe gato",
-            "tipo": "Gaiola",
-            "actividade": actv.gid,
-        }
+def get_test_exploracao_from_db(db: Session):
+    # Explotación licenciada con al menos una fuente y una sóla licencia
+    at_lest_one_source = (
+        select([func.count(Exploracao.fontes)])
+        .where(Exploracao.gid == Fonte.exploracao)
+        .as_scalar()
     )
-    actv_json["tanques_piscicolas"] = tanques
-    actv.update_from_json(actv_json)
-    request.db.add(actv)
-    if commit:
-        request.db.commit()
-    return actv.tanques_piscicolas[-1]
+    only_one_license = (
+        select([func.count(Exploracao.licencias)])
+        .where(Exploracao.gid == Licencia.exploracao)
+        .as_scalar()
+    )
+    return (
+        db.query(Exploracao)
+        .filter(Exploracao.estado_lic == K_LICENSED, Exploracao.c_estimado != None)
+        .filter(at_lest_one_source > 0)
+        .filter(only_one_license == 1)
+        .order_by(Exploracao.exp_id)
+        .all()[0]
+    )

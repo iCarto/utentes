@@ -1,5 +1,5 @@
 {
-    "exp_id": "001/ARAS/2008/CL",
+    "exp_id": "001/ARAS-IP/2008/CL",
     "estado_lic": "Licenciada",
     "observacio": "adf",
     "loc_provin": "Gaza",
@@ -7,7 +7,7 @@
     "loc_posto": "Mubangoene",
     "loc_nucleo": "Chinhacanine",
     "loc_endere": "Localiza\u00e7\u00e3o na Albufeira de Macarretane (Jusante) e  na montante da estac\u00e3o E-607",
-    "loc_unidad": "UGBL",
+    "loc_unidad": "DGBL",
     "loc_bacia": "Limpopo",
     "loc_subaci": null,
     "loc_rio": "Limpopo",
@@ -26,7 +26,7 @@
         "area_medi": 2.0,
         "cultivos": [
             {
-                "cult_id": "001/ARAS/2008/CL/001",
+                "cult_id": "001/ARAS-IP/2008/CL/001",
                 "c_estimado": 1280.75,
                 "cultivo": "Frut\u00edcola",
                 "rega": "Gota a gota",
@@ -56,7 +56,7 @@
     ],
     "licencias": [
         {
-            "lic_nro": "001/ARAS/2008/CL/Sup",
+            "lic_nro": "001/ARAS-IP/2008/CL/Sup",
             "tipo_agua": "Superficial",
             "tipo_lic": "Licen\u00e7a",
             "n_licen_a": "001/ARAS/2008",

@@ -16,7 +16,7 @@ from utentes.models.constants import (
 from utentes.models.exploracao import Exploracao
 from utentes.models.utente import Utente
 from utentes.tests.api import DBIntegrationTest
-from utentes.tests.utils.utils import build_json
+from utentes.tests.fixtures.create_exploracao import build_json
 
 
 class ExploracaoCreateTests(DBIntegrationTest):
@@ -40,7 +40,7 @@ class ExploracaoCreateTests(DBIntegrationTest):
         self.assertEqual("Cobue", actual.loc_posto)
         self.assertEqual("new loc_nucleo", actual.loc_nucleo)
         self.assertEqual("new enderezo", actual.loc_endere)
-        self.assertEqual("UGBC", actual.loc_unidad)
+        self.assertEqual("DGBM", actual.loc_unidad)
         self.assertEqual("Megaruma", actual.loc_bacia)
         self.assertEqual("Megaruma", actual.loc_subaci)
         self.assertEqual("Megaruma", actual.loc_rio)

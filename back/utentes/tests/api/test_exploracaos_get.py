@@ -5,7 +5,7 @@ from utentes.models.exploracao import Exploracao
 from utentes.tests.api import DBIntegrationTest
 
 
-class ExploracaosGET_IntegrationTests(DBIntegrationTest):
+class TestExploracaosGET(DBIntegrationTest):
     def test_exploracao_get_length(self):
         actual = exploracaos_get(self.request)
         exp_count = self.request.db.query(Exploracao).count()

@@ -11,44 +11,18 @@ from utentes.models.licencia import Licencia
 from utentes.models.utente import Utente
 from utentes.services.id_service import calculate_lic_nro
 from utentes.tests.api import DBIntegrationTest
-
-
-def build_json(request, exploracao):
-    e = exploracao
-    expected_json = e.__json__(request)
-    expected_json.update(expected_json.pop("properties"))
-    expected_json["fontes"] = [f.__json__(request) for f in expected_json["fontes"]]
-    expected_json["licencias"] = [
-        f.__json__(request) for f in expected_json["licencias"]
-    ]
-    expected_json["actividade"] = expected_json["actividade"].__json__(request)
-    if expected_json["actividade"].get("cultivos"):
-        cultivos = []
-        for cult in expected_json["actividade"]["cultivos"]["features"]:
-            cultivo = cult.__json__(request)
-            cultivo.update(cultivo.pop("properties"))
-            cultivos.append(cultivo)
-        expected_json["actividade"]["cultivos"] = cultivos
-
-    if expected_json["actividade"].get("reses"):
-        expected_json["actividade"]["reses"] = [
-            f.__json__(request) for f in expected_json["actividade"]["reses"]
-        ]
-    if expected_json["actividade"].get("tanques_piscicolas"):
-        expected_json["actividade"]["tanques_piscicolas"] = [
-            f.__json__(request)
-            for f in expected_json["actividade"]["tanques_piscicolas"]
-        ]
-    return expected_json
+from utentes.tests.fixtures.build_json import from_exploracao
+from utentes.tests.fixtures.create_exploracao import get_test_exploracao_from_db
+from utentes.tests.utils import domain_generator
 
 
 class ExploracaoUpdateTests(DBIntegrationTest):
     def test_update_exploracao(self):
         # Filter to use a Exploracao in a final state
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["exp_name"] = "new name"
         expected_json["d_soli"] = "2001-01-01"
         expected_json["observacio"] = "new observ"
@@ -57,9 +31,10 @@ class ExploracaoUpdateTests(DBIntegrationTest):
         expected_json["loc_posto"] = "Cobue"
         expected_json["loc_nucleo"] = "new loc_nucleo"
         expected_json["loc_endere"] = "new enderezo"
-        expected_json["loc_unidad"] = "UGBC"
-        expected_json["loc_bacia"] = "Ridi"
-        expected_json["loc_subaci"] = "Ridi"
+        hydro_location = domain_generator.hydro_location(loc_subaci="Tembe")
+        expected_json["loc_unidad"] = hydro_location.loc_unidad
+        expected_json["loc_bacia"] = hydro_location.loc_bacia
+        expected_json["loc_subaci"] = hydro_location.loc_subaci
         expected_json["c_soli"] = 19.02
         expected_json["c_licencia"] = 29
         expected_json["c_real"] = 92
@@ -77,19 +52,19 @@ class ExploracaoUpdateTests(DBIntegrationTest):
         self.assertEqual("Cobue", actual.loc_posto)
         self.assertEqual("new loc_nucleo", actual.loc_nucleo)
         self.assertEqual("new enderezo", actual.loc_endere)
-        self.assertEqual("UGBC", actual.loc_unidad)
-        self.assertEqual("Ridi", actual.loc_bacia)
-        self.assertEqual("Ridi", actual.loc_subaci)
+        self.assertEqual("DGBUM", actual.loc_unidad)
+        self.assertEqual("Tembe", actual.loc_bacia)
+        self.assertEqual("Tembe", actual.loc_subaci)
         self.assertEqual(19.02, float(actual.c_soli))
         self.assertEqual(29, float(actual.c_licencia))
         self.assertEqual(92, float(actual.c_real))
         self.assertEqual(42.23, float(actual.c_estimado))
 
     def test_update_exploracao_the_geom(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["geometry_edited"] = True
         expected_json["geometry"] = {
             "type": "MultiPolygon",
@@ -125,7 +100,7 @@ class ExploracaoUpdateTests(DBIntegrationTest):
         )
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["geometry_edited"] = True
         expected_json["geometry"] = None
         self.request.json_body = expected_json
@@ -140,7 +115,7 @@ class ExploracaoUpdateTests(DBIntegrationTest):
         expected = self.request.db.query(Exploracao).all()[0]
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         exp_name = expected_json["exp_name"]
         expected_json["exp_name"] = None
         self.request.json_body = expected_json
@@ -152,10 +127,10 @@ class ExploracaoUpdateTests(DBIntegrationTest):
 
 class ExploracaoUpdateFonteTests(DBIntegrationTest):
     def test_update_exploracao_create_fonte(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         count = len(expected_json["fontes"])
         expected_json["fontes"].append(
             {
@@ -180,11 +155,11 @@ class ExploracaoUpdateFonteTests(DBIntegrationTest):
         self.assertEqual(count + 1, len(actual.fontes))
 
     def test_update_exploracao_create_fonte_validation_fails(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         expected_count = len(expected.fontes)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["fontes"].append({"tipo_fonte": "Furo"})
         self.request.json_body = expected_json
         self.assertRaises(HTTPBadRequest, exploracaos_update, self.request)
@@ -193,11 +168,11 @@ class ExploracaoUpdateFonteTests(DBIntegrationTest):
         self.assertEqual(expected_count, len(actual.fontes))
 
     def test_update_exploracao_update_fonte_values(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         gid_fonte = expected.fontes[0].gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["fontes"][0]["lat_lon"] = "23,23 42,21"
         expected_json["fontes"][0]["d_dado"] = "2001-01-01"
         expected_json["fontes"][0]["c_soli"] = 23.42
@@ -223,7 +198,7 @@ class ExploracaoUpdateFonteTests(DBIntegrationTest):
         expected = self.request.db.query(Exploracao).all()[0]
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         tipo_agua = expected_json["fontes"][0]["tipo_agua"]
         expected_json["fontes"][0]["tipo_agua"] = None
         self.request.json_body = expected_json
@@ -233,10 +208,10 @@ class ExploracaoUpdateFonteTests(DBIntegrationTest):
         self.assertEqual(tipo_agua, actual.fontes[0].tipo_agua)
 
     def test_update_exploracao_delete_fonte(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["fontes"] = []
         self.request.json_body = expected_json
         exploracaos_update(self.request)
@@ -248,10 +223,10 @@ class ExploracaoUpdateFonteTests(DBIntegrationTest):
 
 class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
     def test_update_exploracao_create_licencia(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         existent_tipo_agua = expected.licencias[0].tipo_agua
         new_tipo_agua = (
             K_SUPERFICIAL if existent_tipo_agua == K_SUBTERRANEA else K_SUBTERRANEA
@@ -277,10 +252,10 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
         self.assertEqual(2, len(actual.licencias))
 
     def test_update_exploracao_create_licencia_validation_fails(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["licencias"].append({"tipo_agua": "Superficial", "estado": None})
         self.request.json_body = expected_json
         self.assertRaises(HTTPBadRequest, exploracaos_update, self.request)
@@ -289,12 +264,12 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
         self.assertEqual(1, len(actual.licencias))
 
     def test_update_exploracao_update_licencia(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         lic_gid = expected.licencias[0].gid
         lic_nro = expected.licencias[0].lic_nro
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["licencias"][0]["estado"] = "Não aprovada"
         expected_json["licencias"][0]["d_emissao"] = "1999-9-9"
         expected_json["licencias"][0]["d_validade"] = "1999-8-7"
@@ -328,12 +303,12 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
         self.assertEqual(23, float(actual.licencias[0].c_real_fon))
 
     def test_update_exploracao_update_licencia_validation_fails(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         lic_gid = expected.licencias[0].gid
         tipo_agua = expected.licencias[0].tipo_agua
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["licencias"][0]["tipo_agua"] = None
         expected_json["licencias"][0]["estado"] = "Licenciada"
         self.request.json_body = expected_json
@@ -345,11 +320,11 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
         self.assertEqual(tipo_agua, actual.licencias[0].tipo_agua)
 
     def test_update_exploracao_delete_licencia(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         lic_gid = expected.licencias[0].gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["licencias"] = [expected_json["licencias"][0]]
         self.request.json_body = expected_json
         exploracaos_update(self.request)
@@ -374,10 +349,10 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
     """
     )
     def test_update_exploracao_update_utente_values(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["utente"]["nuit"] = "new nuit"
         expected_json["utente"]["uten_tipo"] = "Outro"
         expected_json["utente"]["reg_comerc"] = "new reg_comerc"
@@ -405,13 +380,13 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         self.assertEqual("new observacio", actual.utente_rel.observacio)
 
     def test_update_exploracao_update_utente_validation_fails(self):
-        exp = self.get_test_exploracao()
+        exp = get_test_exploracao_from_db(self.request.db)
         gid = exp.gid
         self.request.matchdict.update({"id": gid})
         expected = (
             self.request.db.query(Exploracao).filter(Exploracao.gid == gid).all()[0]
         )
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["utente"]["nome"] = None
         self.request.json_body = expected_json
         self.assertRaises(HTTPBadRequest, exploracaos_update, self.request)
@@ -425,14 +400,14 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         Tests that the related utente can be renamed from the exploracao,
         and a new utente is not created
         """
-        exp = self.get_test_exploracao()
+        exp = get_test_exploracao_from_db(self.request.db)
         gid = exp.gid
         self.request.matchdict.update({"id": gid})
         expected = (
             self.request.db.query(Exploracao).filter(Exploracao.gid == gid).all()[0]
         )
         expected_utente_gid = expected.utente
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["utente"]["nome"] = "foo - bar"
         self.request.json_body = expected_json
         exploracaos_update(self.request)
@@ -449,20 +424,20 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         self.assertEqual("foo - bar", u.nome)
 
     def test_update_exploracao_rename_utente_validation_fails(self):
-        exp = self.get_test_exploracao()
+        exp = get_test_exploracao_from_db(self.request.db)
         gid = exp.gid
         self.request.matchdict.update({"id": gid})
         expected = (
             self.request.db.query(Exploracao).filter(Exploracao.gid == gid).all()[0]
         )
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["utente"]["nome"] = "foo - bar"
         expected_json["c_soli"] = "a text here should produce an error"
         self.request.json_body = expected_json
         self.assertRaises(HTTPBadRequest, exploracaos_update, self.request)
 
     def test_update_exploracao_change_utente(self):
-        exp = self.get_test_exploracao()
+        exp = get_test_exploracao_from_db(self.request.db)
         gid = exp.gid
         utente = self.get_test_utente()
 
@@ -470,7 +445,7 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         expected = (
             self.request.db.query(Exploracao).filter(Exploracao.gid == gid).all()[0]
         )
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["utente"]["id"] = utente.gid
         expected_json["utente"]["nome"] = utente.nome
         expected_json["utente"]["nuit"] = utente.nuit
@@ -490,11 +465,11 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         self.assertEqual(utente.nome, actual.utente_rel.nome)
 
     def test_update_exploracao_new_utente(self):
-        exp = self.get_test_exploracao()
+        exp = get_test_exploracao_from_db(self.request.db)
         gid = exp.gid
 
         self.request.matchdict.update({"id": gid})
-        exp_json = build_json(self.request, exp)
+        exp_json = from_exploracao(self.request, exp)
         exp_json["utente"]["id"] = None
         exp_json["utente"]["nome"] = "test nome"
         self.request.json_body = exp_json
@@ -507,10 +482,10 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
 
 class ExploracaoUpdateActividadeTests(DBIntegrationTest):
     def test_update_exploracao_update_actividade_values(self):
-        expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["c_estimado"] = 101.11
         self.request.json_body = expected_json
         exploracaos_update(self.request)
@@ -520,10 +495,10 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         self.assertEqual(101.11, float(actual.actividade.c_estimado))
 
     def test_update_exploracao_update_actividade_validation_fails(self):
-        expected = expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["utente"]["observacio"] = " foo - bar "
         expected_json["observacio"] = " foo - bar "
         expected_json["licencias"][0]["estado"] = "Licenciada"
@@ -538,10 +513,10 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         self.assertNotEqual(" foo - bar ", actual.observacio)
 
     def test_update_exploracao_update_actividade_not_run_activity_validations(self):
-        expected = expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["observacio"] = " foo - bar "
         expected_json["licencias"][0]["estado"] = "Não aprovada"
         expected_json["actividade"]["c_estimado"] = None
@@ -555,11 +530,11 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         self.assertEqual(" foo - bar ", actual.observacio)
 
     def test_update_exploracao_change_actividade(self):
-        expected = expected = self.get_test_exploracao()
+        expected = get_test_exploracao_from_db(self.request.db)
         gid = expected.gid
         gid_actividade = expected.actividade.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         # change from industria to saneamento
         expected_json["actividade"] = {
             "id": None,
@@ -590,7 +565,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
             .all()[0]
         )
         self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["reses"] = [
             res for res in expected_json["actividade"]["reses"][0:-1]
         ]
@@ -612,7 +587,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
             .all()[0]
         )
         self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["reses"][0]["c_estimado"] = 9999.88
         self.request.json_body = expected_json
         exploracaos_update(self.request)
@@ -634,7 +609,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         )
         old_len = len(expected.actividade.reses)
         self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["reses"].append(
             {
                 "c_estimado": 40,
@@ -668,7 +643,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         old_len = len(expected.actividade.reses)
         reses_tipo = expected.actividade.reses[0].reses_tipo
         self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["reses"].append(
             {
                 "c_estimado": 40,
@@ -703,7 +678,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
             .all()[0]
         )
         self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["reses"] = [
             res for res in expected_json["actividade"]["reses"][0:-1]
         ]
@@ -739,7 +714,7 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         )
         old_len = len(expected.actividade.cultivos)
         self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = build_json(self.request, expected)
+        expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["cultivos"].append(
             {
                 "cultivo": "Verduras",
