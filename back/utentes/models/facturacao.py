@@ -149,9 +149,3 @@ class Facturacao(Base):
         return func.coalesce(self.c_licencia_sub, 0) + func.coalesce(
             self.c_licencia_sup, 0
         )
-
-    def __json__(self, request):
-        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
-        del json["gid"]
-        json["id"] = self.gid
-        return json

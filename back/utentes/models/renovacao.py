@@ -161,10 +161,3 @@ class Renovacao(Base):
     def update_from_json_renovacao(self, json):
         self.exploracao = json.get("id")
         self.update_from_json(json)
-
-    def __json__(self, json):
-        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
-        del json["gid"]
-        json["id"] = self.gid
-
-        return json

@@ -30,6 +30,12 @@ class BaseClass(object):
             return False
         return self.gid == other.gid
 
+    def __json__(self, request):
+        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
+        if "gid" in json:
+            json["id"] = json.pop("gid")
+        return json
+
 
 DeclarativeBase = declarative_base()
 Base = declarative_base(cls=BaseClass)

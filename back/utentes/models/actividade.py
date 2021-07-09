@@ -62,12 +62,6 @@ class ActividadeBase(Base):
         a.update_from_json(json)
         return a
 
-    def __json__(self, request):
-        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
-        del json["gid"]
-        json["id"] = self.gid
-        return json
-
 
 class Actividade(ActividadeBase):
     __mapper_args__ = {

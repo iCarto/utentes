@@ -16,10 +16,5 @@ class Ara(Base):
     conta_bancaria = Column(JSONB, doc="Dados da conta bancária")
     outros = Column(JSONB, doc="Outros dados")
     valores = Column(JSONB, doc="Valores")
-    sede = Column(JSONB, doc="Sede del Ara")
-    unidades = Column(JSONB, doc="Unidades del Ara")
-
-    def __json__(self, request):
-        json = {c: getattr(self, c) for c in list(self.__mapper__.columns.keys())}
-        json["id"] = self.id
-        return json
+    sede = Column(JSONB, doc="Sede da Ara")
+    unidades = Column(JSONB, doc="Unidades da Ara")

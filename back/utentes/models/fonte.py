@@ -49,13 +49,3 @@ class Fonte(Base):
 
     def validate(self, json):
         return []
-
-    def __json__(self, request):
-        SPECIAL_CASES = ["gid"]
-        payload = {"id": self.gid}
-        for column in list(self.__mapper__.columns.keys()):
-            if column in SPECIAL_CASES:
-                continue
-            payload[column] = getattr(self, column)
-
-        return payload

@@ -86,30 +86,3 @@ class Licencia(Base):
 
     def validate(self, json):
         return []
-
-    def __json__(self, request):
-        return {
-            "id": self.gid,
-            "lic_nro": self.lic_nro,
-            "tipo_agua": self.tipo_agua,
-            "tipo_lic": self.tipo_lic,
-            "n_licen_a": self.n_licen_a,
-            "estado": self.estado,
-            "d_emissao": self.d_emissao,
-            "d_validade": self.d_validade,
-            "c_soli_tot": self.c_soli_tot,
-            "c_soli_int": self.c_soli_int,
-            "c_soli_fon": self.c_soli_fon,
-            "c_licencia": self.c_licencia,
-            "c_real_tot": self.c_real_tot,
-            "c_real_int": self.c_real_int,
-            "c_real_fon": self.c_real_fon,
-            "taxa_fixa": self.taxa_fixa,
-            "taxa_uso": self.taxa_uso,
-            "pago_mes": self.pago_mes,
-            "iva": self.iva,
-            "pago_iva": self.pago_iva,
-            "consumo_tipo": self.consumo_tipo,
-            "consumo_fact": self.consumo_fact,
-            "exploracao": self.exploracao,
-        }
