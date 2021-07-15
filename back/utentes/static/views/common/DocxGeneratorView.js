@@ -10,41 +10,48 @@ Backbone.SIXHIARA.DocxGeneratorView = Backbone.View.extend({
                 throw error;
             }
 
-            docxTemplates({
-                template,
-                data,
-                cmdDelimiter: "***",
-                additionalJsContext: {
-                    // Creates a base64 string with the image data
+            docxTemplates
+                .createReport({
+                    template,
+                    data,
+                    cmdDelimiter: "***",
+                    additionalJsContext: {
+                        // Creates a base64 string with the image data
 
-                    imageGenerator: function(url, width, height, outputFormat) {
-                        return new Promise(function(resolve) {
-                            var image = new Image();
-                            // image.extension = ".png";
-                            image.onload = function() {
-                                var canvas = document.createElement("CANVAS");
-                                var ctx = canvas.getContext("2d");
-                                const imageDPI = 96;
-                                canvas.height = this.naturalHeight;
-                                canvas.width = this.naturalWidth;
-                                ctx.drawImage(this, 0, 0);
-                                var dataUrl = canvas.toDataURL("image/png", 1);
-                                resolve({
-                                    height: (this.naturalHeight * 2.54) / imageDPI,
-                                    width: (this.naturalWidth * 2.54) / imageDPI,
-                                    data: dataUrl.slice(
-                                        "data:image/png;base64,".length
-                                    ),
-                                    extension: ".png",
-                                });
-                            };
-                            image.src = url;
-                        });
+                        imageGenerator: function(url, width, height, outputFormat) {
+                            return new Promise(function(resolve) {
+                                var image = new Image();
+                                // image.extension = ".png";
+                                image.onload = function() {
+                                    var canvas = document.createElement("CANVAS");
+                                    var ctx = canvas.getContext("2d");
+                                    const imageDPI = 96;
+                                    const CENTIMETER_PER_INCH = 2.54;
+                                    canvas.height = this.naturalHeight;
+                                    canvas.width = this.naturalWidth;
+                                    ctx.drawImage(this, 0, 0);
+                                    var dataUrl = canvas.toDataURL("image/png", 1);
+                                    resolve({
+                                        height:
+                                            (this.naturalHeight * CENTIMETER_PER_INCH) /
+                                            imageDPI,
+                                        width:
+                                            (this.naturalWidth * CENTIMETER_PER_INCH) /
+                                            imageDPI,
+                                        data: dataUrl.slice(
+                                            "data:image/png;base64,".length
+                                        ),
+                                        extension: ".png",
+                                    });
+                                };
+                                image.src = url;
+                            });
+                        },
                     },
-                },
-            }).then(function(report) {
-                self.saveDataToFile(report, data.nameFile);
-            });
+                })
+                .then(function(report) {
+                    self.saveDataToFile(report, data.nameFile);
+                });
         });
     },
 
