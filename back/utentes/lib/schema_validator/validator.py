@@ -6,9 +6,7 @@ import dateutil
 
 class IsNotNull(object):
     def fails(self, value):
-        if value is None:
-            return True
-        return False
+        return value is None
 
 
 class IsDate(object):
@@ -20,11 +18,11 @@ class IsDate(object):
     def fails(self, value):
         if not value:
             return False
-        if isinstance(value, datetime.date) or isinstance(value, datetime.datetime):
+        if isinstance(value, (datetime.date, datetime.datetime)):
             return False
         try:
             dateutil.parser.parse(value)
-        except BaseException:
+        except Exception:
             return True
 
         return False
@@ -41,7 +39,7 @@ class IsNumeric(object):
             return False
         try:
             float(value)
-        except BaseException:
+        except Exception:
             return True
         return False
 
@@ -56,10 +54,10 @@ class IntLessThan8(object):
         if not value and value != 0:
             return False
         try:
-            intLength = len(str(math.trunc(value)))
-        except BaseException:
+            int_length = len(str(math.trunc(value)))
+        except Exception:
             return True
-        return intLength > 8
+        return int_length > 8
 
 
 class IsBoolean(object):
@@ -68,20 +66,18 @@ class IsBoolean(object):
     """
 
     def fails(self, value):
-        return value not in [True, False, None]
+        return value not in {True, False, None}
 
 
 class IsArrayNotVoid(object):
     def fails(self, value):
-        if isinstance(value, list) and value:
-            return False
-        return True
+        return not (isinstance(value, list) and value)
 
 
 class Validator(object):
-    def __init__(self, schemaValidateFrom):
+    def __init__(self, schema):
         self.messages = []
-        self.schema = schemaValidateFrom
+        self.schema = schema
         self.rules = {
             "NOT_NULL": IsNotNull(),
             "IS_DATE": IsDate(),
@@ -91,7 +87,7 @@ class Validator(object):
             "INT_LESS_THAN_8": IntLessThan8(),
         }
 
-    def appendSchema(self, schema):
+    def append_schema(self, schema):
         self.schema.extend(schema)
 
     def validate(self, model):
@@ -100,12 +96,10 @@ class Validator(object):
         for definition in self.schema:
             for rulename in definition["rules"]:
                 rule = self.get_rule(rulename)
-                if isinstance(rule, dict):
-                    if rule["fails"](model.get(definition["fieldname"])):
-                        self.messages.append(definition["message"])
-                else:
-                    if rule.fails(model.get(definition["fieldname"])):
-                        self.messages.append(definition["message"])
+                rule_fails_for = rule["fails"] if isinstance(rule, dict) else rule.fails
+                value_under_test = model.get(definition["fieldname"])
+                if rule_fails_for(value_under_test):
+                    self.messages.append(definition["message"])
 
         return self.messages
 

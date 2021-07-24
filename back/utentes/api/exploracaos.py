@@ -219,7 +219,7 @@ def validate_entities(request, body):
 
     validatorExploracao.add_rule("ACTIVITY_NOT_NULL", {"fails": activity_fail})
     if Licencia.implies_validate_ficha(body.get("estado_lic")):
-        validatorExploracao.appendSchema(EXPLORACAO_SCHEMA_CON_FICHA)
+        validatorExploracao.append_schema(EXPLORACAO_SCHEMA_CON_FICHA)
 
     msgs = validatorExploracao.validate(body)
 

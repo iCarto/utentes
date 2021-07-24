@@ -5,12 +5,12 @@ from wsgiref.simple_server import make_server
 
 
 class ServerThread(threading.Thread):
-    """ Run WSGI server on a background thread.
+    """Run WSGI server on a background thread.
     Pass in WSGI app object and serve pages from it for Selenium browser.
     """
 
     def __init__(self, app, host_base):
-        threading.Thread.__init__(self)
+        super().__init__()
         self.app = app
         self.srv = None
         self.host_base = host_base
@@ -24,7 +24,7 @@ class ServerThread(threading.Thread):
         self.srv = make_server(domain, int(port), self.app)
         try:
             self.srv.serve_forever()
-        except BaseException:
+        except Exception:
             logging.exception("Error en Server Thread")
             self.srv = None
 
