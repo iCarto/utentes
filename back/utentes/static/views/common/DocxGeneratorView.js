@@ -5,11 +5,8 @@ Backbone.SIXHIARA.DocxGeneratorView = Backbone.View.extend({
         var data = this.options.data;
 
         var self = this;
-        JSZipUtils.getBinaryContent(data.urlTemplate, function(error, template) {
-            if (error) {
-                throw error;
-            }
 
+        self.fetchTemplateAsArrayBuffer(data.urlTemplate).then(template =>
             docxTemplates
                 .createReport({
                     template,
@@ -51,8 +48,22 @@ Backbone.SIXHIARA.DocxGeneratorView = Backbone.View.extend({
                 })
                 .then(function(report) {
                     self.saveDataToFile(report, data.nameFile);
-                });
-        });
+                })
+        );
+    },
+
+    fetchTemplateAsArrayBuffer: function(templateURL) {
+        function checkStatus(response) {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+            }
+            return response;
+        }
+
+        return fetch(templateURL)
+            .then(response => checkStatus(response) && response.arrayBuffer())
+            .then(buffer => buffer) // can be removed, just here in case a console.log or some debugging is need
+            .catch(err => console.error(err)); // Never forget the final catch!
     },
 
     saveDataToFile: function(data, fileName) {
