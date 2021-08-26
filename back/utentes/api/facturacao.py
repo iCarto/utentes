@@ -199,7 +199,7 @@ def num_recibo_get_id_formatted(db, unidad, ano):
         SELECT substring(recibo_id, 0, 5)::int + 1
         FROM utentes.facturacao
         WHERE substring(recibo_id from '\d{4}-(.*)') = :unidad_ano
-        ORDER BY fact_id DESC
+        ORDER BY recibo_id DESC
         LIMIT 1;
         """
 
