@@ -6,8 +6,8 @@ BEGIN;
 -- Update exp_id serial part of the code for ARAN and ARAZ
 UPDATE utentes.exploracaos SET exp_id = overlay(exp_id placing '1' from 1 for 1) where exp_id ~ 'ARAN';
 -- By hand based on actual values of ARACN
-UPDATE utentes.exploracaos SET exp_id = '004/ARAN/2021/CL' WHERE exp_id = '101/ARAN/2021/CL';
-UPDATE utentes.exploracaos SET exp_id = '005/ARAN/2021/CL' WHERE exp_id = '102/ARAN/2021/CL';
+UPDATE utentes.exploracaos SET exp_id = '024/ARAN/2021/CL' WHERE exp_id = '101/ARAN/2021/CL';
+UPDATE utentes.exploracaos SET exp_id = '025/ARAN/2021/CL' WHERE exp_id = '102/ARAN/2021/CL';
 
 UPDATE utentes.exploracaos SET exp_id = overlay(exp_id placing '1' from 1 for 1) where exp_id ~ 'ARAZ' AND estado_lic != 'Utente de usos comuns';
 -- By hand based on actual values of ARAC for 2021 to avoid using big serial for this year

@@ -98,7 +98,6 @@ def build_rename_fact_codes_for_new_divisoes():
     If the names of the divisoes/unidades changes, the codes used in facturacao,
     probably should be also changed
     """
-
     return """
     WITH to_update AS (
         SELECT
@@ -204,7 +203,7 @@ def write_tmp_output_file():
 
         f.write(build_insert_into_cbase_ara())
         f.write(build_fill_domains_from_cbase())
-        f.write(build_rename_facturacao_codes_for_new_divisoes())
+        f.write(build_rename_fact_codes_for_new_divisoes())
 
         f.write("\n\nCOMMIT;\n")
 
