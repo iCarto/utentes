@@ -39,7 +39,7 @@ Backbone.SIXHIARA.Renovacao = Backbone.Model.extend({
 
         anali_doc: false,
         soli_visit: false,
-        p_unid: false,
+        parecer_divisao: false,
         p_tec: false,
         doc_legal: false,
         p_juri: false,

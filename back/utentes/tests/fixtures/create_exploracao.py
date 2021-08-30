@@ -36,7 +36,7 @@ def build_json(request):
         "loc_posto": "Cobue",
         "loc_nucleo": "new loc_nucleo",
         "loc_endere": "new enderezo",
-        "loc_unidad": hydro_location.loc_unidad,
+        "loc_divisao": hydro_location.loc_divisao,
         "loc_bacia": hydro_location.loc_bacia,
         "loc_subaci": hydro_location.loc_subaci,
         "loc_rio": "Megaruma",

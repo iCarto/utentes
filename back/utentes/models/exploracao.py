@@ -61,7 +61,7 @@ REQUERIMENTO_FIELDS = (
     "b_a_agua_v",
     "anali_doc",
     "soli_visit",
-    "p_unid",
+    "parecer_divisao",
     "p_tec",
     "p_tec_disp_hidrica",
     "doc_legal",
@@ -84,7 +84,7 @@ NORMAL_FIELDS = (
     "loc_posto",
     "loc_nucleo",
     "loc_endere",
-    "loc_unidad",
+    "loc_divisao",
     "loc_bacia",
     "loc_subaci",
     "loc_rio",
@@ -188,7 +188,7 @@ class Exploracao(ExploracaoGeom):
     loc_posto = Column(Text, doc="Posto administrativo")
     loc_nucleo = Column(Text, doc="Bairro")
     loc_endere = Column(Text, doc="Endereço")
-    loc_unidad = Column(Text, doc="Unidade")
+    loc_divisao = Column(Text, doc="Divisão de Gestão da Bacia")
     loc_bacia = Column(Text, doc="Bacia")
     loc_subaci = Column(Text, doc="Sub-bacia")
     loc_rio = Column(Text, doc="Rio")
@@ -330,8 +330,8 @@ class Exploracao(ExploracaoGeom):
         server_default=text("false"),
         doc="Solicitação da vistoria",
     )
-    p_unid = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer da unidade"
+    parecer_divisao = Column(
+        Boolean, nullable=False, server_default=text("false"), doc="Parecer da Divisão"
     )
     p_tec = Column(
         Boolean, nullable=False, server_default=text("false"), doc="Parecer técnico"

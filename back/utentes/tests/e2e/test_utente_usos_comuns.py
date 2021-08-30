@@ -62,7 +62,7 @@ class TestUtentesUsosComuns(BaseE2ETest):
             )
         ).select_by_index(1)
         Select(
-            self.browser.find_element_by_xpath("//select[@id='loc_unidad']")
+            self.browser.find_element_by_xpath("//select[@id='loc_divisao']")
         ).select_by_index(1)
         Select(
             self.browser.find_element_by_xpath("//select[@id='loc_bacia']")

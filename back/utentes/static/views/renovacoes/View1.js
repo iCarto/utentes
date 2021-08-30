@@ -1,17 +1,10 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
+Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
     tagName: "div",
 
     className: "myclass",
 
     id: "myid",
-
-    render: function() {
-        var json = this.model.toJSON();
-        this.$el.html(this.template(json));
-        Backbone.UILib.BaseView.prototype.render.call(this);
-        return this;
-    },
 
     /*
     Esto en realidad está por no  usar jquery. Si se hace en render todavía no están en el
@@ -19,6 +12,7 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
     binded para después al usar this.$
     */
     init: function() {
+        Backbone.SIXHIARA.BaseProcesoView.prototype.init.call(this);
         var self = this;
         var renovacao = this.model.get("renovacao");
 
@@ -54,7 +48,7 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
                             self.model.get("renovacao").set(dateId, dateObj);
                             self.model.save({wait: true});
                             this.$(".modal").modal("hide");
-                            self.fillRenovacao(e);
+                            self.fillExploracao(e);
                         },
                     }
                 );
@@ -63,7 +57,7 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
                 });
                 modalView.show();
             } else {
-                self.fillRenovacao(e);
+                self.fillExploracao(e);
             }
         });
 
@@ -80,29 +74,8 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
             this.model.get("renovacao").set("d_ultima_entrega_doc", d_soli);
         }
     },
-    autosave: function() {
-        // http://codetunnel.io/how-to-implement-autosave-in-your-web-app/
-        var self = this;
-        var autosaveInfo = document.getElementById("autosave-info");
-        autosaveInfo.innerHTML = "Modificações pendentes.";
-        autosaveInfo.style.color = "red";
-        if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-        }
-        if (this.autosaveInputTimeOutId) {
-            clearTimeout(this.autosaveInputTimeOutId);
-        }
-        this.timeoutId = setTimeout(function() {
-            self.fillRenovacao(null, true);
-            autosaveInfo.innerHTML = "Modificações gravadas";
-            autosaveInfo.style.color = "green";
-            self.autosaveInputTimeOutId = setTimeout(function() {
-                autosaveInfo.innerHTML = "";
-            }, 1000);
-        }, 750);
-    },
 
-    fillRenovacao: function(e, autosave) {
+    fillExploracao: function(e, autosave) {
         var self = this;
         var renovacao = this.model.get("renovacao");
 
@@ -191,7 +164,7 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
 
     remove: function() {
         this.tabBarTitle.remove();
-        Backbone.UILib.BaseView.prototype.remove.call(this);
+        Backbone.SIXHIARA.BaseProcesoView.prototype.remove.call(this);
     },
 
     parseDate: function(dateId) {

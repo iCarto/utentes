@@ -1,36 +1,58 @@
-Descargar los repos en `~/development/sixhiara` (o el directorio que se quiera).
-
--   https://gitlab.com/icarto/sixhiara. Aplicación de escritorio basada en gvSIG para Inventario de Recursos Hídricos
--   https://gitlab.com/icarto/utentes-api. Aplicación de Utentes
--   https://gitlab.com/icarto/utentes-bd. Base de datos (sqitch), scripts adicionales, ... para Inventario y Utentes.
--   https://gitlab.com/icarto/utentes-deploy. Utilidades para empaquetar Utentes como una aplicación de Electron.
-
 # First Install
 
 Se puede configurar un entorno similar al de producción mediante Vagrant. En la raíz del repo `utentes-bd` hay un Vagranfile que permite levantar y provisionar una vm.
 
-Se puede seguir el script `utentes-bd/server/bootstrap.sh` para configurar un entorno local adecuado.
-
-A continuación un resumen del proceso. Se asume que en local ya están instaladas las herramientas básicas, si no fijarse en el script de `bootstrap.sh`.
-
 La mayoría de pasos que aquí se describen, "destruir" el entorno y volver a construirlo se recomienda realizarlo en cada nuevo ciclo de trabajo.
 
-```bash
+## Pre-Requisitos
 
-cd ~/development/sixhiara
+-   [Instalar VirtualBox y Vagrant](https://gitlab.com/icarto/ikdb/blob/master/configurar_equipo_linux/virtualbox_y_vagrant.md)
+-   Instalar dependencias y aplicaciones del sistema. Se puede seguir el script `utentes-bd/server/bootstrap.sh` para configurar un entorno local adecuado.
+
+_Nota_: En caso de no querer instalar directamente sobre el sistema el Vagrant contiene todo lo necesario. Se podría ejecutar `git`, `pserve`, ... desde dentro del Vagrant pero no se ha testeado el funcionamiento.
+
+## Repositorios y Estructura de carpetas
+
+-   https://gitlab.com/icarto/sixhiara. Aplicación de escritorio basada en gvSIG para Inventario de Recursos Hídricos
+-   https://gitlab.com/icarto/utentes-api. Aplicación web de Usuarios y Licencias de Agua
+-   https://gitlab.com/icarto/utentes-bd. Base de datos (sqitch), scripts adicionales, ... común al proyecto
+-   https://gitlab.com/icarto/utentes-deploy. Utilidades para empaquetar Utentes como una aplicación Electron. _Ya no se usa_.
+
+**Para que los scripts funcionen correctamente `utentes-api` y `utentes-bd` deben estar en el mismo directorio.**
+
+```
+| "${PROJECT_ROOT_PATH}"
+| |- utentes-api
+| |- utentes-bd
+| |- Tareas
+```
+
+```bash
+# Configuramos una variable como root del proyecto:
+PROJECT_ROOT_PATH=~/development/sixhiara
+
+cd "${PROJECT_ROOT_PATH}"
+# App de escritorio basada en gvSIG para Inventario de Recursos Hídricos
+git clone https://gitlab.com/icarto/sixhiara.
+# App web de Licencias y Usuarios de Agua
 git clone git@gitlab.com:icarto/utentes-api.git
+# Base de datos (sqitch), scripts adicionales, ... común al proyecto
 git clone git@gitlab.com:icarto/utentes-bd.git
+# Utilidades para empaquetar utentes-api como una aplicación Electron
+# Ya no se usa
+# git clone https://gitlab.com/icarto/utentes-deploy
+
 
 rmvirtualenv utentes
 rmvirtualenv utentes-bd
 
-mkvirtualenv -p /usr/bin/python3.6 -a utentes-api utentes
+mkvirtualenv -p /usr/bin/python3.6 -a "${PROJECT_ROOT_PATH}/utentes-api" utentes
 pip install -r requirements-dev.txt
 pre-commit install --install-hooks
 python setup.py install
 python setup.py develop
 
-mkvirtualenv -p /usr/bin/python3.6 -a utentes-bd utentes-bd
+mkvirtualenv -p /usr/bin/python3.6 -a "${PROJECT_ROOT_PATH}/utentes-bd" utentes-bd
 pip install -r requirements-dev.txt
 pre-commit install --install-hooks
 
@@ -49,21 +71,16 @@ for dump_file in "${DB_BACKUP_DIR}"/*.dump ; do
     db=$(basename "${dump_file%.dump}")
     echo "Procesando: ${db}"
     create_last_db ${db} ${dump_file}
-    test_db="test_${db%%_*}"
-    create_db_from_template ${db} ${test_db}
+    if echo "${db}" | grep -q '_post_' ; then
+        test_db="test_${db%%_*}"
+        echo "Creando: ${test_db}"
+        create_db_from_template ${db} ${test_db}
+    fi
 done
 
 workon utentes
 python -Wd setup.py test -q
 ```
-
-_Nota_: La máquina virtual asume una estructura de directorios similar a la siguiente. Todo debería funcionar igual, pero se puede perder alguna "funcionalidad".
-
-| Proyecto
-| |- utentes-api
-| |- utentes-bd
-
-_Nota_: Dentro del entorno vagrant están "todas" las herramientas de desarrollo necesarias en las versiones usadas en el proyecto. `sqitch`, `pg_tap`, `git`, `python`, ... En caso de problemas con el entorno local se puede abrir el IDE en las carpetas de `utentes-api` y/o `utentes-bd`. Ambas están compartidas dentro de la máquina virtual. Y ejecutar el servidor local, scripts, ... dentro de sessiones SSH en la máquina virtual.
 
 ## Para probar la aplicación en modo producción:
 

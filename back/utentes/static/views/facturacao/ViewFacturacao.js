@@ -156,14 +156,8 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
 
         this.updateWidgets();
 
-        var defaultDataForFileModal = iAuth.getDefaultDataForFileModal(
-            this.model.get("id")
-        );
-        var fileModalView = new Backbone.DMS.FileModalView({
-            openElementId: "#file-modal",
-            title: "Arquivo Electr&oacute;nico",
-            urlBase: defaultDataForFileModal.defaultUrlBase,
-            id: defaultDataForFileModal.defaultFolderId,
+        new Backbone.SIXHIARA.FileModalView({
+            model: this.model,
         });
     },
 

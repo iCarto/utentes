@@ -1,11 +1,6 @@
 Backbone.DMS = Backbone.DMS || {};
-
-Backbone.DMS.FileModalView = function(options) {
-    this.options = options || {};
-
-    this.title = options.title;
-
-    this.template = _.template(
+Backbone.DMS.FileModalView = Backbone.View.extend({
+    template: _.template(
         '<div class="modal fade" id="documents-modal" tabindex="-1" role="dialog" aria-labelledby="editInfoModalLabel">' +
             '<div class="modal-dialog" role="document">' +
             '<div class="modal-content">' +
@@ -25,25 +20,26 @@ Backbone.DMS.FileModalView = function(options) {
             "</div>" +
             "</div>" +
             "</div>"
-    );
+    ),
 
-    if (options.openElementId) {
-        $(options.openElementId).on("click", this.show.bind(this));
-    }
+    initialize: function(options) {
+        this.options = options || {};
+        this.title = this.options.title;
 
-    this.model = new Backbone.DMS.Folder();
+        if (this.options.openElementId) {
+            $(this.options.openElementId).on("click", this.show.bind(this));
+        }
 
-    this.folderView = new Backbone.DMS.FolderView({
-        model: this.model,
-        viewPermissions: this.options.permissions,
-        uploadInmediate: this.options.uploadInmediate,
-        components: this.options.components,
-    });
+        this.model = new Backbone.DMS.Folder();
 
-    Backbone.View.apply(this, [options]);
-};
+        this.folderView = new Backbone.DMS.FolderView({
+            model: this.model,
+            viewPermissions: this.options.permissions,
+            uploadInmediate: this.options.uploadInmediate,
+            components: this.options.components,
+        });
+    },
 
-_.extend(Backbone.DMS.FileModalView.prototype, Backbone.View.prototype, {
     render: function() {
         this.$el.empty();
         this.$el.html(
@@ -119,5 +115,3 @@ _.extend(Backbone.DMS.FileModalView.prototype, Backbone.View.prototype, {
         this.$(".close-button").hide();
     },
 });
-
-Backbone.DMS.FileModalView.extend = Backbone.View.extend;

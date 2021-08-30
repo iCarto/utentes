@@ -41,7 +41,7 @@ class Documento(Base):
     name = Column(Text)
     size = Column(Text)
     departamento = Column(Text)
-    unidade = Column(Text)
+    divisao = Column(Text)
     saved = Column(Boolean, default=False)
     user = Column(Text, unique=True)
     created_at = Column(DateTime, nullable=False, server_default=text("now()"))
@@ -65,8 +65,8 @@ class Documento(Base):
         # by default: packagedir/utentes/static/files/attachments/{exploracao_id}/{departamento}/{name}
         entity_folder = self.get_documento_entity_folder()
         path = os.path.join(entity_folder, self.departamento)
-        if self.unidade is not None:
-            path = os.path.join(path, self.unidade)
+        if self.divisao is not None:
+            path = os.path.join(path, self.divisao)
         return os.path.join(path, self.name)
 
     def get_file_path(self):
@@ -107,8 +107,8 @@ class Documento(Base):
         url = ""
         if request:
             subpath = [self.exploracao, self.departamento]
-            if self.unidade is not None:
-                subpath.append(self.unidade)
+            if self.divisao is not None:
+                subpath.append(self.divisao)
             subpath.append(self.name)
             url = request.route_url("api_exploracao_file", subpath=subpath)
         return {
@@ -118,6 +118,6 @@ class Documento(Base):
             "name": self.name,
             "size": self.size,
             "departamento": self.departamento,
-            "unidade": self.unidade,
+            "divisao": self.divisao,
             "date": self.created_at,
         }

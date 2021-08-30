@@ -8,7 +8,7 @@ from sqlalchemy import func
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.sql import label
 
-from users import user_roles
+from users import user_groups
 from utentes.api.error_msgs import error_msgs
 from utentes.constants import perms as perm
 from utentes.models.base import badrequest_exception
@@ -44,7 +44,7 @@ def exploracao_documentacao(request):
                 "api_exploracao_documentacao_path", subpath=format_subpath(path_info)
             ),
             "permissions": get_folder_permissions(
-                request, path_info["departamento"], path_info["unidade"]
+                request, path_info["departamento"], path_info["divisao"]
             ),
         }
 
@@ -104,25 +104,25 @@ def exploracao_documentacao_files(request):
     if path_info["departamento"] is None:
         return exploracao_get_exploracao_folders(request, path_info["exploracao_id"])
     else:
-        if path_info["unidade"] is None:
+        if path_info["divisao"] is None:
             departamento = path_info["departamento"]
-            if departamento != user_roles.UNIDAD_DELEGACION:
+            if departamento != user_groups.BASIN_DIVISION:
                 return exploracao_get_departamento_files(
                     request,
                     path_info["exploracao_id"],
                     path_info["departamento"],
-                    path_info["unidade"],
+                    path_info["divisao"],
                 )
             else:
-                return exploracao_get_unidade_delegacion_folders(
+                return exploracao_get_divisao_delegacion_folders(
                     request, path_info["exploracao_id"], departamento
                 )
         else:
-            return exploracao_get_unidade_files(
+            return exploracao_get_divisao_files(
                 request,
                 path_info["exploracao_id"],
                 path_info["departamento"],
-                path_info["unidade"],
+                path_info["divisao"],
             )
 
 
@@ -155,11 +155,11 @@ def exploracao_get_exploracao_folders(request, exploracao_id):
 
 def init_departamentos_json_array(request, exploracao_id):
     departamentos = [
-        user_roles.ADMINISTRATIVO,
-        user_roles.FINANCIERO,
-        user_roles.JURIDICO,
-        user_roles.TECNICO,
-        user_roles.UNIDAD_DELEGACION,
+        user_groups.ADMINISTRATIVO,
+        user_groups.FINANCIERO,
+        user_groups.JURIDICO,
+        user_groups.TECNICO,
+        user_groups.BASIN_DIVISION,
     ]
 
     departamentos_json_array = []
@@ -185,11 +185,11 @@ def init_departamentos_json_array(request, exploracao_id):
     return departamentos_json_array
 
 
-def exploracao_get_unidade_delegacion_folders(request, exploracao_id, departamento):
-    unidades_json_array = init_unidades_json_array(request, exploracao_id)
+def exploracao_get_divisao_delegacion_folders(request, exploracao_id, departamento):
+    divisao_json_array = init_divisao_json_array(request, exploracao_id)
     res = (
         request.db.query(
-            Documento.unidade,
+            Documento.divisao,
             label("num_files", func.count(Documento.gid)),
             label("last_created_at", func.max(Documento.created_at)),
         )
@@ -197,69 +197,63 @@ def exploracao_get_unidade_delegacion_folders(request, exploracao_id, departamen
             Documento.exploracao == exploracao_id,
             Documento.departamento == departamento,
         )
-        .group_by(Documento.unidade)
-        .order_by(Documento.unidade)
+        .group_by(Documento.divisao)
+        .order_by(Documento.divisao)
         .all()
     )
     for row in res:
-        unidade = next(
+        divisao = next(
             (
-                unidade_json
-                for unidade_json in unidades_json_array
-                if unidade_json["name"] == row[0]
+                divisao_json
+                for divisao_json in divisao_json_array
+                if divisao_json["name"] == row[0]
             ),
             None,
         )
-        if unidade:
-            unidade["size"] = row[1]
-            unidade["date"] = row[2]
-    return unidades_json_array
+        if divisao:
+            divisao["size"] = row[1]
+            divisao["date"] = row[2]
+    return divisao_json_array
 
 
-def init_unidades_json_array(request, exploracao_id):
-    unidades = (
+def init_divisao_json_array(request, exploracao_id):
+    divisoes = (
         request.db.query(Domain)
-        .filter(Domain.category == "unidade", Domain.key != None)
+        .filter(Domain.category == "divisao", Domain.key != None)
         .all()
     )
 
-    unidades_json_array = []
-    for unidade in unidades:
-        unidades_json_array.append(
+    divisao_json_array = []
+    for divisao in divisoes:
+        subpath = [
+            exploracao_id,
+            user_groups.BASIN_DIVISION,
+            divisao.key,
+        ]
+
+        divisao_json_array.append(
             {
-                "id": unidade.key,
+                "id": divisao.key,
                 "type": "folder",
-                "name": unidade.key,
+                "name": divisao.key,
                 "url": request.route_url(
                     "api_exploracao_documentacao",
-                    subpath=[
-                        exploracao_id,
-                        user_roles.UNIDAD_DELEGACION,
-                        unidade.key,
-                    ],
+                    subpath=subpath,
                 ),
                 "path": request.route_url(
                     "api_exploracao_documentacao_path",
-                    subpath=[
-                        exploracao_id,
-                        user_roles.UNIDAD_DELEGACION,
-                        unidade.key,
-                    ],
+                    subpath=subpath,
                 ),
                 "files": request.route_url(
                     "api_exploracao_documentacao_files",
-                    subpath=[
-                        exploracao_id,
-                        user_roles.UNIDAD_DELEGACION,
-                        unidade.key,
-                    ],
+                    subpath=subpath,
                 ),
             }
         )
-    return unidades_json_array
+    return divisao_json_array
 
 
-def exploracao_get_departamento_files(request, exploracao_id, departamento, unidade):
+def exploracao_get_departamento_files(request, exploracao_id, departamento, divisao):
     files = (
         request.db.query(Documento)
         .filter(
@@ -272,18 +266,18 @@ def exploracao_get_departamento_files(request, exploracao_id, departamento, unid
     jsonFiles = []
     for file in files:
         jsonFile = file.__json__(request)
-        jsonFile["permissions"] = get_file_permissions(request, departamento, unidade)
+        jsonFile["permissions"] = get_file_permissions(request, departamento, divisao)
         jsonFiles.append(jsonFile)
     return jsonFiles
 
 
-def exploracao_get_unidade_files(request, exploracao_id, departamento, unidade):
+def exploracao_get_divisao_files(request, exploracao_id, departamento, divisao):
     files = (
         request.db.query(Documento)
         .filter(
             Documento.exploracao == exploracao_id,
             Documento.departamento == departamento,
-            Documento.unidade == unidade,
+            Documento.divisao == divisao,
         )
         .order_by(Documento.name)
         .all()
@@ -291,7 +285,7 @@ def exploracao_get_unidade_files(request, exploracao_id, departamento, unidade):
     jsonFiles = []
     for file in files:
         jsonFile = file.__json__(request)
-        jsonFile["permissions"] = get_file_permissions(request, departamento, unidade)
+        jsonFile["permissions"] = get_file_permissions(request, departamento, divisao)
         jsonFiles.append(jsonFile)
     return jsonFiles
 
@@ -315,16 +309,16 @@ def documento_file_upload(request, path_info):
     documento.size = len(input_file.value)
     documento.exploracao = path_info["exploracao_id"]
     documento.departamento = path_info["departamento"]
-    documento.unidade = path_info["unidade"]
+    documento.divisao = path_info["divisao"]
     documento.user = request.user.username
 
     documento.set_path_root(request.registry.settings["media_root"])
     documento.upload_file(input_file.file)
 
-    if request.user.usergroup not in [user_roles.ADMIN]:
+    if request.user.usergroup not in [user_groups.ADMIN]:
         if request.user.usergroup != path_info["departamento"] or (
-            path_info["unidade"] is not None
-            and request.user.unidade != path_info["unidade"]
+            path_info["divisao"] is not None
+            and request.user.divisao != path_info["divisao"]
         ):
             raise badrequest_exception(
                 {"error": error_msgs["no_permission"], "name": documento.name}
@@ -335,9 +329,9 @@ def documento_file_upload(request, path_info):
         Documento.departamento == documento.departamento,
         Documento.name == documento.name,
     )
-    if path_info["unidade"] is not None:
+    if path_info["divisao"] is not None:
         previous_documento = previous_documento.filter(
-            Documento.unidade == documento.unidade
+            Documento.divisao == documento.divisao
         )
 
     if previous_documento.count() > 0:
@@ -381,10 +375,10 @@ def documento_file_delete(request):
     file_name = subpath[-1]
     path_info = parse_subpath(subpath[:-1])
 
-    if request.user.usergroup not in [user_roles.ADMIN]:
+    if request.user.usergroup not in [user_groups.ADMIN]:
         if request.user.usergroup != path_info["departamento"] or (
-            path_info["unidade"] is not None
-            and request.user.unidade != path_info["unidade"]
+            path_info["divisao"] is not None
+            and request.user.divisao != path_info["divisao"]
         ):
             raise badrequest_exception(
                 {"error": error_msgs["no_permission"], "name": file_name}
@@ -415,13 +409,13 @@ def exploracao_documentos_zip(request):
     filename = f"documentos_{exploracao_id}"
 
     departamento = path_info["departamento"]
-    unidade = path_info["unidade"]
+    divisao = path_info["divisao"]
     if departamento is not None:
-        if unidade is not None:
+        if divisao is not None:
             query = request.db.query(Documento).filter(
                 Documento.exploracao == exploracao_id,
                 Documento.departamento == departamento,
-                Documento.unidade == unidade,
+                Documento.divisao == divisao,
             )
         else:
             query = request.db.query(Documento).filter(
@@ -435,7 +429,7 @@ def exploracao_documentos_zip(request):
 
     documentos = query.all()
 
-    tzip = create_zip_file(request, documentos, departamento, unidade)
+    tzip = create_zip_file(request, documentos, departamento, divisao)
 
     response = Response()
     response.content_type = "application/zip"
@@ -445,7 +439,7 @@ def exploracao_documentos_zip(request):
     return response
 
 
-def create_zip_file(request, documentos, departamento, unidade):
+def create_zip_file(request, documentos, departamento, divisao):
     # TODO. To be improved. Un par de cosas a tener en cuenta:
     # * TemporaryFile, SpooledTemporaryFile y StringIO no generan/aseguran que
     # hay un path en disco.
@@ -469,13 +463,13 @@ def create_zip_file(request, documentos, departamento, unidade):
                 if departamento is None:
                     path_in_zip = os.path.join(
                         documento.departamento,
-                        documento.unidade if documento.unidade is not None else "",
+                        documento.divisao if documento.divisao is not None else "",
                         name,
                     )
                 else:
-                    if unidade is None:
+                    if divisao is None:
                         path_in_zip = os.path.join(
-                            documento.unidade if documento.unidade is not None else "",
+                            documento.divisao if documento.divisao is not None else "",
                             name,
                         )
                     else:
@@ -495,8 +489,8 @@ def find_documento(request, name, path_info):
         Documento.departamento == path_info["departamento"],
         Documento.name == name,
     )
-    if path_info["unidade"] is not None:
-        query = query.filter(Documento.unidade == path_info["unidade"])
+    if path_info["divisao"] is not None:
+        query = query.filter(Documento.divisao == path_info["divisao"])
     documento = query.one()
     documento.set_path_root(request.registry.settings["media_root"])
     return documento
@@ -506,7 +500,7 @@ def parse_subpath(subpath):
     return {
         "exploracao_id": subpath[0] if 0 < len(subpath) else None,
         "departamento": subpath[1] if 1 < len(subpath) else None,
-        "unidade": subpath[2] if 2 < len(subpath) else None,
+        "divisao": subpath[2] if 2 < len(subpath) else None,
     }
 
 
@@ -515,31 +509,31 @@ def format_subpath(path_info):
     subpath.append(path_info["exploracao_id"])
     if path_info["departamento"] is not None:
         subpath.append(path_info["departamento"])
-        if path_info["unidade"] is not None:
-            subpath.append(path_info["unidade"])
+        if path_info["divisao"] is not None:
+            subpath.append(path_info["divisao"])
     return subpath
 
 
-def get_folder_permissions(request, departamento, unidade):
+def get_folder_permissions(request, departamento, divisao):
     if departamento is None or (
-        departamento == user_roles.UNIDAD_DELEGACION and unidade is None
+        departamento == user_groups.BASIN_DIVISION and divisao is None
     ):
         return ["perm_download"]
-    if request.user.usergroup in [user_roles.ADMIN]:
+    if request.user.usergroup in [user_groups.ADMIN]:
         return ["perm_upload", "perm_download", "perm_delete"]
-    if departamento == user_roles.UNIDAD_DELEGACION:
-        if request.user.unidade == unidade:
+    if departamento == user_groups.BASIN_DIVISION:
+        if request.user.divisao == divisao:
             return ["perm_upload", "perm_download", "perm_delete"]
     elif request.user.usergroup == departamento:
         return ["perm_upload", "perm_download", "perm_delete"]
     return ["perm_download"]
 
 
-def get_file_permissions(request, departamento, unidade):
-    if request.user.usergroup in [user_roles.ADMIN]:
+def get_file_permissions(request, departamento, divisao):
+    if request.user.usergroup in [user_groups.ADMIN]:
         return ["perm_download", "perm_delete"]
-    if departamento == user_roles.UNIDAD_DELEGACION:
-        if request.user.unidade == unidade:
+    if departamento == user_groups.BASIN_DIVISION:
+        if request.user.divisao == divisao:
             return ["perm_download", "perm_delete"]
     elif request.user.usergroup == departamento:
         return ["perm_download", "perm_delete"]

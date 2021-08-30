@@ -1,7 +1,7 @@
 import bcrypt
 from sqlalchemy import TIMESTAMP, Column, DateTime, Integer, Text, func, text
 
-from users.user_roles import UNIDAD_DELEGACION
+from users.user_roles import BASIN_DIVISION
 from utentes.lib.schema_validator.validation_exception import ValidationException
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.base import PGSQL_SCHEMA_USERS, Base
@@ -20,7 +20,7 @@ class User(Base):
     password = Column(Text)
     # screen_name = Column(Text)
     usergroup = Column(Text)
-    unidade = Column(Text)
+    divisao = Column(Text)
     last_login = Column(TIMESTAMP(timezone=False))
     new_login = Column(TIMESTAMP(timezone=False), server_default=func.now())
     created_at = Column(DateTime, nullable=False, server_default=text("now()"))
@@ -42,10 +42,10 @@ class User(Base):
             self.usergroup = json.get("usergroup")
         if json.get("password"):
             self.set_password(json.get("password"))
-        if json.get("unidade"):
-            self.unidade = json.get("unidade")
-        if previous_group == UNIDAD_DELEGACION and self.usergroup != UNIDAD_DELEGACION:
-            self.unidade = None
+        if json.get("divisao"):
+            self.divisao = json.get("divisao")
+        if previous_group == BASIN_DIVISION and self.usergroup != BASIN_DIVISION:
+            self.divisao = None
 
     def set_password(self, pw):
         pwhash = bcrypt.hashpw(pw.encode(ENCODING), bcrypt.gensalt())
@@ -62,5 +62,5 @@ class User(Base):
             "id": self.id,
             "username": self.username,
             "usergroup": self.usergroup,
-            "unidade": self.unidade,
+            "divisao": self.divisao,
         }

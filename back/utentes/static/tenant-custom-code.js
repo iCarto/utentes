@@ -1,20 +1,5 @@
 window.SIXHIARA = {};
 
-window.SIXHIARA.GROUPS_TO_ROLES = {};
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.ADMIN] = [SIRHA.ROLE.ADMIN];
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.ADMINISTRATIVO] = [
-    SIRHA.ROLE.ADMINISTRATIVO,
-];
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.FINANCIERO] = [SIRHA.ROLE.FINANCIERO];
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.DIRECCION] = [SIRHA.ROLE.DIRECCION];
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.TECNICO] = [SIRHA.ROLE.TECNICO];
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [SIRHA.ROLE.JURIDICO];
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.OBSERVADOR] = [SIRHA.ROLE.OBSERVADOR];
-window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.UNIDAD] = [
-    SIRHA.ROLE.UNIDAD,
-    SIRHA.ROLE.OBSERVADOR,
-];
-
 window.SIXHIARA.ESTADOS_PENDENTES = [
     {
         key: SIRHA.ESTADO.NOT_EXISTS,
@@ -84,7 +69,7 @@ window.SIXHIARA.ESTADOS_PENDENTES = [
             SIRHA.ROLE.ADMIN,
             SIRHA.ROLE.OBSERVADOR,
             SIRHA.ROLE.TECNICO,
-            SIRHA.ROLE.UNIDAD,
+            SIRHA.ROLE.BASIN_DIVISION,
         ],
     },
     {
@@ -117,8 +102,10 @@ window.SIXHIARA.ESTADOS_RENOVACAO = [
     {
         key: SIRHA.ESTADO_RENOVACAO.INCOMPLETE_DA,
         roles: [SIRHA.ROLE.ADMIN, SIRHA.ROLE.OBSERVADOR, SIRHA.ROLE.ADMINISTRATIVO],
-        roles_only_read:
-            window.SIRHA.getARA() === "ARAS" ? [SIRHA.ROLE.JURIDICO] : undefined,
+        // If a read only acces is needed to some state for some ARA it could be done
+        // like this:
+        // roles_only_read:
+        //    window.SIRHA.getARA() === "ARAS" ? [SIRHA.ROLE.JURIDICO] : undefined,
     },
     {
         key: SIRHA.ESTADO_RENOVACAO.INCOMPLETE_DIR,
@@ -131,7 +118,7 @@ window.SIXHIARA.ESTADOS_RENOVACAO = [
             SIRHA.ROLE.OBSERVADOR,
             SIRHA.ROLE.JURIDICO,
             SIRHA.ROLE.TECNICO,
-            SIRHA.ROLE.UNIDAD,
+            SIRHA.ROLE.BASIN_DIVISION,
         ],
     },
     {
@@ -140,14 +127,12 @@ window.SIXHIARA.ESTADOS_RENOVACAO = [
             SIRHA.ROLE.ADMIN,
             SIRHA.ROLE.OBSERVADOR,
             SIRHA.ROLE.TECNICO,
-            SIRHA.ROLE.UNIDAD,
+            SIRHA.ROLE.BASIN_DIVISION,
         ],
     },
     {
         key: SIRHA.ESTADO_RENOVACAO.PENDING_RENOV_LICENSE,
         roles: [SIRHA.ROLE.ADMIN, SIRHA.ROLE.OBSERVADOR, SIRHA.ROLE.ADMINISTRATIVO],
-        roles_only_read:
-            window.SIRHA.getARA() === "ARAS" ? [SIRHA.ROLE.JURIDICO] : undefined,
     },
     {
         key: SIRHA.ESTADO_RENOVACAO.PENDING_REVIEW_DIR,
@@ -160,7 +145,7 @@ window.SIXHIARA.ESTADOS_RENOVACAO = [
             SIRHA.ROLE.OBSERVADOR,
             SIRHA.ROLE.TECNICO,
             SIRHA.ROLE.JURIDICO,
-            SIRHA.ROLE.UNIDAD,
+            SIRHA.ROLE.BASIN_DIVISION,
         ],
     },
     {
@@ -169,7 +154,7 @@ window.SIXHIARA.ESTADOS_RENOVACAO = [
             SIRHA.ROLE.ADMIN,
             SIRHA.ROLE.OBSERVADOR,
             SIRHA.ROLE.TECNICO,
-            SIRHA.ROLE.UNIDAD,
+            SIRHA.ROLE.BASIN_DIVISION,
         ],
     },
     {
@@ -219,7 +204,7 @@ window.SIXHIARA.ESTADOS_FACT = [
             SIRHA.ROLE.OBSERVADOR,
             SIRHA.ROLE.TECNICO,
             SIRHA.ROLE.FINANCIERO,
-            SIRHA.ROLE.UNIDAD,
+            SIRHA.ROLE.BASIN_DIVISION,
         ],
     },
 ];
@@ -253,11 +238,13 @@ if (window.SIRHA.getARA() === "ARAN") {
     });
 
     window.SIXHIARA.IVA = 0;
-    window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
-        SIRHA.ROLE.JURIDICO,
-        SIRHA.ROLE.ADMINISTRATIVO,
-        SIRHA.ROLE.DIRECCION,
-    ];
+    // If custom mapping between a Group and Role is needed for an ARA it could be done
+    // here like this:
+    // SIRHA.GROUPS_TO_ROLES[SIRHA.GROUP.JURIDICO] = [
+    //     SIRHA.ROLE.JURIDICO,
+    //     SIRHA.ROLE.ADMINISTRATIVO,
+    //     SIRHA.ROLE.DIRECCION,
+    // ];
 }
 
 if (window.SIRHA.getARA() === "ARAC") {
@@ -266,12 +253,6 @@ if (window.SIRHA.getARA() === "ARAC") {
         southWest: [-21.3446634902801, 30.2173830126593],
         northEast: [-11.5652597753968, 37.2973599995797],
     });
-
-    window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
-        SIRHA.ROLE.JURIDICO,
-        SIRHA.ROLE.ADMINISTRATIVO,
-        SIRHA.ROLE.DIRECCION,
-    ];
 }
 
 if (window.SIRHA.getARA() === "ARAS") {
@@ -281,10 +262,6 @@ if (window.SIRHA.getARA() === "ARAS") {
         northEast: [-20.8837170380884, 35.604025999402],
     });
     window.SIXHIARA.IVA = 12.75;
-    window.SIXHIARA.GROUPS_TO_ROLES[SIRHA.ROLE.JURIDICO] = [
-        SIRHA.ROLE.JURIDICO,
-        SIRHA.ROLE.DIRECCION,
-    ];
 }
 
 window.SIXHIARA.xlsFieldsToExport = {};
@@ -309,7 +286,7 @@ window.SIXHIARA.xlsFieldsToExport.exploracaos = [
     {header: "Posto Exploração", value: "loc_posto"},
     {header: "Bairro Exploração", value: "loc_nucleo"},
     {header: "       Endereço Exploração       ", value: "loc_endere"},
-    {header: "Unidade", value: "loc_unidad"},
+    {header: "Divisão", value: "loc_divisao"},
     {header: "Bacia", value: "loc_bacia"},
     {header: "   Actividade   ", value: "actividade.tipo"},
     {
@@ -447,7 +424,7 @@ window.SIXHIARA.shpFieldsToExport = [
     {header: "posto", value: "loc_posto"},
     {header: "bairro", value: "loc_nucleo"},
     {header: "endereco", value: "loc_endere"},
-    {header: "unidade", value: "loc_unidad"},
+    {header: "divisao", value: "loc_divisao"},
     {header: "bacia", value: "loc_bacia"},
     {header: "actividade", value: "actividade.tipo"},
     {

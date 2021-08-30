@@ -42,8 +42,8 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
                                 <td><input id="soli_visit" class="uilib-enability uilib-disable-role-observador" type="checkbox" <%- renovacao.soli_visit ? 'checked=""' : '' %> required></td>
                              </tr>
                              <tr>
-                                <td>Parecer da unidade</td>
-                                <td><input id="p_unid" class="uilib-enability uilib-disable-role-observador" type="checkbox" <%- renovacao.p_unid ? 'checked=""' : '' %> required></td>
+                                <td>Parecer da Divisão</td>
+                                <td><input id="parecer_divisao" class="uilib-enability uilib-disable-role-observador" type="checkbox" <%- renovacao.parecer_divisao ? 'checked=""' : '' %> required></td>
                              </tr>
                              <tr>
                                 <td>Parecer técnico</td>
@@ -120,22 +120,12 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
             .forEach(function(input) {
                 input.addEventListener("change", self.autosave.bind(self), false);
             });
-
-        var defaultDataForFileModal = iAuth.getDefaultDataForFileModal(
-            this.model.get("id")
-        );
-        new Backbone.DMS.FileModalView({
-            openElementId: "#file-modal",
-            title: "Arquivo Electr&oacute;nico",
-            urlBase: defaultDataForFileModal.defaultUrlBase,
-            id: defaultDataForFileModal.defaultFolderId,
-        });
     },
 
     enableBts: function() {
         if (this.model.isValid()) {
             SIRHA.Utils.DOM.enableBt("bt-defacto");
-            document.getElementById("p_unid").disabled = false;
+            document.getElementById("parecer_divisao").disabled = false;
             document.getElementById("p_tec").disabled = false;
             var enableChb = SIRHA.Utils.DOM.allRequiredInputAreChecked(
                 'table input[type="checkbox"]'
@@ -145,7 +135,7 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
                 SIRHA.ESTADO_RENOVACAO.PENDING_EMIT_LICENSE;
         } else {
             SIRHA.Utils.DOM.disableBt("bt-defacto");
-            document.getElementById("p_unid").disabled = true;
+            document.getElementById("parecer_divisao").disabled = true;
             document.getElementById("p_tec").disabled = true;
             document.getElementById("bt-ok").disabled = true;
             document.getElementById("bt-ok").title =
@@ -155,7 +145,7 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
         this._subviews.forEach(v => v.enableBts());
     },
 
-    fillRenovacao: function(e, autosave) {
+    fillExploracao: function(e, autosave) {
         var self = this;
         var exploracao = this.model;
         var renovacao = exploracao.get("renovacao");

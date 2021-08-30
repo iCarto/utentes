@@ -1,6 +1,6 @@
 /* global formatter, moment */
 
-// ***=loc_unidad*** - ***=cbase.unidades.nome***
+// ***=loc_divisao*** - ***=cbase.divisoes.nome***
 SIRHA.Services.PrintService = (function(formatter) {
     function removeNull(data) {
         // Create a copy of the main object since both types of licenses share fields
@@ -25,11 +25,11 @@ SIRHA.Services.PrintService = (function(formatter) {
         if (lic && !lic.get("tipo_lic")) {
             return "A exploração tem que ter uma tipo de licença.";
         }
-        const locUnidad = exploracao.get
-            ? exploracao.get("loc_unidad")
-            : exploracao.loc_unidad;
-        if (!locUnidad) {
-            return "A exploração tem que ter uma Unidade de Gestão.";
+        const locDivisao = exploracao.get
+            ? exploracao.get("loc_divisao")
+            : exploracao.loc_divisao;
+        if (!locDivisao) {
+            return "A exploração tem que ter uma Divisão de Gestão.";
         }
     }
 
@@ -66,8 +66,8 @@ SIRHA.Services.PrintService = (function(formatter) {
             .concat(".docx");
 
         data.ara = dataARA;
-        data.unidade_long_name = data.ara.unidades.reduce(
-            (mem, u) => (u.nome.startsWith(data.loc_unidad) ? mem + u.nome : mem),
+        data.divisao_long_name = data.ara.divisoes.reduce(
+            (mem, u) => (u.nome.startsWith(data.loc_divisao) ? mem + u.nome : mem),
             ""
         );
 

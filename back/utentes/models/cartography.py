@@ -198,3 +198,19 @@ class Oceanos(CartographyBase):
     geom_as_geojson = column_property(
         func.coalesce(func.ST_AsGeoJSON(func.ST_Transform(geom, 4326), 3), None)
     )
+
+
+class Divisoes(CartographyBase):
+    __tablename__ = "divisoes"
+    __table_args__ = {"schema": PGSQL_SCHEMA_CBASE_ARA}
+
+    nome = Column(Text)
+    siglas = Column(Text)
+    ara = Column(Text)
+    geom = Column(Geometry("MULTIPOLYGON", "32737"), index=True)
+    geom_as_geojson = column_property(
+        func.coalesce(
+            func.ST_AsGeoJSON(func.ST_Transform(func.ST_Simplify(geom, 10), 4326), 6),
+            None,
+        )
+    )

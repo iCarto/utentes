@@ -12,9 +12,7 @@ domains.fetch({
     success: domainsFetched,
 });
 
-var fileModalView = new Backbone.DMS.FileModalView({
-    openElementId: "#file-modal",
-    title: "Arquivo Electr&oacute;nico",
+var fileModalView = new Backbone.SIXHIARA.FileModalView({
     uploadInmediate: false,
     components: ["upload"],
 });
@@ -94,32 +92,6 @@ function enableBts() {
     validateName(exp_name.value);
 }
 
-function savePendingFiles(model) {
-    fileModalView.saveFiles({
-        uploadFinished: function(success) {
-            if (success) {
-                fileModalView._close();
-                bootbox.alert(
-                    `A exploração&nbsp;<strong>${model.get("exp_id")} - ${model.get(
-                        "exp_name"
-                    )}</strong>&nbsp;tem sido criada correctamente.`,
-                    function() {
-                        window.location = Backbone.SIXHIARA.Config.urlPendentes;
-                    }
-                );
-            } else {
-                bootbox.alert(
-                    `<span style="color: red;">A exploração&nbsp;<strong>${model.get(
-                        "exp_id"
-                    )} - ${model.get(
-                        "exp_name"
-                    )}</strong>&nbsp;tem sido criada correctamente, pero produziu-se um erro ao enviar os arquivos. Informe ao administrador.</strong>`
-                );
-            }
-        },
-    });
-}
-
 function fillExploracao(e, autosave) {
     var exploracao = new Backbone.SIXHIARA.Exploracao({
         estado_lic: SIRHA.ESTADO.NOT_EXISTS,
@@ -176,21 +148,8 @@ function fillExploracao(e, autosave) {
                 validate: false,
                 wait: true,
                 success: function(model) {
-                    var exp_id = model.get("exp_id");
-                    var exp_name = model.get("exp_name");
-
                     if (fileModalView.hasPendingFiles()) {
-                        var departamento = iAuth.isAdmin()
-                            ? SIRHA.ROLE.ADMINISTRATIVO
-                            : iAuth.getMainRole();
-                        var url =
-                            Backbone.SIXHIARA.Config.apiDocumentos +
-                            "/" +
-                            model.get("id");
-                        fileModalView.show();
-                        fileModalView.setUrlBase(url);
-                        fileModalView.setId(departamento);
-                        fileModalView.onShown(savePendingFiles, model);
+                        fileModalView.handlePendingFiles(model);
                     } else {
                         bootbox.alert(
                             `A exploração&nbsp;<strong>${model.get(

@@ -90,8 +90,8 @@ class Renovacao(Base):
         server_default=text("false"),
         doc="Solicitação da visitoria",
     )
-    p_unid = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer da unidade"
+    parecer_divisao = Column(
+        Boolean, nullable=False, server_default=text("false"), doc="Parecer da Divisão"
     )
     p_tec = Column(
         Boolean, nullable=False, server_default=text("false"), doc="Parecer técnico"

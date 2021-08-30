@@ -1,4 +1,3 @@
-# TODO translate
 error_msgs = {
     "no_gid": "Não existe exploracao co gid indicado",
     "gid_obligatory": "O gid é um campo necesario",

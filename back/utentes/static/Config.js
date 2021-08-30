@@ -44,54 +44,6 @@ Backbone.UILib.DomainCollection = Backbone.UILib.DomainCollection.extend({
     url: Backbone.SIXHIARA.Config.apiDomains,
 });
 
-var role_domains_collection = new Backbone.UILib.DomainCollection([
-    {
-        category: "groups",
-        text: null,
-        order: 0,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.ADMIN,
-        order: 1,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.ADMINISTRATIVO,
-        order: 2,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.DIRECCION,
-        order: 3,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.FINANCIERO,
-        order: 4,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.JURIDICO,
-        order: 5,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.TECNICO,
-        order: 6,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.OBSERVADOR,
-        order: 7,
-    },
-    {
-        category: "groups",
-        text: SIRHA.ROLE.UNIDAD,
-        order: 7,
-    },
-]);
-
 Backbone.SIXHIARA.tiemposRenovacion = {
     limit: 90,
     warning: 30,
@@ -104,9 +56,9 @@ Backbone.SIXHIARA.duracionLicencias = {
 };
 
 Backbone.SIXHIARA.tipoTemplates = {
-    Licença: "static/print-templates/210716_Modelo_Licenca_Autorizacion_SIRH.docx",
-    Autorização: "static/print-templates/210716_Modelo_Licenca_Autorizacion_SIRH.docx",
-    Concessão: "static/print-templates/210713_Modelo_Concesao_SIRH.docx",
+    Licença: "static/print-templates/210906_Modelo_Licenca_Autorizacion_SIRH.docx",
+    Autorização: "static/print-templates/210906_Modelo_Licenca_Autorizacion_SIRH.docx",
+    Concessão: "static/print-templates/210920_Modelo_Concesao_SIRH.docx",
     Factura: "static/print-templates/Modelo_Factura_SIRH.docx",
     Recibo: "static/print-templates/Modelo_Recibo_SIRH.docx",
 };

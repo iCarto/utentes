@@ -30,8 +30,6 @@ class ActividadesTanquesPiscicolas(Base):
         ),
         nullable=False,
     )
-    # TODO. Use 'comment' instead of doc when upgrading to sqlalchemy 1.2
-    # http://docs.sqlalchemy.org/en/latest/core/metadata.html#sqlalchemy.schema.Column.params.comment
     tipo = Column(Text, nullable=False, doc="Tipo")
     cumprimen = Column(Numeric(10, 2), doc="Comprimento (m)")
     largura = Column(Numeric(10, 2), doc="Largura (m)")

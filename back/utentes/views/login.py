@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
 from pyramid.view import view_config
 
-from users import user_roles
+from users import user_groups
 from utentes.user_utils import get_user_from_db
 
 
@@ -39,7 +39,7 @@ def login(request):
         user = get_user_from_db(request)
         if user:
             headers = remember(request, user.username)
-            if user.usergroup == user_roles.FINANCIERO and next == request.route_url(
+            if user.usergroup == user_groups.FINANCIERO and next == request.route_url(
                 request.registry.settings.get("users.after_login_url")
             ):
                 next = request.route_url("facturacao")
@@ -47,10 +47,16 @@ def login(request):
             response.set_cookie("utentes_stub_user", value=user.username)
 
             usergroup = urllib.parse.quote(user.usergroup)
-            response.set_cookie("utentes_stub_role", value=usergroup)
-            if user.unidade is not None:
-                unidade = urllib.parse.quote(user.unidade)
-                response.set_cookie("utentes_stub_unidade", value=unidade)
+            response.set_cookie("utentes_stub_group", value=usergroup)
+            if user.divisao is not None:
+                divisao = urllib.parse.quote(user.divisao)
+                response.set_cookie("utentes_stub_divisao", value=divisao)
+            response.delete_cookie(
+                "utentes_stub_role"
+            )  # Remove after some versions are released
+            response.delete_cookie(
+                "utentes_stub_unidade"
+            )  # Remove after some versions are released
             return response
 
     return {"title": request.registry.settings.get("ara_app_name"), "next": next}

@@ -1,4 +1,3 @@
-
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import forget
 from pyramid.view import view_config
@@ -15,7 +14,7 @@ def logout(request):
     )
 
     response.delete_cookie("utentes_stub_user")
-    response.delete_cookie("utentes_stub_role")
-    response.delete_cookie("utentes_stub_unidade")
+    response.delete_cookie("utentes_stub_group")
+    response.delete_cookie("utentes_stub_divisao")
 
     return response

@@ -1,0 +1,8 @@
+ADMIN = "Administrador"
+ADMINISTRATIVO = "Departamento de Administração e Recursos Humanos"
+DIRECCION = "Direcção"
+FINANCIERO = "Departamento Serviços Utente - Financeiro"
+JURIDICO = "Departamento Serviços Utente - Jurídico"
+TECNICO = "Departamento Recursos Hídricos"
+OBSERVADOR = "Observador"
+BASIN_DIVISION = "Divisão"

@@ -1,17 +1,10 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
+Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
     tagName: "div",
 
     className: "myclass",
 
     id: "myid",
-
-    render: function() {
-        var json = this.model.toJSON();
-        this.$el.html(this.template(json));
-        Backbone.UILib.BaseView.prototype.render.call(this);
-        return this;
-    },
 
     /*
     Esto en realidad está por no  usar jquery. Si se hace en render todavía no están en el
@@ -19,6 +12,7 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
     binded para después al usar this.$
     */
     init: function() {
+        Backbone.SIXHIARA.BaseProcesoView.prototype.init.call(this);
         var self = this;
         var currentComment = this.model.get("req_obs").slice(-1)[0];
         if (currentComment.text) {
@@ -68,28 +62,6 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
             el: document.querySelector("#map-container ul.nav.nav-tabs"),
             model: currentState,
         }).render();
-    },
-
-    autosave: function() {
-        // http://codetunnel.io/how-to-implement-autosave-in-your-web-app/
-        var self = this;
-        var autosaveInfo = document.getElementById("autosave-info");
-        autosaveInfo.innerHTML = "Modificações pendentes.";
-        autosaveInfo.style.color = "red";
-        if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-        }
-        if (this.autosaveInputTimeOutId) {
-            clearTimeout(this.autosaveInputTimeOutId);
-        }
-        this.timeoutId = setTimeout(function() {
-            self.fillExploracao(null, true);
-            autosaveInfo.innerHTML = "Modificações gravadas";
-            autosaveInfo.style.color = "green";
-            self.autosaveInputTimeOutId = setTimeout(function() {
-                autosaveInfo.innerHTML = "";
-            }, 1000);
-        }, 750);
     },
 
     fillExploracao: function(e, autosave) {
@@ -161,7 +133,7 @@ Backbone.SIXHIARA.View1 = Backbone.UILib.BaseView.extend({
 
     remove: function() {
         this.tabBarTitle.remove();
-        Backbone.UILib.BaseView.prototype.remove.call(this);
+        Backbone.SIXHIARA.BaseProcesoView.prototype.remove.call(this);
     },
 
     onSuccessfulSave: function(model, response, options, autosave) {

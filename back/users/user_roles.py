@@ -1,25 +1,27 @@
 import types
 
+from users import user_groups as group
 
-ADMIN = "Administrador"
-ADMINISTRATIVO = "Departamento Administrativo"  # DA
-FINANCIERO = "Departamento Financeiro"  # DF
-DIRECCION = "Direcção"
-TECNICO = "Departamento Técnico"
-JURIDICO = "Departamento Jurídico"  # DJ
-OBSERVADOR = "Observador"
-UNIDAD_DELEGACION = "Unidade ou Delegação"
+
+ADMIN = "ROLE_ADMIN"
+ADMINISTRATIVO = "ROLE_ADMINISTRATIVE"
+FINANCIERO = "ROLE_FINANCIAL"
+DIRECCION = "ROLE_MANAGEMENT"
+TECNICO = "ROLE_TECHNICAL"
+JURIDICO = "ROL_LEGAL"
+OBSERVADOR = "ROLE_OBSERVER"
+BASIN_DIVISION = "ROLE_DIVISOE"
 
 
 GROUPS_TO_ROLES = types.MappingProxyType(
     {
-        ADMIN: [ADMIN],
-        ADMINISTRATIVO: [ADMINISTRATIVO],
-        FINANCIERO: [FINANCIERO],
-        DIRECCION: [DIRECCION],
-        TECNICO: [TECNICO],
-        JURIDICO: [JURIDICO],
-        OBSERVADOR: [OBSERVADOR],
-        UNIDAD_DELEGACION: [UNIDAD_DELEGACION],
+        group.ADMIN: [ADMIN],
+        group.ADMINISTRATIVO: [ADMINISTRATIVO],
+        group.DIRECCION: [DIRECCION],
+        group.FINANCIERO: [FINANCIERO],
+        group.JURIDICO: [JURIDICO, ADMINISTRATIVO, DIRECCION],
+        group.OBSERVADOR: [OBSERVADOR],
+        group.BASIN_DIVISION: [BASIN_DIVISION],
+        group.TECNICO: [TECNICO],
     }
 )

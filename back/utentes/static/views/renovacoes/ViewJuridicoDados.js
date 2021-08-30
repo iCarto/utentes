@@ -216,16 +216,6 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
             });
         });
 
-        var defaultDataForFileModal = iAuth.getDefaultDataForFileModal(
-            this.model.get("id")
-        );
-        var fileModalView = new Backbone.DMS.FileModalView({
-            openElementId: "#file-modal",
-            title: "Arquivo Electr&oacute;nico",
-            urlBase: defaultDataForFileModal.defaultUrlBase,
-            id: defaultDataForFileModal.defaultFolderId,
-        });
-
         var json = self.model.toJSON();
         var historico = new Backbone.SIXHIARA.HistoricoLicencias(this.model);
         historico.fetch({
@@ -390,7 +380,7 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
         });
     },
 
-    fillRenovacao: function(e, autosave) {
+    fillExploracao: function(e, autosave) {
         var self = this;
         var exploracao = this.model;
         var renovacao = this.model.get("renovacao");

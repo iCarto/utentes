@@ -32,7 +32,7 @@ class ExploracaoUpdateTests(DBIntegrationTest):
         expected_json["loc_nucleo"] = "new loc_nucleo"
         expected_json["loc_endere"] = "new enderezo"
         hydro_location = domain_generator.hydro_location(loc_subaci="Tembe")
-        expected_json["loc_unidad"] = hydro_location.loc_unidad
+        expected_json["loc_divisao"] = hydro_location.loc_divisao
         expected_json["loc_bacia"] = hydro_location.loc_bacia
         expected_json["loc_subaci"] = hydro_location.loc_subaci
         expected_json["c_soli"] = 19.02
@@ -52,7 +52,7 @@ class ExploracaoUpdateTests(DBIntegrationTest):
         self.assertEqual("Cobue", actual.loc_posto)
         self.assertEqual("new loc_nucleo", actual.loc_nucleo)
         self.assertEqual("new enderezo", actual.loc_endere)
-        self.assertEqual("DGBUM", actual.loc_unidad)
+        self.assertEqual("DGBUM", actual.loc_divisao)
         self.assertEqual("Tembe", actual.loc_bacia)
         self.assertEqual("Tembe", actual.loc_subaci)
         self.assertEqual(19.02, float(actual.c_soli))

@@ -11,12 +11,12 @@ Backbone.SIXHIARA.UserModalView = Backbone.UILib.ModalView.extend({
                 }).render();
 
                 new Backbone.UILib.SelectView({
-                    el: self.$("#unidade"),
-                    collection: collection.byCategory("unidade"),
+                    el: self.$("#divisao"),
+                    collection: collection.byCategory("divisao"),
                 }).render();
 
-                if (self.model.get("usergroup") == SIRHA.ROLE.UNIDAD) {
-                    self.$("#unidade-form").removeClass("hidden");
+                if (self.isGroupBasinDivision(self.model.get("usergroup"))) {
+                    self.$("#divisao-form").removeClass("hidden");
                 }
 
                 new Backbone.UILib.PasswordView({
@@ -28,22 +28,23 @@ Backbone.SIXHIARA.UserModalView = Backbone.UILib.ModalView.extend({
                 document.getElementById("usergroup").addEventListener(
                     "change",
                     function(e) {
-                        document.getElementById("unidade").selectedIndex = 0;
-                        self.model.set("unidade", null);
-                        var selected = this.options[this.options.selectedIndex].text;
-                        if (selected == SIRHA.ROLE.UNIDAD) {
-                            self.$("#unidade-form").removeClass("hidden");
+                        document.getElementById("divisao").selectedIndex = 0;
+                        self.model.set("divisao", null);
+                        var selectedGroup = this.options[this.options.selectedIndex]
+                            .text;
+                        if (self.isGroupBasinDivision(selectedGroup)) {
+                            self.$("#divisao-form").removeClass("hidden");
                         } else {
-                            self.$("#unidade-form").addClass("hidden");
+                            self.$("#divisao-form").addClass("hidden");
                         }
                     },
                     this
                 );
 
-                document.getElementById("unidade").addEventListener(
+                document.getElementById("divisao").addEventListener(
                     "change",
                     function(e) {
-                        self.checkIfUnidadWidgetIsValid();
+                        self.checkIfDivisaoWidgetIsValid();
                     },
                     this
                 );
@@ -56,6 +57,10 @@ Backbone.SIXHIARA.UserModalView = Backbone.UILib.ModalView.extend({
                 );
             },
         });
+    },
+
+    isGroupBasinDivision: function(group) {
+        return group === window.SIRHA.GROUP.BASIN_DIVISION;
     },
 
     okButtonClicked: function() {
@@ -114,24 +119,24 @@ Backbone.SIXHIARA.UserModalView = Backbone.UILib.ModalView.extend({
     },
 
     isSomeWidgetInvalid: function() {
-        this.checkIfUnidadWidgetIsValid();
+        this.checkIfDivisaoWidgetIsValid();
         return Backbone.UILib.ModalView.prototype.isSomeWidgetInvalid.call(this);
     },
 
-    checkIfUnidadWidgetIsValid: function() {
-        var unidadeSelect = document.getElementById("unidade");
-        var unidadeSelectHelpBlock = document.getElementById("helpBlock_unidade");
+    checkIfDivisaoWidgetIsValid: function() {
+        var divisaoSelect = document.getElementById("divisao");
+        var divisaoSelectHelpBlock = document.getElementById("helpBlock_divisao");
 
-        if (this.$("#unidade").is(":visible") && !this.$("#unidade").val()) {
+        if (this.$("#divisao").is(":visible") && !this.$("#divisao").val()) {
             var errorMsg =
-                'O campo "Unidade" é obrigatório para o tipo de usuário "Unidade ou Delegação"';
-            unidadeSelect.setCustomValidity(errorMsg);
-            unidadeSelectHelpBlock.innerHTML = errorMsg;
-            unidadeSelectHelpBlock.style.display = "block";
+                'O campo "Divisão" é obrigatório para o tipo de usuário "Divisão"';
+            divisaoSelect.setCustomValidity(errorMsg);
+            divisaoSelectHelpBlock.innerHTML = errorMsg;
+            divisaoSelectHelpBlock.style.display = "block";
         } else {
-            unidadeSelect.setCustomValidity("");
-            unidadeSelectHelpBlock.innerHTML = "";
-            unidadeSelectHelpBlock.style.display = "none";
+            divisaoSelect.setCustomValidity("");
+            divisaoSelectHelpBlock.innerHTML = "";
+            divisaoSelectHelpBlock.style.display = "none";
         }
     },
 });

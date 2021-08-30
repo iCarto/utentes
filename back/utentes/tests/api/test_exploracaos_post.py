@@ -40,7 +40,7 @@ class ExploracaoCreateTests(DBIntegrationTest):
         self.assertEqual("Cobue", actual.loc_posto)
         self.assertEqual("new loc_nucleo", actual.loc_nucleo)
         self.assertEqual("new enderezo", actual.loc_endere)
-        self.assertEqual("DGBM", actual.loc_unidad)
+        self.assertEqual("DGBM", actual.loc_divisao)
         self.assertEqual("Megaruma", actual.loc_bacia)
         self.assertEqual("Megaruma", actual.loc_subaci)
         self.assertEqual("Megaruma", actual.loc_rio)

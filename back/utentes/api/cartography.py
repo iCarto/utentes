@@ -30,6 +30,7 @@ def api_cartography(request):
         "paises": cartography.Paises,
         "oceanos": cartography.Oceanos,
         "exploracaos": ExploracaoGeom,
+        "divisoes": cartography.Divisoes,
     }.get(layer)
     if not model:
         raise notfound_exception(

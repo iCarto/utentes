@@ -47,7 +47,7 @@ def create_test_exploracao(**kwargs):
     exp.exp_name = f"Exploracao {exp.gid}"
     exp.estado_lic = K_LICENSED
     hydro_location = domain_generator.hydro_location()
-    exp.loc_unidad = hydro_location.loc_unidad
+    exp.loc_divisao = hydro_location.loc_divisao
     exp.loc_bacia = hydro_location.loc_bacia
     exp.loc_subaci = hydro_location.loc_subaci
     adm_location = domain_generator.adm_location()

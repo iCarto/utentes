@@ -44,8 +44,8 @@ Backbone.SIXHIARA.ViewTecnico1 = Backbone.SIXHIARA.View1.extend({
               <td><input id="soli_visit" class="uilib-enability uilib-disable-role-observador" type="checkbox" <%- soli_visit ? 'checked=""' : '' %> required></td>
             </tr>
             <tr>
-              <td>Parecer da unidade</td>
-              <td><input id="p_unid" class="uilib-enability uilib-disable-role-observador" type="checkbox" <%- p_unid ? 'checked=""' : '' %> required></td>
+              <td>Parecer da Divisão</td>
+              <td><input id="parecer_divisao" class="uilib-enability uilib-disable-role-observador" type="checkbox" <%- parecer_divisao ? 'checked=""' : '' %> required></td>
             </tr>
             <tr>
               <td>Parecer técnico</td>
@@ -120,16 +120,6 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
             .forEach(function(input) {
                 input.addEventListener("change", self.autosave.bind(self), false);
             });
-
-        var defaultDataForFileModal = iAuth.getDefaultDataForFileModal(
-            this.model.get("id")
-        );
-        new Backbone.DMS.FileModalView({
-            openElementId: "#file-modal",
-            title: "Arquivo Electr&oacute;nico",
-            urlBase: defaultDataForFileModal.defaultUrlBase,
-            id: defaultDataForFileModal.defaultFolderId,
-        });
     },
 
     enableBts: function() {
@@ -178,7 +168,7 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
         SIRHA.Utils.DOM.enableBt("bt-adicionar");
         SIRHA.Utils.DOM.disableBt("bt-ficha");
         SIRHA.Utils.DOM.disableBt("bt-defacto");
-        document.getElementById("p_unid").disabled = true;
+        document.getElementById("parecer_divisao").disabled = true;
         document.getElementById("p_tec").disabled = true;
         document.getElementById("bt-ok").disabled = true;
         document.getElementById("bt-ok").title =
@@ -191,7 +181,7 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
         SIRHA.Utils.DOM.disableBt("bt-adicionar");
         SIRHA.Utils.DOM.enableBt("bt-ficha");
         SIRHA.Utils.DOM.enableBt("bt-defacto");
-        document.getElementById("p_unid").disabled = false;
+        document.getElementById("parecer_divisao").disabled = false;
         document.getElementById("p_tec").disabled = false;
     },
 

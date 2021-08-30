@@ -126,10 +126,10 @@ def add_routes_api(config):
     # GET /api/fontes/{exploracao}
     config.add_route("api_fontes_exploracao", "/api/fontes/{exploracao}")
 
-    # exploracao_id*/departamento?/unidade? conforms the subpath part of the url
-    # GET    /api/documentos/exploracao_id*/departamento?/unidade?
-    #     Return info and routes to files for an exploracao, departamento or unidade
-    # POST   /api/documentos/exploracao_id*/departamento?/unidade?
+    # exploracao_id*/departamento?/divisao? conforms the subpath part of the url
+    # GET    /api/documentos/exploracao_id*/departamento?/divisao?
+    #     Return info and routes to files for an exploracao, departamento or divisao
+    # POST   /api/documentos/exploracao_id*/departamento?/divisao?
     #     Creates a new documento
     # GET    /api/exploracaos/{id}/documentos/{departamento}/{filename}
     #     Return individual documento

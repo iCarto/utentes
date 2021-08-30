@@ -6,7 +6,9 @@ iCarto Authentication and Authorization
 * Herencia de roles
 * Orden de aplicación de roles (si hay permisos contradictorios)
 * Usar permisos en lugar de usar roles para la autorización final
-* **Ahora no gestionamos grupos vs roles**
+* Todo este tema de permisos/roles habría que cachearlo y no generarlo cada vez
+    que se haga la petición
+*
 */
 
 var IAuth = {
@@ -18,36 +20,29 @@ var IAuth = {
         return user;
     },
 
-    getMainRole: function() {
-        var role = document.cookie.replace(
-            /(?:(?:^|.*;\s*)utentes_stub_role\s*\=\s*([^;]*).*$)|^.*$/,
+    getGroup: function() {
+        var group = document.cookie.replace(
+            /(?:(?:^|.*;\s*)utentes_stub_group\s*\=\s*([^;]*).*$)|^.*$/,
             "$1"
         );
-        role = decodeURIComponent(role);
-        if (
-            ![
-                SIRHA.ROLE.ADMIN,
-                SIRHA.ROLE.OBSERVADOR,
-                SIRHA.ROLE.UNIDAD,
-                SIRHA.ROLE.ADMINISTRATIVO,
-                SIRHA.ROLE.FINANCIERO,
-                SIRHA.ROLE.DIRECCION,
-                SIRHA.ROLE.TECNICO,
-                SIRHA.ROLE.JURIDICO,
-            ].includes(role)
-        ) {
-            throw Error("Not valid role");
-        }
-        return role;
+        return decodeURIComponent(group);
     },
 
-    getUnidade: function() {
-        var unidade = document.cookie.replace(
-            /(?:(?:^|.*;\s*)utentes_stub_unidade\s*\=\s*([^;]*).*$)|^.*$/,
+    getMainRole: function() {
+        let group = iAuth.getGroup();
+        if (!Object.values(SIRHA.GROUP).includes(group)) {
+            throw Error("Not valid group");
+        }
+        return SIRHA.GROUPS_TO_ROLES[group][0];
+    },
+
+    getDivisao: function() {
+        var divisao = document.cookie.replace(
+            /(?:(?:^|.*;\s*)utentes_stub_divisao\s*\=\s*([^;]*).*$)|^.*$/,
             "$1"
         );
-        unidade = decodeURIComponent(unidade);
-        return unidade;
+        divisao = decodeURIComponent(divisao);
+        return divisao;
     },
 
     getRoles: function(safeRoleFormat) {
@@ -62,30 +57,17 @@ var IAuth = {
         }
     },
 
-    /*
-    Un usuario debería poder tener varios roles. Por razones históricas se ha
-    asumido una relación 1:1 en la mayoría del código, llamadas a getMainRole
-    Pero hay que ir refactorizando para usar una relación 1:n
-    O mejor todavía pasar aun sistema basado en permisos y no en roles
-
-    Todo esto del rol del usuario habría que cachearlo y no generarlo cada vez
-    que se haga la petición
-    */
     getAllRolesSafe: function() {
         var notSafeRoles = iAuth.getAllRolesNotSafe();
-        var roles = notSafeRoles.map(r => iAuth.getMainRoleSafe(r));
-        return roles;
+        return this.asSafeRoles(notSafeRoles);
     },
 
     getAllRolesNotSafe: function() {
-        var roles = window.SIXHIARA.GROUPS_TO_ROLES[this.getMainRole()];
+        var roles = window.SIRHA.GROUPS_TO_ROLES[this.getGroup()];
         return roles;
     },
 
-    getMainRoleSafe: function(role) {
-        if (!role) {
-            var role = this.getMainRole();
-        }
+    ensureIsSafeRole: function(role) {
         switch (role) {
             case SIRHA.ROLE.ADMIN:
                 return "administrador";
@@ -99,17 +81,18 @@ var IAuth = {
                 return "direccao";
             case SIRHA.ROLE.TECNICO:
                 return "tecnico";
-            case SIRHA.ROLE.UNIDAD:
-                return "unidade";
+            case SIRHA.ROLE.BASIN_DIVISION:
+                return "divisao";
             case SIRHA.ROLE.JURIDICO:
                 return "juridico";
+                throw Error("Not valid role");
         }
     },
 
     asSafeRoles: function(roles) {
         roles = roles || [];
         roles = _.isArray(roles) ? roles : [roles];
-        return roles.map(r => this.getMainRoleSafe(r));
+        return roles.map(r => this.ensureIsSafeRole(r));
     },
 
     isAdmin: function(role) {
@@ -119,18 +102,18 @@ var IAuth = {
         return role === SIRHA.ROLE.ADMIN;
     },
 
-    isDirector: function(role) {
-        if (!role) {
-            role = iAuth.getMainRole();
-        }
-        return role === SIRHA.ROLE.DIRECCION;
-    },
-
     isObservador: function(role) {
         if (!role) {
             role = iAuth.getMainRole();
         }
         return role === SIRHA.ROLE.OBSERVADOR;
+    },
+
+    isDivisao: function(role) {
+        if (!role) {
+            role = iAuth.getMainRole();
+        }
+        return role === SIRHA.ROLE.BASIN_DIVISION;
     },
 
     hasRoleObservador: function(roles) {
@@ -211,30 +194,7 @@ var IAuth = {
     },
 
     canDraw: function() {
-        return [SIRHA.ROLE.TECNICO, SIRHA.ROLE.ADMIN].includes(this.getMainRole());
-    },
-
-    getDefaultDataForFileModal(exp_id) {
-        var data = {
-            defaultUrlBase: Backbone.SIXHIARA.Config.apiDocumentos,
-            defaultFolderId: exp_id,
-        };
-        if (!this.isAdmin() && !this.isObservador()) {
-            if (this.getMainRole() == SIRHA.ROLE.UNIDAD) {
-                data.defaultUrlBase =
-                    Backbone.SIXHIARA.Config.apiDocumentos +
-                    "/" +
-                    exp_id +
-                    "/" +
-                    this.getMainRole();
-                data.defaultFolderId = this.getUnidade();
-            } else {
-                data.defaultUrlBase =
-                    Backbone.SIXHIARA.Config.apiDocumentos + "/" + exp_id;
-                data.defaultFolderId = this.getMainRole();
-            }
-        }
-        return data;
+        return this.user_roles_in([SIRHA.ROLE.TECNICO, SIRHA.ROLE.ADMIN], "not-safe");
     },
 };
 

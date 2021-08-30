@@ -1,21 +1,20 @@
-from users.user_roles import ADMINISTRATIVO, DIRECCION, GROUPS_TO_ROLES, JURIDICO
+from users.user_roles import GROUPS_TO_ROLES
 
 
 def group_to_roles(ara):
-    base_group_to_roles = dict(GROUPS_TO_ROLES)
-    if ara == "ARAS":
-        base_group_to_roles[JURIDICO] = [
-            JURIDICO,
-            DIRECCION,
-        ]
-    else:
-        base_group_to_roles[JURIDICO] = [
-            JURIDICO,
-            DIRECCION,
-            ADMINISTRATIVO,
-        ]
+    """Allows customize the mapping between groups and roles for different ARAs.
 
-    return base_group_to_roles
+    Example:
+        An example of how customize the mapping::
+
+            base_group_to_roles = dict(GROUPS_TO_ROLES)
+            if ara == "ARAS":
+                base_group_to_roles[JURIDICO] = [
+                    JURIDICO,
+                    DIRECCION,
+                ]
+    """
+    return dict(GROUPS_TO_ROLES)
 
 
 # This must be improved
@@ -25,10 +24,7 @@ def group_to_roles(ara):
 # https://stackoverflow.com/questions/27492574
 # https://stackoverflow.com/questions/58775524
 def adjust_settings(settings):
-    """
-    Mofifies dict settings in place to set values that can be derived from
-    the .ini files
-    """
+    """Mofifies the settings in place to customize for different ARAs."""
     settings["ara_app_name"] = {
         "ARAN": "SIRHAN: Utentes",
         "ARAC": "SIRHAC: Utentes",

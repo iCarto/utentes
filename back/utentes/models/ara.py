@@ -17,4 +17,4 @@ class Ara(Base):
     outros = Column(JSONB, doc="Outros dados")
     valores = Column(JSONB, doc="Valores")
     sede = Column(JSONB, doc="Sede da Ara")
-    unidades = Column(JSONB, doc="Unidades da Ara")
+    divisoes = Column(JSONB, doc="Divisães de Gestão da Bacia")

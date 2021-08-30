@@ -5,7 +5,7 @@ Backbone.SIXHIARA.Where = Backbone.Model.extend({
         estado: null,
         tipo_lic: null,
         tipo_agua: null,
-        loc_unidad: null,
+        loc_divisao: null,
         loc_provin: null,
         loc_distri: null,
         loc_posto: null,
@@ -18,7 +18,7 @@ Backbone.SIXHIARA.Where = Backbone.Model.extend({
 
     initialize: function() {
         var changes =
-            "change:utente change:estado change:tipo_licencia change:tipo_agua change:loc_unidad change:loc_provin change:loc_distri change:loc_posto change:actividade change:geometria change:ano_inicio change:ano_fim";
+            "change:utente change:estado change:tipo_licencia change:tipo_agua change:loc_divisao change:loc_provin change:loc_distri change:loc_posto change:actividade change:geometria change:ano_inicio change:ano_fim";
         this.on(changes, function(e) {
             this.set("mapBounds", null, {silent: true});
         });

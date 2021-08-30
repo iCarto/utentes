@@ -19,6 +19,7 @@ Backbone.UILib.SelectView = Backbone.View.extend({
             y se hiciera el filtro aquí dentro
             */
             cloneCollection: false,
+            useAlias: true,
         };
         this.options = Object.assign({}, defaultOptions, options);
         this._subviews = [];
@@ -34,6 +35,7 @@ Backbone.UILib.SelectView = Backbone.View.extend({
     },
 
     render: function() {
+        let self = this;
         var subviews = [];
         var content = document.createDocumentFragment();
         if (this.collection.length === 0) {
@@ -61,7 +63,8 @@ Backbone.UILib.SelectView = Backbone.View.extend({
         }
 
         this.collection.forEach(function(model) {
-            var alias = model.get("alias");
+            let alias = self.options.useAlias ? model.get("alias") : undefined;
+
             var option = new Backbone.UILib.OptionView({
                 model: model,
                 text: "text",

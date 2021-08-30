@@ -73,8 +73,8 @@ EXPLORACAO_SCHEMA_CON_FICHA = [
         "rules": ["NOT_NULL"],
     },
     {
-        "fieldname": "loc_unidad",
-        "message": 'A "unidade" da exploracão não pode estar vazia',
+        "fieldname": "loc_divisao",
+        "message": 'A "Divisão" da exploracão não pode estar vazia',
         "rules": ["NOT_NULL"],
     },
     {

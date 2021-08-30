@@ -88,13 +88,13 @@ def num_factura_get(request):
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
 
-    if not exploracao.loc_unidad:
+    if not exploracao.loc_divisao:
         raise badrequest_exception(
-            {"error": "A unidade é un campo obligatorio", "exp_id": exp_id}
+            {"error": "A divisão é un campo obligatorio", "exp_id": exp_id}
         )
 
     facturacao.fact_id = num_factura_get_id_formatted(
-        request.db, exploracao.loc_unidad, facturacao.ano
+        request.db, exploracao.loc_divisao, facturacao.ano
     )
     request.db.add(facturacao)
     request.db.commit()
@@ -135,13 +135,13 @@ def num_recibo_get(request):
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
 
-    if not exploracao.loc_unidad:
+    if not exploracao.loc_divisao:
         raise badrequest_exception(
-            {"error": "A unidade é un campo obligatorio", "exp_id": exp_id}
+            {"error": "A divisão é un campo obligatorio", "exp_id": exp_id}
         )
 
     facturacao.recibo_id = num_recibo_get_id_formatted(
-        request.db, exploracao.loc_unidad, facturacao.ano
+        request.db, exploracao.loc_divisao, facturacao.ano
     )
     request.db.add(facturacao)
     request.db.commit()
@@ -175,13 +175,13 @@ def facturacao_exploracao_update(request):
     return e
 
 
-def num_factura_get_id_formatted(db, unidad, ano):
-    params = {"seq_id": None, "unidad_ano": f"{unidad}/{ano}"}
+def num_factura_get_id_formatted(db, divisao, ano):
+    params = {"seq_id": None, "divisao_ano": f"{divisao}/{ano}"}
 
     sql = r"""
         SELECT substring(fact_id, 0, 5)::int + 1
         FROM utentes.facturacao
-        WHERE substring(fact_id from '\d{4}-(.*)') = :unidad_ano
+        WHERE substring(fact_id from '\d{4}-(.*)') = :divisao_ano
         ORDER BY fact_id DESC
         LIMIT 1;
         """
@@ -189,16 +189,16 @@ def num_factura_get_id_formatted(db, unidad, ano):
     params["seq_id"] = (db.execute(sql, params).first() or [1])[0]
 
     # 0001-UGBI/2020
-    return "{seq_id:04d}-{unidad_ano}".format(**params)
+    return "{seq_id:04d}-{divisao_ano}".format(**params)
 
 
-def num_recibo_get_id_formatted(db, unidad, ano):
-    params = {"seq_id": None, "unidad_ano": f"{unidad}/{ano}"}
+def num_recibo_get_id_formatted(db, divisao, ano):
+    params = {"seq_id": None, "divisao_ano": f"{divisao}/{ano}"}
 
     sql = r"""
         SELECT substring(recibo_id, 0, 5)::int + 1
         FROM utentes.facturacao
-        WHERE substring(recibo_id from '\d{4}-(.*)') = :unidad_ano
+        WHERE substring(recibo_id from '\d{4}-(.*)') = :divisao_ano
         ORDER BY recibo_id DESC
         LIMIT 1;
         """
@@ -206,4 +206,4 @@ def num_recibo_get_id_formatted(db, unidad, ano):
     params["seq_id"] = (db.execute(sql, params).first() or [1])[0]
 
     # 0001-UGBI/2020
-    return "{seq_id:04d}-{unidad_ano}".format(**params)
+    return "{seq_id:04d}-{divisao_ano}".format(**params)

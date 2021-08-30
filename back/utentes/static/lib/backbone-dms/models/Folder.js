@@ -1,19 +1,19 @@
 Backbone.DMS = Backbone.DMS || {};
 
-Backbone.DMS.Folder = function(options) {
-    this.options = options || {};
+Backbone.DMS.Folder = Backbone.DMS.File.extend({
+    // https://stackoverflow.com/questions/14614582/backbone-js-model-inheritance
+    defaults: function() {
+        return _.extend({}, Backbone.DMS.File.prototype.defaults, {
+            path: new Backbone.DMS.FolderCollection(),
+            files: new Backbone.DMS.FileCollection(),
+        });
+    },
 
-    this.defaults = _.extend({}, Backbone.DMS.File.prototype.defaults, {
-        path: new Backbone.DMS.FolderCollection(),
-        files: new Backbone.DMS.FileCollection(),
-    });
+    initialize: function() {
+        Backbone.DMS.File.prototype.initialize.call(this);
+        this.listenTo(this, "sync", this.fetchFullFolder);
+    },
 
-    this.listenTo(this, "sync", this.fetchFullFolder);
-
-    Backbone.Model.apply(this, [options]);
-};
-
-_.extend(Backbone.DMS.Folder.prototype, Backbone.DMS.File.prototype, {
     parse: function(folderResponse) {
         this.get("files").url = folderResponse["files"];
         this.get("path").url = folderResponse["path"];
@@ -75,5 +75,3 @@ _.extend(Backbone.DMS.Folder.prototype, Backbone.DMS.File.prototype, {
         });
     },
 });
-
-Backbone.DMS.Folder.extend = Backbone.DMS.File.extend;

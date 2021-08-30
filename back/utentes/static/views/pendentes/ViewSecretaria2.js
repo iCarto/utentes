@@ -58,16 +58,6 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
     init: function() {
         Backbone.SIXHIARA.View1.prototype.init.call(this);
         this.enableBts();
-
-        var defaultDataForFileModal = iAuth.getDefaultDataForFileModal(
-            this.model.get("id")
-        );
-        var fileModalView = new Backbone.DMS.FileModalView({
-            openElementId: "#file-modal",
-            title: "Arquivo Electr&oacute;nico",
-            urlBase: defaultDataForFileModal.defaultUrlBase,
-            id: defaultDataForFileModal.defaultFolderId,
-        });
     },
 
     enableBts: function() {

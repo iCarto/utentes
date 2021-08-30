@@ -68,11 +68,7 @@ Backbone.SIXHIARA.ExploracaoShowView = Backbone.View.extend({
                         });
                 });
 
-                var defaultUrlBase = Backbone.SIXHIARA.Config.apiDocumentos;
-                var fileModalView = new Backbone.DMS.FileModalView({
-                    openElementId: "#file-modal",
-                    title: "Arquivo Electr&oacute;nico",
-                    urlBase: defaultUrlBase,
+                new Backbone.SIXHIARA.FileModalView({
                     id: exploracao.get("id"),
                 });
 

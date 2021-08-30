@@ -28,7 +28,7 @@ Backbone.SIXHIARA.BlockMapView = Backbone.View.extend({
         // only used for editionmap
         this.model.leafletLayer = this.geoJSONLayer;
 
-        if (window.iAuth.isAdmin() || window.iAuth.hasRoleTecnico()) {
+        if (window.iAuth.canDraw()) {
             var beginEditionToolbar = new L.Toolbar2.Control({
                 position: "topleft",
                 actions: [window.BeginEdition],
