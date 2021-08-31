@@ -1,5 +1,6 @@
 def stringify(*args, maxlen=50, sep=" / "):
-    """
+    """Converts the received parameters to a string.
+
     Returns the provided `*args` as a string separated by `sep` and replacing None with
     and empty string ''
     """

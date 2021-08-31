@@ -1,2 +1,2 @@
 class NoThisWayError(Exception):
-    """To be used to avoid certain practices"""
+    """Used to raise an exception when a practice should be avoided."""

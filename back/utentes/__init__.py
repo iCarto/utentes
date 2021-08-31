@@ -23,8 +23,10 @@ ONE_HOUR = 3600  # in seconds
 class RequestWithDB(Request):
     @reify
     def db(self):
-        """Return a session. Only called once per request,
-        thanks to @reify decorator"""
+        """Return a session.
+
+        Only called once per request, thanks to @reify decorator
+        """
         session_factory = self.registry.settings["db.session_factory"]
         self.add_finished_callback(self.close_db_connection)
         return session_factory()
@@ -35,7 +37,7 @@ class RequestWithDB(Request):
 
 
 def date_adapter(obj, request):
-    """ Returns string in format 'yyyy-mm-dd' or None """
+    """Returns string in format 'yyyy-mm-dd' or None."""
     return obj.isoformat() if obj else None
 
 
@@ -115,15 +117,9 @@ def add_routes_views(config):
 
 
 def add_routes_api(config):
-    # GET    /api/exploracaos      = Return all exploracaos
-    # POST   /api/exploracaos      = Create a new exploracao, 'exp_id' in body
-    # GET    /api/exploracaos/{id} = Return individual exploracao
-    # PUT    /api/exploracaos/{id} = Update exploracao
-    # DELETE /api/exploracaos/{id} = Delete exploracao
     config.add_route("api_exploracaos", "/api/exploracaos")
     config.add_route("api_exploracaos_id", "/api/exploracaos/{id}")
 
-    # GET /api/fontes/{exploracao}
     config.add_route("api_fontes_exploracao", "/api/fontes/{exploracao}")
 
     # exploracao_id*/departamento?/divisao? conforms the subpath part of the url
@@ -145,25 +141,15 @@ def add_routes_api(config):
     config.add_route("api_exploracao_documentacao", "/api/documentos/*subpath")
     config.add_route("api_exploracao_file", "/api/file/*subpath")
 
-    # GET    /api/utentes      = Return all utentes
-    # POST   /api/utentes      = Create a new utente, 'nome' in body
-    # GET    /api/utentes/{id} = Return individual utente
-    # PUT    /api/utentes/{id} = Update utente
-    # DELETE /api/utentes/{id} = Delete utente
     config.add_route("api_utentes", "/api/utentes")
     config.add_route("api_utentes_id", "/api/utentes/{id}")
 
-    # GET    /api/cultivos      = Return all cultivos
-    # PUT    /api/utentes/{id} = Update cultivo
     config.add_route("api_cultivos", "/api/cultivos")
     config.add_route("api_cultivos_id", "/api/cultivos/{id}")
 
-    # GET    /api/tanques_piscicolas = Return all tanks
-    # PUT    /api/tanques_piscicolas/{id} = Update a tank (geometry most of the times)
     config.add_route("api_tanques_piscicolas", "/api/tanques_piscicolas")
     config.add_route("api_tanques_piscicolas_id", "/api/tanques_piscicolas/{id}")
 
-    # GET /domains = Return all domains (utentes included)
     config.add_route("api_domains", "/api/domains")
     config.add_route("api_domains_licencia_estado", "/api/domains/licencia_estado")
     config.add_route(

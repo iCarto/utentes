@@ -10,12 +10,12 @@ class IsNotNull(object):
 
 
 class IsDate(object):
-    """
-    The received value is a valid datetime.date object or can be parsed with
-    dateutil.parser. This allows strings in ISO8601 or RFC3329 or others
-    """
-
     def fails(self, value):
+        """Validates that `value` can be considered a valid date.
+
+        The received value is a valid datetime.date object or can be parsed with
+        dateutil.parser. This allows strings in ISO8601 or RFC3329 or others
+        """
         if not value:
             return False
         if isinstance(value, (datetime.date, datetime.datetime)):
@@ -29,12 +29,11 @@ class IsDate(object):
 
 
 class IsNumeric(object):
-    """
-    The received value is the representation of a number.
-    So '5' is considered valid
-    """
-
     def fails(self, value):
+        """Validates that `value` can be considered a valid number.
+
+        So `'5'` or `5` are considered valid
+        """
         if not value and value != 0:
             return False
         try:
@@ -45,12 +44,8 @@ class IsNumeric(object):
 
 
 class IntLessThan8(object):
-    """
-    The int part of the received number has less that
-    8 digits
-    """
-
     def fails(self, value):
+        """The int part of the received number has less that 8 digits."""
         if not value and value != 0:
             return False
         try:
@@ -61,11 +56,8 @@ class IntLessThan8(object):
 
 
 class IsBoolean(object):
-    """
-    Value is a proper boolean.
-    """
-
     def fails(self, value):
+        """Value is a proper boolean."""
         return value not in {True, False, None}
 
 

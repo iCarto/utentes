@@ -17,26 +17,28 @@ class ExploracaosDeleteTests(DBIntegrationTest):
         gid_utente = exp.utente_rel.gid
         self.request.matchdict.update({"id": gid})
         exploracaos_delete(self.request)
-        nro_exps = (
-            self.request.db.query(Exploracao).filter(Exploracao.gid == gid).count()
+        query = self.request.db.query
+        self.assertIsNone(
+            query(Exploracao).filter(Exploracao.gid == gid).first(),
+            "Should not be any Exploracao with that gid",
         )
-        nro_lics = (
-            self.request.db.query(Licencia).filter(Licencia.exploracao == gid).count()
+        self.assertIsNone(
+            query(Licencia).filter(Licencia.exploracao == gid).first(),
+            "Should not be any Licencia with that gid",
         )
-        nro_fons = (
-            self.request.db.query(Licencia).filter(Fonte.exploracao == gid).count()
+        self.assertIsNone(
+            query(Fonte).filter(Fonte.exploracao == gid).first(),
+            "Should not be any Fonte with that gid",
         )
-        nro_acts = (
-            self.request.db.query(Licencia).filter(Actividade.exploracao == gid).count()
+        self.assertIsNone(
+            query(Actividade).filter(Actividade.exploracao == gid).first(),
+            "Should not be any Actividade with that gid",
         )
-        nro_utentes = (
-            self.request.db.query(Utente).filter(Utente.gid == gid_utente).count()
+
+        self.assertIsNotNone(
+            query(Utente).filter(Utente.gid == gid_utente).first(),
+            "Should be one Utente with that gid",
         )
-        self.assertEqual(0, nro_exps)
-        self.assertEqual(0, nro_lics)
-        self.assertEqual(0, nro_fons)
-        self.assertEqual(0, nro_acts)
-        self.assertEqual(1, nro_utentes)
 
 
 if __name__ == "__main__":

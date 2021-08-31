@@ -72,11 +72,17 @@ class Facturacao(Base):
         return factura["ano"] + factura["mes"]
 
     def has_water_type(self, _water_type: str) -> bool:
-        """
-        _water_type could be 'Sup', 'Superficial', 'sup', ...
-        returns true if this invoice has data for this kind of water type
+        """Returns true if the invoice has the water type.
 
-        TODO: This method is error prone
+        TODO: This method is error prone, but tries to stablish a common way to
+        check this situation, based on check that c_licencia_x, taxa_fixa_x and
+        taxa_uso_x are not empty for this invoice.
+
+        Args:
+            _water_type: A string like 'Sup', 'Superficial', 'sup', ...
+
+        Returns:
+            true if this invoice has data for this kind of water type
         """
         water_type = _water_type[:3].lower()
         template_atts_to_eval = ("c_licencia_", "taxa_fixa_", "taxa_uso_")
@@ -84,9 +90,9 @@ class Facturacao(Base):
         return all(getattr(self, att) is not None for att in atts_to_eval)
 
     def billing_period(self) -> str:
-        """
-        Calculates the string representation of the billing period for an invoice
-        Check that InvoiceService.js provides the same implementation
+        """Calculates the string representation of the billing period.
+
+        TODO: Check that InvoiceService.js provides the same implementation.
         """
         billing_cycle = self.fact_tipo
         current_month = self.mes

@@ -6,6 +6,7 @@ from wsgiref.simple_server import make_server
 
 class ServerThread(threading.Thread):
     """Run WSGI server on a background thread.
+
     Pass in WSGI app object and serve pages from it for Selenium browser.
     """
 
@@ -16,9 +17,7 @@ class ServerThread(threading.Thread):
         self.host_base = host_base
 
     def run(self):
-        """
-        Open WSGI server to listen to HOST_BASE address
-        """
+        """Open WSGI server to listen to HOST_BASE address."""
         parts = urlparse(self.host_base)
         domain, port = parts.netloc.split(":")
         self.srv = make_server(domain, int(port), self.app)

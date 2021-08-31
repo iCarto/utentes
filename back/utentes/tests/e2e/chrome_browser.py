@@ -48,8 +48,7 @@ def get_options():
 
 
 def enable_download_headless(browser, download_path=config.TMP_DIRECTORY):
-    """
-    Habilita las descargas en Chrome en modo headless.
+    """Habilita las descargas en Chrome en modo headless.
 
     Permite descargar automáticamente ficheros al directorio indicado por
     `download_path` cuando Chrome está en modo headless

@@ -10,7 +10,8 @@ AdmLocation = namedtuple(
 def hydro_location(
     loc_divisao: str = None, loc_bacia: str = None, loc_subaci: str = None
 ) -> HydroLocation:
-    """Return an hydrological location.
+    """Returns an hydrological location.
+
     If any of the parameters is given return a valid location that contains that "sublocation"
     """
     locations = [

@@ -1,4 +1,5 @@
-"""
+"""Gestiona la lógica refereida a los clientes (primavera) o explotaciones (sirha).
+
 Con la estructura de la bd es difícil determinar cuando una explotación debe ser
 exportada a primavera por primera vez. Depende de si ha creado como utente de facto
 directamente (exploracaos.created_at), si ha pasado por el proceso de licenciamiento
@@ -97,7 +98,8 @@ def prepare_entities(entities: List[ClientsResultSet]) -> None:
 
 
 def mark_not_invoizable_exp_to_be_canceled(e: ClientsResultSet) -> None:
-    """
+    """Marca una explotación registrada en primavera que ya no está en SIRHA para ser anulada.
+
     Si hay un ExploracaoERP ya no está en el listado de explotaciones facturables
     debe ser anulado. Lo hacemos marcando su enlace con la explotación como
     None y el resto del código ya lo tendrá en cuenta

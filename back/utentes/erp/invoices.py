@@ -41,8 +41,8 @@ def get_and_update_bd(db: Session):
 
 
 def get_db_entities(db: Session) -> List[InvoicesResultSet]:
-    """
-    Returns all the needed data from the database in form of Entities.
+    """Returns all the needed data from the database in form of Entities.
+
     For the invoices (Facturacao) return those that are in PENDING_PAYMENT and (are
     modified from the last export, or are not already being exported)
     """

@@ -14,9 +14,7 @@ MANUAL_SYNC_TIME = datetime.datetime(year=2021, month=3, day=1)
 
 
 class ExploracaosERP(Base):
-    """
-    Mantiene la relación entre las explotaciones de SIRHA y los clientes del ERP
-    """
+    """Mantiene la relación entre las explotaciones de SIRHA y los clientes del ERP."""
 
     __tablename__ = "exploracaos_erp"
     __table_args__ = {"schema": PGSQL_SCHEMA_UTENTES}
@@ -32,17 +30,13 @@ class ExploracaosERP(Base):
     exported_at = Column(DateTime, nullable=True)
 
     def update_link_id(self, exp: Exploracao) -> str:
-        """
-        Updates the link_id of this entity and returns it
-        """
+        """Updates the link_id of this entity and returns it."""
         self.link_id = str(exp.gid).zfill(8)
         return self.link_id
 
 
 class FacturacaoERP(Base):
-    """
-    Mantiene la relación entre las facturas de SIRHA y las facturas del ERP
-    """
+    """Mantiene la relación entre las facturas de SIRHA y las facturas del ERP."""
 
     __tablename__ = "facturacao_erp"
     __table_args__ = {"schema": PGSQL_SCHEMA_UTENTES}
@@ -58,9 +52,7 @@ class FacturacaoERP(Base):
     exported_at = Column(DateTime, nullable=True)
 
     def update_link_id(self, invoice: Facturacao) -> str:
-        """
-        Updates the link_id of this entity and returns it
-        """
+        """Updates the link_id of this entity and returns it."""
         self.link_id = str(invoice.gid).zfill(8)
         return self.link_id
 

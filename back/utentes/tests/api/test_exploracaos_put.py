@@ -4,7 +4,12 @@ from pyramid.httpexceptions import HTTPBadRequest
 
 from utentes.api.exploracaos import exploracaos_update
 from utentes.models.actividade import Actividade, ActividadesAgriculturaRega
-from utentes.models.constants import K_SANEAMENTO, K_SUBTERRANEA, K_SUPERFICIAL
+from utentes.models.constants import (
+    K_SANEAMENTO,
+    K_AGRICULTURA,
+    K_SUBTERRANEA,
+    K_SUPERFICIAL,
+)
 from utentes.models.exploracao import Exploracao
 from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
@@ -343,8 +348,7 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         return self.request.db.query(Utente).all()[0]
 
     @unittest.skip(
-        """
-    Falla porque upsert_utente no actualiza el body cuando ya existe la utente
+        """ Falla porque upsert_utente no actualiza el body cuando ya existe la utente
     hay que revisar si se hizó así por algún motivo
     """
     )
@@ -394,11 +398,11 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         actual = s.query(Exploracao).filter(Exploracao.gid == gid).all()[0]
         self.assertEqual(expected.utente_rel.nome, actual.utente_rel.nome)
 
-    @unittest.skip("""Probablemente relacionado con upsert_utente""")
+    @unittest.skip("Probablemente relacionado con upsert_utente")
     def test_update_exploracao_rename_utente(self):
-        """
-        Tests that the related utente can be renamed from the exploracao,
-        and a new utente is not created
+        """Tests that the utente that owns the exp can be renamed from the exploracao.
+
+        And a new utente is not created.
         """
         exp = get_test_exploracao_from_db(self.request.db)
         gid = exp.gid
@@ -557,163 +561,15 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         self.assertEqual(23, actual.actividade.c_estimado)
         self.assertEqual(42, actual.actividade.habitantes)
 
-    @unittest.skip("fix me")
-    def test_update_exploracao_update_actividade_pecuaria_delete_res(self):
+    def test_update_exploracao_create_cultivo(self):
         expected = (
             self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = from_exploracao(self.request, expected)
-        expected_json["actividade"]["reses"] = [
-            res for res in expected_json["actividade"]["reses"][0:-1]
-        ]
-        self.request.json_body = expected_json
-        exploracaos_update(self.request)
-        actual = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        reses = actual.actividade.reses
-        self.assertEqual(2, len(reses))
+            .join(Exploracao.actividade)
+            .filter(Exploracao.actividade.has(tipo=K_AGRICULTURA))
+        ).first()
 
-    @unittest.skip("fix me")
-    def test_update_exploracao_update_actividade_pecuaria_update_res(self):
-        expected = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = from_exploracao(self.request, expected)
-        expected_json["actividade"]["reses"][0]["c_estimado"] = 9999.88
-        self.request.json_body = expected_json
-        exploracaos_update(self.request)
-        actual = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        reses = actual.actividade.reses
-        self.assertEqual(3, len(reses))
-        self.assertEqual(float(reses[0].c_estimado), 9999.88)
-
-    @unittest.skip("fix me")
-    def test_update_exploracao_update_actividade_pecuaria_create_res(self):
-        expected = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        old_len = len(expected.actividade.reses)
-        self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = from_exploracao(self.request, expected)
-        expected_json["actividade"]["reses"].append(
-            {
-                "c_estimado": 40,
-                "reses_tipo": "Vacuno (Vacas)",
-                "reses_nro": 400,
-                "c_res": 4000,
-                "observacio": "observacio",
-            }
-        )
-        self.request.json_body = expected_json
-        exploracaos_update(self.request)
-        actual = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        reses = actual.actividade.reses
-        self.assertEqual(old_len + 1, len(reses))
-        self.assertEqual(reses[3].c_estimado, 40)
-        self.assertEqual(reses[3].c_res, 4000)
-
-    @unittest.skip("fix me")
-    def test_update_exploracao_update_actividade_pecuaria_create_res_with_same_res_tipo(
-        self,
-    ):
-        expected = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        old_len = len(expected.actividade.reses)
-        reses_tipo = expected.actividade.reses[0].reses_tipo
-        self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = from_exploracao(self.request, expected)
-        expected_json["actividade"]["reses"].append(
-            {
-                "c_estimado": 40,
-                "reses_tipo": reses_tipo,
-                "reses_nro": 400,
-                "c_res": 4000,
-                "observacio": "observacio",
-            }
-        )
-        self.request.json_body = expected_json
-        exploracaos_update(self.request)
-        actual = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        reses = actual.actividade.reses
-        self.assertEqual(old_len + 1, len(reses))
-        # self.assertEquals(reses[3].c_estimado, 40)
-        # self.assertEquals(reses[3].c_res, 4000)
-        # self.assertEquals(reses[0].gid, 1)
-        # self.assertEquals(reses[1].gid, 2)
-        # self.assertEquals(reses[2].gid, 3)
-
-    @unittest.skip("fix me")
-    def test_update_exploracao_update_actividade_pecuaria_create_update_delete_res(
-        self,
-    ):
-        expected = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        self.request.matchdict.update(dict(id=expected.gid))
-        expected_json = from_exploracao(self.request, expected)
-        expected_json["actividade"]["reses"] = [
-            res for res in expected_json["actividade"]["reses"][0:-1]
-        ]
-        expected_json["actividade"]["reses"].append(
-            {
-                "c_estimado": 50,
-                "reses_tipo": "Vacuno (Vacas)",
-                "reses_nro": 500,
-                "c_res": 5000,
-            }
-        )
-        expected_json["actividade"]["reses"][1]["c_estimado"] = 9999.77
-        self.request.json_body = expected_json
-        exploracaos_update(self.request)
-        actual = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.exp_id == "2010-029")
-            .all()[0]
-        )
-        reses = actual.actividade.reses
-        self.assertEqual(3, len(reses))
-        self.assertEqual(float(reses[1].c_estimado), 9999.77)
-        self.assertEqual(reses[2].c_estimado, 50)
-        self.assertEqual(reses[2].c_res, 5000)
-
-    def test_update_exploracao_update_actividade_regadia_create_cultivo(self):
-        actv = self.request.db.query(ActividadesAgriculturaRega).all()[0]
-
-        expected = (
-            self.request.db.query(Exploracao)
-            .filter(Exploracao.gid == actv.exploracao)
-            .all()[0]
-        )
         old_len = len(expected.actividade.cultivos)
-        self.request.matchdict.update(dict(id=expected.gid))
+        self.request.matchdict.update({"id": expected.gid})
         expected_json = from_exploracao(self.request, expected)
         expected_json["actividade"]["cultivos"].append(
             {
@@ -728,13 +584,14 @@ class ExploracaoUpdateActividadeTests(DBIntegrationTest):
         exploracaos_update(self.request)
         actual = (
             self.request.db.query(Exploracao)
-            .filter(Exploracao.gid == actv.exploracao)
-            .all()[0]
+            .filter(Exploracao.gid == expected.gid)
+            .first()
         )
+
         cultivos = actual.actividade.cultivos
         self.assertEqual(old_len + 1, len(cultivos))
-        self.assertEqual(cultivos[old_len].c_estimado, 5)
-        self.assertEqual(cultivos[old_len].eficiencia, 55)
+        self.assertEqual(cultivos[-1].c_estimado, 5)
+        self.assertEqual(cultivos[-1].eficiencia, 55)
 
 
 if __name__ == "__main__":
