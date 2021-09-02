@@ -6,20 +6,20 @@ user.fetch({
     parse: true,
     success: function() {
         new Backbone.UILib.SelectView({
-            el: this.$("#usergroup"),
+            el: document.getElementById("#usergroup"),
             collection: role_domains_collection.byCategory("groups"),
         }).render();
         document.getElementById("usergroup").disabled = true;
 
         if (user.get("usergroup") == SIRHA.ROLE.UNIDAD) {
             new Backbone.UILib.SelectView({
-                el: this.$("#unidade"),
+                el: document.getElementById("#unidade"),
                 collection: new Backbone.Collection(
                     new Backbone.Model({text: user.get("unidade")})
                 ),
             }).render();
             document.getElementById("unidade").disabled = true;
-            this.$("#unidade-form").removeClass("hidden");
+            document.getElementById("#unidade-form").classList.remove("hidden");
         }
 
         new Backbone.UILib.WidgetsView({
