@@ -220,3 +220,5 @@ aras_unification 2021-06-14T19:03:38Z Francisco Puga <fpuga@icarto.es> # ARAs un
 aras_unification_update_datos_aras 2021-07-07T20:33:23Z Francisco Puga <fpuga@icarto.es> # ARAs unification updates datos_ara
 new_version_210825 2021-08-25T14:04:35Z Francisco Puga <fpuga@icarto.es> # new_version_210825
 @210825 2021-08-25T14:10:18Z Francisco Puga <fpuga@icarto.es> # tag 210825
+
+aras_unification_reassing_groups 2021-08-27T16:57:58Z Francisco Puga <fpuga@icarto.es> # Updates groups, roles and perms for ARAs unification
