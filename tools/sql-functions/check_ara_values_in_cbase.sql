@@ -31,7 +31,7 @@ foo AS (
     UNION
     SELECT 'cbase.rios', trim(unnest(string_to_array(ara, ';'))) as a from cbase.rios
     UNION
-    SELECT 'cbase.unidades', trim(unnest(string_to_array(ara, ';'))) as a from cbase.unidades
+    SELECT 'cbase.divisoes', trim(unnest(string_to_array(ara, ';'))) as a from cbase.divisoes
     UNION
     SELECT 'cbase.unidades_weap', trim(unnest(string_to_array(ara, ';'))) as a from cbase.unidades_weap
 )

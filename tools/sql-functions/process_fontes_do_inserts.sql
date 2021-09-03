@@ -32,7 +32,7 @@ INSERT INTO inventario.fontes (
     , lat_lon
     , lic_nro
     , limpezas
-    , loc_unidad
+    , loc_divisao
     , marca
     , metodo
     , metodo_est
@@ -103,7 +103,7 @@ abastecim::boolean
 -- , lat_lon2
 , lic_nro
 , limpezas::boolean
-, loc_unidad
+, loc_divisao
 -- , long_fo
 -- , long_fo2
 , marca

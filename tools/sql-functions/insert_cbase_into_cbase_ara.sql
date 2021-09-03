@@ -7,7 +7,7 @@ tooltip like 'ARA-Norte, IP'
 */
 
 INSERT INTO cbase_ara.aras SELECT * FROM cbase.aras WHERE nome ~ ((SELECT tooltip FROM domains.ara LIMIT 1) || '(;|$)');
-INSERT INTO cbase_ara.unidades SELECT * FROM cbase.unidades WHERE ara ~ ((SELECT tooltip FROM domains.ara LIMIT 1) || '(;|$)');
+INSERT INTO cbase_ara.divisoes SELECT * FROM cbase.divisoes WHERE ara ~ ((SELECT tooltip FROM domains.ara LIMIT 1) || '(;|$)');
 INSERT INTO cbase_ara.bacias SELECT * FROM cbase.bacias WHERE ara ~ ((SELECT tooltip FROM domains.ara LIMIT 1) || '(;|$)');
 INSERT INTO cbase_ara.bacias_representacion SELECT * FROM cbase.bacias_representacion WHERE ara ~ ((SELECT tooltip FROM domains.ara LIMIT 1) || '(;|$)');
 INSERT INTO cbase_ara.albufeiras SELECT * FROM cbase.albufeiras WHERE ara ~ ((SELECT tooltip FROM domains.ara LIMIT 1) || '(;|$)');

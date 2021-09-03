@@ -31,14 +31,14 @@ cbase_tables = [
     "albufeiras",
     "bacias_representacion",
     "batimetria",
-    "unidades",
+    "divisoes",
 ]
 cbase_ara_tables = [
     "entidades_populacao",
     "rios",
     "bacias",
     "unidades_weap",
-    "unidades",
+    "divisoes",
     "postos",
     "oceanos",
     "provincias",
@@ -95,7 +95,7 @@ def build_fill_domains_from_cbase():
 
 def build_rename_fact_codes_for_new_divisoes():
     """
-    If the names of the divisoes/unidades changes, the codes used in facturacao,
+    If the names of the divisoes changes, the codes used in facturacao,
     probably should be also changed
     """
     return """
@@ -103,11 +103,11 @@ def build_rename_fact_codes_for_new_divisoes():
         SELECT
             f.gid as f_gid
             , e.gid e_gid
-            , e.loc_unidad
+            , e.loc_divisao
             , f.fact_id
             , f.recibo_id
-            , left(f.fact_id, 5) || e.loc_unidad || right(f.fact_id, 5) as new_fact_id
-            , left(f.recibo_id, 5) || e.loc_unidad || right(f.recibo_id, 5) as new_recibo_id
+            , left(f.fact_id, 5) || e.loc_divisao || right(f.fact_id, 5) as new_fact_id
+            , left(f.recibo_id, 5) || e.loc_divisao || right(f.recibo_id, 5) as new_recibo_id
         FROM
             utentes.exploracaos e
         JOIN
@@ -142,9 +142,6 @@ def dump_shp_to_sql(shp: str, table: str):
     encoding = calculate_encoding.main(shp)
     df = gpd.read_file(shp, encoding=encoding)
     df.drop(columns="gid", inplace=True, errors="ignore")
-
-    # Temp Woraround
-    df.rename(columns={"divisao": "unidade"}, inplace=True, errors="ignore")
 
     pandas_utils.check_not_duplicated_columns_names(df)
     pandas_utils.check_spaces_from_dataframe(df)

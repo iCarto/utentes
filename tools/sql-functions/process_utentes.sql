@@ -5,16 +5,16 @@
 -- El group by ya está pensando para que funcione con varias licencias por
 -- explotación
 INSERT INTO utentes.exploracaos
-(exp_id, exp_name, d_soli, pago_lic, observacio, loc_provin, loc_distri, loc_posto, loc_nucleo, loc_endere, loc_unidad, loc_bacia, loc_subaci, loc_rio, the_geom, utente, area, estado_lic, fact_tipo, cadastro_uni)
+(exp_id, exp_name, d_soli, pago_lic, observacio, loc_provin, loc_distri, loc_posto, loc_nucleo, loc_endere, loc_divisao, loc_bacia, loc_subaci, loc_rio, the_geom, utente, area, estado_lic, fact_tipo, cadastro_uni)
 SELECT
-    exp_id, exp_name, d_soli, pago_lice, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_unidad, loc_bacia, loc_subaci, loc_rio, geom
+    exp_id, exp_name, d_soli, pago_lice, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_divisao, loc_bacia, loc_subaci, loc_rio, geom
     , (select gid from utentes.utentes u where u.nome = t.nome)
     , ST_Area(geom) / 10000, estado
     , fact_tipo
     , t.cadastro
 FROM tmp_utentes t
 GROUP BY
-exp_id, exp_name, d_soli, pago_lice, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_unidad, loc_bacia, loc_subaci, loc_rio, geom, (select gid from utentes.utentes u where u.nome = t.nome) , ST_Area(geom) / 10000, estado, fact_tipo, cadastro
+exp_id, exp_name, d_soli, pago_lice, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_divisao, loc_bacia, loc_subaci, loc_rio, geom, (select gid from utentes.utentes u where u.nome = t.nome) , ST_Area(geom) / 10000, estado, fact_tipo, cadastro
 ;
 
 

@@ -152,31 +152,31 @@ DELETE FROM inventario_dominios.posto WHERE (SELECT key FROM domains.ara LIMIT 1
 -- ute_domains_loc_hidro
 --
 
-ALTER TABLE domains.unidade ADD COLUMN antigua text not null default 'nueva';
+ALTER TABLE domains.divisao ADD COLUMN antigua text not null default 'nueva';
 ALTER TABLE domains.bacia ADD COLUMN antigua text not null default 'nueva';
 ALTER TABLE domains.subacia  ADD COLUMN antigua text not null default 'nueva';
-UPDATE domains.unidade SET antigua = 'antigua';
+UPDATE domains.divisao SET antigua = 'antigua';
 UPDATE domains.bacia SET antigua = 'antigua';
 UPDATE domains.subacia SET antigua = 'antigua';
-ALTER TABLE domains.unidade ADD COLUMN ara text;
+ALTER TABLE domains.divisao ADD COLUMN ara text;
 ALTER TABLE domains.bacia ADD COLUMN ara text;
 ALTER TABLE domains.subacia  ADD COLUMN ara text;
 
 
-INSERT INTO domains.unidade as a (key, ara, tooltip)
-    SELECT siglas, string_agg(ara, '; ') as ara, string_agg(nome, '; ') as nome FROM cbase.unidades GROUP BY siglas
-    ON CONFLICT ON CONSTRAINT unidade_key_key
+INSERT INTO domains.divisao as a (key, ara, tooltip)
+    SELECT siglas, string_agg(ara, '; ') as ara, string_agg(nome, '; ') as nome FROM cbase.divisao GROUP BY siglas
+    ON CONFLICT ON CONSTRAINT divisao_key_key
     DO UPDATE SET antigua = 'conflicto', ara = COALESCE(a.ara, '') || EXCLUDED.ara, tooltip = EXCLUDED.tooltip
 ;
 
 
-WITH foo as (select key, parent, utentes.extract_discriminator_from_ara_name_list(ara) v FROM domains.unidade), bar AS ( select key, parent, array_agg(v) vv from foo WHERE length(v) > 0 GROUP BY key, parent)
-update domains.unidade p set app = bar.vv from bar where COALESCE(p.key, '') = COALESCE(bar.key, '') and COALESCE(p.parent, '') = COALESCE(bar.parent, '');
+WITH foo as (select key, parent, utentes.extract_discriminator_from_ara_name_list(ara) v FROM domains.divisao), bar AS ( select key, parent, array_agg(v) vv from foo WHERE length(v) > 0 GROUP BY key, parent)
+update domains.divisao p set app = bar.vv from bar where COALESCE(p.key, '') = COALESCE(bar.key, '') and COALESCE(p.parent, '') = COALESCE(bar.parent, '');
 
 
 
 INSERT INTO domains.bacia as a (key, parent, ara)
-    SELECT nome, unidade, string_agg(DISTINCT ara, '; ') as ara FROM cbase.bacias GROUP BY nome, unidade
+    SELECT nome, divisao, string_agg(DISTINCT ara, '; ') as ara FROM cbase.bacias GROUP BY nome, divisao
     ON CONFLICT ON CONSTRAINT bacia_key_key
     DO UPDATE SET antigua = 'conflicto', ara = COALESCE(a.ara, '') || EXCLUDED.ara
 ;
@@ -235,12 +235,12 @@ a(old, old_ara, new, new_ara) AS (
     , ('UGBZ', 'ARA Zambeze', 'DGBZ', 'ARA-Centro, IP')
 )
 , update_documentos AS (
-    UPDATE utentes.documentos d SET unidade = a.new FROM a WHERE a.old = d.unidade AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
+    UPDATE utentes.documentos d SET divisao = a.new FROM a WHERE a.old = d.divisao AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
 )
 , update_users AS (
-    UPDATE utentes.users d SET unidade = a.new FROM a WHERE a.old = d.unidade AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
+    UPDATE utentes.users d SET divisao = a.new FROM a WHERE a.old = d.divisao AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
 )
-UPDATE utentes.exploracaos d SET loc_unidad = a.new FROM a WHERE a.old = d.loc_unidad AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
+UPDATE utentes.exploracaos d SET loc_divisao = a.new FROM a WHERE a.old = d.loc_divisao AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
 ;
 
 
@@ -248,13 +248,13 @@ UPDATE utentes.exploracaos d SET loc_unidad = a.new FROM a WHERE a.old = d.loc_u
 -- FIN AJUSTES A MANO
 
 
-DELETE FROM domains.unidade WHERE antigua = 'antigua';
+DELETE FROM domains.divisao WHERE antigua = 'antigua';
 DELETE FROM domains.bacia WHERE antigua = 'antigua';
 DELETE FROM domains.subacia WHERE antigua = 'antigua';
-ALTER TABLE domains.unidade DROP COLUMN antigua;
+ALTER TABLE domains.divisao DROP COLUMN antigua;
 ALTER TABLE domains.bacia DROP COLUMN antigua;
 ALTER TABLE domains.subacia DROP COLUMN antigua;
-ALTER TABLE domains.unidade DROP COLUMN ara;
+ALTER TABLE domains.divisao DROP COLUMN ara;
 ALTER TABLE domains.bacia DROP COLUMN ara;
 ALTER TABLE domains.subacia DROP COLUMN ara;
 
@@ -267,26 +267,26 @@ ALTER TABLE domains.subacia DROP COLUMN ara;
 -- inv_domains_loc_hidro
 --
 
-ALTER TABLE inventario_dominios.unidade ADD COLUMN antigua text not null default 'nueva';
+ALTER TABLE inventario_dominios.divisao ADD COLUMN antigua text not null default 'nueva';
 ALTER TABLE inventario_dominios.bacia ADD COLUMN antigua text not null default 'nueva';
 ALTER TABLE inventario_dominios.subacia  ADD COLUMN antigua text not null default 'nueva';
-UPDATE inventario_dominios.unidade SET antigua = 'antigua';
+UPDATE inventario_dominios.divisao SET antigua = 'antigua';
 UPDATE inventario_dominios.bacia SET antigua = 'antigua';
 UPDATE inventario_dominios.subacia SET antigua = 'antigua';
-ALTER TABLE inventario_dominios.unidade ADD COLUMN ara text;
+ALTER TABLE inventario_dominios.divisao ADD COLUMN ara text;
 ALTER TABLE inventario_dominios.bacia ADD COLUMN ara text;
 ALTER TABLE inventario_dominios.subacia  ADD COLUMN ara text;
 
 
-INSERT INTO inventario_dominios.unidade as a (key, ara)
-    SELECT siglas, string_agg(ara, '; ') as ara FROM cbase.unidades GROUP BY siglas
-    ON CONFLICT ON CONSTRAINT unidade_key_key
+INSERT INTO inventario_dominios.divisao as a (key, ara)
+    SELECT siglas, string_agg(ara, '; ') as ara FROM cbase.divisoes GROUP BY siglas
+    ON CONFLICT ON CONSTRAINT divisao_key_key
     DO UPDATE SET antigua = 'conflicto', ara = COALESCE(a.ara, '') || EXCLUDED.ara
 ;
 
 
-WITH foo as (select key, parent, utentes.extract_discriminator_from_ara_name_list(ara) v FROM inventario_dominios.unidade), bar AS ( select key, parent, array_agg(v) vv from foo WHERE length(v) > 0 GROUP BY key, parent)
-update inventario_dominios.unidade p set app = bar.vv from bar where COALESCE(p.key, '') = COALESCE(bar.key, '') and COALESCE(p.parent, '') = COALESCE(bar.parent, '');
+WITH foo as (select key, parent, utentes.extract_discriminator_from_ara_name_list(ara) v FROM inventario_dominios.divisao), bar AS ( select key, parent, array_agg(v) vv from foo WHERE length(v) > 0 GROUP BY key, parent)
+update inventario_dominios.divisao p set app = bar.vv from bar where COALESCE(p.key, '') = COALESCE(bar.key, '') and COALESCE(p.parent, '') = COALESCE(bar.parent, '');
 
 
 
@@ -294,32 +294,32 @@ update inventario_dominios.unidade p set app = bar.vv from bar where COALESCE(p.
 WITH foo AS (
     -- ON CONFLICT only works if there is only 1 row conflicting, but for cases like
     -- (Sem identificar, DGBLIC), (Sem identificar, DGBP) both rows will conflict.
-    SELECT nome, unidade, string_agg(DISTINCT ara, '; ') as ara
+    SELECT nome, divisao, string_agg(DISTINCT ara, '; ') as ara
     FROM cbase.bacias
     WHERE
         ara ~ (SELECT tooltip FROM domains.ara LIMIT 1)
-        -- WORKAROUND hasta que se añada loc_unidad a las tablas de inventario
+        -- WORKAROUND hasta que se añada loc_divisao a las tablas de inventario
         AND (
             -- ARAS
             nome NOT IN ('Bacias costeiras', 'Bacias endorreicas', 'Sem identificar')
             OR
-            (nome = 'Bacias costeiras' AND unidade = 'DGBUM')
+            (nome = 'Bacias costeiras' AND divisao = 'DGBUM')
             OR
-            (nome = 'Bacias endorreicas' AND unidade = 'DGBS')
+            (nome = 'Bacias endorreicas' AND divisao = 'DGBS')
             OR
-            (nome = 'Sem identificar' AND unidade = 'DGBUM')
+            (nome = 'Sem identificar' AND divisao = 'DGBUM')
 
             -- ARAN
             OR
-            (nome = 'Bacias costeiras' AND unidade = 'DGBM')
+            (nome = 'Bacias costeiras' AND divisao = 'DGBM')
             OR
-            (nome = 'Sem identificar' AND unidade = 'DGBM')
+            (nome = 'Sem identificar' AND divisao = 'DGBM')
         )
 
-    GROUP BY nome, unidade
+    GROUP BY nome, divisao
 )
 INSERT INTO inventario_dominios.bacia as a (key, parent, ara)
-    SELECT nome, unidade, ara FROM foo
+    SELECT nome, divisao, ara FROM foo
     ON CONFLICT ON CONSTRAINT bacia_key_key
     DO UPDATE SET antigua = 'conflicto', ara = COALESCE(a.ara, '') || EXCLUDED.ara, parent = EXCLUDED.parent
 ;
@@ -370,26 +370,26 @@ a(old, old_ara, new, new_ara) AS (
     , ('UGBB', 'ARA Centro', 'DGBB', 'ARA-Centro, IP')
     , ('UGBZ', 'ARA Zambeze', 'DGBZ', 'ARA-Centro, IP')
 )
-UPDATE inventario.fontes d SET loc_unidad = a.new FROM a WHERE a.old = d.loc_unidad AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
+UPDATE inventario.fontes d SET loc_divisao = a.new FROM a WHERE a.old = d.loc_divisao AND a.new_ara = (SELECT tooltip FROM domains.ara LIMIT 1)
 ;
 
 
 -- FIN AJUSTES A MANO
 
 
-DELETE FROM inventario_dominios.unidade WHERE antigua = 'antigua';
+DELETE FROM inventario_dominios.divisao WHERE antigua = 'antigua';
 DELETE FROM inventario_dominios.bacia WHERE antigua = 'antigua';
 DELETE FROM inventario_dominios.subacia WHERE antigua = 'antigua';
-ALTER TABLE inventario_dominios.unidade DROP COLUMN antigua;
+ALTER TABLE inventario_dominios.divisao DROP COLUMN antigua;
 ALTER TABLE inventario_dominios.bacia DROP COLUMN antigua;
 ALTER TABLE inventario_dominios.subacia DROP COLUMN antigua;
-ALTER TABLE inventario_dominios.unidade DROP COLUMN ara;
+ALTER TABLE inventario_dominios.divisao DROP COLUMN ara;
 ALTER TABLE inventario_dominios.bacia DROP COLUMN ara;
 ALTER TABLE inventario_dominios.subacia DROP COLUMN ara;
 
 
 
-DELETE FROM inventario_dominios.unidade WHERE (SELECT key FROM domains.ara LIMIT 1) != ALL(app);
+DELETE FROM inventario_dominios.divisao WHERE (SELECT key FROM domains.ara LIMIT 1) != ALL(app);
 DELETE FROM inventario_dominios.bacia WHERE (SELECT key FROM domains.ara LIMIT 1) != ALL(app);
 DELETE FROM inventario_dominios.subacia WHERE (SELECT key FROM domains.ara LIMIT 1) != ALL(app);
 

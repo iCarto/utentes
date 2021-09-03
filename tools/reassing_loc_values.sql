@@ -86,7 +86,7 @@ update utentes.exploracaos c set loc_provin = cbase_provincia, loc_distri = cbas
 with foo as (
     SELECT
         exp_id
-        , a.gid, a.loc_unidad, a.loc_bacia, a.loc_subaci, d.parent as cbase_unidade, b.nome cbase_bacia, b.subacia cbase_subacia, b.ara
+        , a.gid, a.loc_divisao, a.loc_bacia, a.loc_subaci, d.parent as cbase_divisao, b.nome cbase_bacia, b.subacia cbase_subacia, b.ara
     FROM
         utentes.exploracaos a
         JOIN cbase.bacias b ON ST_Intersects(a.the_geom, b.geom)

@@ -99,7 +99,7 @@ WITH foo AS (
     FROM tmp_utentes
     GROUP BY
         nome, uten_tipo, nuit, uten_gere, contacto, telefone, email, loc_provin, loc_distri, loc_posto, loc_nucleo, loc_endere, reg_comerc, reg_zona
-        , exp_id, exp_name, d_soli, pago_lice, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_unidad, loc_bacia, loc_subaci, loc_rio
+        , exp_id, exp_name, d_soli, pago_lice, observacio, loc_prov_1, loc_dist_1, loc_posto2, loc_nucl_1, loc_ende_1, loc_divisao, loc_bacia, loc_subaci, loc_rio
         , tipo, habitantes, area_pot, area_irri, area_medi, tipo_indus, eval_impac, instalacio, energia_tipo, potencia
         , estado
         , fact_tipo, cadastro
