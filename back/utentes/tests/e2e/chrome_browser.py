@@ -44,6 +44,12 @@ def get_options():
 
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-software-rasterizer")
+
+    # This options should reduce the log output of selenium, but they not exists for all
+    # browsers and versions, so a bit of prober&error is needed
+    # options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    # options.add_argument('--log-level=2')
+
     return options
 
 
@@ -53,7 +59,7 @@ def enable_download_headless(browser, download_path=config.TMP_DIRECTORY):
     Permite descargar automáticamente ficheros al directorio indicado por
     `download_path` cuando Chrome está en modo headless
     """
-    browser.command_executor._commands["send_command"] = (
+    browser.command_executor._commands["send_command"] = (  # noqa: WPS437
         "POST",
         "/session/$sessionId/chromium/send_command",
     )

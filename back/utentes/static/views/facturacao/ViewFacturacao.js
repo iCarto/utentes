@@ -1,9 +1,6 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
-    tagName: "div",
-
-    id: "view-facturacao", // optional
-    className: "myclass",
+Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
+    id: "view-facturacao",
     template: _.template(`
     <div id="bt-toolbar" class="row" style="margin-bottom: 10px; margin-top: 10px">
         <div class="col-xs-12">
@@ -73,7 +70,7 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
     `),
 
     initialize: function(options) {
-        this.options = options || {};
+        Backbone.SIXHIARA.BaseProcesoView.prototype.initialize.call(this);
 
         var tiposLicencia = [];
         this.model.get("licencias").forEach(function(lic) {
@@ -103,12 +100,12 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
     },
 
     render: function() {
-        var json = this.model.toJSON();
-        this.$el.html(this.template(json));
+        Backbone.SIXHIARA.BaseProcesoView.prototype.render.call(this);
 
         this.renderFacturacaoHistorico();
         this.renderFactura();
 
+        var json = this.model.toJSON();
         this.$el.find("#fact_tipo").val(json.fact_tipo);
         this.$el.find("#pago_lic").val(json.pago_lic + "");
 
@@ -136,12 +133,9 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
             .append(this.facturaHeader.render().el);
     },
 
-    /*
-    Esto en realidad está por no  usar jquery. Si se hace en render todavía no están en el
-    DOM los elementos y no se puede usar document ¿?. Con jquery en cambio se quedan
-    binded para después al usar this.$
-    */
     init: function() {
+        Backbone.SIXHIARA.BaseProcesoView.prototype.init.call(this);
+
         self = this;
 
         this.facturaView.updateWidgets();
@@ -155,10 +149,6 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
         });
 
         this.updateWidgets();
-
-        new Backbone.SIXHIARA.FileModalView({
-            model: this.model,
-        });
     },
 
     updateWidgets: function() {
@@ -167,12 +157,11 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
     },
 
     defineWidgetsToBeUsed: function() {
-        var self = this;
         if (iAuth.hasRoleObservador() || iAuth.hasRoleTecnico()) {
             this.widgets = [];
-            return;
+        } else {
+            this.widgets = ["pago_lic", "fact_tipo"];
         }
-        this.widgets = ["pago_lic", "fact_tipo"];
     },
 
     enabledWidgets: function() {
@@ -235,33 +224,7 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.View.extend({
         }
     },
 
-    autosave: function(e) {
-        // http://codetunnel.io/how-to-implement-autosave-in-your-web-app/
-        //this.updateAutomatic();
-        /*if (! this.isSaveable(e)) {
-            return;
-        }*/
-        var self = this;
-        var autosaveInfo = document.getElementById("autosave-info");
-        autosaveInfo.innerHTML = "Modificações pendentes";
-        autosaveInfo.style.color = "red";
-        if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-        }
-        if (this.autosaveInputTimeOutId) {
-            clearTimeout(this.autosaveInputTimeOutId);
-        }
-        this.timeoutId = setTimeout(function() {
-            self.saveExploracao(true);
-            autosaveInfo.innerHTML = "Modificações gravadas";
-            autosaveInfo.style.color = "green";
-            self.autosaveInputTimeOutId = setTimeout(function() {
-                autosaveInfo.innerHTML = "";
-            }, 1500);
-        }, 750);
-    },
-
-    saveExploracao: function(autosave) {
+    fillExploracao: function(autosave) {
         this.model.urlRoot = Backbone.SIXHIARA.Config.apiFacturacaoExploracao;
         this.model.save(null, {
             validate: false,

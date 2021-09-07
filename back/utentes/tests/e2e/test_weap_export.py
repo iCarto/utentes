@@ -3,9 +3,6 @@ import time
 import unittest
 
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
 from utentes.api.weap import build_filename
 from utentes.tests.e2e import config
@@ -61,13 +58,7 @@ class TestWeapExport(BaseE2ETest):
     def _go_to_exp_in(self, route_path):
         login(self.browser, {"name": "test_admin", "passwd": "test_admin"})
         self.browser.get(f"{config.HOST_BASE}{route_path}")
-
-        wait = WebDriverWait(self.browser, 60)
-        wait.until(
-            EC.element_to_be_clickable(
-                (By.PARTIAL_LINK_TEXT, self.testing_database.exp_id)
-            )
-        ).click()
+        self.click_exp_id_link_on_list(self.testing_database.exp_id)
         time.sleep(0.5)
 
 

@@ -12,6 +12,10 @@ import traceback
 import unittest
 
 from pyramid import testing
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC  # noqa: N812
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
 
 from utentes.tests.e2e import config
 from utentes.tests.e2e.chrome_browser import get_browser as get_browser_chrome
@@ -36,7 +40,8 @@ def get_browser():
 class BaseE2ETest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        """
+        """Se ejecuta sólo una vez para cada grupo de tests.
+
         Las operaciones que hacemos en setUp de configurar el browser la base de datos,
         y lanzar el servidor, seguramente podrían ir en este nivel y configurarlo para
         cada test.
@@ -44,7 +49,7 @@ class BaseE2ETest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Idem que setUpClass"""
+        """Idem que setUpClass."""
 
     def setUp(self):
         try:
@@ -113,3 +118,40 @@ class BaseE2ETest(unittest.TestCase):
     def click_element(self, input_id, seconds_to_wait=0.5):
         time.sleep(seconds_to_wait)
         self.browser.find_element_by_id(input_id).click()
+
+    def select_option_by_index(
+        self, input_id, index, second_to_wait_before=0.5, second_to_wait_after=0.5
+    ):
+        time.sleep(second_to_wait_before)
+        widget = Select(
+            self.browser.find_element_by_xpath(f"//select[@id='{input_id}']")
+        )
+        widget.select_by_index(index)
+        time.sleep(second_to_wait_after)
+
+    def select_option_by_visible_text(
+        self, input_id, text, second_to_wait_before=0.5, second_to_wait_after=0.5
+    ):
+        time.sleep(second_to_wait_before)
+        widget = Select(
+            self.browser.find_element_by_xpath(f"//select[@id='{input_id}']")
+        )
+        widget.select_by_visible_text(text)
+        time.sleep(second_to_wait_after)
+
+    def click_exp_id_link_on_list(self, exp_id):
+        wait = WebDriverWait(self.browser, 60)
+        wait.until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, exp_id))).click()
+
+    def _assert_alert_text_and_accept(
+        self, alert_text, second_to_wait_before=0.5, second_to_wait_after=0.5
+    ):
+
+        # wait = WebDriverWait(self.browser, 60)
+        # alert = wait.until(EC.alert_is_present()
+
+        time.sleep(second_to_wait_before)
+        alert = self.browser.switch_to.alert
+        self.assertEqual(alert.text, alert_text)
+        alert.accept()
+        time.sleep(second_to_wait_after)

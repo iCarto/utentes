@@ -11,19 +11,8 @@ from utentes.lib.utils.dicts import merge_nested_dict
 from utentes.models.exploracao import Exploracao
 from utentes.models.renovacao import Renovacao
 from utentes.models.user import User
-
-
-def create_test_admin(request):
-    request.db.query(User).filter(User.username == "test_admin").delete()
-    user = User(username="test_admin", usergroup="Administrador")
-    user.set_password("test_admin")
-    request.db.add(user)
-    request.db.commit()
-
-
-def delete_test_admin(request):
-    request.db.query(User).filter(User.username == "test_admin").delete()
-    request.db.commit()
+from utentes.repos.user_repo import delete_user_by_username
+from utentes.tests.e2e.config import TMP_DIRECTORY
 
 
 def delete_exp(request, exp_id):
@@ -86,6 +75,18 @@ def validate_exp(self):
     validate_fontes(self, e.fontes, expected["fontes"])
 
 
+def validate_print_license_exists(self):
+    expected = get_data()
+    tipo_lic = expected["licencias"][0]["tipo_lic"]
+    lic_nro = expected["licencias"][0]["lic_nro"].replace("/", "_")
+    exp_name = expected["exp_name"]
+    file_name = f"{tipo_lic}_{lic_nro}_{exp_name}.docx"
+    self.assertTrue(
+        os.path.isfile(os.path.join(TMP_DIRECTORY, file_name)),
+        f"License file {file_name} does not exists",
+    )
+
+
 def validate_fontes(self, actual, expected):
     self.assertEqual(len(actual), 1)
     self.assertEqual(actual[0].tipo_agua, expected[0]["tipo_agua"])
@@ -110,6 +111,9 @@ def validate_cultivos(self, actual, expected):
 
 
 class TestingDatabase(object):
+    def __init__(self):
+        self.created_usernames = []
+
     def start(self):
         settings = get_appsettings("development.ini")
         engine = engine_from_config(settings, "sqlalchemy.")
@@ -125,11 +129,30 @@ class TestingDatabase(object):
         e = create_exp(self.request, get_data())
         self.exp_id = e.exp_id
         self.test_e = e
-        create_test_admin(self.request)
+        self.create_test_admin()
 
     def stop(self):
-        delete_test_admin(self.request)
+        for username in self.created_usernames:
+            delete_user_by_username(self.request.db, username)
+        self.request.db.commit()
+
         delete_exp(self.request, self.exp_id)
         self.db_session.close()
         self.connection.close()
         # self.transaction.rollback()
+
+    def create_user(self, username, usergroup, divisao, password):
+        """Creates a user in the db.
+
+        Also it handles a register of the created usernames to drop it
+        in the tearDown method
+        """
+        delete_user_by_username(self.request.db, username)
+        user = User(username=username, usergroup=usergroup, divisao=divisao)
+        user.set_password(password)
+        self.request.db.add(user)
+        self.request.db.commit()
+        self.created_usernames.append(username)
+
+    def create_test_admin(self):
+        self.create_user("test_admin", "Administrador", None, "test_admin")

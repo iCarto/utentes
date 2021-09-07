@@ -9,3 +9,7 @@ def get_user_by_username(db: Session, username: str):
         return db.query(User).filter(User.username == username).one()
     except (MultipleResultsFound, NoResultFound):
         return None
+
+
+def delete_user_by_username(db: Session, username: str):
+    db.query(User).filter(User.username == username).delete()

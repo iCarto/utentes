@@ -1,5 +1,10 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.BaseProcesoView = Backbone.UILib.BaseView.extend({
+    /*
+    El método `init` en realidad está por no  usar jquery. Si se hace en render todavía no están en el
+    DOM los elementos y no se puede usar document ¿?. Con jquery en cambio se quedan
+    binded para después al usar this.$
+    */
     init: function() {
         Backbone.UILib.BaseView.prototype.initialize.call(this);
         new Backbone.SIXHIARA.FileModalView({
