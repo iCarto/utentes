@@ -43,6 +43,6 @@ def ensure_exp_is_in_correct_state(request):
     # Commonly it happens pressing back button after visit this page
     gid = request.GET.get("id")
     estado_lic = get_license_state(request, gid)
-    if estado_lic not in [K_PENDING_FIELD_VISIT, K_INCOMPLETE_DT]:
+    if estado_lic not in {K_PENDING_FIELD_VISIT, K_INCOMPLETE_DT}:
         url = request.route_url("exploracao-show", _query={"id": gid})
         raise HTTPTemporaryRedirect(location=url)

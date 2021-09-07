@@ -21,7 +21,7 @@ class CartographyBase(Base):
         properties = {
             c: getattr(self, c)
             for c in self.__mapper__.columns.keys()
-            if c not in ("gid", "geom", "geom_as_geojson")
+            if c not in {"gid", "geom", "geom_as_geojson"}
         }
         geom = None
         if self.geom is not None:

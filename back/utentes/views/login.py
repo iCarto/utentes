@@ -23,16 +23,16 @@ def login(request):
 
     referrer = request.url
 
-    if referrer in [login_url, root_url, root_url_without_trailing_slash]:
+    if referrer in {login_url, root_url, root_url_without_trailing_slash}:
         referrer = request.route_url(
             request.registry.settings.get("users.after_login_url")
         )
     next = request.params.get("next", referrer)
 
-    if request.authenticated_userid and request.url in [
+    if request.authenticated_userid and request.url in {
         root_url,
         root_url_without_trailing_slash,
-    ]:
+    }:
         return HTTPFound(location=next)
 
     if "submit" in request.POST:

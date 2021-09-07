@@ -158,7 +158,7 @@ def renovacao_update(request):
         r = valid[0]
         r.update_from_json(body)
 
-    if r.estado in (LICENSED, DE_FACTO, NOT_APPROVED):
+    if r.estado in {LICENSED, DE_FACTO, NOT_APPROVED}:
         exp = (
             request.db.query(Exploracao).filter(Exploracao.gid == r.exploracao).all()[0]
         )

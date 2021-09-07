@@ -76,10 +76,12 @@ def get_db_entities(db: Session) -> List[InvoicesResultSet]:
             invoice_erp=(e.FacturacaoERP or FacturacaoERP()),
         )
         for e in entities
-        # Workaround. Remove early invoices for old Exps that where not matched when
-        # the MANUAL_SYNC was done
-        if (e.ExploracaoBase.created_at > MANUAL_SYNC_TIME)
-        or (e.ExploracaoBase.created_at <= MANUAL_SYNC_TIME and e.ExploracaosERP)
+        if (
+            # Workaround. Remove early invoices for old Exps that where not matched when
+            # the MANUAL_SYNC was done
+            (e.ExploracaoBase.created_at > MANUAL_SYNC_TIME)
+            or (e.ExploracaoBase.created_at <= MANUAL_SYNC_TIME and e.ExploracaosERP)
+        )
     ]
 
 
