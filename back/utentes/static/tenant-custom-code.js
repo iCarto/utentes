@@ -203,7 +203,6 @@ window.SIXHIARA.ESTADOS_FACT = [
             SIRHA.ROLE.ADMIN,
             SIRHA.ROLE.OBSERVADOR,
             SIRHA.ROLE.TECNICO,
-            SIRHA.ROLE.FINANCIERO,
             SIRHA.ROLE.BASIN_DIVISION,
         ],
     },

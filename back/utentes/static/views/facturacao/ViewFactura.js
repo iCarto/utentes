@@ -230,16 +230,25 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         this.initFactPeriod();
     },
 
+    disableWidgets: function() {
+        if (this.widgets) {
+            this.widgets.forEach(function(w) {
+                var input = this.$("#edit-facturacao-modal #" + w);
+                input.prop("disabled", true);
+            });
+        }
+    },
+
     defineWidgetsToBeUsed: function() {
         this.widgets = [];
         var licenseWidgets = [];
         var self = this;
-        // un observador no puede editar ningún campo
+
         if (iAuth.hasRoleObservador()) {
+            // un observador no puede editar ningún campo
             return;
-        }
-        // un técnico puede editar el consumo y tipo de la licencia subterránea si se trata de una licencia de consumo variable
-        if (iAuth.hasRoleTecnico()) {
+        } else if (iAuth.hasRoleTecnico() || iAuth.isDivisao()) {
+            // Un técnico o División puede editar el consumo y tipo de la licencia subterránea si se trata de una licencia de consumo variable
             if (
                 this.model.get("fact_estado") == window.SIRHA.ESTADO_FACT.PENDING_M3 &&
                 this.options.tiposLicencia.includes("sub") &&
@@ -247,14 +256,11 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
             ) {
                 licenseWidgets = ["consumo_tipo_sub", "consumo_fact_sub"];
             } else {
-                return;
+                // puede ver el histórico de facturas pero no tocar nada si  no está aún
+                // en pendiente de consumo
+                licenseWidgets = [];
             }
-        }
-
-        // campos que se pueden editar
-        if (this.model.get("fact_estado") != window.SIRHA.ESTADO_FACT.PENDING_M3) {
-            // si la factura no está pendiente de introducir el consumo se pueden modificar los campos del financiero
-            this.widgets = ["iva", "juros"];
+        } else {
             licenseWidgets = [
                 "taxa_fixa_sup",
                 "taxa_fixa_sub",
@@ -262,14 +268,10 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                 "taxa_uso_sub",
                 "consumo_fact_sup",
                 "consumo_fact_sub",
-            ];
-        } else {
-            // si la factura está pendiente de introducir el consumo se pueden modificar los campos del técnico
-            licenseWidgets = [
                 "consumo_tipo_sup",
                 "consumo_tipo_sub",
-                "consumo_fact_sup",
-                "consumo_fact_sub",
+                "iva",
+                "juros",
             ];
         }
 
@@ -293,15 +295,6 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         });
     },
 
-    disableWidgets: function() {
-        if (this.widgets) {
-            this.widgets.forEach(function(w) {
-                var input = this.$("#edit-facturacao-modal #" + w);
-                input.prop("disabled", true);
-            });
-        }
-    },
-
     enabledWidgets: function() {
         var self = this;
         this.widgets.forEach(function(w) {
@@ -321,31 +314,46 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
             e = e && input.validity.valid;
             return e;
         });
-        if (
-            iAuth.hasRoleObservador() ||
-            (iAuth.hasRoleTecnico() &&
-                this.model.get("fact_estado") != window.SIRHA.ESTADO_FACT.PENDING_M3)
-        ) {
-            this.$("#bt-diferida").hide();
-            this.$("#bt-factura").hide();
-            this.$("#bt-recibo").hide();
-        } else if (
-            this.model.get("fact_estado") == window.SIRHA.ESTADO_FACT.PENDING_M3
-        ) {
+
+        this.$("#bt-diferida").hide();
+        this.$("#bt-factura").hide();
+        this.$("#bt-recibo").hide();
+
+        if (iAuth.hasRoleObservador()) {
+            return;
+        }
+
+        if (iAuth.hasRoleTecnico() || iAuth.isDivisao()) {
+            if (this.model.get("fact_estado") === window.SIRHA.ESTADO_FACT.PENDING_M3) {
+                this.$("#bt-diferida")
+                    .attr("disabled", !enable)
+                    .show();
+                this.$("#bt-factura").hide();
+                this.$("#bt-recibo").hide();
+            } else {
+                // puede ver el histórico de facturas pero no tocar nada si  no está aún
+                // en pendiente de consumo
+            }
+            return;
+        }
+
+        if (this.model.get("fact_estado") === window.SIRHA.ESTADO_FACT.PENDING_M3) {
+            // sólo pasa para ROLE.ADMINISTRADOR
             this.$("#bt-diferida")
                 .attr("disabled", !enable)
                 .show();
             this.$("#bt-factura").hide();
             this.$("#bt-recibo").hide();
-        } else {
-            this.$("#bt-diferida").hide();
-            this.$("#bt-factura")
-                .attr("disabled", !enable)
-                .show();
-            this.$("#bt-recibo")
-                .attr("disabled", !this.isReciboBtnEnabled() || !enable)
-                .show();
+            return;
         }
+
+        this.$("#bt-diferida").hide();
+        this.$("#bt-factura")
+            .attr("disabled", !enable)
+            .show();
+        this.$("#bt-recibo")
+            .attr("disabled", !this.isReciboBtnEnabled() || !enable)
+            .show();
     },
 
     isReciboBtnEnabled() {
