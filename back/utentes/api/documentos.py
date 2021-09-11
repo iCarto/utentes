@@ -16,6 +16,10 @@ from utentes.models.documento import Documento
 from utentes.models.domain import Domain
 from utentes.models.exploracao import Exploracao
 
+import logging
+
+log = logging.getLogger(__name__)
+
 
 @view_config(
     route_name="api_exploracao_documentacao",
@@ -101,6 +105,7 @@ def get_folder_path(request, folder_id, folder_name, folder_level, subpath):
 def exploracao_documentacao_files(request):
     subpath = request.matchdict.get("subpath", None)
     path_info = parse_subpath(subpath)
+    log.error(path_info)
     if path_info["departamento"] is None:
         return exploracao_get_exploracao_folders(request, path_info["exploracao_id"])
     else:
@@ -357,11 +362,11 @@ def documento_file_read(request):
 
     try:
         documento = find_documento(request, file_name, path_info)
-        return FileResponse(documento.get_file_path())
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception(
             {"error": error_msgs["no_document"], "name": path_info}
         )
+    return FileResponse(documento.get_file_path())
 
 
 @view_config(
@@ -386,13 +391,13 @@ def documento_file_delete(request):
 
     try:
         documento = find_documento(request, file_name, path_info)
-        documento.delete_file()
-        request.db.delete(documento)
-        request.db.commit()
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception(
             {"error": error_msgs["no_document"], "name": path_info}
         )
+    documento.delete_file()
+    request.db.delete(documento)
+    request.db.commit()
 
 
 @view_config(

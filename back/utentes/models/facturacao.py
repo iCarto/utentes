@@ -122,7 +122,7 @@ class Facturacao(Base):
         if billing_cycle == "Anual":
             return f"{previous_year}"
 
-        raise Exception(
+        raise ValueError(
             "Invalid input data to calculate the billing period",
             billing_cycle,
             current_year,

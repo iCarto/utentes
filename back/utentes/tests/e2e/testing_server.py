@@ -4,6 +4,7 @@ from pyramid.paster import get_app
 
 from utentes.tests.e2e import config
 from utentes.tests.e2e.server_thread import ServerThread
+from utentes.tests.utils.exceptions import NotExpectedTestingError
 
 
 def get_wsgi_app():
@@ -17,5 +18,5 @@ def start_server():
     # Wait randomish time to allows SocketServer to initialize itself
     time.sleep(0.5)
     if not server.srv:
-        raise Exception("Failed to start the test web server")
+        raise NotExpectedTestingError("Failed to start the test web server")
     return server

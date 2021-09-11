@@ -37,8 +37,6 @@ def user_create(request):
 
     try:
         user = User.create_from_json(request.json_body)
-        request.db.add(user)
-        request.db.commit()
     except ValidationException as val_exp:
         request.db.rollback()
         raise badrequest_exception(val_exp.msgs)
@@ -47,6 +45,8 @@ def user_create(request):
         request.db.rollback()
         raise badrequest_exception({"error": error_msgs["unknown_error"]})
 
+    request.db.add(user)
+    request.db.commit()
     return user
 
 
@@ -63,15 +63,12 @@ def user_delete(request):
 
     try:
         user = request.db.query(User).filter(User.id == id).one()
-        request.db.delete(user)
-        request.db.commit()
-        return {"username": user.username}
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["user_not_exists"], "id": id})
-    except Exception:
-        log.error("Failed to delete user", exc_info=True)
-        request.db.rollback()
-        raise badrequest_exception({"error": error_msgs["unknown_error"]})
+
+    request.db.delete(user)
+    request.db.commit()
+    return {"username": user.username}
 
 
 @view_config(
@@ -132,12 +129,7 @@ def user_update(request):
         if bads:
             raise badrequest_exception({"error": error_msgs["user_already_exists"]})
 
-    try:
-        user.update_from_json(json)
-        request.db.add(user)
-        request.db.commit()
-        return user
-    except Exception:
-        log.error("Failed to update user", exc_info=True)
-        request.db.rollback()
-        raise badrequest_exception({"error": error_msgs["unknown_error"]})
+    user.update_from_json(json)
+    request.db.add(user)
+    request.db.commit()
+    return user

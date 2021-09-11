@@ -72,33 +72,27 @@ def cultivos_update(request):
             .filter(ActividadesCultivos.gid == gid)
             .one()
         )
-        cultivo.update_from_json(request.json_body)
-        request.db.add(cultivo)
-        request.db.commit()
-        actv = (
-            request.db.query(Actividade)
-            .filter(Actividade.gid == cultivo.actividade)
-            .one()
-        )
-        c_estimado_actv = 0
-        area_medi_actv = 0
-        for cultivo in actv.cultivos:
-            c_estimado_actv += cultivo.c_estimado
-            area_medi_actv += cultivo.area or 0
-        actv.c_estimado = c_estimado_actv
-        actv.area_medi = area_medi_actv
-        request.db.add(actv)
-        exp = (
-            request.db.query(Exploracao).filter(Exploracao.gid == actv.exploracao).one()
-        )
-        exp.c_estimado = c_estimado_actv
-        request.db.add(exp)
-        request.db.commit()
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_cultivo_gid"], "gid": gid})
-    except ValueError as ve:
-        log.error(ve)
-        raise badrequest_exception({"error": error_msgs["body_not_valid"]})
+
+    cultivo.update_from_json(request.json_body)
+    request.db.add(cultivo)
+    request.db.commit()
+    actv = (
+        request.db.query(Actividade).filter(Actividade.gid == cultivo.actividade).one()
+    )
+    c_estimado_actv = 0
+    area_medi_actv = 0
+    for cultivo in actv.cultivos:
+        c_estimado_actv += cultivo.c_estimado
+        area_medi_actv += cultivo.area or 0
+    actv.c_estimado = c_estimado_actv
+    actv.area_medi = area_medi_actv
+    request.db.add(actv)
+    exp = request.db.query(Exploracao).filter(Exploracao.gid == actv.exploracao).one()
+    exp.c_estimado = c_estimado_actv
+    request.db.add(exp)
+    request.db.commit()
 
     return cultivo
 

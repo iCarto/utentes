@@ -53,12 +53,13 @@ def utentes_delete(request):
         raise badrequest_exception({"error": error_msgs["gid_obligatory"]})
     try:
         u = request.db.query(Utente).filter(Utente.gid == gid).one()
-        for e in u.exploracaos:
-            delete_exploracao_documentos(request, e.gid)
-        request.db.delete(u)
-        request.db.commit()
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+    for e in u.exploracaos:
+        delete_exploracao_documentos(request, e.gid)
+    request.db.delete(u)
+    request.db.commit()
+
     return {"gid": gid}
 
 
@@ -79,15 +80,16 @@ def utentes_update(request):
 
     try:
         u = request.db.query(Utente).filter(Utente.gid == gid).one()
-        u.update_from_json(request.json_body)
-        request.db.add(u)
-        request.db.commit()
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+    try:
+        u.update_from_json(request.json_body)
     except ValueError as ve:
         log.error(ve)
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
 
+    request.db.add(u)
+    request.db.commit()
     return u
 
 
@@ -100,11 +102,11 @@ def utentes_update(request):
 def utentes_create(request):
     try:
         body = request.json_body
-        nome = body.get("nome")
     except ValueError as ve:
         log.error(ve)
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
 
+    nome = body.get("nome")
     msgs = validate_entities(body)
     if msgs:
         raise badrequest_exception({"error": msgs})

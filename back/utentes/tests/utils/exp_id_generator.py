@@ -1,12 +1,12 @@
 from typing import Union
 
 from utentes.services.settings_service import get_ara
-from utentes.tests.utils.exceptions import NoThisWayError
+from utentes.tests.utils.exceptions import NotExpectedTestingError
 
 
 class ExpIdGenerator(object):
     def __init__(self) -> None:
-        raise NoThisWayError("This class should not be instantiated")
+        raise NotExpectedTestingError("This class should not be instantiated")
 
     @classmethod
     def from_serial(cls, serial: Union[int, str]) -> str:

@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 class FileHandler(object):
     def save(self, filename, content):
         if filename is None:
-            raise Exception("No filename was provided in save method")
+            raise ValueError("No filename was provided in save method")
 
         if not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename))
@@ -26,7 +26,7 @@ class FileHandler(object):
 
     def delete(self, filename):
         if filename is None:
-            raise Exception("No filename was provided in delete method")
+            raise ValueError("No filename was provided in delete method")
         try:
             os.remove(filename)
         except OSError as e:

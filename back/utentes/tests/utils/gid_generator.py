@@ -1,4 +1,4 @@
-from utentes.tests.utils.exceptions import NoThisWayError
+from utentes.tests.utils.exceptions import NotExpectedTestingError
 
 
 class GIDGenerator(object):
@@ -10,7 +10,7 @@ class GIDGenerator(object):
     facturacao_gid = 0
 
     def __init__(self) -> None:
-        raise NoThisWayError("This class should not be instantiated")
+        raise NotExpectedTestingError("This class should not be instantiated")
 
     @classmethod
     def next_licencia(cls):

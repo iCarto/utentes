@@ -60,14 +60,17 @@ def tanques_piscicolas_update(request):
 
     try:
         used_model = request.db.query(UsedModel).filter(UsedModel.gid == gid).one()
-        used_model.update_from_json(request.json_body)
-        request.db.add(used_model)
-        request.db.commit()
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_cultivo_gid"], "gid": gid})
+
+    try:
+        used_model.update_from_json(request.json_body)
     except ValueError as ve:
         log.error(ve)
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
+
+    request.db.add(used_model)
+    request.db.commit()
 
     return used_model
 

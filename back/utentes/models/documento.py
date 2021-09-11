@@ -76,14 +76,10 @@ class Documento(Base):
         return self.get_file_path_upload()
 
     def upload_file(self, content):
-        try:
-            filename = self.get_file_path_upload()
-            filehandler = FileHandler()
-            filehandler.save(filename, content)
-            self.save_file()
-        except Exception:
-            logging.exception(f"Error saving file in uploads folder: {self.name}")
-            raise
+        filename = self.get_file_path_upload()
+        filehandler = FileHandler()
+        filehandler.save(filename, content)
+        self.save_file()
 
     def delete_file(self):
         # TODO: connect this method to SQLAlchemy delete process
@@ -95,13 +91,13 @@ class Documento(Base):
         if not self.saved:
             src = self.get_file_path_upload()
             dst = self.get_file_path_save()
+            filehandler = FileHandler()
             try:
-                filehandler = FileHandler()
                 filehandler.rename(src, dst)
-                self.saved = True
             except Exception:
                 logging.exception(f"Error renaming file from {src} to {dst}")
                 raise
+            self.saved = True
 
     def __json__(self, request):
         url = ""

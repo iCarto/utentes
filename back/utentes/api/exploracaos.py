@@ -74,12 +74,14 @@ def exploracaos_delete(request):
     if not gid:
         raise badrequest_exception({"error": error_msgs["gid_obligatory"]})
     try:
-        delete_exploracao_documentos(request, gid)
         e = request.db.query(Exploracao).filter(Exploracao.gid == gid).one()
-        request.db.delete(e)
-        request.db.commit()
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+
+    delete_exploracao_documentos(request, gid)
+    request.db.delete(e)
+    request.db.commit()
+
     return {"gid": gid}
 
 
@@ -111,34 +113,44 @@ def exploracaos_update(request):
 
     try:
         body = request.json_body
-        msgs = validate_entities(request, body)
-        if msgs:
-            raise badrequest_exception({"error": msgs})
-
-        e = request.db.query(Exploracao).filter(Exploracao.gid == gid).one()
-        u = upsert_utente(request, body)
-        e.utente_rel = u
-        e.utente_rel.sexo_gerente = body.get("utente").get("sexo_gerente")
-
-        if _tipo_actividade_changes(e, request.json_body):
-            request.db.delete(e.actividade)
-            del e.actividade
-
-        e.update_from_json(request, request.json_body)
-
-        request.db.add(e)
-        request.db.commit()
-    except (MultipleResultsFound, NoResultFound):
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
     except ValueError as ve:
         log.error(ve)
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
+
+    msgs = validate_entities(request, body)
+    if msgs:
+        raise badrequest_exception({"error": msgs})
+
+    try:
+        e = request.db.query(Exploracao).filter(Exploracao.gid == gid).one()
+    except (MultipleResultsFound, NoResultFound):
+        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+
+    try:
+        u = upsert_utente(request, body)
+    except ValidationException as val_e:
+        if e:
+            request.db.refresh(e)
+        raise badrequest_exception(val_e.msgs)
+
+    e.utente_rel = u
+    e.utente_rel.sexo_gerente = body.get("utente").get("sexo_gerente")
+
+    if _tipo_actividade_changes(e, request.json_body):
+        request.db.delete(e.actividade)
+        del e.actividade
+
+    try:
+        e.update_from_json(request, request.json_body)
     except ValidationException as val_exp:
         if u:
             request.db.refresh(u)
         if e:
             request.db.refresh(e)
         raise badrequest_exception(val_exp.msgs)
+
+    request.db.add(e)
+    request.db.commit()
 
     return e
 
@@ -160,11 +172,11 @@ def _tipo_actividade_changes(e, json):
 def exploracaos_create(request):
     try:
         body = request.json_body
-        exp_id = body.get("exp_id")
     except ValueError as ve:
         log.error(ve)
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
 
+    exp_id = body.get("exp_id")
     msgs = validate_entities(request, body)
     if msgs:
         raise badrequest_exception({"error": msgs})
