@@ -3,10 +3,10 @@ import unittest
 from pyramid.httpexceptions import HTTPBadRequest
 
 from utentes.api.exploracaos import exploracaos_update
-from utentes.models.actividade import Actividade, ActividadesAgriculturaRega
+from utentes.models.actividade import Actividade
 from utentes.models.constants import (
-    K_SANEAMENTO,
     K_AGRICULTURA,
+    K_SANEAMENTO,
     K_SUBTERRANEA,
     K_SUPERFICIAL,
 )
@@ -348,9 +348,7 @@ class ExploracaoUpdateUtenteTests(DBIntegrationTest):
         return self.request.db.query(Utente).all()[0]
 
     @unittest.skip(
-        """ Falla porque upsert_utente no actualiza el body cuando ya existe la utente
-    hay que revisar si se hizó así por algún motivo
-    """
+        "Falla porque upsert_utente no actualiza el body cuando ya existe la utente hay que revisar si se hizó así por algún motivo"
     )
     def test_update_exploracao_update_utente_values(self):
         expected = get_test_exploracao_from_db(self.request.db)

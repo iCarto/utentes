@@ -16,10 +16,6 @@ from utentes.models.documento import Documento
 from utentes.models.domain import Domain
 from utentes.models.exploracao import Exploracao
 
-import logging
-
-log = logging.getLogger(__name__)
-
 
 @view_config(
     route_name="api_exploracao_documentacao",
@@ -105,7 +101,6 @@ def get_folder_path(request, folder_id, folder_name, folder_level, subpath):
 def exploracao_documentacao_files(request):
     subpath = request.matchdict.get("subpath", None)
     path_info = parse_subpath(subpath)
-    log.error(path_info)
     if path_info["departamento"] is None:
         return exploracao_get_exploracao_folders(request, path_info["exploracao_id"])
     else:
@@ -320,7 +315,7 @@ def documento_file_upload(request, path_info):
     documento.set_path_root(request.registry.settings["media_root"])
     documento.upload_file(input_file.file)
 
-    if request.user.usergroup not in {user_groups.ADMIN}:
+    if request.user.usergroup != user_groups.ADMIN:
         if request.user.usergroup != path_info["departamento"] or (
             path_info["divisao"] is not None
             and request.user.divisao != path_info["divisao"]
@@ -380,7 +375,7 @@ def documento_file_delete(request):
     file_name = subpath[-1]
     path_info = parse_subpath(subpath[:-1])
 
-    if request.user.usergroup not in {user_groups.ADMIN}:
+    if request.user.usergroup != user_groups.ADMIN:
         if request.user.usergroup != path_info["departamento"] or (
             path_info["divisao"] is not None
             and request.user.divisao != path_info["divisao"]
@@ -459,7 +454,7 @@ def create_zip_file(request, documentos, departamento, divisao):
     # https://stackoverflow.com/questions/12881294/
 
     tmp = tempfile.NamedTemporaryFile()
-    with zipfile.ZipFile(tmp, "w", compression=zipfile.ZIP_DEFLATED) as zip:
+    with zipfile.ZipFile(tmp, "w", compression=zipfile.ZIP_DEFLATED) as zipobj:
         for documento in documentos:
             documento.set_path_root(request.registry.settings["media_root"])
             path_in_disk = documento.get_file_path()
@@ -483,7 +478,7 @@ def create_zip_file(request, documentos, departamento, divisao):
                 # https://stackoverflow.com/questions/1807063/
                 if os.name == "nt":
                     path_in_zip = path_in_zip.encode("cp437")
-                zip.write(path_in_disk, path_in_zip)
+                zipobj.write(path_in_disk, path_in_zip)
     tmp.seek(0)
     return tmp
 
@@ -524,7 +519,7 @@ def get_folder_permissions(request, departamento, divisao):
         departamento == user_groups.BASIN_DIVISION and divisao is None
     ):
         return ["perm_download"]
-    if request.user.usergroup in {user_groups.ADMIN}:
+    if request.user.usergroup == user_groups.ADMIN:
         return ["perm_upload", "perm_download", "perm_delete"]
     if departamento == user_groups.BASIN_DIVISION:
         if request.user.divisao == divisao:
@@ -535,7 +530,7 @@ def get_folder_permissions(request, departamento, divisao):
 
 
 def get_file_permissions(request, departamento, divisao):
-    if request.user.usergroup in {user_groups.ADMIN}:
+    if request.user.usergroup == user_groups.ADMIN:
         return ["perm_download", "perm_delete"]
     if departamento == user_groups.BASIN_DIVISION:
         if request.user.divisao == divisao:

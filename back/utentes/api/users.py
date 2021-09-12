@@ -57,14 +57,16 @@ def user_create(request):
     renderer="json",
 )
 def user_delete(request):
-    id = request.matchdict["id"]
-    if not id:
+    user_id = request.matchdict["id"]
+    if not user_id:
         raise badrequest_exception({"error": error_msgs["username_obligatory"]})
 
     try:
-        user = request.db.query(User).filter(User.id == id).one()
+        user = request.db.query(User).filter(User.id == user_id).one()
     except (MultipleResultsFound, NoResultFound):
-        raise badrequest_exception({"error": error_msgs["user_not_exists"], "id": id})
+        raise badrequest_exception(
+            {"error": error_msgs["user_not_exists"], "id": user_id}
+        )
 
     request.db.delete(user)
     request.db.commit()
@@ -78,11 +80,11 @@ def user_delete(request):
     renderer="json",
 )
 def user_read(request):
-    id = request.matchdict["id"]
-    if not id:
+    user_id = request.matchdict["id"]
+    if not user_id:
         raise badrequest_exception({"error": error_msgs["username_obligatory"]})
 
-    user = request.db.query(User).filter(User.id == id).one()
+    user = request.db.query(User).filter(User.id == user_id).one()
     granted = (str(request.user.id) == str(user.id)) or request.has_permission(
         perm.PERM_ADMIN
     )
@@ -92,7 +94,7 @@ def user_read(request):
             return user
         except (MultipleResultsFound, NoResultFound):
             raise badrequest_exception(
-                {"error": error_msgs["user_not_exists"], "id": id}
+                {"error": error_msgs["user_not_exists"], "id": user_id}
             )
     else:
         raise unauthorized_exception()
@@ -106,14 +108,14 @@ def user_read(request):
 )
 def user_update(request):
     json = request.json_body
-    id = request.matchdict["id"]
-    if not id:
+    user_id = request.matchdict["id"]
+    if not user_id:
         raise badrequest_exception({"error": error_msgs["username_obligatory"]})
     try:
-        user = request.db.query(User).filter(User.id == id).one()
+        user = request.db.query(User).filter(User.id == user_id).one()
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception(
-            {"error": error_msgs["username_obligatory"], "id": id}
+            {"error": error_msgs["username_obligatory"], "id": user_id}
         )
 
     if str(user.id) != str(json["id"]):

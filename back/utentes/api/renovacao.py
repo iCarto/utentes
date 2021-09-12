@@ -53,9 +53,9 @@ def renovacao_get(request):
     exploracaos_filtered = []
 
     for e in exploracaos:
-        for l in e.licencias:
-            if l.d_validade and today >= (
-                l.d_validade - relativedelta(months=n_months_to_go_back)
+        for lic in e.licencias:
+            if lic.d_validade and today >= (
+                lic.d_validade - relativedelta(months=n_months_to_go_back)
             ):
                 exploracaos_filtered.append(e.__json__(request))
                 break

@@ -17,7 +17,7 @@ class TestExploracaosGET(DBIntegrationTest):
             .filter(Exploracao.the_geom.isnot(None))
             .all()[0]
         )
-        self.request.matchdict.update(dict(id=expected.gid))
+        self.request.matchdict.update({"id": expected.gid})
         actual = exploracaos_get(self.request).__json__(self.request)
         self.assertTrue("geometry" in actual)
         self.assertTrue("type" in actual)

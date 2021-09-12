@@ -27,23 +27,27 @@ def login(request):
         referrer = request.route_url(
             request.registry.settings.get("users.after_login_url")
         )
-    next = request.params.get("next", referrer)
+    next_page = request.params.get("next", referrer)
 
     if request.authenticated_userid and request.url in {
         root_url,
         root_url_without_trailing_slash,
     }:
-        return HTTPFound(location=next)
+        return HTTPFound(location=next_page)
 
     if "submit" in request.POST:
         user = get_user_from_db(request)
         if user:
             headers = remember(request, user.username)
-            if user.usergroup == user_groups.FINANCIERO and next == request.route_url(
-                request.registry.settings.get("users.after_login_url")
+            if (
+                user.usergroup == user_groups.FINANCIERO
+                and next_page
+                == request.route_url(
+                    request.registry.settings.get("users.after_login_url")
+                )
             ):
-                next = request.route_url("facturacao")
-            response = HTTPFound(location=next, headers=headers)
+                next_page = request.route_url("facturacao")
+            response = HTTPFound(location=next_page, headers=headers)
             response.set_cookie("utentes_stub_user", value=user.username)
 
             usergroup = urllib.parse.quote(user.usergroup)
@@ -59,4 +63,4 @@ def login(request):
             )  # Remove after some versions are released
             return response
 
-    return {"title": request.registry.settings.get("ara_app_name"), "next": next}
+    return {"title": request.registry.settings.get("ara_app_name"), "next": next_page}

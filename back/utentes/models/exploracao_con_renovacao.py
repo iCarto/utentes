@@ -42,7 +42,7 @@ class ExpConRenovacao(ExploracaoConFacturacao):
         del properties["the_geom"]
         del properties["gid"]
         properties["id"] = self.gid
-        properties["licencias"] = [l.__json__(request) for l in self.licencias]
+        properties["licencias"] = [lic.__json__(request) for lic in self.licencias]
         properties["actividade"] = self.actividade
         properties["fontes"] = self.fontes
         properties["facturacao"] = [f.__json__(request) for f in self.facturacao]
