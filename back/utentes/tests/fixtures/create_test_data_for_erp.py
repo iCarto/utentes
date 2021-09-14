@@ -55,7 +55,7 @@ def create_test_exploracao(**kwargs):
     exp.loc_distri = adm_location.loc_distri
     exp.loc_posto = adm_location.loc_posto
     exp.loc_nucleo = adm_location.loc_nucleo
-    exp.fact_estado = "Pendente Emisão Factura (DF)"
+    exp.fact_estado = "Pendente Emissão Factura (DSU-F)"
 
     exp.actividade = abastecemento()
     exp.utente_rel = create_test_utente()

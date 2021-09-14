@@ -5,6 +5,7 @@ import unittest
 from selenium.common.exceptions import NoSuchElementException
 
 from utentes.api.weap import build_filename
+from utentes.models.estado_renovacao import PENDING_TECH_DECISION
 from utentes.tests.e2e import config
 from utentes.tests.e2e.base import BaseE2ETest, login
 from utentes.tests.e2e.testing_database import create_renovacao
@@ -14,7 +15,7 @@ class TestWeapExport(BaseE2ETest):
     def test_renovacao_no_umbeluzi(self):
         create_renovacao(
             self.testing_database.request,
-            state="Pendente Parecer Técnico Renovação (DT)",
+            state=PENDING_TECH_DECISION,
             other={
                 "loc_provin": "Maputo",
                 "loc_distri": "Boane",
@@ -36,7 +37,7 @@ class TestWeapExport(BaseE2ETest):
     def test_renovacao_umbeluzi(self):
         create_renovacao(
             self.testing_database.request,
-            state="Pendente Parecer Técnico Renovação (DT)",
+            state=PENDING_TECH_DECISION,
             other={
                 "loc_provin": "Maputo",
                 "loc_distri": "Boane",
