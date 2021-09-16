@@ -20,7 +20,7 @@ Backbone.SIXHIARA.BlockInfoLicenseView = Backbone.View.extend({
             var message;
 
             if (time_info) {
-                if (time_info == "Prazo esgotado" || time_info == "Licença cadudada") {
+                if (time_info == "Prazo esgotado" || time_info == "Licença caducada") {
                     message = time_info;
                 } else {
                     message =

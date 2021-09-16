@@ -886,7 +886,7 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             if (remainDaysStr) {
                 if (
                     remainDaysStr == "Prazo esgotado" ||
-                    remainDaysStr == "Licença cadudada"
+                    remainDaysStr == "Licença caducada"
                 ) {
                     message = remainDaysStr;
                 } else {
@@ -962,7 +962,7 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
                     }
                 } else if (licenseDate.isBefore(now)) {
                     lic.set("lic_time_over", true, {silent: true});
-                    lic.set("lic_time_info", "Licença cadudada", {silent: true});
+                    lic.set("lic_time_info", "Licença caducada", {silent: true});
                 }
 
                 // Select the license that ends first
