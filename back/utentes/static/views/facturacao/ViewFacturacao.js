@@ -1,6 +1,7 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     id: "view-facturacao",
+    className: "myclass",
     template: _.template(`
     <div id="bt-toolbar" class="row" style="margin-bottom: 10px; margin-top: 10px">
         <div class="col-xs-12">
@@ -26,37 +27,39 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     </div>
 </h4>
 
-    <div class="row form-horizontal" style="margin-top: 10px">
+    <form id="view-facturacao-common-widgets" class="form-horizontal" style="margin-top: 10px">
+        <fieldset class="uilib-enability uilib-enable-role-financieiro uilib-enable-role-administrador">
+            <div class="row">
+                <div id="factura-header" class="col-xs-4">
+                </div>
 
-        <div id="factura-header" class="col-xs-4">
-        </div>
+                <div class="col-xs-4">
+                    <div class="form-group" style="margin-left: 0px; margin-right: 0px">
+                        <label for="pago_lic" class="control-label col-xs-9" style="text-align: left">Pagamento emissão licença</label>
+                        <div class="col-xs-3" style="padding-left: 10px; padding-right: 10px;">
+                            <select id="pago_lic" class="form-control widget-boolean" style="padding: 3px 5px;" required>
+                                <option value="true">Sim</option>
+                                <option value="false">Não</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="col-xs-4">
-            <div class="form-group" style="margin-left: 0px; margin-right: 0px">
-                <label for="pago_lic" class="control-label col-xs-9" style="text-align: left">Pagamento emissão licença</label>
-                <div class="col-xs-3" style="padding-left: 10px; padding-right: 10px;">
-                    <select id="pago_lic" class="form-control" style="padding: 3px 5px;" disabled>
-                        <option value="true">Sim</option>
-                        <option value="false">Não</option>
-                    </select>
+                <div class="col-xs-4">
+                    <div class="form-group " style="margin-left: 0px; margin-right: 0px">
+                        <label for="fact_tipo" class="control-label col-xs-7" style="text-align: left">Tipo de facturação</label>
+                        <div class="col-xs-5" style="padding-left: 10px; padding-right: 10px;">
+                            <select id="fact_tipo" class="form-control widget" style="padding: 3px 3px;" required>
+                                <option value="Mensal">Mensal</option>
+                                <option value="Trimestral">Trimestral</option>
+                                <option value="Anual">Anual</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-xs-4">
-            <div class="form-group" style="margin-left: 0px; margin-right: 0px">
-                <label for="fact_tipo" class="control-label col-xs-7" style="text-align: left">Tipo de facturação</label>
-                <div class="col-xs-5" style="padding-left: 10px; padding-right: 10px;">
-                    <select id="fact_tipo" class="form-control" style="padding: 3px 3px;" disabled>
-                        <option value="Mensal">Mensal</option>
-                        <option value="Trimestral">Trimestral</option>
-                        <option value="Anual">Anual</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-    </div>
+        </fieldset>
+    </form>
 
     <div class="row panel-equal-height">
 
@@ -105,10 +108,6 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
         this.renderFacturacaoHistorico();
         this.renderFactura();
 
-        var json = this.model.toJSON();
-        this.$el.find("#fact_tipo").val(json.fact_tipo);
-        this.$el.find("#pago_lic").val(json.pago_lic + "");
-
         return this;
     },
 
@@ -152,42 +151,16 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     },
 
     updateWidgets: function() {
-        this.defineWidgetsToBeUsed();
-        this.enabledWidgets();
-    },
-
-    defineWidgetsToBeUsed: function() {
-        if (iAuth.hasRoleObservador() || iAuth.hasRoleTecnico()) {
-            this.widgets = [];
-        } else {
-            this.widgets = ["pago_lic", "fact_tipo"];
-        }
-    },
-
-    enabledWidgets: function() {
-        var self = this;
-        this.widgets.forEach(function(w) {
-            var input = this.$("#view-facturacao #" + w);
-            input.prop("disabled", false);
-            input.prop("required", true);
-            input.on("input", self.facturacaoFormFieldsUpdated.bind(self));
+        let widgetsView = new Backbone.UILib.WidgetsView({
+            el: document.getElementById("view-facturacao-common-widgets"),
+            model: this.model,
         });
-    },
-
-    facturacaoFormFieldsUpdated: function(evt) {
-        var target = evt.currentTarget;
-        if (target.validity.valid) {
-            var modifiedAttributes = {};
-            if (target.nodeName == "INPUT") {
-                modifiedAttributes[target.id] = formatter().unformatNumber(
-                    target.value
-                );
-            } else if (target.nodeName == "SELECT") {
-                modifiedAttributes[target.id] = target.value;
-            }
-            this.model.set(modifiedAttributes);
-            this.facturacaoUpdated(this.model);
-        }
+        this.addView(widgetsView.render());
+        this.listenTo(
+            this.model,
+            "change:pago_lic change:fact_tipo",
+            this.facturacaoUpdated
+        );
     },
 
     facturacaoUpdated: function(changedModel) {

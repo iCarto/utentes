@@ -13,11 +13,6 @@ body,
     height: 100%;
 }
 
-#insert-data {
-    /* height: 65%; */
-    overflow-y: auto;
-}
-
 #projects {
     overflow-y: scroll;
 }

@@ -340,3 +340,8 @@ with or whithout another 'observacio-anteriores' textarea
 .wait * {
     cursor: wait !important;
 }
+
+#insert-data {
+    height: 100%;
+    overflow-y: auto;
+}
