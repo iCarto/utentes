@@ -4,14 +4,16 @@ from pyramid.view import view_config
 from sqlalchemy import func, or_
 
 from utentes.constants import perms as perm
-from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL, K_USOS_COMUNS
-from utentes.models.exploracao import Exploracao
-from utentes.models.facturacao import Facturacao
-from utentes.models.facturacao_fact_estado import (
+from utentes.models.constants import (
+    INVOICE_STATE_PENDING_CONSUMPTION,
+    K_SUBTERRANEA,
+    K_SUPERFICIAL,
+    K_USOS_COMUNS,
     PAID,
-    PENDING_CONSUMPTION,
     PENDING_INVOICE,
 )
+from utentes.models.exploracao import Exploracao
+from utentes.models.facturacao import Facturacao
 from utentes.models.utente import Utente
 
 
@@ -184,7 +186,7 @@ def usos_privativos(
     subquery_emitidas = (
         request.db.query(*fields)
         .filter(
-            Facturacao.fact_estado != PENDING_CONSUMPTION,
+            Facturacao.fact_estado != INVOICE_STATE_PENDING_CONSUMPTION,
             Facturacao.fact_estado != PENDING_INVOICE,
         )
         .group_by(Facturacao.exploracao)

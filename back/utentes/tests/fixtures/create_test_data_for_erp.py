@@ -1,10 +1,14 @@
 import datetime
 
 from utentes.erp.model import ExploracaosERP
-from utentes.models.constants import K_LICENSED, K_SUBTERRANEA, MONTHTLY
+from utentes.models.constants import (
+    K_LICENSED,
+    K_SUBTERRANEA,
+    MONTHTLY,
+    PENDING_PAYMENT,
+)
 from utentes.models.exploracao import Exploracao
 from utentes.models.facturacao import Facturacao
-from utentes.models.facturacao_fact_estado import PENDING_PAYMENT
 from utentes.models.licencia import Licencia
 from utentes.models.utente import Utente
 from utentes.services.id_service import calculate_lic_nro

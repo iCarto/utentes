@@ -2,7 +2,6 @@ var where = new Backbone.SIXHIARA.Where();
 var exploracaos = new Backbone.SIXHIARA.ExploracaoCollection();
 var exploracaosFiltered = new Backbone.SIXHIARA.ExploracaoCollection();
 var domains = new Backbone.UILib.DomainCollection();
-var estados = new Backbone.SIXHIARA.FacturacaoFactEstadoCollection();
 var listView, mapView, numberOfResultsView, filtersView;
 
 exploracaos.url = Backbone.SIXHIARA.Config.apiFacturacao;
@@ -105,21 +104,12 @@ var exploracaosFetched = function() {
     });
 };
 
-estados.fetch({
-    success: function() {
-        estados = estados.forFacturacaoView();
-        var params = $.param({
-            fact_estado: estados.pluck("text"),
-        });
-        exploracaos.fetch({
-            parse: true,
-            success: exploracaosFetched,
-            data: params,
-        });
-        domains.fetch({
-            success: domainsFetched,
-        });
-    },
+exploracaos.fetch({
+    parse: true,
+    success: exploracaosFetched,
+});
+domains.fetch({
+    success: domainsFetched,
 });
 
 document.getElementById("project_list").addEventListener("click", e => {

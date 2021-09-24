@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import and_, case, null
 from sqlalchemy.types import Boolean, Date, DateTime, Integer, Numeric, Text
 
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base
-from utentes.models.facturacao_fact_estado import PENDING_CONSUMPTION
+from utentes.models.constants import INVOICE_STATE_PENDING_CONSUMPTION
 
 
 class Facturacao(Base):
@@ -38,7 +38,7 @@ class Facturacao(Base):
     fact_estado = Column(
         Text,
         nullable=False,
-        server_default=text(f"'{PENDING_CONSUMPTION}'::text"),
+        server_default=text(f"'{INVOICE_STATE_PENDING_CONSUMPTION}'::text"),
     )
     fact_tipo = Column(Text, nullable=False, server_default=text("'Mensal'::text"))
     pago_lic = Column(Boolean)

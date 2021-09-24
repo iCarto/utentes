@@ -1,3 +1,6 @@
+/*
+DEPRECATED ON September/2021. Drop it if it's not used in six months
+*/
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.FacturacaoFactEstadoCollection = Backbone.UILib.DomainCollection.extend(
     {

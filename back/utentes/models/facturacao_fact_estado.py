@@ -1,13 +1,7 @@
+# DEPRECATED ON September/2021. Drop it if it's not used in six months
 from sqlalchemy import Column, Integer, Text
 
 from utentes.models.base import PGSQL_SCHEMA_DOMAINS, DeclarativeBase
-
-
-PENDING_CONSUMPTION = "Pendente Acrescentar Consumo (DRH)"
-PENDING_INVOICE = "Pendente Emissão Factura (DSU-F)"
-PENDING_PAYMENT = "Pendente Pagamento (DSU-F)"
-PAID = "Pagada"
-NOT_INVOIZABLE = "Não facturable"
 
 
 class FacturacaoFactEstado(DeclarativeBase):

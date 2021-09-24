@@ -65,9 +65,6 @@ def add_routes_api(config: Configurator):  # noqa: WPS213
 
     config.add_route("api_domains", "/api/domains")
     config.add_route("api_domains_licencia_estado", "/api/domains/licencia_estado")
-    config.add_route(
-        "api_domains_facturacao_fact_estado", "/api/domains/facturacao_fact_estado"
-    )
 
     config.add_route(
         "api_domains_licencia_estado_renovacao",

@@ -13,10 +13,14 @@ from utentes.erp.model import (
     InvoicesResultSet,
 )
 from utentes.models.base import badrequest_exception_user
-from utentes.models.constants import INVOIZABLE_STATES, K_SUBTERRANEA, K_SUPERFICIAL
+from utentes.models.constants import (
+    INVOIZABLE_STATES,
+    K_SUBTERRANEA,
+    K_SUPERFICIAL,
+    PENDING_PAYMENT,
+)
 from utentes.models.exploracao import ExploracaoBase
 from utentes.models.facturacao import Facturacao
-from utentes.models.facturacao_fact_estado import PENDING_PAYMENT
 from utentes.services.pyramid_spreadsheet_response import spreadsheet_response
 from utentes.services.spreadsheet_writer import write_tmp_spreadsheet_from_records
 

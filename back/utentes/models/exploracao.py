@@ -19,13 +19,13 @@ from utentes.models.base import (
     update_array,
     update_geom,
 )
-from utentes.models.facturacao import Facturacao
-from utentes.models.facturacao_fact_estado import (
+from utentes.models.constants import (
+    INVOICE_STATE_PENDING_CONSUMPTION,
     PAID,
-    PENDING_CONSUMPTION,
     PENDING_INVOICE,
     PENDING_PAYMENT,
 )
+from utentes.models.facturacao import Facturacao
 from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
 from utentes.services import id_service
@@ -513,7 +513,7 @@ class Exploracao(ExploracaoGeom):
 
     def get_lower_state(self, facturas):
         status_weight = {
-            PENDING_CONSUMPTION: 0,
+            INVOICE_STATE_PENDING_CONSUMPTION: 0,
             PENDING_INVOICE: 1,
             PENDING_PAYMENT: 2,
             PAID: 3,

@@ -42,3 +42,9 @@ IMPLIES_VALIDADE_FICHA_STATES = (
 )
 
 MONTHTLY = "Mensal"
+
+INVOICE_STATE_PENDING_CONSUMPTION = "Pendente Acrescentar Consumo (DRH)"
+PENDING_INVOICE = "Pendente Emissão Factura (DSU-F)"
+PENDING_PAYMENT = "Pendente Pagamento (DSU-F)"
+PAID = "Pagada"
+NOT_INVOIZABLE = "Não facturable"

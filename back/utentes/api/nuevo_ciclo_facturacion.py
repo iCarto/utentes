@@ -5,10 +5,14 @@ from pyramid.view import view_config
 
 from utentes.constants import perms
 from utentes.models.base import unauthorized_exception
-from utentes.models.constants import INVOIZABLE_STATES, K_SUPERFICIAL
+from utentes.models.constants import (
+    INVOICE_STATE_PENDING_CONSUMPTION,
+    INVOIZABLE_STATES,
+    K_SUPERFICIAL,
+    PENDING_INVOICE,
+)
 from utentes.models.exploracao import ExploracaoConFacturacao
 from utentes.models.facturacao import Facturacao
-from utentes.models.facturacao_fact_estado import PENDING_CONSUMPTION, PENDING_INVOICE
 
 
 log = logging.getLogger(__name__)
@@ -73,7 +77,7 @@ def nuevo_ciclo_facturacion(request):
             f.fact_estado = PENDING_INVOICE
             n_exps_pending_invoice += 1
         else:
-            f.fact_estado = PENDING_CONSUMPTION
+            f.fact_estado = INVOICE_STATE_PENDING_CONSUMPTION
             n_exps_pending_consumption += 1
 
         f.juros = 0
