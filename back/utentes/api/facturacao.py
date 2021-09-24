@@ -56,19 +56,14 @@ def facturacao_get(request):
 
 
 @view_config(
-    route_name="api_facturacao_new_factura",
+    route_name="api_facturacao_new_fact_id",
     permission=perm.PERM_UPDATE_CREATE_FACTURACAO,
     request_method="GET",
     renderer="json",
 )
-def num_factura_get(request):
+def new_fact_id(request):
 
-    gid = None
-    if request.matchdict:
-        gid = request.matchdict["id"] or None
-
-    if not gid:
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+    gid = request.matchdict["id"]
 
     try:
         facturacao = request.db.query(Facturacao).filter(Facturacao.gid == gid).one()
@@ -103,19 +98,14 @@ def num_factura_get(request):
 
 
 @view_config(
-    route_name="api_facturacao_new_recibo",
-    permission=perm.PERM_FACTURACAO,
+    route_name="api_facturacao_new_recibo_id",
+    permission=perm.PERM_UPDATE_CREATE_FACTURACAO,
     request_method="GET",
     renderer="json",
 )
-def num_recibo_get(request):
+def new_recibo_id(request):
 
-    gid = None
-    if request.matchdict:
-        gid = request.matchdict["id"] or None
-
-    if not gid:
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+    gid = request.matchdict["id"]
 
     try:
         facturacao = request.db.query(Facturacao).filter(Facturacao.gid == gid).one()
@@ -152,13 +142,7 @@ def num_recibo_get(request):
 @view_config(
     route_name="api_facturacao_exploracao_id",
     permission=perm.PERM_UPDATE_CREATE_FACTURACAO,
-    request_method="PATCH",
-    renderer="json",
-)
-@view_config(
-    route_name="api_facturacao_exploracao_id",
-    permission=perm.PERM_UPDATE_CREATE_FACTURACAO,
-    request_method="PUT",
+    request_method=("PATCH", "PUT"),
     renderer="json",
 )
 def facturacao_exploracao_update(request):
@@ -176,8 +160,6 @@ def facturacao_exploracao_update(request):
 
 
 def num_factura_get_id_formatted(db, divisao, ano):
-    params = {"seq_id": None, "divisao_ano": f"{divisao}/{ano}"}
-
     sql = r"""
         SELECT substring(fact_id, 0, 5)::int + 1
         FROM utentes.facturacao
@@ -185,16 +167,10 @@ def num_factura_get_id_formatted(db, divisao, ano):
         ORDER BY fact_id DESC
         LIMIT 1;
         """
-
-    params["seq_id"] = (db.execute(sql, params).first() or [1])[0]
-
-    # 0001-UGBI/2020
-    return "{seq_id:04d}-{divisao_ano}".format(**params)
+    return _get_id_formatted(db, divisao, ano, sql)
 
 
 def num_recibo_get_id_formatted(db, divisao, ano):
-    params = {"seq_id": None, "divisao_ano": f"{divisao}/{ano}"}
-
     sql = r"""
         SELECT substring(recibo_id, 0, 5)::int + 1
         FROM utentes.facturacao
@@ -202,8 +178,16 @@ def num_recibo_get_id_formatted(db, divisao, ano):
         ORDER BY recibo_id DESC
         LIMIT 1;
         """
+    return _get_id_formatted(db, divisao, ano, sql)
 
-    params["seq_id"] = (db.execute(sql, params).first() or [1])[0]
+
+def _get_id_formatted(db, divisao, ano, sql):
+    params = {"seq_id": None, "divisao_ano": f"{divisao}/{ano}"}
+    query_result = db.execute(sql, params).first()
+    if query_result:
+        params["seq_id"] = query_result[0]
+    else:
+        params["seq_id"] = 1
 
     # 0001-UGBI/2020
     return "{seq_id:04d}-{divisao_ano}".format(**params)

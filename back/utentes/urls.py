@@ -75,14 +75,17 @@ def add_routes_api(config: Configurator):  # noqa: WPS213
     config.add_route("api_requerimento_id", "/api/requerimento/{id}")
     config.add_route("api_requerimento_get_datos_ara", "/api/get_datos_ara")
 
-    config.add_route("api_facturacao", "/api/facturacao")
+    # api_facturacao_stats debe estar sobre otras rutas para que funcione correctamente
     config.add_route("api_facturacao_stats", "/api/facturacao/stats")
+    config.add_route("api_facturacao", "/api/facturacao")
     config.add_route("api_facturacao_id", "/api/facturacao/{id}")
     config.add_route("api_facturacao_exploracao_id", "/api/facturacao_exploracao/{id}")
     config.add_route(
-        "api_facturacao_new_factura", "/api/facturacao/{id}/emitir_factura"
+        "api_facturacao_new_fact_id", "/api/facturacao/{id}/emitir_factura"
     )
-    config.add_route("api_facturacao_new_recibo", "/api/facturacao/{id}/emitir_recibo")
+    config.add_route(
+        "api_facturacao_new_recibo_id", "/api/facturacao/{id}/emitir_recibo"
+    )
 
     config.add_route("api_renovacao", "/api/renovacao")
     config.add_route("api_renovacao_id", "/api/renovacao/{id}")
