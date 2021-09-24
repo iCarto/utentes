@@ -76,7 +76,7 @@ REQUERIMENTO_FIELDS = (
     "d_ultima_entrega_doc",
 )
 
-FACTURACAO_FIELDS = ("fact_estado", "fact_tipo", "pago_lic")
+FACTURACAO_FIELDS = ("fact_tipo", "pago_lic")
 NORMAL_FIELDS = (
     "observacio",
     "loc_provin",
@@ -361,9 +361,6 @@ class Exploracao(ExploracaoGeom):
     req_obs = Column(JSONB, doc="Observações requerimento")
     ara = Column(Text, nullable=False, doc="ARA")
 
-    fact_estado = Column(
-        Text, nullable=False, doc="Estado de pago del ciclo de facturación"
-    )
     fact_tipo = Column(
         Text,
         nullable=False,
@@ -438,7 +435,6 @@ class Exploracao(ExploracaoGeom):
     def update_from_json_requerimento(self, request, data):
         self._update_requerimento_fields(data)
         self.set_lic_state_and_exp_id(request, data)
-        self.fact_estado = "Não facturable"
         self.fact_tipo = "Mensal"
         self.pago_lic = False
 
@@ -460,7 +456,6 @@ class Exploracao(ExploracaoGeom):
             lic.c_licencia = to_decimal(json_lic.get("c_licencia"))
 
     def update_from_json_facturacao(self, data):
-        self.fact_estado = self.get_lower_state(data["facturacao"])
         self.fact_tipo = data["fact_tipo"]
         self.pago_lic = data["pago_lic"]
 
@@ -511,27 +506,10 @@ class Exploracao(ExploracaoGeom):
                 (fact.pago_mes_sub or 0) * (1 + (float(fact.iva_sub or 0)) / 100)
             ) or None
 
-    def get_lower_state(self, facturas):
-        status_weight = {
-            INVOICE_STATE_PENDING_CONSUMPTION: 0,
-            PENDING_INVOICE: 1,
-            PENDING_PAYMENT: 2,
-            PAID: 3,
-        }
-        lower_state = None
-        for factura in facturas:
-            if lower_state is None:
-                lower_state = factura["fact_estado"]
-                continue
-            if status_weight[factura["fact_estado"]] < status_weight[lower_state]:
-                lower_state = factura["fact_estado"]
-        return lower_state
-
     def update_from_json(self, request, data):
         self.gid = data.get("id")
         self.update_some_fields(request, data)
         self.the_geom = update_geom(self.the_geom, data)
-        self.fact_estado = data.get("fact_estado") or "Não facturable"
         self.fact_tipo = data.get("fact_tipo") or "Mensal"
         self.pago_lic = data.get("pago_lic") or False
 

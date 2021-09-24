@@ -126,11 +126,6 @@ var MyWorkflow = {
     },
 
     whichNextState: function(currentState, data, exp) {
-        // Igual en lugar de currentState se le puede pasar la explotación
-        /*if (SIRHA.ESTADO.CATEGORY_FACTURABLE.includes(currentState)) {
-            return this.whichFacturacaoNextState(currentState, data, exp.get('fact_estado'));
-        }*/
-
         if (!data) {
             return currentState;
         }

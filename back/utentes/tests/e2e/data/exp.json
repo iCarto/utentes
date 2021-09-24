@@ -82,7 +82,6 @@
     "exp_name": "Explotación de Prueba",
     "d_soli": "2018-05-25",
     "d_ultima_entrega_doc": "2018-05-25",
-    "fact_estado": "Pagada",
     "fact_tipo": "Mensal",
     "pago_lic": false,
     "geometry_edited": true,

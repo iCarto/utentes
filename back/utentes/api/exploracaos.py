@@ -55,10 +55,6 @@ def exploracaos_get(request):
         if states:
             query = query.filter(Exploracao.estado_lic.in_(states))
 
-        fact_estado = request.GET.getall("fact_estado[]")
-        if fact_estado:
-            query = query.filter(Exploracao.fact_estado.in_(fact_estado))
-
         features = query.order_by(Exploracao.exp_id).all()
         return {"type": "FeatureCollection", "features": features}
 

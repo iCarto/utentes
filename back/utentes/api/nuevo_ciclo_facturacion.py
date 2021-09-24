@@ -129,7 +129,6 @@ def nuevo_ciclo_facturacion(request):
         f.observacio = [
             {"created_at": None, "autor": None, "text": None, "state": None}
         ]
-        e.fact_estado = f.fact_estado
         e.pago_lic = f.pago_lic
         e.facturacao.append(f)
         request.db.add(e)

@@ -98,7 +98,6 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
             model: this.model.get("facturacao").findWhere({id: this.facturaSelected}),
         });
 
-        this.listenTo(this.model, "change:fact_estado", this.estadoUpdated);
         this.listenTo(this.model.get("facturacao"), "change", this.facturacaoUpdated);
     },
 
@@ -165,36 +164,6 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
 
     facturacaoUpdated: function(changedModel) {
         this.autosave(this.model);
-    },
-
-    estadoUpdated: function() {
-        var self = this;
-        if (
-            iAuth.hasRoleTecnico() &&
-            this.model.get("fact_estado") != window.SIRHA.ESTADO_FACT.PENDING_M3
-        ) {
-            bootbox.alert(
-                `A exploração&nbsp;<strong>${this.model.get(
-                    "exp_id"
-                )} - ${this.model.get(
-                    "exp_name"
-                )}</strong>&nbsp;não tem mais facturas pendentes de acrescentar consumo.`,
-                function() {
-                    self.model.trigger("show-next-exp", self.model);
-                }
-            );
-        } else if (this.model.get("fact_estado") == window.SIRHA.ESTADO_FACT.PAID) {
-            bootbox.alert(
-                `A exploração&nbsp;<strong>${this.model.get(
-                    "exp_id"
-                )} - ${this.model.get(
-                    "exp_name"
-                )}</strong>&nbsp;tem todas as facturas pagas.`,
-                function() {
-                    self.model.trigger("show-next-exp", self.model);
-                }
-            );
-        }
     },
 
     fillExploracao: function(autosave) {
