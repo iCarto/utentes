@@ -224,3 +224,5 @@ new_version_210825 2021-08-25T14:04:35Z Francisco Puga <fpuga@icarto.es> # new_v
 aras_unification_reassing_groups 2021-08-27T16:57:58Z Francisco Puga <fpuga@icarto.es> # Updates groups, roles and perms for ARAs unification
 aras_unification_rename_unidade_divisao 2021-09-03T13:54:08Z Francisco Puga <fpuga@icarto.es> # aras unification rename unidade divisao
 aras_unification_rename_states 2021-09-14T09:51:24Z Francisco Puga <fpuga@icarto.es> # aras unification rename states
+delete_column_exploracao_fact_estado 2021-09-24T17:00:17Z Francisco Puga <fpuga@icarto.es> # delete column exploracao.fact_estado
+aras_unification_rename_state_irregular 2021-09-16T08:21:53Z Francisco Puga <fpuga@icarto.es> # aras unification rename state irregular
