@@ -6,6 +6,7 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from utentes.api.error_msgs import error_msgs
 from utentes.constants import perms as perm
 from utentes.models.base import badrequest_exception
+from utentes.models.constants import INVOIZABLE_STATES
 from utentes.models.exploracao import ExploracaoConFacturacao
 from utentes.models.facturacao import Facturacao
 
@@ -15,44 +16,15 @@ log = logging.getLogger(__name__)
 
 @view_config(
     route_name="api_facturacao",
-    permission=perm.PERM_GET,
-    request_method="GET",
-    renderer="json",
-)
-@view_config(
-    route_name="api_facturacao_exploracao_id",
-    permission=perm.PERM_GET,
+    permission=perm.PERM_FACTURACAO,
     request_method="GET",
     renderer="json",
 )
 def facturacao_get(request):
-    gid = None
-    if request.matchdict:
-        gid = request.matchdict["id"] or None
-
-    if gid:  # return individual explotacao
-        try:
-            return (
-                request.db.query(ExploracaoConFacturacao)
-                .filter(ExploracaoConFacturacao.gid == gid)
-                .one()
-            )
-        except (MultipleResultsFound, NoResultFound):
-            raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
-
-    else:  # return collection
-        query = request.db.query(ExploracaoConFacturacao)
-        states = request.GET.getall("states[]")
-
-        if states:
-            query = query.filter(ExploracaoConFacturacao.estado_lic.in_(states))
-
-        fact_estado = request.GET.getall("fact_estado[]")
-        if fact_estado:
-            query = query.filter(ExploracaoConFacturacao.fact_estado.in_(fact_estado))
-
-        features = query.order_by(ExploracaoConFacturacao.exp_id).all()
-        return {"type": "FeatureCollection", "features": features}
+    states = request.GET.getall("states[]") or INVOIZABLE_STATES
+    query = request.db.query(ExploracaoConFacturacao).filter(ExploracaoConFacturacao.estado_lic.in_(states))
+    features = query.order_by(ExploracaoConFacturacao.exp_id).all()
+    return {"type": "FeatureCollection", "features": features}
 
 
 @view_config(
