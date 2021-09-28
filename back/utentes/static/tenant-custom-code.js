@@ -14,7 +14,7 @@ window.SIXHIARA.ESTADOS_PENDENTES = [
         roles: [],
     },
     {
-        key: SIRHA.ESTADO.IRREGULAR,
+        key: SIRHA.ESTADO.INACTIVE,
         roles: [],
     },
     {

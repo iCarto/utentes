@@ -13,7 +13,7 @@ K_UNKNOWN = "Desconhecido"
 K_LICENSED = "Licenciada"
 K_DE_FACTO = "Utente de facto"
 K_USOS_COMUNS = "Utente de usos comuns"
-K_IRREGULAR = "Irregular"
+K_INACTIVE = "Inactiva"
 K_PENDING_TECH_DECISION = "Pendente Parecer Técnico (DRH)"
 K_PENDING_EMIT_LICENSE = "Pendente Emissão Licença (DSU-J)"
 K_PENDING_DIR_SIGN = "Pendente Firma Licença (Direcção)"
@@ -22,7 +22,7 @@ K_INCOMPLETE_DT = "Documentação incompleta (Pendente utente - DRH)"
 
 INVOIZABLE_STATES = (K_LICENSED, K_DE_FACTO)
 IMPLIES_VALIDADE_ACTIVITY_STATES = (
-    K_IRREGULAR,
+    K_INACTIVE,
     K_LICENSED,
     K_PENDING_TECH_DECISION,
     K_PENDING_EMIT_LICENSE,
@@ -31,7 +31,7 @@ IMPLIES_VALIDADE_ACTIVITY_STATES = (
     None,
 )
 IMPLIES_VALIDADE_FICHA_STATES = (
-    K_IRREGULAR,
+    K_INACTIVE,
     K_LICENSED,
     K_PENDING_FIELD_VISIT,
     K_PENDING_TECH_DECISION,

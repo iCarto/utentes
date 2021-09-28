@@ -5,7 +5,7 @@ import unittest
 from pyramid.httpexceptions import HTTPBadRequest
 
 from utentes.erp.model import ExploracaosERP, FacturacaoERP
-from utentes.models.constants import K_IRREGULAR, K_SUBTERRANEA, K_SUPERFICIAL
+from utentes.models.constants import K_INACTIVE, K_SUBTERRANEA, K_SUPERFICIAL
 from utentes.models.exploracao import Exploracao
 from utentes.tests.api import DBIntegrationTest
 from utentes.tests.fixtures.create_test_data_for_erp import (
@@ -44,7 +44,7 @@ class ERPIntegrationTests(DBIntegrationTest):
         db.query(FacturacaoERP).delete()
         db.flush()
         self.not_invoizable_not_exportable = create_test_exploracao(
-            estado_lic=K_IRREGULAR
+            estado_lic=K_INACTIVE
         )
         db.add(self.not_invoizable_not_exportable)
         self.invoizable_not_exportable = create_test_exploracao(
@@ -71,7 +71,7 @@ class ERPIntegrationTests(DBIntegrationTest):
             self.anulada_by_state_change
         )
         db.add(erp_anulada_by_state_change)
-        self.anulada_by_state_change.estado_lic = K_IRREGULAR
+        self.anulada_by_state_change.estado_lic = K_INACTIVE
         erp_anulada_by_deletion = create_test_exploracao_erp(self.anulada_by_deletion)
         db.add(erp_anulada_by_deletion)
         db.flush()

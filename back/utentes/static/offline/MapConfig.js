@@ -98,7 +98,7 @@ Backbone.SIXHIARA.mapConfig = function(mapId, initOptions) {
         },
         SIRHASExploracaoStyle: function(feature) {
             if (
-                feature.properties.estado_lic === SIRHA.ESTADO.IRREGULAR ||
+                feature.properties.estado_lic === SIRHA.ESTADO.INACTIVE ||
                 feature.properties.estado_lic === SIRHA.ESTADO.NOT_APPROVED
             ) {
                 return {

@@ -32,7 +32,7 @@ var formatValue = function(k, v, rowData) {
                     icon = "fa-tint";
                     color = "#1f78b4";
                 }
-                if (e.estado_lic === SIRHA.ESTADO.IRREGULAR) {
+                if (e.estado_lic === SIRHA.ESTADO.INACTIVE) {
                     icon = "fa-tint";
                     color = "#6c757d";
                 }

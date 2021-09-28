@@ -14,7 +14,7 @@ Backbone.SIXHIARA.ExploracaoShowView = Backbone.View.extend({
         /*
         El combo de estado en la ficha de la licencia sólo puede mostrar o bien el
         estado actual de la licencia, cuando todavía está en proceso. O bien uno de los
-        posibles estados post-lic "de facto", "irregular", "licenciada"
+        posibles estados post-lic "de facto", "Inactiva", "licenciada"
 
         Y si es de usos comuns sólo ese estado
         */

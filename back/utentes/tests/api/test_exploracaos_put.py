@@ -6,6 +6,7 @@ from utentes.api.exploracaos import exploracaos_update
 from utentes.models.actividade import Actividade
 from utentes.models.constants import (
     K_AGRICULTURA,
+    K_INACTIVE,
     K_SANEAMENTO,
     K_SUBTERRANEA,
     K_SUPERFICIAL,
@@ -241,7 +242,7 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
                 # lic_nro is built from client side, so shouldn't be null
                 "lic_nro": calculate_lic_nro(expected_json["exp_id"], new_tipo_agua),
                 "tipo_agua": new_tipo_agua,
-                "estado": "Irregular",
+                "estado": K_INACTIVE,
                 "d_emissao": "2020-2-2",
                 "d_validade": "2010-10-10",
                 "c_licencia": 10,
