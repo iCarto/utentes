@@ -68,12 +68,7 @@ def nuevo_ciclo_facturacion(request):
         f = Facturacao()
         f.exploracao = e.gid
 
-        if (
-            lic_sup.consumo_tipo == "Fixo"
-            or lic_sub.consumo_tipo == "Fixo"
-            or lic_sup.tipo_agua == K_SUPERFICIAL
-            or lic_sub.tipo_agua == K_SUPERFICIAL
-        ):
+        if lic_sup.consumo_tipo == "Fixo" or lic_sub.consumo_tipo == "Fixo":
             f.fact_estado = PENDING_INVOICE
             n_exps_pending_invoice += 1
         else:

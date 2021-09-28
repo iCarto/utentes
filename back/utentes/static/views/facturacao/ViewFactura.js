@@ -146,12 +146,12 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                         o bien, todos los botones deberían ser generados en otra parte, o de los dominios se deberían decidir que botones
                         se pueden usar en el modo combo o algo así
                         -->
-                        <button id="bt-diferida" type="button" class="btn btn-default btn-sm uilib-enability uilib-hide-role-observador">Diferida</button>
-                        <button id="bt-factura" type="button" class="btn btn-sm btn-primary uilib-enability uilib-hide-role-observador">Factura</button>
-                        <button id="bt-recibo" type="button" class="btn btn-sm btn-primary uilib-enability uilib-hide-role-observador">Recibo</button>
+                        <button id="bt-diferida" type="button" class="btn btn-default btn-sm">Diferida</button>
+                        <button id="bt-factura" type="button" class="btn btn-sm btn-primary">Factura</button>
+                        <button id="bt-recibo" type="button" class="btn btn-sm btn-primary">Recibo</button>
                     </div>
                 </label>
-                <textarea id="observacio" class="form-control widget uilib-enability uilib-disable-role-observador"><%- observacio.slice(-1)[0].text %></textarea>
+                <textarea id="observacio" class="form-control widget"><%- observacio.slice(-1)[0].text %></textarea>
             </div>
         </div>
 
@@ -159,17 +159,41 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
     `),
 
     events: {
-        "click #bt-diferida": "changeStateToPdteFactura",
-        "click #bt-factura": "printFactura",
-        "click #bt-recibo": "printRecibo",
+        "click #bt-diferida": "_changeStateToPdteFactura",
+        "click #bt-factura": "_printFactura",
+        "click #bt-recibo": "_printRecibo",
     },
+
+    alwaysDisabledWidgets: ["c_licencia_sup", "c_licencia_sup"],
+    alwaysDisabledAndAutoWidgets: ["pago_mes_sup", "pago_mes_sub", "pago_iva"],
+    conditionallyDisabledWidgets: [
+        "consumo_tipo_sup",
+        "consumo_tipo_sub",
+        "consumo_fact_sup",
+        "consumo_fact_sub",
+        "taxa_fixa_sup",
+        "taxa_fixa_sub",
+        "taxa_uso_sup",
+        "taxa_uso_sub",
+        "iva",
+        "juros",
+    ],
 
     initialize: function(options) {
         this.options = options || {};
-        this.setListeners();
+        this._setListeners();
     },
 
-    initFactPeriod: function() {
+    _setListeners: function() {
+        this.listenTo(
+            this.model,
+            "change:iva change:juros change:observacio change:taxa_fixa_sub change:taxa_uso_sub change:consumo_fact_sub change:taxa_fixa_sup change:taxa_uso_sup change:consumo_fact_sup",
+            this._modelChanged
+        );
+        this.listenTo(this.model, "change:fact_estado", this._estadoChanged);
+    },
+
+    _initFactPeriod: function() {
         let text = undefined;
         switch (this.model.get("fact_tipo")) {
             case "Mensal":
@@ -188,13 +212,57 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         }
     },
 
-    modelChanged: function() {
-        this.updatePagoIva();
-        this.enableBts();
-        this.initFactPeriod();
+    _modelChanged: function() {
+        this._updatePagoIva();
+        this._enableBts();
+        this._initFactPeriod();
     },
 
-    estadoChanged: function() {
+    _updatePagoIva: function() {
+        this._updatePagoMesLicencia("sup");
+        this._updatePagoMesLicencia("sub");
+        var pago_mes_sup =
+            formatter().unformatNumber(document.getElementById("pago_mes_sup").value) ||
+            0;
+        var pago_mes_sub =
+            formatter().unformatNumber(document.getElementById("pago_mes_sub").value) ||
+            0;
+
+        var juros =
+            formatter().unformatNumber(document.getElementById("juros").value) || 0;
+        var iva = formatter().unformatNumber(document.getElementById("iva").value) || 0;
+        var pago_iva =
+            (pago_mes_sup + pago_mes_sub) * (1 + iva / 100) * (1 + juros / 100);
+        this.model.set({pago_iva: pago_iva});
+        document.getElementById("pago_iva").value = formatter().formatNumber(
+            pago_iva,
+            "0[.]00"
+        );
+    },
+
+    _updatePagoMesLicencia: function(lic) {
+        var taxa_fixa = formatter().unformatNumber(
+            document.getElementById("taxa_fixa_" + lic).value
+        );
+        var taxa_uso = formatter().unformatNumber(
+            document.getElementById("taxa_uso_" + lic).value
+        );
+        var consumo_fact = formatter().unformatNumber(
+            document.getElementById("consumo_fact_" + lic).value
+        );
+        var pago_mes = (taxa_fixa + taxa_uso * consumo_fact) * this._monthFactor();
+        var iva = formatter().unformatNumber(document.getElementById("iva").value) || 0;
+        var pago_mes_iva = pago_mes * (1 + iva / 100);
+        this.model.set("pago_mes_" + lic, pago_mes);
+        this.model.set("pago_iva_" + lic, pago_mes_iva);
+        this.model.set("iva_" + lic, iva);
+        document.getElementById("pago_mes_" + lic).value = formatter().formatNumber(
+            pago_mes,
+            "0[.]00"
+        );
+    },
+
+    _estadoChanged: function() {
         this.updateWidgets();
     },
 
@@ -208,71 +276,272 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         this.model = newModel;
         this.render();
         this.updateWidgets();
-        this.setListeners();
-    },
-
-    setListeners: function() {
-        this.listenTo(
-            this.model,
-            "change:iva change:juros change:observacio change:taxa_fixa_sub change:taxa_uso_sub change:consumo_fact_sub change:taxa_fixa_sup change:taxa_uso_sup change:consumo_fact_sup",
-            this.modelChanged
-        );
-        this.listenTo(this.model, "change:fact_estado", this.estadoChanged);
+        this._setListeners();
     },
 
     updateWidgets: function() {
-        this.disableWidgets();
-        this.defineWidgetsToBeUsed();
-        this.enabledWidgets();
-        this.enableBts();
+        this._defineWidgetsToBeUsed();
+        this._enableBts();
         iAuth.disabledWidgets();
-        this.setWidgetsValue();
-        this.initFactPeriod();
+        this._setWidgetsValue();
+        this._initFactPeriod();
     },
 
-    disableWidgets: function() {
-        if (this.widgets) {
-            this.widgets.forEach(function(w) {
-                var input = this.$("#edit-facturacao-modal #" + w);
-                input.prop("disabled", true);
-            });
+    _setWidgetsValue: function() {
+        this.$("#consumo_tipo_sub").val(this.model.get("consumo_tipo_sub"));
+        this.$("#consumo_tipo_sup").val(this.model.get("consumo_tipo_sup"));
+    },
+
+    _facturaUpdated: function(evt) {
+        var target = evt.currentTarget;
+        if (target.validity.valid) {
+            var modifiedAttributes = {};
+            var trigger = false;
+            if (target.nodeName == "INPUT") {
+                modifiedAttributes[target.id] = formatter().unformatNumber(
+                    target.value
+                );
+            } else if (target.nodeName == "SELECT") {
+                modifiedAttributes[target.id] = target.value;
+            }
+            this.model.set(modifiedAttributes);
         }
     },
 
-    defineWidgetsToBeUsed: function() {
-        this.widgets = [];
-        var licenseWidgets = [];
-        var self = this;
+    _observacioUpdated: function(evt) {
+        var currentComment = this.model.get("observacio").slice(-1)[0];
+        Object.assign(currentComment, {
+            created_at: new Date(),
+            autor: iAuth.getUser(),
+            text: evt.currentTarget.value,
+            state: this.model.get("fact_estado"),
+        });
+        this.model.trigger("change", this.model);
+    },
 
-        if (iAuth.hasRoleObservador()) {
-            // un observador no puede editar ningún campo
+    _monthFactor: function() {
+        let months = this._monthFactorForLastInvoice();
+        if (this._validMonthFactor(months)) {
+            return months;
+        }
+
+        months = this._monthFactorForDateEmissao();
+        if (this._validMonthFactor()) {
+            return months;
+        }
+
+        months = this._monthFactorForCreatedAt();
+        if (this._validMonthFactor(months)) {
+            return months;
+        }
+
+        return this._monthFactorForDefault();
+    },
+
+    _validMonthFactor: function(months) {
+        if (months > 0 && months <= this._monthFactorForDefault()) {
+            return true;
+        }
+        return false;
+    },
+
+    _monthFactorForLastInvoice: function() {
+        let invoices = this.options.exploracao.get("facturacao").sortBy("created_at");
+        let thisId = this.model.id;
+        let thisIdx = invoices.findIndex(i => i.id === thisId);
+        if (thisIdx <= 0) {
+            return undefined;
+        }
+        let thatInvoice = invoices[thisIdx - 1];
+        return this._diffMonths(
+            this.model.get("created_at"),
+            thatInvoice.get("created_at")
+        );
+    },
+
+    _monthFactorForDateEmissao: function() {
+        let lics = this.options.exploracao.get("licencias");
+        let d_emissaos = lics.pluck("d_emissao");
+        let d_emissao = _.find(d_emissaos, d => d);
+        if (!d_emissao) {
+            return undefined;
+        }
+        let months = this._diffMonths(this.model.get("created_at"), d_emissao);
+    },
+
+    _monthFactorForCreatedAt: function() {
+        let created_at = this.options.exploracao.get("created_at");
+        return this._diffMonths(this.model.get("created_at"), created_at);
+    },
+
+    _monthFactorForDefault: function() {
+        switch (this.model.get("fact_tipo")) {
+            case "Mensal":
+                return 1;
+            case "Trimestral":
+                return 3;
+            case "Anual":
+                return 12;
+        }
+    },
+
+    _diffMonths: function(biggerDate, date) {
+        let thisCreatedAt = moment(biggerDate);
+        let thatCreatedAt = moment(date);
+        // We only care about year and month
+        // let months = thisCreatedAt.diff(thatCreatedAt, "months");
+        let months =
+            (thisCreatedAt.year() - thatCreatedAt.year()) * 12 +
+            (thisCreatedAt.month() - thatCreatedAt.month());
+        if (months <= 0) {
+            console.log("No debería pasar nunca");
+        }
+        return months;
+    },
+
+    _updateToState: function(state) {
+        if (wf.isFacturacaoNewStateValid(this.model.get("fact_estado"), state)) {
+            this._createNewObseracio();
+            this.model.set("fact_estado", state);
+        }
+    },
+
+    _createNewObseracio: function() {
+        this.model.get("observacio").push({
+            created_at: null,
+            autor: null,
+            text: null,
+            state: null,
+        });
+        this.$("#observacio").val("");
+    },
+
+    _changeStateToPdteFactura: function() {
+        var self = this;
+        bootbox.confirm(
+            `A factura vai mudar o seu estado a: <br> <strong>${window.SIRHA.ESTADO_FACT.PENDING_INVOICE}</strong>`,
+            function(result) {
+                if (result) {
+                    self._updateToState(window.SIRHA.ESTADO_FACT.PENDING_INVOICE);
+                }
+            }
+        );
+    },
+
+    _printFactura: function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var self = this;
+        const invoiceData = this.options.exploracao.toJSON();
+        invoiceData.factura = this.model.toJSON();
+        SIRHA.Services.PrintService.factura(invoiceData)
+            .then(function(data) {
+                self.model.set("fact_id", data.numFactura);
+                self.model.set("fact_date", data.dateFactura_);
+                var nextState = window.SIRHA.ESTADO_FACT.PENDING_PAYMENT;
+                if (nextState !== self.model.get("fact_estado")) {
+                    self._updateToState(nextState);
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+                bootbox.alert({
+                    title: "Erro ao imprimir factura",
+                    message: error,
+                });
+            });
+    },
+
+    _printRecibo: function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var self = this;
+        const invoiceData = this.options.exploracao.toJSON();
+        invoiceData.factura = this.model.toJSON();
+        SIRHA.Services.PrintService.recibo(invoiceData)
+            .then(function(data) {
+                self.model.set("recibo_id", data.numRecibo);
+                self.model.set("recibo_date", data.dateRecibo_);
+                var nextState = window.SIRHA.ESTADO_FACT.PAID;
+                if (nextState !== self.model.get("fact_estado")) {
+                    self._updateToState(nextState);
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+                bootbox.alert({
+                    title: "Erro ao imprimir recibo",
+                    message: error,
+                });
+            });
+    },
+
+    _defineWidgetsToBeUsed: function() {
+        // TODO. En lugar de fijar las variables tiene sentido quitarlos del html diractamente?
+        for (let widget of [
+            ...this.alwaysDisabledWidgets,
+            ...this.alwaysDisabledAndAutoWidgets,
+            ...this.conditionallyDisabledWidgets,
+        ]) {
+            document.querySelector(`#edit-facturacao-modal #${widget}`).disabled = true;
+        }
+
+        // _defineWidgetsToBeUsed
+        this.widgets = [];
+        let licenseWidgets = [];
+        let self = this;
+
+        if (
+            iAuth.isObservador() ||
+            (iAuth.isDivisao() &&
+                iAuth.getDivisao() !== this.options.exploracao.get("loc_divisao"))
+        ) {
+            // un observador o División (de una división  que no le corresponde) no
+            // puede editar ningún campo
             return;
-        } else if (iAuth.hasRoleTecnico() || iAuth.isDivisao()) {
-            // Un técnico o División puede editar el consumo y tipo de la licencia subterránea si se trata de una licencia de consumo variable
+        } else if (
+            iAuth.hasRoleTecnico() ||
+            (iAuth.isDivisao() &&
+                iAuth.getDivisao() === this.options.exploracao.get("loc_divisao"))
+        ) {
+            // Un técnico o División (de la división que le corresponde) puede editar el
+            // consumo para subterraneas, variables
             if (
-                this.model.get("fact_estado") == window.SIRHA.ESTADO_FACT.PENDING_M3 &&
+                this.model.get("fact_estado") ==
+                    window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION &&
                 this.options.tiposLicencia.includes("sub") &&
                 this.model.get("consumo_tipo_sub") == "Variável"
             ) {
-                licenseWidgets = ["consumo_tipo_sub", "consumo_fact_sub"];
-            } else {
-                // puede ver el histórico de facturas pero no tocar nada si  no está aún
-                // en pendiente de consumo
-                licenseWidgets = [];
+                licenseWidgets = ["consumo_fact_sub"];
             }
         } else {
-            licenseWidgets = [
-                "taxa_fixa_sup",
-                "taxa_fixa_sub",
-                "taxa_uso_sup",
-                "taxa_uso_sub",
-                "consumo_fact_sup",
-                "consumo_fact_sub",
-                "consumo_tipo_sup",
-                "consumo_tipo_sub",
-                "iva",
-                "juros",
-            ];
+            // Administrador y DSU-F
+            if (
+                this.model.get("fact_estado") ==
+                window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
+            ) {
+                if (
+                    this.options.tiposLicencia.includes("sup") &&
+                    this.model.get("consumo_tipo_sup") == "Variável"
+                ) {
+                    licenseWidgets = ["consumo_fact_sup"];
+                } else {
+                    licenseWidgets = [];
+                }
+            } else {
+                licenseWidgets = [
+                    "consumo_tipo_sup",
+                    "consumo_tipo_sub",
+                    "consumo_fact_sup",
+                    "consumo_fact_sub",
+                    "taxa_fixa_sup",
+                    "taxa_fixa_sub",
+                    "taxa_uso_sup",
+                    "taxa_uso_sub",
+                    "iva",
+                    "juros",
+                ];
+            }
         }
 
         // pero nadie puede editar los tipos de consumo a menos que se trate de la última factura, por tanto, si no es el caso, los eliminamos de la lista
@@ -293,21 +562,20 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                 }
             });
         });
-    },
 
-    enabledWidgets: function() {
-        var self = this;
+        // _enabledWidgets
+
         this.widgets.forEach(function(w) {
             var input = this.$("#edit-facturacao-modal #" + w);
             input.prop("disabled", false);
             input.prop("required", true);
-            input.on("input", self.facturaUpdated.bind(self));
-            input.on("input", self.enableBts.bind(self));
+            input.on("input", self._facturaUpdated.bind(self));
+            input.on("input", self._enableBts.bind(self));
         });
-        this.$("#observacio").on("input", this.observacioUpdated.bind(self));
+        this.$("#observacio").on("input", this._observacioUpdated.bind(self));
     },
 
-    enableBts: function() {
+    _enableBts: function() {
         var enable = this.widgets.every(function(w) {
             var input = this.$("#edit-facturacao-modal #" + w)[0];
             var e = input.value === 0 || input.value.trim();
@@ -319,279 +587,62 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         this.$("#bt-factura").hide();
         this.$("#bt-recibo").hide();
 
-        if (iAuth.hasRoleObservador()) {
+        if (
+            iAuth.isObservador() ||
+            (iAuth.isDivisao() &&
+                iAuth.getDivisao() !== this.options.exploracao.get("loc_divisao"))
+        ) {
             return;
         }
 
-        if (iAuth.hasRoleTecnico() || iAuth.isDivisao()) {
-            if (this.model.get("fact_estado") === window.SIRHA.ESTADO_FACT.PENDING_M3) {
+        if (
+            iAuth.hasRoleTecnico() ||
+            (iAuth.isDivisao() &&
+                iAuth.getDivisao() === this.options.exploracao.get("loc_divisao"))
+        ) {
+            if (
+                this.model.get("fact_estado") ==
+                    window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION &&
+                this.options.tiposLicencia.includes("sub") &&
+                this.model.get("consumo_tipo_sub") == "Variável"
+            ) {
                 this.$("#bt-diferida")
                     .attr("disabled", !enable)
                     .show();
-                this.$("#bt-factura").hide();
-                this.$("#bt-recibo").hide();
-            } else {
-                // puede ver el histórico de facturas pero no tocar nada si  no está aún
-                // en pendiente de consumo
             }
             return;
         }
 
-        if (this.model.get("fact_estado") === window.SIRHA.ESTADO_FACT.PENDING_M3) {
-            // sólo pasa para ROLE.ADMINISTRADOR
+        // Administrador y DSU-F
+        if (
+            this.model.get("fact_estado") ==
+                window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION &&
+            this.options.tiposLicencia.includes("sup") &&
+            this.model.get("consumo_tipo_sup") == "Variável"
+        ) {
             this.$("#bt-diferida")
                 .attr("disabled", !enable)
                 .show();
-            this.$("#bt-factura").hide();
-            this.$("#bt-recibo").hide();
             return;
         }
 
-        this.$("#bt-diferida").hide();
-        this.$("#bt-factura")
-            .attr("disabled", !enable)
-            .show();
-        this.$("#bt-recibo")
-            .attr("disabled", !this.isReciboBtnEnabled() || !enable)
-            .show();
+        if (
+            this.model.get("fact_estado") !==
+            window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
+        ) {
+            this.$("#bt-diferida").hide();
+            this.$("#bt-factura")
+                .attr("disabled", !enable)
+                .show();
+            this.$("#bt-recibo")
+                .attr("disabled", !this._isReciboBtnEnabled() || !enable)
+                .show();
+        }
     },
 
-    isReciboBtnEnabled() {
+    _isReciboBtnEnabled() {
         return (
             this.model.get("fact_estado") != window.SIRHA.ESTADO_FACT.PENDING_INVOICE
         );
-    },
-
-    setWidgetsValue: function() {
-        this.$("#consumo_tipo_sub").val(this.model.get("consumo_tipo_sub"));
-        this.$("#consumo_tipo_sup").val(this.model.get("consumo_tipo_sup"));
-    },
-
-    facturaUpdated: function(evt) {
-        var target = evt.currentTarget;
-        if (target.validity.valid) {
-            var modifiedAttributes = {};
-            var trigger = false;
-            if (target.nodeName == "INPUT") {
-                modifiedAttributes[target.id] = formatter().unformatNumber(
-                    target.value
-                );
-            } else if (target.nodeName == "SELECT") {
-                modifiedAttributes[target.id] = target.value;
-            }
-            this.model.set(modifiedAttributes);
-        }
-    },
-
-    observacioUpdated: function(evt) {
-        var currentComment = this.model.get("observacio").slice(-1)[0];
-        Object.assign(currentComment, {
-            created_at: new Date(),
-            autor: iAuth.getUser(),
-            text: evt.currentTarget.value,
-            state: this.model.get("fact_estado"),
-        });
-        this.model.trigger("change", this.model);
-    },
-
-    updatePagoMesLicencia: function(lic) {
-        var taxa_fixa = formatter().unformatNumber(
-            document.getElementById("taxa_fixa_" + lic).value
-        );
-        var taxa_uso = formatter().unformatNumber(
-            document.getElementById("taxa_uso_" + lic).value
-        );
-        var consumo_fact = formatter().unformatNumber(
-            document.getElementById("consumo_fact_" + lic).value
-        );
-        var pago_mes = (taxa_fixa + taxa_uso * consumo_fact) * this.monthFactor();
-        var iva = formatter().unformatNumber(document.getElementById("iva").value) || 0;
-        var pago_mes_iva = pago_mes * (1 + iva / 100);
-        this.model.set("pago_mes_" + lic, pago_mes);
-        this.model.set("pago_iva_" + lic, pago_mes_iva);
-        this.model.set("iva_" + lic, iva);
-        document.getElementById("pago_mes_" + lic).value = formatter().formatNumber(
-            pago_mes,
-            "0[.]00"
-        );
-    },
-
-    monthFactor: function() {
-        let months = this.monthFactorForLastInvoice();
-        if (this.validMonthFactor(months)) {
-            return months;
-        }
-
-        months = this.monthFactorForDateEmissao();
-        if (this.validMonthFactor()) {
-            return months;
-        }
-
-        months = this.monthFactorForCreatedAt();
-        if (this.validMonthFactor(months)) {
-            return months;
-        }
-
-        return this.monthFactorForDefault();
-    },
-
-    validMonthFactor: function(months) {
-        if (months > 0 && months <= this.monthFactorForDefault()) {
-            return true;
-        }
-        return false;
-    },
-
-    monthFactorForLastInvoice: function() {
-        let invoices = this.options.exploracao.get("facturacao").sortBy("created_at");
-        let thisId = this.model.id;
-        let thisIdx = invoices.findIndex(i => i.id === thisId);
-        if (thisIdx <= 0) {
-            return undefined;
-        }
-        let thatInvoice = invoices[thisIdx - 1];
-        return this.diffMonths(
-            this.model.get("created_at"),
-            thatInvoice.get("created_at")
-        );
-    },
-
-    monthFactorForDateEmissao: function() {
-        let lics = this.options.exploracao.get("licencias");
-        let d_emissaos = lics.pluck("d_emissao");
-        let d_emissao = _.find(d_emissaos, d => d);
-        if (!d_emissao) {
-            return undefined;
-        }
-        let months = this.diffMonths(this.model.get("created_at"), d_emissao);
-    },
-
-    monthFactorForCreatedAt: function() {
-        let created_at = this.options.exploracao.get("created_at");
-        return this.diffMonths(this.model.get("created_at"), created_at);
-    },
-
-    monthFactorForDefault: function() {
-        switch (this.model.get("fact_tipo")) {
-            case "Mensal":
-                return 1;
-            case "Trimestral":
-                return 3;
-            case "Anual":
-                return 12;
-        }
-    },
-
-    diffMonths: function(biggerDate, date) {
-        let thisCreatedAt = moment(biggerDate);
-        let thatCreatedAt = moment(date);
-        // We only care about year and month
-        // let months = thisCreatedAt.diff(thatCreatedAt, "months");
-        let months =
-            (thisCreatedAt.year() - thatCreatedAt.year()) * 12 +
-            (thisCreatedAt.month() - thatCreatedAt.month());
-        if (months <= 0) {
-            console.log("No debería pasar nunca");
-        }
-        return months;
-    },
-
-    updatePagoIva: function() {
-        this.updatePagoMesLicencia("sup");
-        this.updatePagoMesLicencia("sub");
-        var pago_mes_sup =
-            formatter().unformatNumber(document.getElementById("pago_mes_sup").value) ||
-            0;
-        var pago_mes_sub =
-            formatter().unformatNumber(document.getElementById("pago_mes_sub").value) ||
-            0;
-
-        var juros =
-            formatter().unformatNumber(document.getElementById("juros").value) || 0;
-        var iva = formatter().unformatNumber(document.getElementById("iva").value) || 0;
-        var pago_iva =
-            (pago_mes_sup + pago_mes_sub) * (1 + iva / 100) * (1 + juros / 100);
-        this.model.set({pago_iva: pago_iva});
-        document.getElementById("pago_iva").value = formatter().formatNumber(
-            pago_iva,
-            "0[.]00"
-        );
-    },
-
-    updateToState: function(state) {
-        if (wf.isFacturacaoNewStateValid(this.model.get("fact_estado"), state)) {
-            this.createNewObseracio();
-            this.model.set("fact_estado", state);
-        }
-    },
-
-    createNewObseracio: function() {
-        this.model.get("observacio").push({
-            created_at: null,
-            autor: null,
-            text: null,
-            state: null,
-        });
-        this.$("#observacio").val("");
-    },
-
-    changeStateToPdteFactura: function() {
-        var self = this;
-        bootbox.confirm(
-            `A factura vai mudar o seu estado a: <br> <strong>${window.SIRHA.ESTADO_FACT.PENDING_INVOICE}</strong>`,
-            function(result) {
-                if (result) {
-                    self.updateToState(window.SIRHA.ESTADO_FACT.PENDING_INVOICE);
-                }
-            }
-        );
-    },
-
-    printFactura: function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var self = this;
-        const invoiceData = this.options.exploracao.toJSON();
-        invoiceData.factura = this.model.toJSON();
-        SIRHA.Services.PrintService.factura(invoiceData)
-            .then(function(data) {
-                self.model.set("fact_id", data.numFactura);
-                self.model.set("fact_date", data.dateFactura_);
-                var nextState = window.SIRHA.ESTADO_FACT.PENDING_PAY;
-                if (nextState !== self.model.get("fact_estado")) {
-                    self.updateToState(nextState);
-                }
-            })
-            .catch(function(error) {
-                console.log(error);
-                bootbox.alert({
-                    title: "Erro ao imprimir factura",
-                    message: error,
-                });
-            });
-    },
-
-    printRecibo: function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var self = this;
-        const invoiceData = this.options.exploracao.toJSON();
-        invoiceData.factura = this.model.toJSON();
-        SIRHA.Services.PrintService.recibo(invoiceData)
-            .then(function(data) {
-                self.model.set("recibo_id", data.numRecibo);
-                self.model.set("recibo_date", data.dateRecibo_);
-                var nextState = window.SIRHA.ESTADO_FACT.PAID;
-                if (nextState !== self.model.get("fact_estado")) {
-                    self.updateToState(nextState);
-                }
-            })
-            .catch(function(error) {
-                console.log(error);
-                bootbox.alert({
-                    title: "Erro ao imprimir recibo",
-                    message: error,
-                });
-            });
     },
 });

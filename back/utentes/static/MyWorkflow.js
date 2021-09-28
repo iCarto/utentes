@@ -31,12 +31,19 @@ var MyWorkflow = {
             return Backbone.SIXHIARA.ViewNoData;
         }
 
-        var state = this.getCurrentState(exp);
+        let state = this.getCurrentState(exp);
+        let view = undefined;
 
         if (SIRHA.ESTADO.CATEGORY_FACTURABLE.includes(state)) {
-            return this.whichFacturacaoView(exp, next);
+            view = Backbone.SIXHIARA.ViewFacturacao;
+        } else {
+            view = this.whichLicensingView(state, exp);
         }
 
+        return view || Backbone.SIXHIARA.UpsView;
+    },
+
+    whichLicensingView: function(state, exp) {
         switch (state) {
             case SIRHA.ESTADO.INCOMPLETE_DA:
                 return Backbone.SIXHIARA.ViewDocIncompletaAdm;
@@ -61,11 +68,7 @@ var MyWorkflow = {
                 return Backbone.SIXHIARA.ViewJuridico2;
             case SIRHA.ESTADO.PENDING_DIR_SIGN:
                 return Backbone.SIXHIARA.ViewSecretaria2;
-            default:
-                return Backbone.SIXHIARA.UpsView;
         }
-
-        return Backbone.SIXHIARA.UpsView;
     },
 
     isNotCompleteForFirstDJState: function(exp) {
@@ -93,26 +96,6 @@ var MyWorkflow = {
             }
         }
         return false;
-    },
-
-    whichFacturacaoView: function(exp, next) {
-        var estado_lic = this.getCurrentState(exp);
-        var fact_estado = exp.get("fact_estado");
-
-        if (!SIRHA.ESTADO.CATEGORY_FACTURABLE.includes(estado_lic)) {
-            return Backbone.SIXHIARA.UpsView;
-        }
-
-        switch (fact_estado) {
-            case window.SIRHA.ESTADO_FACT.PENDING_M3:
-                return Backbone.SIXHIARA.ViewFacturacao;
-            case window.SIRHA.ESTADO_FACT.PENDING_INVOICE:
-                return Backbone.SIXHIARA.ViewFacturacao;
-            case window.SIRHA.ESTADO_FACT.PENDING_PAY:
-                return Backbone.SIXHIARA.ViewFacturacao;
-            default:
-                return Backbone.SIXHIARA.UpsView;
-        }
     },
 
     getCurrentState: function(exp) {
@@ -280,11 +263,11 @@ var MyWorkflow = {
 
     isFacturacaoNewStateValid: function(currentState, nextState) {
         switch (currentState) {
-            case window.SIRHA.ESTADO_FACT.PENDING_M3:
+            case window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION:
                 return nextState == window.SIRHA.ESTADO_FACT.PENDING_INVOICE;
             case window.SIRHA.ESTADO_FACT.PENDING_INVOICE:
-                return nextState == window.SIRHA.ESTADO_FACT.PENDING_PAY;
-            case window.SIRHA.ESTADO_FACT.PENDING_PAY:
+                return nextState == window.SIRHA.ESTADO_FACT.PENDING_PAYMENT;
+            case window.SIRHA.ESTADO_FACT.PENDING_PAYMENT:
                 return nextState == window.SIRHA.ESTADO_FACT.PAID;
             case window.SIRHA.ESTADO_FACT.PAID:
                 return false;
@@ -295,11 +278,11 @@ var MyWorkflow = {
 
     whichFacturacaoNextState: function(currentState) {
         switch (currentState) {
-            case window.SIRHA.ESTADO_FACT.PENDING_M3:
+            case window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION:
                 return window.SIRHA.ESTADO_FACT.PENDING_INVOICE;
             case window.SIRHA.ESTADO_FACT.PENDING_INVOICE:
-                return window.SIRHA.ESTADO_FACT.PENDING_PAY;
-            case window.SIRHA.ESTADO_FACT.PENDING_PAY:
+                return window.SIRHA.ESTADO_FACT.PENDING_PAYMENT;
+            case window.SIRHA.ESTADO_FACT.PENDING_PAYMENT:
                 return window.SIRHA.ESTADO_FACT.PAID;
             default:
                 throw "Error";

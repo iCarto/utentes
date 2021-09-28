@@ -46,11 +46,11 @@ Backbone.SIXHIARA.ViewFacturaHistorico = Backbone.View.extend({
 
     getStatusClassname: function() {
         var fact_estado = this.model.get("fact_estado");
-        if (fact_estado === window.SIRHA.ESTADO_FACT.PENDING_M3) {
+        if (fact_estado === window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION) {
             return "factura-label-pdt-consumo";
         } else if (fact_estado === window.SIRHA.ESTADO_FACT.PENDING_INVOICE) {
             return "factura-label-pdt-factura";
-        } else if (fact_estado === window.SIRHA.ESTADO_FACT.PENDING_PAY) {
+        } else if (fact_estado === window.SIRHA.ESTADO_FACT.PENDING_PAYMENT) {
             return "factura-label-pdt-pagamento";
         } else if (fact_estado === window.SIRHA.ESTADO_FACT.PAID) {
             return "factura-label-pagada";

@@ -190,7 +190,7 @@ window.SIXHIARA.ESTADOS_FACT = [
         roles: [],
     },
     {
-        key: window.SIRHA.ESTADO_FACT.PENDING_PAY,
+        key: window.SIRHA.ESTADO_FACT.PENDING_PAYMENT,
         roles: [SIRHA.ROLE.ADMIN, SIRHA.ROLE.OBSERVADOR, SIRHA.ROLE.FINANCIERO],
     },
     {
@@ -198,7 +198,7 @@ window.SIXHIARA.ESTADOS_FACT = [
         roles: [SIRHA.ROLE.ADMIN, SIRHA.ROLE.OBSERVADOR, SIRHA.ROLE.FINANCIERO],
     },
     {
-        key: window.SIRHA.ESTADO_FACT.PENDING_M3,
+        key: window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION,
         roles: [
             SIRHA.ROLE.ADMIN,
             SIRHA.ROLE.OBSERVADOR,

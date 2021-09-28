@@ -133,6 +133,7 @@ class RootFactory(object):
                 perm.PERM_CREATE_DOCUMENTO,
                 perm.PERM_DELETE_DOCUMENTO,
                 perm.PERM_EM_PROCESSO,
+                perm.PERM_UPDATE_CREATE_FACTURACAO,
             ),
         ),
     ]
