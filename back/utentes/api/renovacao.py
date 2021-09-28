@@ -1,5 +1,4 @@
 import datetime
-import logging
 
 from dateutil.relativedelta import relativedelta
 from pyramid.view import view_config
@@ -8,7 +7,7 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from utentes.api.error_msgs import error_msgs
 from utentes.constants import perms as perm
 from utentes.models.base import badrequest_exception
-from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL
+from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL, RENEWABLE_STATES
 from utentes.models.estado_renovacao import (
     DE_FACTO,
     LICENSED,
@@ -18,10 +17,22 @@ from utentes.models.estado_renovacao import (
 )
 from utentes.models.exploracao import Exploracao
 from utentes.models.exploracao_con_renovacao import ExpConRenovacao
+from utentes.models.licencia import Licencia
 from utentes.models.renovacao import Renovacao
 
 
-log = logging.getLogger(__name__)
+@view_config(
+    route_name="api_renovacao_id",
+    permission=perm.PERM_GET,
+    request_method="GET",
+    renderer="json",
+)
+def api_renovacao_id_get(request):
+    gid = request.matchdict["id"]
+    try:
+        return request.db.query(Renovacao).filter(Renovacao.gid == gid).one()
+    except (MultipleResultsFound, NoResultFound):
+        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
 
 
 @view_config(
@@ -30,35 +41,25 @@ log = logging.getLogger(__name__)
     request_method="GET",
     renderer="json",
 )
-@view_config(
-    route_name="api_renovacao_id",
-    permission=perm.PERM_GET,
-    request_method="GET",
-    renderer="json",
-)
 def renovacao_get(request):
-    gid = None
-    if request.matchdict:
-        gid = request.matchdict["id"] or None
-
-    if gid:  # return individual renovacao
-        try:
-            return request.db.query(Renovacao).filter(Renovacao.gid == gid).one()
-        except (MultipleResultsFound, NoResultFound):
-            raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
-
     n_months_to_go_back = 6
-    today = datetime.date.today()
-    exploracaos = request.db.query(ExpConRenovacao).all()
-    exploracaos_filtered = []
+    threshold_renewal_date = datetime.date.today() + relativedelta(
+        months=n_months_to_go_back
+    )
 
-    for e in exploracaos:
-        for lic in e.licencias:
-            if lic.d_validade and today >= (
-                lic.d_validade - relativedelta(months=n_months_to_go_back)
-            ):
-                exploracaos_filtered.append(e.__json__(request))
-                break
+    lics_ids_query = (
+        request.db.query(Licencia.exploracao)
+        .filter(Licencia.estado.in_(RENEWABLE_STATES))
+        .filter(Licencia.d_validade < threshold_renewal_date)
+        .group_by(Licencia.exploracao)
+    )
+    exp_ids = [lic[0] for lic in lics_ids_query]
+
+    exploracaos = (
+        request.db.query(ExpConRenovacao).filter(ExpConRenovacao.gid.in_(exp_ids)).all()
+    )
+
+    exploracaos_filtered = [e.__json__(request) for e in exploracaos]
 
     for f in exploracaos_filtered:
         valid = [
@@ -123,13 +124,7 @@ def fill_renovacao_from_exploracao(exp):
 @view_config(
     route_name="api_renovacao_id",
     permission=perm.PERM_UPDATE_RENOVACAO,
-    request_method="PATCH",
-    renderer="json",
-)
-@view_config(
-    route_name="api_renovacao_id",
-    permission=perm.PERM_UPDATE_RENOVACAO,
-    request_method="PUT",
+    request_method=("PATCH", "PUT"),
     renderer="json",
 )
 def renovacao_update(request):

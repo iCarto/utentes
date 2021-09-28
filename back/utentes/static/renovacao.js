@@ -9,8 +9,6 @@ var domains = new Backbone.UILib.DomainCollection();
 var estados = new Backbone.SIXHIARA.EstadoRenovacaoCollection();
 var listView, mapView, numberOfResultsView, filtersView;
 
-renovacoes.url = Backbone.SIXHIARA.Config.apiRenovacoes;
-
 var domainsFetched = function(collection, response, options) {
     filtersView = new Backbone.SIXHIARA.FiltersView({
         el: $("#filters"),
