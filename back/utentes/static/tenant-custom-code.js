@@ -96,10 +96,6 @@ window.SIXHIARA.ESTADOS_RENOVACAO = [
         roles: [],
     },
     {
-        key: SIRHA.ESTADO_RENOVACAO.IRREGULAR,
-        roles: [],
-    },
-    {
         key: SIRHA.ESTADO_RENOVACAO.INCOMPLETE_DA,
         roles: [SIRHA.ROLE.ADMIN, SIRHA.ROLE.OBSERVADOR, SIRHA.ROLE.ADMINISTRATIVO],
         // If a read only acces is needed to some state for some ARA it could be done

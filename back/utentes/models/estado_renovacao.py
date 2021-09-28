@@ -5,7 +5,6 @@ from utentes.models.base import PGSQL_SCHEMA_DOMAINS, DeclarativeBase
 
 LICENSED = "Licenciada"
 DE_FACTO = "Utente de facto"
-IRREGULAR = "Irregular"
 PENDING_RENOV_LICENSE = "Pendente Renovação da licença (DARH)"
 PENDING_REVIEW_DIR = "Pendente Revisão Renovação (Direcção)"
 PENDING_REVIEW_DJ = "Pendente Análise Renovação Licença (DSU-J)"
@@ -15,8 +14,7 @@ PENDING_DADOS_LICENSE = "Pendente Dados Renovação Licença (DSU-J)"
 PENDING_DIR_SIGN = "Pendente Firma Renovação Licença (Direcção)"
 NOT_APPROVED = "Não aprovada"
 
-
-NOT_VALID = [LICENSED, DE_FACTO, NOT_APPROVED]
+NOT_VALID = (LICENSED, DE_FACTO, NOT_APPROVED)
 
 
 class EstadoRenovacao(DeclarativeBase):
