@@ -25,6 +25,7 @@ requires = [
     "numpy==1.19.5",
     "openpyxl==3.0.5",
     "pandas==1.1.5",
+    "sentry-sdk==1.3.1",
 ]
 
 excludes = ["utentes.tests"]

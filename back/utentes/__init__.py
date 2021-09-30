@@ -58,6 +58,9 @@ def main(global_config, **settings):
         request_factory=RequestWithDB,
         root_factory="utentes.user_utils.RootFactory",
     )
+
+    config.include("monitoring")
+
     config.add_request_method(get_user_from_request, "user", reify=True)
 
     json_renderer = JSON()
