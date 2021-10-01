@@ -226,3 +226,4 @@ aras_unification_rename_unidade_divisao 2021-09-03T13:54:08Z Francisco Puga <fpu
 aras_unification_rename_states 2021-09-14T09:51:24Z Francisco Puga <fpuga@icarto.es> # aras unification rename states
 delete_column_exploracao_fact_estado 2021-09-24T17:00:17Z Francisco Puga <fpuga@icarto.es> # delete column exploracao.fact_estado
 aras_unification_rename_state_irregular 2021-09-16T08:21:53Z Francisco Puga <fpuga@icarto.es> # aras unification rename state irregular
+adds_schema_and_table_view_monitor 2021-09-29T19:39:19Z Francisco Puga <fpuga@icarto.es> # Adds schema monitoring and table view monitor
