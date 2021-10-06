@@ -44,11 +44,17 @@ Se registran en la tabla `utentes.licencias`
 
 ## Estado
 
--   Irregular. Las irregulares son en general licencias inactivas desde hace tiempo. Deben estar en `RENOVAÇOES` porque pueden reiniciar la actividad y necesitarían ser renovadas. Una utente cuya licencia caduque y no vaya a ser renombrada debería ser marcada como `Irregular`
+-   **Inactiva**. Antes llamadas _Irregular_. Licencias que en este momento no están activas pero que podrían volver a estar activas en el futuro. En este momento la aplicación no permite llevar a cabo renovaciones o relicenciamiento sobre ellas mediante un proceso. Aunque puede pasarse a _Licenciada_ o _Utente de facto_ de forma manual. La aplicación debería contemplar en algún momento algo como un botón específico (Reactivar Licencia) en las licencias _Inactiva_ que permitiera pasarlas al proceso de concesión, renovación o mover directamente a otro estado en función de si todavía están dentro de su periodo de validez.
 -   Activa / Facturable. Son aquellas explotaciones o licencias cuyo estado es `Licenciada` o `Utente de facto`
 -   En proceso. Aquellas explotaciones para las que se ha solicitado una licencia de uso de agua pero que todavía no se le ha concedido.
 -   Não aprovada. Aquellas explotaciones para las que se solicito una licencia pero esta no fue concedida. `Não aprovada`
 -   Usos comuns. Aquellas explotaciones que no requieren de una licencia y simplemente están catastradas. `Utente de usos comuns`
+
+## Grupos de Estados
+
+Los _Grupos de Estados_ son conceptos que pueden o no estar presentes en el código pero que en todo caso manejamos.
+
+-   **Renovables**. Aquellas licencias que pueden ser renovadas. Aparecerán en la pestaña de _RENOVAÇÕES_ si están en un estado del proceso de renovación que la usuaria debe gestionar. Son las que cumplen la condición de tener como estado _Licenciada_ y estar a 6 meses de que venza su fecha de validez (`utentes.licencias.d_validade`) o ya haya vencido.
 
 ### Base de datos
 
