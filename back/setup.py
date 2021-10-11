@@ -32,7 +32,7 @@ excludes = ["utentes.tests"]
 
 setup(
     name="utentes",
-    version="210825",
+    version="211011",
     description="utentes",
     author="iCarto",
     author_email="info@icarto.es",

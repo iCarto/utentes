@@ -23,7 +23,7 @@ def includeme(config: Configurator):
             ],
             traces_sample_rate=1.0,
             send_default_pii=True,
-            release="210825",
+            release="211021",
             environment=config.registry.settings.get("ara"),
             attach_stacktrace=False,
             request_bodies="medium",
