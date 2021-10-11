@@ -228,3 +228,5 @@ delete_column_exploracao_fact_estado 2021-09-24T17:00:17Z Francisco Puga <fpuga@
 aras_unification_rename_state_irregular 2021-09-16T08:21:53Z Francisco Puga <fpuga@icarto.es> # aras unification rename state irregular
 adds_schema_and_table_view_monitor 2021-09-29T19:39:19Z Francisco Puga <fpuga@icarto.es> # Adds schema monitoring and table view monitor
 delete_bacia_namacurra_dgblic 2021-10-06T13:37:57Z Francisco Puga <fpuga@icarto.es> # Deletes Namacurra-DGBLIC from domains.bacia
+new_version_211011 2021-10-11T16:19:10Z Francisco Puga <fpuga@icarto.es> # new_version_211011
+@211011 2021-10-11T16:20:59Z Francisco Puga <fpuga@icarto.es> # tag 211011
