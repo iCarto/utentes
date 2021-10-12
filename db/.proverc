@@ -1,1 +1,1 @@
---dbname aranorte --host localhost --username postgres --recurse --ext .sql
+--dbname arasul --host localhost --username postgres --recurse --ext .sql

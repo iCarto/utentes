@@ -7,7 +7,7 @@ import fabric
 DEBUG = False
 
 # This names should be configured in /etc/hosts and ~/.ssh/config
-HOSTS = ("arazambeze", "aracentro", "aracentronorte", "arasul")
+HOSTS = ("aranorte", "aracentro", "arasul")
 hosts = None
 
 
