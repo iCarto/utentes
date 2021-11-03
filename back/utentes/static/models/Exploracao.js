@@ -471,7 +471,10 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             this,
             arguments
         );
-        attrs.geometry = this.get("geometry") ? this.get("geometry").toJSON() : null;
+
+        attrs.geometry = _.isEmpty(this.get("geometry"))
+            ? null
+            : this.get("geometry").toJSON();
         attrs.utente = this.get("utente").toJSON();
         attrs.licencias = this.get("licencias").toJSON();
         attrs.fontes = this.get("fontes").toJSON();

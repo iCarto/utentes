@@ -210,7 +210,7 @@ Backbone.SIXHIARA.EditionMap = function(map, expGID) {
                 {silent: true}
             );
         } else {
-            model.set("geometry", {silent: true});
+            model.set("geometry", {}, {silent: true});
         }
 
         model.set("geometry_edited", true);

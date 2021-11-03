@@ -57,7 +57,7 @@ class ActividadesCultivos(Base):
         self.area = data.get("area")
         self.observacio = data.get("observacio")
         self.the_geom = update_geom(self.the_geom, data)
-        update_area(self, data)
+        update_area(self, data, empty_value=0)  # #3008
 
         if data.get("geometry_edited"):
             if self.area is None:

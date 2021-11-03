@@ -143,9 +143,9 @@ def update_geom(org_geom, data):
     return the_geom.ST_Multi().ST_Transform(32737)
 
 
-def update_area(model, data, divisor=10000, fieldname="area"):
+def update_area(model, data, divisor=10000, fieldname="area", empty_value=None):
     if data.get("geometry_edited"):
         if model.the_geom is None:
-            setattr(model, fieldname, None)
+            setattr(model, fieldname, empty_value)
         else:
             setattr(model, fieldname, model.the_geom.ST_Area() / divisor)
