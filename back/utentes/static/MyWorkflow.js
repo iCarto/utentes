@@ -34,7 +34,7 @@ var MyWorkflow = {
         let state = this.getCurrentState(exp);
         let view = undefined;
 
-        if (SIRHA.ESTADO.CATEGORY_FACTURABLE.includes(state)) {
+        if (SIRHA.ESTADO.CATEGORY_INVOIZABLE.includes(state)) {
             view = Backbone.SIXHIARA.ViewFacturacao;
         } else {
             view = this.whichLicensingView(state, exp);

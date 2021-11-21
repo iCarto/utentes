@@ -758,10 +758,7 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
 
     getLicencia: function(tipo) {
         var l = this.get("licencias").filter(function(lic) {
-            return lic
-                .get("tipo_agua")
-                .toUpperCase()
-                .startsWith(tipo.toUpperCase());
+            return lic.getSafeTipoAgua().startsWith(tipo.toLowerCase());
         });
         if (l.length === 1) {
             return l[0];

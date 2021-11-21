@@ -91,4 +91,14 @@ Backbone.SIXHIARA.Licencia = Backbone.Model.extend({
     isLicensed: function() {
         return this.get("estado") === SIRHA.ESTADO.LICENSED;
     },
+
+    isInvoizable: function() {
+        return SIRHA.ESTADO.CATEGORY_INVOIZABLE.includes(this.get("estado"));
+    },
+
+    getSafeTipoAgua: function() {
+        return this.get("tipo_agua")
+            .substring(0, 3)
+            .toLowerCase();
+    },
 });

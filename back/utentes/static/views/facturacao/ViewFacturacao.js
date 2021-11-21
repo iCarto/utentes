@@ -75,15 +75,6 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     initialize: function(options) {
         Backbone.SIXHIARA.BaseProcesoView.prototype.initialize.call(this);
 
-        var tiposLicencia = [];
-        this.model.get("licencias").forEach(function(lic) {
-            var tipo = lic
-                .get("tipo_agua")
-                .substring(0, 3)
-                .toLowerCase();
-            tiposLicencia.push(tipo);
-        });
-
         this.facturacaoHistoricoView = new Backbone.SIXHIARA.ViewFacturacaoHistorico({
             model: this.model.get("facturacao"),
         });
@@ -91,7 +82,6 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
         this.facturaSelected = this.model.get("facturacao").at(0).id;
         this.facturaView = new Backbone.SIXHIARA.ViewFactura({
             model: this.model.get("facturacao").findWhere({id: this.facturaSelected}),
-            tiposLicencia: tiposLicencia,
             exploracao: this.model,
         });
         this.facturaHeader = new Backbone.SIXHIARA.ViewFacturaHeader({

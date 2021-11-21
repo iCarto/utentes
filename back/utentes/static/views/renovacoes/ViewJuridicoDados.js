@@ -253,10 +253,7 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
             return;
         }
         this.model.get("licencias").forEach(function(lic) {
-            var tipo = lic
-                .get("tipo_agua")
-                .substring(0, 3)
-                .toLowerCase();
+            var tipo = lic.getSafeTipoAgua();
             document
                 .getElementById("lic-" + tipo + "-old")
                 .classList.remove("panel-disabled");

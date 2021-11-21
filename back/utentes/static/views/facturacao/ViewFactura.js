@@ -181,6 +181,10 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
 
     initialize: function(options) {
         this.options = options || {};
+        this.options.tiposLicencia = this.options.exploracao
+            .get("licencias")
+            .filter(l => l.isInvoizable())
+            .map(l => l.getSafeTipoAgua());
         this._setListeners();
     },
 

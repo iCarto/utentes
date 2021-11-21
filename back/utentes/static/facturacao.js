@@ -10,7 +10,7 @@ var domainsFetched = function(collection, response, options) {
     var facturable_states = new Backbone.UILib.DomainCollection(
         domains
             .byCategory("licencia_estado")
-            .filter(d => SIRHA.ESTADO.CATEGORY_FACTURABLE.includes(d.get("text")))
+            .filter(d => SIRHA.ESTADO.CATEGORY_INVOIZABLE.includes(d.get("text")))
     );
     filtersView = new Backbone.SIXHIARA.FiltersView({
         el: $("#filters"),

@@ -67,10 +67,7 @@ Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
     updateRenovacaoConsumoFact: function(model) {
         var renovacao = this.model.get("renovacao");
         model.get("licencias").forEach(function(lic) {
-            var tipo = lic
-                .get("tipo_agua")
-                .substring(0, 3)
-                .toLowerCase();
+            var tipo = lic.getSafeTipoAgua();
             var last_consumo = lic.get("consumo_fact");
             renovacao.set("consumo_fact_" + tipo + "_old", last_consumo);
         });
@@ -79,10 +76,7 @@ Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
     fillExploracaoFromRenovacao: function() {
         var renovacao = this.model.get("renovacao");
         this.model.get("licencias").forEach(function(lic) {
-            var tipo = lic
-                .get("tipo_agua")
-                .substring(0, 3)
-                .toLowerCase();
+            var tipo = lic.getSafeTipoAgua();
             lic.set("tipo_lic", renovacao.get("tipo_lic_" + tipo));
             lic.set("d_emissao", renovacao.get("d_emissao_" + tipo));
             lic.set("d_validade", renovacao.get("d_validade_" + tipo));
