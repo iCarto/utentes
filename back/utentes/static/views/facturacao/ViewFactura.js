@@ -561,7 +561,7 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         this.options.tiposLicencia.forEach(function(tipo) {
             this.$("#lic-" + tipo).removeClass("panel-disabled");
             licenseWidgets.forEach(function(w) {
-                if (w.endsWith(tipo)) {
+                if (w.endsWith(tipo) || ["iva", "juros"].includes(w)) {
                     self.widgets.push(w);
                 }
             });
