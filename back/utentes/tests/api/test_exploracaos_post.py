@@ -164,11 +164,7 @@ class ExploracaoCreateTests(DBIntegrationTest):
         self._clean_up(e, actual)
 
         expected_json = build_json(self.request)
-        expected_json["actividade"] = {
-            "tipo": K_PECUARIA,
-            "reses": [],
-            "c_estimado": 1,
-        }
+        expected_json["actividade"] = {"tipo": K_PECUARIA, "reses": [], "c_estimado": 1}
         self.request.json_body = expected_json
         e = exploracaos_create(self.request)
         actual = (

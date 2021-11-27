@@ -16,10 +16,7 @@ class Adicionar(object):
     def __init__(self, request):
         self.request = request
 
-    @view_config(
-        route_name="adicionar_ficha",
-        permission=perm.PERM_CREATE_EXPLORACAO,
-    )
+    @view_config(route_name="adicionar_ficha", permission=perm.PERM_CREATE_EXPLORACAO)
     def adicionar_ficha(self):
         ensure_exp_is_in_correct_state(self.request)
         return {}

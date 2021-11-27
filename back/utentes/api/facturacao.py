@@ -22,7 +22,9 @@ log = logging.getLogger(__name__)
 )
 def facturacao_get(request):
     states = request.GET.getall("states[]") or INVOIZABLE_STATES
-    query = request.db.query(ExploracaoConFacturacao).filter(ExploracaoConFacturacao.estado_lic.in_(states))
+    query = request.db.query(ExploracaoConFacturacao).filter(
+        ExploracaoConFacturacao.estado_lic.in_(states)
+    )
     features = query.order_by(ExploracaoConFacturacao.exp_id).all()
     return {"type": "FeatureCollection", "features": features}
 

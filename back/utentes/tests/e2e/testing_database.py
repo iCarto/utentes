@@ -103,10 +103,7 @@ def validate_actv_regadio(self, actual, expected):
 def validate_cultivos(self, actual, expected):
     self.assertEqual(len(actual), 1)
     self.assertEqual(actual[0].cult_id, expected[0]["cult_id"])
-    self.assertEqual(
-        actual[0].c_estimado,
-        expected[0]["c_estimado"],
-    )
+    self.assertEqual(actual[0].c_estimado, expected[0]["c_estimado"])
     self.assertEqual(actual[0].cultivo, expected[0]["cultivo"])
 
 

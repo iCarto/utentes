@@ -31,7 +31,9 @@ LICENCIA_SCHEMA = [
     },
     {
         "fieldname": "c_soli_int",
-        "message": 'O "consumo solicitado intermedio" da licença não tem o formato correcto',
+        "message": (
+            'O "consumo solicitado intermedio" da licença não tem o formato correcto'
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {

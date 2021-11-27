@@ -77,7 +77,10 @@ def renovacao_get(request):
         else:
             raise badrequest_exception(
                 {
-                    "error": "Há mais de uma renovação em progresso para a exploração selecionada"
+                    "error": (
+                        "Há mais de uma renovação em progresso para a exploração"
+                        " selecionada"
+                    )
                 }
             )
 
@@ -142,7 +145,10 @@ def renovacao_update(request):
     if len(valid) > 1:
         raise badrequest_exception(
             {
-                "error": "Há mais de uma renovação em progresso para a exploração selecionada"
+                "error": (
+                    "Há mais de uma renovação em progresso para a exploração"
+                    " selecionada"
+                )
             }
         )
 

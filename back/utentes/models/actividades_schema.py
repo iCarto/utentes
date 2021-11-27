@@ -19,12 +19,18 @@ ActividadeSchema[K_ABASTECIMENTO] = [
     },
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8", "NOT_NULL"],
     },
     {
         "fieldname": "habitantes",
-        "message": 'O "número de habitantes" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "número de habitantes" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8", "NOT_NULL"],
     },
     {
@@ -42,7 +48,10 @@ ActividadeSchema[K_AGRICULTURA] = [
     },
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8", "NOT_NULL"],
     },
     {
@@ -70,7 +79,9 @@ ActividadeSchema[K_AGRICULTURA] = [
 ActividadeSchema["Cultivos"] = [
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da cultura não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da cultura não tem o formato correcto ou está vazio'
+        ),
         "rules": ["NOT_NULL", "IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {
@@ -103,7 +114,10 @@ ActividadeSchema[K_INDUSTRIA] = [
     },
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8", "NOT_NULL"],
     },
     {
@@ -121,7 +135,9 @@ ActividadeSchema[K_PECUARIA] = [
     },
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto o está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto o está vazio'
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8", "NOT_NULL"],
     },
     {
@@ -134,7 +150,10 @@ ActividadeSchema[K_PECUARIA] = [
 ActividadeSchema["Reses"] = [
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["NOT_NULL", "IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {
@@ -162,7 +181,10 @@ ActividadeSchema[K_PISCICULTURA] = [
     },
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {
@@ -236,7 +258,9 @@ ActividadeSchema["TanquesPiscicolas"] = [
     },
     {
         "fieldname": "n_ale_pov",
-        "message": 'O "número de alevins por povoar" não tem o formato correcto ou está vazio',
+        "message": (
+            'O "número de alevins por povoar" não tem o formato correcto ou está vazio'
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {
@@ -269,7 +293,10 @@ ActividadeSchema[K_ENERGIA] = [
     },
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {
@@ -297,7 +324,10 @@ ActividadeSchema[K_SANEAMENTO] = [
     },
     {
         "fieldname": "c_estimado",
-        "message": 'O "consumo estimado" da actividade não tem o formato correcto ou está vazio',
+        "message": (
+            'O "consumo estimado" da actividade não tem o formato correcto ou está'
+            " vazio"
+        ),
         "rules": ["IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {

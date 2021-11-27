@@ -68,8 +68,4 @@ def write_spreadsheet_from_dataframes(sheets: dict, file: BinaryIO) -> None:
 
 
 def _write_df_to_sheet(writer, sheet_name: str, df: pd.DataFrame):
-    df.to_excel(
-        writer,
-        sheet_name=sheet_name,
-        index=False,
-    )
+    df.to_excel(writer, sheet_name=sheet_name, index=False)

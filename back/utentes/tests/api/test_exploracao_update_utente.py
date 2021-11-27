@@ -12,7 +12,8 @@ from utentes.tests.fixtures.create_exploracao import get_test_exploracao_from_db
 
 class ExploracaoUpdateUtenteTests(DBIntegrationTest):
     @unittest.skip(
-        "Falla porque upsert_utente no actualiza el body cuando ya existe la utente hay que revisar si se hizó así por algún motivo"
+        "Falla porque upsert_utente no actualiza el body cuando ya existe la utente hay"
+        " que revisar si se hizó así por algún motivo"
     )
     def test_update_utente_values(self):
         expected = get_test_exploracao_from_db(self.request.db)

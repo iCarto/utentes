@@ -26,27 +26,15 @@ class ValidatorTest(unittest.TestCase):
                 },
             ]
         )
-        model = {
-            "id": 1,
-            "consumo": 54,
-        }
+        model = {"id": 1, "consumo": 54}
         self.assertFalse(validator.validate(model))
 
-        model = {
-            "id": 1,
-            "consumo": 123456789,
-        }
+        model = {"id": 1, "consumo": 123456789}
         self.assertEqual(validator.validate(model)[0], "consumo numerico menor de 8")
 
     def test_validate_dict_rule(self):
         validator = Validator(
-            [
-                {
-                    "fieldname": "num",
-                    "message": "is always 2",
-                    "rules": ["IS_ALWAYS_2"],
-                },
-            ]
+            [{"fieldname": "num", "message": "is always 2", "rules": ["IS_ALWAYS_2"]}]
         )
         validator.add_rule("IS_ALWAYS_2", {"fails": lambda x: x != 2})
         self.assertFalse(validator.validate({"num": 2}))

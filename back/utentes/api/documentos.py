@@ -225,11 +225,7 @@ def init_divisao_json_array(request, exploracao_id):
 
     divisao_json_array = []
     for divisao in divisoes:
-        subpath = [
-            exploracao_id,
-            user_groups.BASIN_DIVISION,
-            divisao.key,
-        ]
+        subpath = [exploracao_id, user_groups.BASIN_DIVISION, divisao.key]
 
         divisao_json_array.append(
             {
@@ -237,16 +233,13 @@ def init_divisao_json_array(request, exploracao_id):
                 "type": "folder",
                 "name": divisao.key,
                 "url": request.route_url(
-                    "api_exploracao_documentacao",
-                    subpath=subpath,
+                    "api_exploracao_documentacao", subpath=subpath
                 ),
                 "path": request.route_url(
-                    "api_exploracao_documentacao_path",
-                    subpath=subpath,
+                    "api_exploracao_documentacao_path", subpath=subpath
                 ),
                 "files": request.route_url(
-                    "api_exploracao_documentacao_files",
-                    subpath=subpath,
+                    "api_exploracao_documentacao_files", subpath=subpath
                 ),
             }
         )

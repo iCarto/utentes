@@ -55,12 +55,7 @@ def get_db_entities(db: Session) -> List[InvoicesResultSet]:
         Facturacao.updated_at > FacturacaoERP.exported_at,
     )
     entities = (
-        db.query(
-            Facturacao,
-            ExploracaoBase,
-            ExploracaosERP,
-            FacturacaoERP,
-        )
+        db.query(Facturacao, ExploracaoBase, ExploracaosERP, FacturacaoERP)
         .join(ExploracaoBase, ExploracaoBase.gid == Facturacao.exploracao)
         .outerjoin(
             ExploracaosERP, ExploracaosERP.exploracao_gid == Facturacao.exploracao
@@ -94,7 +89,8 @@ def prepare_entities(entities: List[InvoicesResultSet]) -> None:
     for e in entities:
         if not e.exploracao_erp:
             raise badrequest_exception_user(
-                "Você está tentando exportar uma fatura sem primeiro exportar a exploracao"
+                "Você está tentando exportar uma fatura sem primeiro exportar a"
+                " exploracao"
             )
         e.invoice_erp.exported_at = now
         e.invoice_erp.facturacao_gid = e.invoice.gid

@@ -16,9 +16,7 @@ def includeme(config: Configurator):
         sentry_sdk.init(
             dsn=f"https://{sentry_key}@o1002848.ingest.sentry.io/5963155",
             integrations=[
-                PyramidIntegration(
-                    transaction_style="route_pattern",
-                ),
+                PyramidIntegration(transaction_style="route_pattern"),
                 SqlalchemyIntegration(),
             ],
             traces_sample_rate=1.0,

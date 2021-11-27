@@ -10,10 +10,7 @@ class ViewMonitor(Base):
     __tablename__ = "view_monitor"
     __table_args__ = {"schema": PGSQL_SCHEMA_MONITORING}
 
-    id = Column(
-        Integer,
-        primary_key=True,
-    )
+    id = Column(Integer, primary_key=True)
     username = Column(Text)
     verb = Column(Text)
     route_path = Column(Text)
