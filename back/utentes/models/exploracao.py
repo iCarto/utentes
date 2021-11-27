@@ -19,12 +19,7 @@ from utentes.models.base import (
     update_array,
     update_geom,
 )
-from utentes.models.constants import (
-    INVOICE_STATE_PENDING_CONSUMPTION,
-    PAID,
-    PENDING_INVOICE,
-    PENDING_PAYMENT,
-)
+
 from utentes.models.facturacao import Facturacao
 from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
