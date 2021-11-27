@@ -158,6 +158,13 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
                 self.license = self.model
                     .get("licencias")
                     .where({tipo_agua: self.options.tipo_agua})[0];
+                self.license.set(
+                    "lic_nro",
+                    SIRHA.Services.IdService.calculateNewLicNro(
+                        self.model.get("exp_id"),
+                        self.license.get("tipo_agua")
+                    )
+                );
                 self.listenTo(self.license, "change", self.render);
                 self.render();
                 this.$(".modal").modal("hide");
