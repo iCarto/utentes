@@ -5,12 +5,9 @@ source ../../server/variables.ini
 DOCUMENTOS_PATH="/var/www/media/documentos"
 UPLOADS_PATH="/var/www/media/uploads"
 QUERY="select concat(gid, ';', '${DOCUMENTOS_PATH}', '/', exploracao, '/', departamento,'/', name) from utentes.documentos where saved = false"
-HOST=localhost
-PORT=10003
-USER=postgres
-DATABASE=arasul
 
-psql_c -d "${DATABASE}" -c "${QUERY}" > documentos_to_move.txt
+
+psql_c -d "${DBNAME}" -c "${QUERY}" > documentos_to_move.txt
 sed -i '1,2d' documentos_to_move.txt
 sed -i -n -e :a -e '1,2!{P;N;D;};N;ba' documentos_to_move.txt
 documentos_moved=()
@@ -46,6 +43,6 @@ if [ ${#documentos_moved[@]} -ne 0 ]; then
         echo "${documentos_moved[*]}"
     )
     UPDATE_QUERY="update utentes.documentos set saved = true where gid in ("${documentos_moved_for_query}")"
-    psql_c -d "${DATABASE}" -c "${UPDATE_QUERY}"
+    psql_c -d "${DBNAME}" -c "${UPDATE_QUERY}"
     echo "Updating 'saved' column in documentos: ${documentos_moved_for_query}"
 fi

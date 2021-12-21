@@ -15,18 +15,18 @@ source upload_utentes_functions.sh
 IETL_REPO="${HOME}/development/ietl/ietl"
 
 upload_utentes_fontes() {
-    local DATABASE="${1}"
+    local DBNAME="${1}"
     local BASE_SPREADSHEET="${2}"
     local METADATA_FILE="${3}"
     local BORRAR_EXISTENTES="${4:-false}" # true | false
 
-    PG_CONNECTION="-h localhost -p ${PG_PORT} -d ${DATABASE} -U postgres"
+    PG_CONNECTION="-h localhost -p ${PG_PORT} -d ${DBNAME} -U postgres"
 
     # El gid de la última explotación antes de arrancar este proceso cuando se
     # estén mezclando con existentes.
     LAST_FONTES=$(${PSQL} ${PG_CONNECTION} -c "SELECT max(gid) FROM utentes.fontes")
 
-    # python prepare_data.py "${BASE_SPREADSHEET}" "${DATABASE}" "${METADATA_FILE}" "${LAST_FONTES}"
+    # python prepare_data.py "${BASE_SPREADSHEET}" "${DBNAME}" "${METADATA_FILE}" "${LAST_FONTES}"
 
     SHP="${BASE_SPREADSHEET}"
 
@@ -43,7 +43,7 @@ upload_utentes_fontes() {
 
     ogr2ogr -f "ESRI Shapefile" "${FOLDER}/output/" "${XLSX}" -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
 
-    upload_dbf "${DATABASE}" "${FOLDER}/output/Fontes_CL_UF.dbf" public.tmp_fontes
+    upload_dbf "${DBNAME}" "${FOLDER}/output/Fontes_CL_UF.dbf" public.tmp_fontes
 
     fix_field_types_fontes
 
@@ -82,7 +82,7 @@ upload_utentes_fontes() {
 
     # Si es una actualización de datos. Creo una bd nueva, elimino lo existente
     # y dumpeo los nuevos datos para poder generar un sql con el que actualizar
-    create_db_from_template "${DATABASE}" nueva_borrar
+    create_db_from_template "${DBNAME}" nueva_borrar
     ${PSQL} ${PG_CONNECTION} -d nueva_borrar -c "DELETE FROM utentes.fontes WHERE gid <= ${LAST_FONTES};"
 
     {
@@ -94,5 +94,5 @@ upload_utentes_fontes() {
         ${PGDUMP} -Fp --table='utentes.fontes' -a -b -E UTF-8 -h localhost -U postgres -d nueva_borrar
         cat "sql-functions/utentes_c_real_fon_c_soli_fon_y_derivados.sql"
         echo "COMMIT;"
-    } > "/tmp/update_${TODAY}_${DATABASE}_update_utentes_fontes.sql"
+    } > "/tmp/update_${TODAY}_${DBNAME}_update_utentes_fontes.sql"
 }

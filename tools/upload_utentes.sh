@@ -6,7 +6,7 @@ source db_utils.sh
 source upload_utentes_functions.sh
 source bash-functions/shp_dbf_to_db.sh
 
-DATABASE="${1}"
+DBNAME="${1}"
 SHP="${2}"
 BASE_SPREADSHEET="${3}"
 METADATA_FILE="${4}"
@@ -19,7 +19,7 @@ FILTER_UTENTES_FROM_EXCEL=""
 UTENTES_TO_EXCLUDE_AND_DROP="WHERE nome NOT IN ('Adelina Jaime Zandamela', 'Afonso Ezequias Chongo', 'Agostinho Joaquim Ubisse', 'Albino Pinto', 'Alice Alexandre Machehane', 'Anacleto Jaime Maxaieie', 'António Jeremias Manhice', 'Arlindo Fernando Augusto Banze', 'Armando Domingos Cabral', 'Brito Paulino', 'Calmo Alberto Nwalane', 'Calmo Alberto Nwalane', 'Calmo Alberto Nwalane', 'Carlos Vicente Duvane', 'Castigo Ernesto Mirole', 'Companhia Açucareira de Calanga Lda', 'Custódio Carlos Cossa', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'Daniel Marcos Cuamba', 'David Silvestre Tembe', 'Dionísio João Magalhães', 'Eduardo Rungo Mangueze', 'Fernando Mundau Matola', 'Godinho Tive Valentim', 'Graça Fabião Maculuve', 'Guilherme Simão Tamele', 'Isac Mussagy Daia', 'Isac Mussagy Daia', 'Isac Mussagy Daia', 'Isac Mussagy Daia', 'Isac Mussagy Daia', 'Jacob Nassone Macambe', 'João Alves Gabriel Bessa', 'João António', 'Joaquim Albino Ngoluja', 'José Guiliche Cumbane', 'Luís Faquene', 'Luís Faquene', 'Luís Taca', 'Mahesh Santilal', 'Maragra Açúcar, sarl', 'Maragra Açúcar, sarl', 'Maragra Açúcar, sarl', 'Maragra Açúcar, sarl', 'Margarida Huxtable', 'Mario Jaime Pelembe', 'Marta António Mbebe', 'Oriel Zefanias Sitoe', 'Oriel Zefanias Sitoe', 'Pedro Benjamim Mabote', 'Rafa António Malhuza', 'Rafael Salomão Miambo', 'Reginaldo Jossias Nhantumbo', 'Rodrigues Nasceu Muchongo', 'Sancho Domingos', 'Saraiva José Muando', 'Sérgio José Mulhovo', 'Tiago Jorge Cuna', 'TPH Mocambique, Lda', 'Valentim Machavane', 'Vicente Emília Henriqueta Luís')"
 
 IETL_REPO="${HOME}/development/ietl/ietl"
-PG_CONNECTION="-h localhost -p ${PG_PORT} -d ${DATABASE} -U postgres"
+PG_CONNECTION="-h localhost -p ${PG_PORT} -d ${DBNAME} -U postgres"
 
 WARNINGS_FILE="${TODAY}_warnings_file.txt"
 echo "" > "${WARNINGS_FILE}"
@@ -31,7 +31,7 @@ LAST_UT_GID=$(${PSQL} ${PG_CONNECTION} -c "SELECT COALESCE(max(gid), 0) FROM ute
 
 printf 'Último exp-gid existente: %s. Último ute-gid existente %s\n' "${LAST_EXP_GID}" "${LAST_UT_GID}"
 
-python prepare_data.py "${BASE_SPREADSHEET}" "${DATABASE}" "${METADATA_FILE}" "${LAST_EXP_GID}" --shp "${SHP}"
+python prepare_data.py "${BASE_SPREADSHEET}" "${DBNAME}" "${METADATA_FILE}" "${LAST_EXP_GID}" --shp "${SHP}"
 
 FOLDER="$(dirname "${SHP}")/output"
 rm -rf "${FOLDER}"
@@ -45,12 +45,12 @@ METADATA_FOLDER="$(dirname "${METADATA_FILE}")"
 python "${IETL_REPO}/sanitize_spreadsheet.py" --bdd "${BASE_SPREADSHEET}" --metadata "${METADATA_FILE}"
 ogr2ogr -f "ESRI Shapefile" "${FOLDER}/dbfs" "${XLSX}" -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
 
-upload_shp "${DATABASE}" "${SHP}" "public.exploracaos_geoms"
-upload_shp "${DATABASE}" "${CULTIVOS_SHP}" "public.cultivos_geoms"
-upload_dbf "${DATABASE}" "${FOLDER}/dbfs/Fontes.dbf" "public.tmp_fontes"
-upload_dbf "${DATABASE}" "${FOLDER}/dbfs/Cultivos.dbf" "public.tmp_cultivos"
-upload_dbf "${DATABASE}" "${FOLDER}/dbfs/Utentes.dbf" "public.tmp_utentes"
-upload_dbf "${DATABASE}" "${FOLDER}/dbfs/Reses.dbf" "public.tmp_reses"
+upload_shp "${DBNAME}" "${SHP}" "public.exploracaos_geoms"
+upload_shp "${DBNAME}" "${CULTIVOS_SHP}" "public.cultivos_geoms"
+upload_dbf "${DBNAME}" "${FOLDER}/dbfs/Fontes.dbf" "public.tmp_fontes"
+upload_dbf "${DBNAME}" "${FOLDER}/dbfs/Cultivos.dbf" "public.tmp_cultivos"
+upload_dbf "${DBNAME}" "${FOLDER}/dbfs/Utentes.dbf" "public.tmp_utentes"
+upload_dbf "${DBNAME}" "${FOLDER}/dbfs/Reses.dbf" "public.tmp_reses"
 
 if [ -n "${FILTER_UTENTES_FROM_EXCEL}" ]; then
     echo "Filtrando utentes: ${FILTER_UTENTES_FROM_EXCEL}"
@@ -156,7 +156,7 @@ fi
 # workaround_clear_utente_loc_fields_for_testing_purposes
 # fix_domains_fuzzy
 
-source ${METADATA_FOLDER}/workarounds.sh
+source "${METADATA_FOLDER}/workarounds.sh"
 workaround_before_handling_domains
 set_default_domains
 fix_domains
@@ -246,7 +246,7 @@ N_FONTES_ANADIDAS=$((N_FONTES_DESPUES - N_FONTES_ANTES))
 printf 'Cultivos: Había %s. Hay %s\n' "${N_CULTIVOS_ANTES}" "${N_CULTIVOS_DESPUES}"
 printf 'Explotaciones: Había %s. Hay %s. Se han añadido: %s\n' "${N_EXPS_ANTES}" "${N_EXPS_DESPUES}" "${N_EXPS_ANADIDAS}"
 printf 'Licencias: Había %s Hay %s. Se han añadido: %s\n' "${N_LICS_ANTES}" "${N_LICS_DESPUES}" "${N_LICS_ANADIDAS}"
-printf 'Fontes: Había %s Hay %s. Se han añadido: %s\n' "${N_FONtES_ANTES}" "${N_FONTES_DESPUES}" "${N_FONTES_ANADIDAS}"
+printf 'Fontes: Había %s Hay %s. Se han añadido: %s\n' "${N_FONTES_ANTES}" "${N_FONTES_DESPUES}" "${N_FONTES_ANADIDAS}"
 
 ${PSQL} ${PG_CONNECTION} -c "
 DROP TABLE IF EXISTS public.exploracaos_geoms;
@@ -263,13 +263,13 @@ workaround_post_insert
 
 # Si es una actualización de datos. Creo una bd nueva, elimino lo existente
 # y dumpeo los nuevos datos para poder generar un sql con el que actualizar
-create_db_from_template "${DATABASE}" nueva_borrar
+create_db_from_template "${DBNAME}" nueva_borrar
 ${PSQL} -h localhost -p "${PG_PORT}" -U postgres -d nueva_borrar -c "
 DELETE FROM utentes.exploracaos WHERE gid <= ${LAST_EXP_GID};
 DELETE FROM utentes.utentes WHERE gid IN (select u.gid as utente_gid FROM utentes.utentes u LEFT OUTER JOIN utentes.exploracaos e ON e.utente = u.gid WHERE e.gid IS NULL ORDER BY u.gid);
 "
-pg_dump -Fp --table='utentes.utentes' --table='utentes.exploracaos' --table='utentes.actividades*' --table='utentes.fontes' --table='utentes.licencias' -a -E UTF-8 -f "update_${TODAY}_${DATABASE}_utentes.sql" -h localhost -p "${PG_PORT}" -U postgres -d nueva_borrar
+pg_dump -Fp --table='utentes.utentes' --table='utentes.exploracaos' --table='utentes.actividades*' --table='utentes.fontes' --table='utentes.licencias' -a -E UTF-8 -f "update_${TODAY}_${DBNAME}_utentes.sql" -h localhost -p "${PG_PORT}" -U postgres -d nueva_borrar
 
-cat "${METADATA_FOLDER}/post_update_sql.sql" >> "update_${TODAY}_${DATABASE}_utentes.sql"
+cat "${METADATA_FOLDER}/post_update_sql.sql" >> "update_${TODAY}_${DBNAME}_utentes.sql"
 
 echo "Eliminar a mano del fichero de actualización las utentes ${UTENTES_TO_EXCLUDE_AND_DROP}. Obtener su gid del dump y actualizar las explocationes con ese gid (en caso de ser necesario que no debería)"

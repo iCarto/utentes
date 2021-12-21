@@ -9,7 +9,7 @@ SHP="${1}"
 ANALISE_SPREADSHEET="${2}"
 # ANALISE_SHEETNAME="${3}"
 ANALISE_SHEETNAME="Estacoes_analise_FINAL"
-DATABASE="${3}"
+DBNAME="${3}"
 
 METADATA_FILE="datos/191022_estaciones_aras/foo"
 METADATA_FOLDER=$(dirname "${METADATA_FILE}")
@@ -27,7 +27,7 @@ python "${IETL_REPO}/check_unique.py" "${SHP}" "cod_estac" --raise_error
 EPSG="32737"
 ENCODING="UTF-8"
 
-OUTPUT=update_${TODAY}_${DATABASE}_estacoes.sql
+OUTPUT=update_${TODAY}_${DBNAME}_estacoes.sql
 # TODO. Por defecto shp2pgsql hace un INSERT de cada fila por separado y no usa
 # transacciones. Con -D hace un COPY y mete la sentencia dentro de una
 # transacción. En general -D es más manejable, pero a veces no interesa que
@@ -59,5 +59,5 @@ echo "
 COMMIT;
 " >> "${OUTPUT}"
 
-# ${PSQL} -h localhost -U postgres -d "${DATABASE}" -f new_sql_data/${DATABASE}_tmp_barragens.sql
-# ${PSQL} -h localhost -U postgres -d "${DATABASE}" -f new_sql_data/process_barragens.sql
+# ${PSQL} -h localhost -U postgres -d "${DBNAME}" -f new_sql_data/${DBNAME}_tmp_barragens.sql
+# ${PSQL} -h localhost -U postgres -d "${DBNAME}" -f new_sql_data/process_barragens.sql

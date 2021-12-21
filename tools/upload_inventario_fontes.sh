@@ -13,7 +13,7 @@ source "${this_dir}/bash-functions/shp_dbf_to_db.sh"
 IETL_REPO="${HOME}/development/ietl/ietl"
 
 upload_inventario_fontes() {
-    local DATABASE="${1}"
+    local DBNAME="${1}"
     local SHP="${2}"
     local BASE_SPREADSHEET="${3}"
     local METADATA_FILE="${4}"
@@ -25,7 +25,7 @@ upload_inventario_fontes() {
     # actualizar los códigos de "cadastro" si han cambiado
     local MANTENER_IMAGENES=true # true | false
 
-    PG_CONNECTION="-h localhost -p ${PG_PORT} -d ${DATABASE} -U postgres"
+    PG_CONNECTION="-h localhost -p ${PG_PORT} -d ${DBNAME} -U postgres"
 
     # El gid de la última explotación antes de arrancar este proceso cuando se
     # estén mezclando con existentes.
@@ -35,7 +35,7 @@ upload_inventario_fontes() {
     LAST_FONTES_LITOLOGIA=$(${PSQL} ${PG_CONNECTION} -c "SELECT max(gid) FROM inventario.fontes_litologia")
     LAST_QUANTIDADE_AGUA=$(${PSQL} ${PG_CONNECTION} -c "SELECT max(gid) FROM inventario.quantidade_agua")
 
-    python prepare_data.py "${BASE_SPREADSHEET}" "${DATABASE}" "${METADATA_FILE}" "${LAST_FONTES}" --shp "${SHP}"
+    python prepare_data.py "${BASE_SPREADSHEET}" "${DBNAME}" "${METADATA_FILE}" "${LAST_FONTES}" --shp "${SHP}"
 
     FOLDER="$(dirname "${SHP}")/output"
     rm -rf "${FOLDER}"
@@ -50,12 +50,12 @@ upload_inventario_fontes() {
 
     ogr2ogr -f "ESRI Shapefile" "${FOLDER}/output/" "${XLSX}" -lco ENCODING=UTF-8 --config OGR_ODS_HEADERS FORCE
 
-    upload_shp "${DATABASE}" "${SHP}" tmp_fontes_geoms
-    upload_dbf "${DATABASE}" "${FOLDER}/output/Fontes_Final.dbf" tmp_fontes_final
-    upload_dbf "${DATABASE}" "${FOLDER}/output/Fontes_analise.dbf" tmp_fontes_analise
-    upload_dbf "${DATABASE}" "${FOLDER}/output/Fontes_Carac_Hidro.dbf" tmp_fontes_carac_hidro
-    upload_dbf "${DATABASE}" "${FOLDER}/output/Fontes_Litologia.dbf" tmp_fontes_litolia
-    upload_dbf "${DATABASE}" "${FOLDER}/output/Fontes_Quant_Agua.dbf" tmp_fontes_quant_agua
+    upload_shp "${DBNAME}" "${SHP}" tmp_fontes_geoms
+    upload_dbf "${DBNAME}" "${FOLDER}/output/Fontes_Final.dbf" tmp_fontes_final
+    upload_dbf "${DBNAME}" "${FOLDER}/output/Fontes_analise.dbf" tmp_fontes_analise
+    upload_dbf "${DBNAME}" "${FOLDER}/output/Fontes_Carac_Hidro.dbf" tmp_fontes_carac_hidro
+    upload_dbf "${DBNAME}" "${FOLDER}/output/Fontes_Litologia.dbf" tmp_fontes_litolia
+    upload_dbf "${DBNAME}" "${FOLDER}/output/Fontes_Quant_Agua.dbf" tmp_fontes_quant_agua
 
     {
         echo "BEGIN;"
@@ -88,7 +88,7 @@ upload_inventario_fontes() {
 
     # Si es una actualización de datos. Creo una bd nueva, elimino lo existente
     # y dumpeo los nuevos datos para poder generar un sql con el que actualizar
-    create_db_from_template "${DATABASE}" nueva_borrar
+    create_db_from_template "${DBNAME}" nueva_borrar
     ${PSQL} ${PG_CONNECTION} -d nueva_borrar -c "DELETE FROM inventario.fontes WHERE gid <= ${LAST_FONTES};"
 
     {
@@ -104,5 +104,5 @@ upload_inventario_fontes() {
             echo "ALTER TABLE inventario.fontes_imagenes ADD FOREIGN KEY (cadastro) REFERENCES inventario.fontes(cadastro) ON UPDATE CASCADE ON DELETE CASCADE;"
         fi
         echo "COMMIT;"
-    } > "/tmp/update_${TODAY}_${DATABASE}.sql"
+    } > "/tmp/update_${TODAY}_${DBNAME}.sql"
 }

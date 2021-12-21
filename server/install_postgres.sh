@@ -14,6 +14,8 @@ apt-get install -y "postgresql-${PG_VERSION}" "postgresql-contrib-${PG_VERSION}"
 # `postgis` can recommends other PG_VERSION so to avoid installation this must be done in two steps
 apt-get install -y --no-install-recommends postgis
 
+sudo -u postgres psql postgres -c "ALTER USER postgres WITH PASSWORD '${PG_POSTGRES_PASSWD}';"
+
 mv "/etc/postgresql/${PG_VERSION}/main/postgresql.conf" "/etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org"
 grep -v '^#' "/etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org" | grep '^[ ]*[a-z0-9]' > "/etc/postgresql/${PG_VERSION}/main/postgresql.conf"
 grep -v '^#' "/etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org" | grep '^[ ]*[a-z0-9]' > "/etc/postgresql/${PG_VERSION}/main/postgresql.conf.${PG_VERSION}.org.no_comments"
@@ -44,7 +46,5 @@ echo "host all all 0.0.0.0/0 md5" >> "/etc/postgresql/${PG_VERSION}/main/pg_hba.
 
 # https://stackoverflow.com/questions/1988249/how-do-i-use-su-to-execute-the-rest-of-the-bash-script-as-that-user
 sudo -u "${DEFAULT_USER}" -H ./config_postgres_dotfiles.sh
-
-sudo -u postgres psql postgres -c "ALTER USER postgres WITH PASSWORD '${PG_POSTGRES_PASSWD}';"
 
 systemctl restart postgresql
