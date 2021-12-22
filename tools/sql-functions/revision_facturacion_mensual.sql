@@ -10,10 +10,19 @@ WITH lics AS (
             string_agg(tipo_agua
                 , '')
         END tipo_agua
+        , CASE WHEN count(*) = 2 THEN
+            string_agg(distinct consumo_tipo, ' ')
+        ELSE
+            string_agg(consumo_tipo
+                , '')
+        END consumo_tipo
     FROM
         utentes.licencias
     GROUP BY
         exploracao
+    ORDER BY
+        exploracao,
+        tipo_agua
 )
 , exps AS (
     SELECT
@@ -25,6 +34,7 @@ WITH lics AS (
         , e.estado_lic
         , e.fact_tipo
         , lics.tipo_agua
+        , lics.consumo_tipo
     FROM
         utentes.exploracaos e
         JOIN lics ON e.gid = lics.exploracao
@@ -34,6 +44,7 @@ WITH lics AS (
         f.gid AS inv_gid
         , exps.loc_divisao
         , exps.exp_gid
+        , exps.consumo_tipo
         , f.ano
         , f.mes
         , f.observacio
@@ -87,12 +98,11 @@ SELECT
     , loc_divisao AS "Divisão"
     , estado_lic AS "Estado Licença"
     , tipo_agua AS "Tipo Água" -- con valores: 'Superficial', 'Subterrânea', 'Ambas'
-    , exp_fact_tipo AS "Tipo Facturação"
-    , COALESCE(consumo_tipo_sup , consumo_tipo_sub) AS "Tipo Consumo" -- Aviso: Se selecciona el tipo de consumo Superficial,
-    -- si es nulo, el Subterrânea. Si son distintos no da error
-    -- coge el Superficial.
+    , exp_fact_tipo AS "Tipo Facturação" -- El último de la explotación. No el de la factura.
+    , consumo_tipo AS "Tipo Consumo" -- valores 'Fixo', 'Variável', 'Fixo Variável', 'Variável Fixo'. El último de la licencia. No el de la factura.
+    
 FROM
     invs
 ORDER BY
-    inv_gid;
-
+    inv_gid
+;
