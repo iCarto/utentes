@@ -60,7 +60,7 @@ fi
 echo "Creando ${DBNAME}"
 createdb -h localhost -p "${PG_PORT}" -U postgres -T template0 -O "${DBOWNER}" -E UTF-8 -l "${LOCALE}" "${DBNAME}"
 
-if [ -n "${DUMP_FILE}" ]; then
+if [[ -n "${DUMP_FILE}" ]]; then
     echo "Restaurando ${DUMP_FILE} en ${DBNAME}"
     ${PGRESTORE} -h localhost -p "${PG_PORT}" -U postgres -d "${DBNAME}" --single-transaction --exit-on-error --disable-triggers "${DUMP_FILE}"
     echo "Creando $(basename "${DUMP_FILE%.dump}")"

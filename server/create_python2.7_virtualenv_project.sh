@@ -6,7 +6,7 @@ source variables.ini
 # $2 absolute or relative path to the folder which is going to be used, if not exists will be created
 # $3 name of the virtualenv
 
-apt-get install -y python${PYTHON_VERSION} python-pip
+apt-get install -y "python${PYTHON_VERSION}" python-pip
 
 # Workaround for old ubuntu versions
 # apt-get install -y curl

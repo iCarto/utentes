@@ -25,9 +25,13 @@
 
 set -e
 
-if [[ $(lsb_release -cs) == "stretch" ]]; then
+LINODE_RDNS=CONFIGURE_ME
+
+OS_CODENAME=$(lsb_release -cs)
+
+if [[ "${OS_CODENAME}" == "stretch" ]]; then
     echo "install_letsencrypt. SO es stretch"
-elif [[ $(lsb_release -cs) == "bionic" ]] || [[ $(lsb_release -cs) == "xenial" ]]; then
+elif [[ "${OS_CODENAME}" == "bionic" ]] || [[ "${OS_CODENAME}" == "xenial" ]]; then
     echo "install_letsencrypt. SO es bionic o xenial"
     apt-get update
     apt-get install -y software-properties-common
@@ -43,7 +47,7 @@ apt-get install -y certbot python-certbot-apache
 
 # A pesar de permitirle auto-configurar apache hay que revisar y hacer
 # cambios a mano
-certbot run -n --apache --hsts --uir --redirect --email=dev@icarto.es --no-eff-email --agree-tos -d ${LINODE_RDNS}
+certbot run -n --apache --hsts --uir --redirect --email=dev@icarto.es --no-eff-email --agree-tos -d "${LINODE_RDNS}"
 
 # Por defecto hace la comprobación de si hay que renovar dos veces al día
 certbot renew --dry-run # Para chequear que la renovación automática funciona

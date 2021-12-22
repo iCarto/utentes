@@ -3,15 +3,15 @@
 set -e
 
 # FIX ME
-# DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-# cd "${DIR}"
+# "this_dir" trick does not seem to work with vagrant
 cd /vagrant/server
 
 # Descargamos aquí paquetes a modo de cache. Se puede borrar el directorio
 # cuando se quiera
 mkdir -p /vagrant/server/downloads
 
-source ./variables.ini
+# shellcheck source=variables.ini
+source /vagrant/server/variables.ini
 
 # https://serverfault.com/questions/500764/
 # https://unix.stackexchange.com/questions/22820
@@ -45,8 +45,8 @@ bash install_gdal.sh
 ./install_pgtap.sh
 ./install_sqitch.sh
 
-./create_python_virtualenv_project.sh from_source
-./install_apache.sh from_source
+./create_python_virtualenv_project.sh
+./install_apache.sh
 
 # ./install_nginx_y_visor.sh
 

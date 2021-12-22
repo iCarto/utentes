@@ -25,17 +25,19 @@ chmod 644 /etc/vsftpd/allowed_users
 chmod 755 /etc/vsftpd/
 
 cp -r "${SETTINGS}/own-settings/pam.d/vsftpd" /etc/pam.d/vsftpd
-chown -root:root /etc/pam.d/vsftpd
+chown root:root /etc/pam.d/vsftpd
 chmod 644 /etc/pam.d/vsftpd
 
 for user in ara inam; do
     adduser "${user}data" --shell /bin/false --home /home/"${user}data"
     adduser "${user}ro" --ingroup "${user}data" --shell /bin/false --home /home/"${user}ro"
-    rm /home/"${user}data"/{.bash_logout,.bashrc,.profile}
-    rm /home/"${user}ro"/{.bash_logout,.bashrc,.profile}
+    # adduser "${user}data" --shell /bin/false --home /home/"${user}data"
+    # adduser "${user}ro" --ingroup "${user}data" --shell /bin/false --home /home/"${user}ro"
+    # rm /home/"${user}data"/{.bash_logout,.bashrc,.profile}
+    # rm /home/"${user}ro"/{.bash_logout,.bashrc,.profile}
 done
 
-systemctrl restart vsftpd
+systemctl restart vsftpd
 
 old_way() {
     mkdir -p /srv/ftp/gealog/

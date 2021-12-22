@@ -4,9 +4,11 @@ chmod -x /etc/cron.daily/mlocate
 
 SERVICES=("cups" "cups-browsed" "bluetooth")
 
-if lsb_release --codename | grep "precise" > /dev/null; then
+OS_CODENAME=$(lsb_release -cs)
+
+if [[ "${OS_CODENAME}" == "precise" ]]; then
     for service in "${SERVICES[@]}"; do
-        [ -f "/etc/init.d/${service}" ] && update-rc.d "${service}" disable
+        [[ -f "/etc/init.d/${service}" ]] && update-rc.d "${service}" disable
     done
 else
     for service in "${SERVICES[@]}"; do

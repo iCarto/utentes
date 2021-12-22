@@ -2,13 +2,13 @@
 
 folder_exists() {
     local FOLDER="${1}"
-    [ -d "${FOLDER}" ]
+    [[ -d "${FOLDER}" ]]
 }
 
 if [[ $- == *i* || ${FUNCNAME[0]} == 'source' ]]; then
     : echo "sourced"
 else
-    if [ $# -eq 0 ]; then
+    if [[ $# -eq 0 ]]; then
         echo "No arguments provided"
         exit 1
     fi

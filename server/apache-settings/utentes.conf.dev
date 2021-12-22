@@ -4,11 +4,17 @@
 
   # ServerName localhost
   # ServerAlias localhost
-  ServerAdmin info@icarto.es
+  ServerAdmin dev@icarto.es
+
+
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel info
+  # ErrorLog ${APACHE_LOG_DIR}/error.log
+  # CustomLog ${APACHE_LOG_DIR}/access.log combined
 
   DocumentRoot /var/www
 
-  LogLevel info
 
 
   ## mod_wsgi ##
