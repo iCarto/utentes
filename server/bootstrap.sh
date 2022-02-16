@@ -48,8 +48,6 @@ bash install_gdal.sh
 ./create_python_virtualenv_project.sh
 ./install_apache.sh
 
-# ./install_nginx_y_visor.sh
-
 ./own_settings.sh
 
 bash do_dist_upgrade.sh
