@@ -31,7 +31,7 @@
             <button id="file-modal" type="button" class="btn btn-default btn-sm">Documentação</button>
             <button id="refresh-button" type="button" class="btn btn-default btn-sm uilib-enability uilib-hide-role-observador">Refrescar</button>
             <button id="save-button" type="button" class="btn btn-primary btn-sm uilib-enability uilib-show-role-administrador uilib-show-role-tecnico uilib-show-role-juridico">Gravar</button>
-            {% if next_state == 'Utente de usos comuns' %}
+            {% if next_state in ['Utente de usos comuns', 'Utente de facto'] %}
             <button id="licenciar-button" type="button" class="btn btn-primary btn-sm uilib-enability uilib-show-role-administrador uilib-show-role-juridico" style="float: right;">Licenciar</button>
             {% endif %}
           </h3>
