@@ -56,7 +56,7 @@ dump_db() {
     local WHEN="${2:-bck}"
     local BCK_FOLDER="${3:-$(pwd)}"
 
-    ${PGDUMP} -h 192.168.12.7 -U postgres -Fc -Z9 -E UTF-8 -f "${BCK_FOLDER}/${TODAY}_${WHEN}_${DBNAME}.dump" "${DBNAME}"
+    ${PGDUMP} -h localhost -U postgres -Fc -Z9 -E UTF-8 -f "${BCK_FOLDER}/${TODAY}_${WHEN}_${DBNAME}.dump" "${DBNAME}"
 }
 
 delete_all_data_in_schema() {
@@ -66,16 +66,23 @@ delete_all_data_in_schema() {
     local DBNAME="${1}"
     local SCHEMA="${2}"
 
-    if [ -z "${DBNAME}" ]; then
+    if [[ -z "${DBNAME}" ]]; then
         echo "ERROR. Introduzca el nombre de la base de datos"
         return "${EX_USAGE}"
     fi
 
-    if [ -z "${SCHEMA}" ]; then
+    if [[ -z "${SCHEMA}" ]]; then
         echo "ERROR. Introduzca el esquema"
         return "${EX_USAGE}"
     fi
 
-    sql_query=$(bash "${this_dir}/sql-functions/delete_all_data_in_schema.sh" "${SCHEMA}")
+    if [[ -z "${IETL_REPO}" ]]; then
+        echo "La variable IETL_REPO debe estar en el entorno"
+        return "${EX_USAGE}"
+    fi
+
+    sql_query=$(python "${IETL_REPO}/postgres/query_delete_all_data_in_schema.py" "${SCHEMA}")
     ${PSQL} -h localhost -U postgres -d "${DBNAME}" -c "${sql_query}"
 }
+
+echo "Puerto en uso: ${PG_PORT}"

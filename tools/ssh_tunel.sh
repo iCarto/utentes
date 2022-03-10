@@ -1,3 +1,7 @@
+#!/bin/bash
+
+# echo "Usar la versión de IETL"
+
 # https://stackoverflow.com/questions/2241063/bash-script-to-set-up-a-temporary-ssh-tunnel
 # https://www.postgresql.org/docs/9.1/ssh-tunnels.html
 # https://stackoverflow.com/questions/15768913/relay-postgresql-connection-over-another-server
@@ -28,7 +32,7 @@ open_tunel() {
     local REMOTE_APP_HOST="${4}"
     local REMOTE_APP_PORT="${5}"
 
-    ssh ${REMOTE_SSH_HOST} -M -S /tmp/my-ssh-socket-${REMOTE_SSH_HOST} -o ExitOnForwardFailure=yes -fN -L ${LOCAL_APP_HOST}:${LOCAL_APP_PORT}:${REMOTE_APP_HOST}:${REMOTE_APP_PORT}
+    ssh "${REMOTE_SSH_HOST}" -M -S "/tmp/my-ssh-socket-${REMOTE_SSH_HOST}" -o ExitOnForwardFailure=yes -fN -L "${LOCAL_APP_HOST}":"${LOCAL_APP_PORT}":"${REMOTE_APP_HOST}":"${REMOTE_APP_PORT}"
 
     # Nos devuelve el pid del proceso ssh y si está conectado. ie:
     # Master running (pid=3517)
@@ -42,5 +46,22 @@ close_tunel() {
     # Cierra la conexión
     local REMOTE_SSH_HOST="${1}"
 
-    ssh ${REMOTE_SSH_HOST} -S /tmp/my-ssh-socket-${REMOTE_SSH_HOST} -O exit
+    ssh "${REMOTE_SSH_HOST}" -S "/tmp/my-ssh-socket-${REMOTE_SSH_HOST}" -O exit
 }
+
+if [[ $- == *i* || ${FUNCNAME[0]} == 'source' ]]; then
+    : echo "sourced"
+else
+    if [[ $# -eq 0 ]]; then
+        echo "No arguments provided"
+        exit 1
+    fi
+
+    if [[ "${1}" == "open" ]]; then
+        open_tunel "${2}" "${3}" "${4}" "${5}" "${6}"
+    elif [[ "${1}" == "close" ]]; then
+        close_tunel "${2}"
+    else
+        echo "First argument should be 'open' or 'close'"
+    fi
+fi
