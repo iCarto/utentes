@@ -25,7 +25,7 @@ $BODY$ LANGUAGE plpgsql;
 -- select * from exp_id_part('238/ARAS-IP/2021/CL');
 
 -- these will return one column
--- select year exp_id_part('238/ARAS-IP/2021/CL');
+-- select year from exp_id_part('238/ARAS-IP/2021/CL');
 -- select (exp_id_part(exp_id)).year;
 
 -- select exp_id, exp_id_part(exp_id) from utentes.exploracaos;

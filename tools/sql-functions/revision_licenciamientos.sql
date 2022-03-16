@@ -9,7 +9,7 @@ SELECT
             e.utente = u.gid) , '') AS "Nome Utente" -- En blanco si no se ha creado la ficha
     , e.exp_id AS "Número Exploração"
     , e.exp_name AS "Nome Exploração"
-    , substring(e.exp_id FROM '\d{3}/.*/(\d{4})') AS "Ano" -- El "año" que aparece en el código de licencia. Hay otras formas de interpretar el año
+    , (utentes.exp_id_part(e.exp_id)).year as "Ano" -- El "año" que aparece en el código de licencia. Hay otras formas de interpretar el año
     , COALESCE(e.loc_divisao , '') AS "Divisão" -- En blanco si no se ha creado la ficha
     , COALESCE(e.loc_bacia , '') AS "Bacia" -- En blanco si no se ha creado la ficha
     , COALESCE(l.tipo_agua , '') AS "Tipo Água" -- En blanco si no se ha creado la ficha. Con valores: 'Superficial', 'Subterrânea'
