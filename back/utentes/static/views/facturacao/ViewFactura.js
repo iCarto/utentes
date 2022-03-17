@@ -254,7 +254,9 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         var consumo_fact = formatter().unformatNumber(
             document.getElementById("consumo_fact_" + lic).value
         );
-        var pago_mes = (taxa_fixa + taxa_uso * consumo_fact) * this._monthFactor();
+        var pago_mes =
+            (taxa_fixa + taxa_uso * consumo_fact) *
+            SIRHA.Services.InvoiceService.monthFactor(this.model.get("periodo_fact"));
         var iva = formatter().unformatNumber(document.getElementById("iva").value) || 0;
         var pago_mes_iva = pago_mes * (1 + iva / 100);
         this.model.set("pago_mes_" + lic, pago_mes);
@@ -321,86 +323,6 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
             state: this.model.get("fact_estado"),
         });
         this.model.trigger("change", this.model);
-    },
-
-    _monthFactor: function() {
-        let months = this._monthFactorForLastInvoice();
-        if (this._validMonthFactor(months)) {
-            return months;
-        }
-
-        months = this._monthFactorForDateEmissao();
-        if (this._validMonthFactor()) {
-            return months;
-        }
-
-        months = this._monthFactorForCreatedAt();
-        if (this._validMonthFactor(months)) {
-            return months;
-        }
-
-        return this._monthFactorForDefault();
-    },
-
-    _validMonthFactor: function(months) {
-        if (months > 0 && months <= this._monthFactorForDefault()) {
-            return true;
-        }
-        return false;
-    },
-
-    _monthFactorForLastInvoice: function() {
-        let invoices = this.options.exploracao.get("facturacao").sortBy("created_at");
-        let thisId = this.model.id;
-        let thisIdx = invoices.findIndex(i => i.id === thisId);
-        if (thisIdx <= 0) {
-            return undefined;
-        }
-        let thatInvoice = invoices[thisIdx - 1];
-        return this._diffMonths(
-            this.model.get("created_at"),
-            thatInvoice.get("created_at")
-        );
-    },
-
-    _monthFactorForDateEmissao: function() {
-        let lics = this.options.exploracao.get("licencias");
-        let d_emissaos = lics.pluck("d_emissao");
-        let d_emissao = _.find(d_emissaos, d => d);
-        if (!d_emissao) {
-            return undefined;
-        }
-        let months = this._diffMonths(this.model.get("created_at"), d_emissao);
-    },
-
-    _monthFactorForCreatedAt: function() {
-        let created_at = this.options.exploracao.get("created_at");
-        return this._diffMonths(this.model.get("created_at"), created_at);
-    },
-
-    _monthFactorForDefault: function() {
-        switch (this.model.get("fact_tipo")) {
-            case "Mensal":
-                return 1;
-            case "Trimestral":
-                return 3;
-            case "Anual":
-                return 12;
-        }
-    },
-
-    _diffMonths: function(biggerDate, date) {
-        let thisCreatedAt = moment(biggerDate);
-        let thatCreatedAt = moment(date);
-        // We only care about year and month
-        // let months = thisCreatedAt.diff(thatCreatedAt, "months");
-        let months =
-            (thisCreatedAt.year() - thatCreatedAt.year()) * 12 +
-            (thisCreatedAt.month() - thatCreatedAt.month());
-        if (months <= 0) {
-            console.log("No debería pasar nunca");
-        }
-        return months;
     },
 
     _updateToState: function(state) {

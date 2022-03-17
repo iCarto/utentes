@@ -138,6 +138,27 @@ function formatter() {
         return this.isFirstDateBeforeSecondDate(d, this.today());
     }
 
+    function diffMonth(biggerDate, date) {
+        /* Returns the difference in months between two dates.
+
+        `thisCreatedAt.diff(thatCreatedAt, "months")` is not being used because we only
+        take into account the year and the month, not the day */
+        let thisCreatedAt = moment(biggerDate);
+        let thatCreatedAt = moment(date);
+
+        let months =
+            (thisCreatedAt.year() - thatCreatedAt.year()) * 12 +
+            (thisCreatedAt.month() - thatCreatedAt.month());
+        if (months < 0) {
+            throw Error("Should never happen");
+        }
+        return months;
+    }
+
+    function diffMonthIncludeUpper(biggerDate, date) {
+        return this.diffMonth(biggerDate, date) + 1;
+    }
+
     function trimTime(d) {
         /* input value must be a Date like object
            returns a new Date object
@@ -281,6 +302,8 @@ function formatter() {
     formatterObj.isToday = isToday;
     formatterObj.isFuture = isFuture;
     formatterObj.isPast = isPast;
+    formatterObj.diffMonth = diffMonth;
+    formatterObj.diffMonthIncludeUpper = diffMonthIncludeUpper;
     formatterObj.trimTime = trimTime;
     formatterObj.cloneDate = cloneDate;
     formatterObj.formatDate = formatDate;

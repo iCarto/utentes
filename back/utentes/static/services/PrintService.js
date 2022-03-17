@@ -189,11 +189,7 @@ SIRHA.Services.PrintService = (function(formatter) {
         var dateVencimento = moment(data.dateFactura_).add(1, "M");
         data.vencimento = formatter.formatDate(dateVencimento);
 
-        data.periodoFactura = SIRHA.Services.InvoiceService.billingPeriod(
-            data.factura.fact_tipo,
-            data.factura.mes,
-            data.factura.ano
-        );
+        data.periodoFactura = data.factura.billing_period;
         data.ara = dataARA;
         data.ara.logoUrl =
             "static/print-templates/images/" + window.SIRHA.getARA() + "_factura.png";
