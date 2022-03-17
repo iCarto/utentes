@@ -500,51 +500,38 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
             (iAuth.isDivisao() &&
                 iAuth.getDivisao() !== this.options.exploracao.get("loc_divisao"))
         ) {
-            // un observador o División (de una división  que no le corresponde) no
-            // puede editar ningún campo
+            // un observador o División (diferente a la de la explotación) no puede editar ningún campo
             return;
         } else if (
             iAuth.hasRoleTecnico() ||
             (iAuth.isDivisao() &&
                 iAuth.getDivisao() === this.options.exploracao.get("loc_divisao"))
         ) {
-            // Un técnico o División (de la división que le corresponde) puede editar el
-            // consumo para subterraneas, variables
-            if (
-                this.model.get("fact_estado") ==
-                    window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION &&
-                this.options.tiposLicencia.includes("sub") &&
-                this.model.get("consumo_tipo_sub") == "Variável"
-            ) {
-                licenseWidgets = ["consumo_fact_sub"];
-            }
-        } else {
-            // Administrador y DSU-F
+            // DRH o División (en la que se encuentra la explotación)
             if (
                 this.model.get("fact_estado") ==
                 window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
             ) {
-                if (
-                    this.options.tiposLicencia.includes("sup") &&
-                    this.model.get("consumo_tipo_sup") == "Variável"
-                ) {
-                    licenseWidgets = ["consumo_fact_sup"];
-                } else {
-                    licenseWidgets = [];
+                licenseWidgets = [];
+                if (this.model.get("consumo_tipo_sub") == "Variável") {
+                    licenseWidgets.push("consumo_fact_sub");
                 }
+                if (this.model.get("consumo_tipo_sup") == "Variável") {
+                    licenseWidgets.push("consumo_fact_sup");
+                }
+            }
+        } else if (iAuth.isAdmin()) {
+            // Admin
+            licenseWidgets = [...this.conditionallyDisabledWidgets];
+        } else {
+            // DSU-Facturação
+            if (
+                this.model.get("fact_estado") ==
+                window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
+            ) {
+                licenseWidgets = [];
             } else {
-                licenseWidgets = [
-                    "consumo_tipo_sup",
-                    "consumo_tipo_sub",
-                    "consumo_fact_sup",
-                    "consumo_fact_sub",
-                    "taxa_fixa_sup",
-                    "taxa_fixa_sub",
-                    "taxa_uso_sup",
-                    "taxa_uso_sub",
-                    "iva",
-                    "juros",
-                ];
+                licenseWidgets = [...this.conditionallyDisabledWidgets];
             }
         }
 
@@ -580,7 +567,7 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
     },
 
     _enableBts: function() {
-        var enable = this.widgets.every(function(w) {
+        let enable = this.widgets.every(function(w) {
             var input = this.$("#edit-facturacao-modal #" + w)[0];
             var e = input.value === 0 || input.value.trim();
             e = e && input.validity.valid;
@@ -596,51 +583,55 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
             (iAuth.isDivisao() &&
                 iAuth.getDivisao() !== this.options.exploracao.get("loc_divisao"))
         ) {
+            // Observador y división diferente a la de la explotación no visualizan ni pueden pulsar nigún botón.
             return;
-        }
-
-        if (
+        } else if (
             iAuth.hasRoleTecnico() ||
             (iAuth.isDivisao() &&
                 iAuth.getDivisao() === this.options.exploracao.get("loc_divisao"))
         ) {
+            // DRH y división en la que se encuentra la explotación
             if (
                 this.model.get("fact_estado") ==
-                    window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION &&
-                this.options.tiposLicencia.includes("sub") &&
-                this.model.get("consumo_tipo_sub") == "Variável"
+                window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
             ) {
                 this.$("#bt-diferida")
                     .attr("disabled", !enable)
                     .show();
             }
             return;
-        }
-
-        // Administrador y DSU-F
-        if (
-            this.model.get("fact_estado") ==
-                window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION &&
-            this.options.tiposLicencia.includes("sup") &&
-            this.model.get("consumo_tipo_sup") == "Variável"
-        ) {
-            this.$("#bt-diferida")
-                .attr("disabled", !enable)
-                .show();
-            return;
-        }
-
-        if (
-            this.model.get("fact_estado") !==
-            window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
-        ) {
-            this.$("#bt-diferida").hide();
-            this.$("#bt-factura")
-                .attr("disabled", !enable)
-                .show();
-            this.$("#bt-recibo")
-                .attr("disabled", !this._isReciboBtnEnabled() || !enable)
-                .show();
+        } else if (iAuth.isAdmin()) {
+            // Admin
+            if (
+                this.model.get("fact_estado") ==
+                window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
+            ) {
+                this.$("#bt-diferida")
+                    .attr("disabled", !enable)
+                    .show();
+            } else {
+                this.$("#bt-diferida").hide();
+                this.$("#bt-factura")
+                    .attr("disabled", !enable)
+                    .show();
+                this.$("#bt-recibo")
+                    .attr("disabled", !this._isReciboBtnEnabled() || !enable)
+                    .show();
+            }
+        } else {
+            // DSU-Facturação
+            if (
+                this.model.get("fact_estado") !==
+                window.SIRHA.ESTADO_FACT.PENDING_CONSUMPTION
+            ) {
+                this.$("#bt-diferida").hide();
+                this.$("#bt-factura")
+                    .attr("disabled", !enable)
+                    .show();
+                this.$("#bt-recibo")
+                    .attr("disabled", !this._isReciboBtnEnabled() || !enable)
+                    .show();
+            }
         }
     },
 
