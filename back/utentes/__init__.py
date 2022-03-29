@@ -1,18 +1,14 @@
-import datetime
-import decimal
-
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
 from pyramid.decorator import reify
-from pyramid.renderers import JSON
 from pyramid.request import Request
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 from webassets.filter import register_filter
 
 from utentes.constants import perms as perm
-from utentes.lib import webassets_filters
+from utentes.lib import json_renderer, webassets_filters
 from utentes.tenant_custom_code import adjust_settings
 from utentes.user_utils import get_user_from_request, get_user_role
 
@@ -36,15 +32,6 @@ class RequestWithDB(Request):
         request.db.close()
 
 
-def date_adapter(obj, request):
-    """Returns string in format 'yyyy-mm-dd' or None."""
-    return obj.isoformat() if obj else None
-
-
-def decimal_adapter(obj, request):
-    return float(obj) if obj or (obj == 0) else None
-
-
 def main(global_config, **settings):
 
     engine = engine_from_config(settings, "sqlalchemy.")
@@ -63,10 +50,7 @@ def main(global_config, **settings):
 
     config.add_request_method(get_user_from_request, "user", reify=True)
 
-    json_renderer = JSON()
-    json_renderer.add_adapter(datetime.date, date_adapter)
-    json_renderer.add_adapter(decimal.Decimal, decimal_adapter)
-    config.add_renderer("json", json_renderer)
+    config.add_renderer("json", json_renderer.factory())
 
     # auth
     authn_policy = AuthTktAuthenticationPolicy(
