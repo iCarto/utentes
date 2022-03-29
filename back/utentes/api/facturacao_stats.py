@@ -4,6 +4,7 @@ from pyramid.view import view_config
 from sqlalchemy import func, or_
 
 from utentes.constants import perms as perm
+from utentes.lib.utils.dates import diff_month_include_upper
 from utentes.models.constants import (
     INVOICE_STATE_PENDING_CONSUMPTION,
     K_SUBTERRANEA,
@@ -24,10 +25,10 @@ from utentes.models.utente import Utente
     renderer="json",
 )
 def facturacao_stats(request):
-    mes_inicio = request.params.get("mes_inicio", None)
-    ano_inicio = request.params.get("ano_inicio", None)
-    mes_fim = request.params.get("mes_fim", None)
-    ano_fim = request.params.get("ano_fim", None)
+    mes_inicio = request.params.get("mes_inicio")
+    ano_inicio = request.params.get("ano_inicio")
+    mes_fim = request.params.get("mes_fim")
+    ano_fim = request.params.get("ano_fim")
     tipo_agua = request.params.get("tipo_agua")
     uso_explotacion = request.params.get("uso_explotacion")
     utentes = request.params.getall("utente")
@@ -40,7 +41,6 @@ def facturacao_stats(request):
             mes_fim,
             ano_fim,
             tipo_agua,
-            uso_explotacion,
             utentes,
             json_data,
         )
@@ -52,7 +52,6 @@ def facturacao_stats(request):
             mes_fim,
             ano_fim,
             tipo_agua,
-            uso_explotacion,
             utentes,
             json_data,
         )
@@ -61,27 +60,20 @@ def facturacao_stats(request):
 
 
 def usos_comuns(
-    request,
-    mes_inicio,
-    ano_inicio,
-    mes_fim,
-    ano_fim,
-    tipo_agua,
-    uso_explotacion,
-    utentes,
-    json_data,
+    request, mes_inicio, ano_inicio, mes_fim, ano_fim, tipo_agua, utentes, json_data
 ):
     # Los datos de estadísticas para las Utentes de usos comuns se generan
     # al vuelo
 
-    if mes_inicio is not None and ano_inicio is not None:
+    d_inicio = datetime.date.min
+    if mes_inicio and ano_inicio:
         d_inicio = datetime.date(int(ano_inicio), int(mes_inicio), 1)
-    else:
-        d_inicio = datetime.date.min
-    if mes_fim is not None and ano_fim is not None:
-        d_fim = datetime.date(int(ano_fim), int(mes_fim), 1)
-    else:
-        d_fim = datetime.date.today()
+
+    d_fim = datetime.date.today()
+    if mes_fim and ano_fim:
+        user_input_d_fim = datetime.date(int(ano_fim), int(mes_fim), 1)
+        if user_input_d_fim < d_fim:
+            d_fim = user_input_d_fim
 
     exps = request.db.query(Exploracao).filter(Exploracao.estado_lic == K_USOS_COMUNS)
     for e in exps:
@@ -91,7 +83,7 @@ def usos_comuns(
 
         c_real = e.c_real
         if tipo_agua:
-            lic = e.get_licencia(tipo_agua[0:3])
+            lic = e.get_licencia(tipo_agua[:3])
             if lic.gid is None:
                 continue
             c_real = lic.c_real_tot
@@ -104,9 +96,7 @@ def usos_comuns(
             # Si la fecha para la que puedo empezar a contar es mayor que la
             # que el usuario escogió como máximo no incluyo la exp
             continue
-        months = (
-            (d_fim.year - new_d_inicio.year) * 12 + d_fim.month - new_d_inicio.month
-        )
+        months = diff_month_include_upper(d_fim, new_d_inicio)
         json_data.append(
             {
                 "gid": e.gid,
@@ -127,15 +117,7 @@ def usos_comuns(
 
 
 def usos_privativos(
-    request,
-    mes_inicio,
-    ano_inicio,
-    mes_fim,
-    ano_fim,
-    tipo_agua,
-    uso_explotacion,
-    utentes,
-    json_data,
+    request, mes_inicio, ano_inicio, mes_fim, ano_fim, tipo_agua, utentes, json_data
 ):
 
     fields = [
@@ -198,7 +180,7 @@ def usos_privativos(
         .group_by(Facturacao.exploracao)
     )
 
-    if mes_inicio is not None and ano_inicio is not None:
+    if mes_inicio and ano_inicio:
         subquery_esperadas = subquery_esperadas.filter(
             Facturacao.mes >= mes_inicio, Facturacao.ano >= ano_inicio
         )
@@ -208,7 +190,7 @@ def usos_privativos(
         subquery_cobradas = subquery_cobradas.filter(
             Facturacao.mes >= mes_inicio, Facturacao.ano >= ano_inicio
         )
-    if mes_fim is not None and ano_fim is not None:
+    if mes_fim and ano_fim:
         subquery_esperadas = subquery_esperadas.filter(
             Facturacao.mes <= mes_fim, Facturacao.ano <= ano_fim
         )
@@ -219,14 +201,14 @@ def usos_privativos(
             Facturacao.mes <= mes_fim, Facturacao.ano <= ano_fim
         )
 
-    if tipo_agua is not None:
+    if tipo_agua:
         if tipo_agua == K_SUPERFICIAL:
             subquery_esperadas = subquery_esperadas.filter(
-                Facturacao.c_licencia_sup != None
+                Facturacao.c_licencia_sup.isnot(None)
             )
         if tipo_agua == K_SUBTERRANEA:
             subquery_esperadas = subquery_esperadas.filter(
-                Facturacao.c_licencia_sub != None
+                Facturacao.c_licencia_sub.isnot(None)
             )
 
     subquery_esperadas = subquery_esperadas.subquery()
