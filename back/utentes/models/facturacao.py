@@ -1,11 +1,17 @@
 from sqlalchemy import Column, ForeignKey, UniqueConstraint, func, text
-from sqlalchemy.dialects.postgresql.json import JSONB
+from sqlalchemy.dialects.postgresql import DATERANGE, JSONB
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.sql.expression import and_, case, null
 from sqlalchemy.types import Boolean, Date, DateTime, Integer, Numeric, Text
 
+from utentes.lib import json_renderer
+from utentes.lib.utils.dates import (
+    diff_month_include_upper,
+    is_full_natural_year,
+    is_same_month,
+)
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base
-from utentes.models.constants import INVOICE_STATE_PENDING_CONSUMPTION
+from utentes.models.constants import FLAT_FEE, INVOICE_STATE_PENDING_CONSUMPTION
 
 
 class Facturacao(Base):
@@ -44,14 +50,18 @@ class Facturacao(Base):
     pago_lic = Column(Boolean)
     c_licencia_sup = Column(Numeric(10, 2))
     c_licencia_sub = Column(Numeric(10, 2))
-    consumo_tipo_sup = Column(Text, nullable=False, server_default=text("'Fixo'::text"))
+    consumo_tipo_sup = Column(
+        Text, nullable=False, server_default=text(f"'{FLAT_FEE}'::text")
+    )
     consumo_fact_sup = Column(Numeric(10, 2))
     taxa_fixa_sup = Column(Numeric(10, 2))
     taxa_uso_sup = Column(Numeric(10, 2))
     pago_mes_sup = Column(Numeric(10, 2))
     pago_iva_sup = Column(Numeric(10, 2))
     iva_sup = Column(Numeric(10, 2))
-    consumo_tipo_sub = Column(Text, nullable=False, server_default=text("'Fixo'::text"))
+    consumo_tipo_sub = Column(
+        Text, nullable=False, server_default=text(f"'{FLAT_FEE}'::text")
+    )
     consumo_fact_sub = Column(Numeric(10, 2))
     taxa_fixa_sub = Column(Numeric(10, 2))
     taxa_uso_sub = Column(Numeric(10, 2))
@@ -66,10 +76,7 @@ class Facturacao(Base):
     recibo_id = Column(Text, unique=True)
     fact_date = Column(Date)
     recibo_date = Column(Date)
-
-    @staticmethod
-    def json_fact_order_key(factura):
-        return factura["ano"] + factura["mes"]
+    periodo_fact = Column(DATERANGE)
 
     def has_water_type(self, _water_type: str) -> bool:
         """Returns true if the invoice has the water type.
@@ -90,44 +97,22 @@ class Facturacao(Base):
         return all(getattr(self, att) is not None for att in atts_to_eval)
 
     def billing_period(self) -> str:
-        """Calculates the string representation of the billing period.
+        """Calculates the string representation of the billing period."""
+        periodo_fact = self.periodo_fact_normalized()
 
-        TODO: Check that InvoiceService.js provides the same implementation.
-        """
-        billing_cycle = self.fact_tipo
-        current_month = self.mes
-        current_year = int(self.ano)
-        previous_month = str(int(self.mes) - 1).zfill(2)
-        previous_year = str(int(self.ano) - 1)
+        periodo_fact_lower_str = periodo_fact[0].strftime("%m/%Y")
+        periodo_fact_upper_str = periodo_fact[1].strftime("%m/%Y")
 
-        if billing_cycle == "Mensal":
-            if current_month == "01":
-                return f"12/{previous_year}"
+        if is_same_month(periodo_fact[0], periodo_fact[1]):
+            return periodo_fact_lower_str
 
-            return f"{previous_month}/{current_year}"
+        if is_full_natural_year(periodo_fact[0], periodo_fact[1]):
+            return periodo_fact[0].strftime("%Y")
 
-        if billing_cycle == "Trimestral":
-            if current_month == "04":
-                return f"01/{current_year} - 03/{current_year}"
+        return f"{periodo_fact_lower_str} - {periodo_fact_upper_str}"
 
-            if current_month == "07":
-                return f"04/{current_year} - 06/{current_year}"
-
-            if current_month == "10":
-                return f"07/{current_year} - 09/{current_year}"
-
-            if current_month == "01":
-                return f"10/{previous_year} - 12/{previous_year}"
-
-        if billing_cycle == "Anual":
-            return f"{previous_year}"
-
-        raise ValueError(
-            "Invalid input data to calculate the billing period",
-            billing_cycle,
-            current_year,
-            current_month,
-        )
+    def periodo_fact_normalized(self):
+        return json_renderer.daterange_adapter(self.periodo_fact)
 
     @hybrid_property
     def consumo(self):
@@ -155,3 +140,34 @@ class Facturacao(Base):
         return func.coalesce(self.c_licencia_sub, 0) + func.coalesce(
             self.c_licencia_sup, 0
         )
+
+    def calculate_pagos(self):
+        self._calcula_pagos_lic("sup")
+        self._calcula_pagos_lic("sub")
+
+        self.pago_mes = ((self.pago_mes_sub or 0) + (self.pago_mes_sup or 0)) or None
+        self.pago_iva = (
+            ((self.pago_iva_sub or 0) + (self.pago_iva_sup or 0))
+            * (1 + float(self.juros) / 100)
+        ) or None
+
+    def __json__(self, request):
+        result = super().__json__(request)
+        result["billing_period"] = self.billing_period()
+        return result
+
+    def _calcula_pagos_lic(self, tipo_agua):
+        taxa_fixa = float(getattr(self, f"taxa_fixa_{tipo_agua}", 0) or 0)
+        taxa_uso = float(getattr(self, f"taxa_uso_{tipo_agua}", 0) or 0)
+        consumo_fact = float(getattr(self, f"consumo_fact_{tipo_agua}", 0) or 0)
+        iva = float(self.iva or 0)
+        pago_mes = (taxa_fixa + taxa_uso * consumo_fact) * self._month_factor()
+        pago_iva = pago_mes * (1 + iva / 100)
+
+        # Sets pago_mes, pago_iva to None if 0 or any needed value is None
+        setattr(self, f"pago_mes_{tipo_agua}", pago_mes or None)
+        setattr(self, f"pago_iva_{tipo_agua}", pago_iva or None)
+
+    def _month_factor(self):
+        lower, upper = self.periodo_fact_normalized()
+        return diff_month_include_upper(lower, upper)

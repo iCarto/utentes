@@ -19,7 +19,6 @@ from utentes.models.base import (
     update_array,
     update_geom,
 )
-
 from utentes.models.facturacao import Facturacao
 from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
@@ -72,6 +71,9 @@ REQUERIMENTO_FIELDS = (
 )
 
 FACTURACAO_FIELDS = ("fact_tipo", "pago_lic")
+INVOICE_READ_ONLY = ("created_at", "billing_cyle", "fact_tipo", "periodo_fact")
+
+
 NORMAL_FIELDS = (
     "observacio",
     "loc_provin",
@@ -456,28 +458,30 @@ class Exploracao(ExploracaoGeom):
 
         # get last factura emited order by date desc
         data["facturacao"] = sorted(
-            data["facturacao"], key=Facturacao.json_fact_order_key, reverse=True
+            data["facturacao"],
+            key=lambda invoice: invoice["ano"] + invoice["mes"],
+            reverse=True,
         )
-        json_fact = data["facturacao"][0]
+        last_invoice = data["facturacao"][0]
 
         # complete licenca data with last factura values
         lic_sup = self.get_licencia("sup")
-        lic_sup.consumo_tipo = json_fact["consumo_tipo_sup"]
-        lic_sup.taxa_fixa = json_fact["taxa_fixa_sup"]
-        lic_sup.taxa_uso = json_fact["taxa_uso_sup"]
-        lic_sup.consumo_fact = json_fact["consumo_fact_sup"]
-        lic_sup.iva = json_fact["iva"]
-        lic_sup.pago_mes = json_fact["pago_mes_sup"]
-        lic_sup.pago_iva = json_fact["pago_iva_sup"]
+        lic_sup.consumo_tipo = last_invoice["consumo_tipo_sup"]
+        lic_sup.taxa_fixa = last_invoice["taxa_fixa_sup"]
+        lic_sup.taxa_uso = last_invoice["taxa_uso_sup"]
+        lic_sup.consumo_fact = last_invoice["consumo_fact_sup"]
+        lic_sup.iva = last_invoice["iva"]
+        lic_sup.pago_mes = last_invoice["pago_mes_sup"]
+        lic_sup.pago_iva = last_invoice["pago_iva_sup"]
 
         lic_sub = self.get_licencia("sub")
-        lic_sub.consumo_tipo = json_fact["consumo_tipo_sub"]
-        lic_sub.taxa_fixa = json_fact["taxa_fixa_sub"]
-        lic_sub.taxa_uso = json_fact["taxa_uso_sub"]
-        lic_sub.consumo_fact = json_fact["consumo_fact_sub"]
-        lic_sub.iva = json_fact["iva"]
-        lic_sub.pago_mes = json_fact["pago_mes_sub"]
-        lic_sub.pago_iva = json_fact["pago_iva_sub"]
+        lic_sub.consumo_tipo = last_invoice["consumo_tipo_sub"]
+        lic_sub.taxa_fixa = last_invoice["taxa_fixa_sub"]
+        lic_sub.taxa_uso = last_invoice["taxa_uso_sub"]
+        lic_sub.consumo_fact = last_invoice["consumo_fact_sub"]
+        lic_sub.iva = last_invoice["iva"]
+        lic_sub.pago_mes = last_invoice["pago_mes_sub"]
+        lic_sub.pago_iva = last_invoice["pago_iva_sub"]
 
         # update all facturacao elements
         for json_fact in data["facturacao"]:
@@ -490,16 +494,10 @@ class Exploracao(ExploracaoGeom):
                 None,
             )
             for column in list(json_fact.keys()):
+                if column in INVOICE_READ_ONLY:
+                    continue
                 setattr(fact, column, json_fact.get(column))
-            fact.pago_mes = (
-                (fact.pago_mes_sup or 0) + (fact.pago_mes_sub or 0)
-            ) or None
-            fact.pago_iva_sup = (
-                (fact.pago_mes_sup or 0) * (1 + (float(fact.iva_sup or 0)) / 100)
-            ) or None
-            fact.pago_iva_sub = (
-                (fact.pago_mes_sub or 0) * (1 + (float(fact.iva_sub or 0)) / 100)
-            ) or None
+            fact.calculate_pagos()
 
     def update_from_json(self, request, data):
         self.gid = data.get("id")
@@ -633,7 +631,7 @@ class ExploracaoConFacturacao(Exploracao):
     )
 
     facturacao = relationship(
-        "Facturacao",
+        Facturacao,
         cascade="all, delete-orphan",
         lazy="joined",
         passive_deletes=True,

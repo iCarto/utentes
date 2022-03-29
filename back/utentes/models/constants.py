@@ -51,3 +51,6 @@ PENDING_INVOICE = "Pendente Emissão Factura (DSU-F)"
 PENDING_PAYMENT = "Pendente Pagamento (DSU-F)"
 PAID = "Pagada"
 NOT_INVOIZABLE = "Não facturable"
+
+FLAT_FEE = "Fixo"
+PER_UNIT = "Variável"

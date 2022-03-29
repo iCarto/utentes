@@ -16,6 +16,7 @@ def nuevo_ciclo_facturacion(request):
     raise_if_not_authorized(request)
 
     sql = """
+        -- ALTER TABLE utentes.facturacao DROP CONSTRAINT facturacao_exploracao_ano_mes_key;
         WITH months_substract AS (
             SELECT gid
                 , CASE fact_tipo
@@ -33,6 +34,8 @@ def nuevo_ciclo_facturacion(request):
                 , to_char(f.created_at - month_inverval, 'MM'::text) as _mes
                 , f.fact_date - month_inverval as _fact_date
                 , f.recibo_date - month_inverval as _recibo_date
+                , daterange((lower(periodo_fact) - month_inverval)::date, (upper(periodo_fact) - month_inverval)::date) as _periodo_fact
+                , f.exploracao as _exploracao
             FROM utentes.facturacao f JOIN months_substract USING (gid)
             ORDER BY f.created_at ASC
         )
@@ -42,9 +45,13 @@ def nuevo_ciclo_facturacion(request):
             , mes = _mes
             , fact_date = _fact_date
             , recibo_date = _recibo_date
-        FROM foo
+            , periodo_fact = _periodo_fact
+        -- https://dba.stackexchange.com/questions/299488/
+        -- https://www.postgresql.org/message-id/20030405200656.5EAC9474E4F%40postgresql.org
+        FROM (SELECT * FROM foo ORDER BY _exploracao ASC, _ano ASC, _mes ASC) foo_ordered
         WHERE gid = _gid
         ;
+        -- ALTER TABLE utentes.facturacao ADD CONSTRAINT facturacao_exploracao_ano_mes_key UNIQUE (exploracao, ano, mes);
     """
 
     request.db.execute(sql)
