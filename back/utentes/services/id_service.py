@@ -1,6 +1,6 @@
-import datetime
 import re
 
+from utentes.lib.utils import dates
 from utentes.models.constants import K_DE_FACTO, K_LICENSED, K_USOS_COMUNS
 from utentes.services import settings_service
 
@@ -20,7 +20,7 @@ def calculate_new_exp_id(request, state=K_LICENSED):
     exp_id_tokens = {
         "seq_id": None,
         "ara": settings_service.get_ara(request),
-        "year": str(datetime.date.today().year),
+        "year": str(dates.today().year),
         "code": code_for_state(state),
     }
 
@@ -41,11 +41,8 @@ def calculate_new_exp_id(request, state=K_LICENSED):
     return "{seq_id:03d}/{ara}-IP/{year}{code}".format(**exp_id_tokens)
 
 
-def is_valid_exp_id(exp_id):
-    return _is_valid_exp_id(exp_id, settings_service.get_ara())
-
-
-def _is_valid_exp_id(exp_id, ara):
+def is_valid_exp_id(exp_id, ara=None):
+    ara = ara or settings_service.get_ara()
     exp_id_format_regexp = r"^\d{3}/" + ara + r"-IP/\d{4}/(UF|SL|CL)$"  # noqa: WPS336
     return exp_id and re.match(exp_id_format_regexp, exp_id)
 

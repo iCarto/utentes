@@ -4,6 +4,7 @@ from pyramid.view import view_config
 from sqlalchemy import func, or_
 
 from utentes.constants import perms as perm
+from utentes.lib.utils import dates
 from utentes.lib.utils.dates import diff_month_include_upper
 from utentes.models.constants import (
     INVOICE_STATE_PENDING_CONSUMPTION,
@@ -69,7 +70,7 @@ def usos_comuns(
     if mes_inicio and ano_inicio:
         d_inicio = datetime.date(int(ano_inicio), int(mes_inicio), 1)
 
-    d_fim = datetime.date.today()
+    d_fim = dates.today()
     if mes_fim and ano_fim:
         user_input_d_fim = datetime.date(int(ano_fim), int(mes_fim), 1)
         if user_input_d_fim < d_fim:

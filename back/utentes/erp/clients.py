@@ -31,6 +31,7 @@ from pyramid.view import view_config
 from sqlalchemy.orm import Session, aliased, noload
 
 from utentes.erp.model import MANUAL_SYNC_TIME, ClientsResultSet, ExploracaosERP
+from utentes.lib.utils import dates
 from utentes.lib.utils.strings import stringify
 from utentes.models.actividade import ActividadeBase
 from utentes.models.constants import INVOIZABLE_STATES
@@ -165,5 +166,5 @@ def build_spreadsheet_file(db: Session, data: List[Dict]):
 
 
 def build_filename() -> str:
-    today = datetime.date.today().strftime("%y%m%d")
+    today = dates.today().strftime("%y%m%d")
     return f"{today}_exploracaoes_primavera.xlsx"

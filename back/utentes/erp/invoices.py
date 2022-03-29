@@ -12,6 +12,7 @@ from utentes.erp.model import (
     FacturacaoERP,
     InvoicesResultSet,
 )
+from utentes.lib.utils import dates
 from utentes.models.base import badrequest_exception_user
 from utentes.models.constants import (
     INVOIZABLE_STATES,
@@ -149,5 +150,5 @@ def build_spreadsheet_file(db: Session, data: List[Dict]):
 
 
 def build_filename() -> str:
-    today = datetime.date.today().strftime("%y%m%d")
+    today = dates.today().strftime("%y%m%d")
     return f"{today}_facturas_primavera.xlsx"

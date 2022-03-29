@@ -1,10 +1,9 @@
-import datetime
-
 import pandas as pd
 from pyramid.request import Request
 from pyramid.view import view_config
 from sqlalchemy.engine import Engine
 
+from utentes.lib.utils import dates
 from utentes.services.pyramid_spreadsheet_response import spreadsheet_response
 from utentes.services.spreadsheet_writer import write_tmp_spreadsheet_from_dataframes
 
@@ -245,6 +244,6 @@ def get_new_exp_demand(engine: Engine, exp_gid: int):
 
 
 def build_filename(exp_id):
-    today = datetime.date.today().strftime("%y%m%d")
+    today = dates.today().strftime("%y%m%d")
     exp_id_sanitized = exp_id.replace("/", "_")
     return f"{today}_demanda_weap_{exp_id_sanitized}.xlsx"

@@ -1,11 +1,10 @@
-import datetime
-
 from dateutil.relativedelta import relativedelta
 from pyramid.view import view_config
 from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from utentes.api.error_msgs import error_msgs
 from utentes.constants import perms as perm
+from utentes.lib.utils import dates
 from utentes.models.base import badrequest_exception
 from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL, RENEWABLE_STATES
 from utentes.models.estado_renovacao import (
@@ -43,9 +42,7 @@ def api_renovacao_id_get(request):
 )
 def renovacao_get(request):
     n_months_to_go_back = 6
-    threshold_renewal_date = datetime.date.today() + relativedelta(
-        months=n_months_to_go_back
-    )
+    threshold_renewal_date = dates.today() + relativedelta(months=n_months_to_go_back)
 
     lics_ids_query = (
         request.db.query(Licencia.exploracao)
