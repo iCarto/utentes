@@ -58,9 +58,10 @@ class ActividadesCultivos(Base):
         self.observacio = data.get("observacio")
         self.the_geom = update_geom(self.the_geom, data)
         update_area(self, data, empty_value=0)  # #3008
-
         if data.get("geometry_edited"):
-            if self.area is None:
+            if (
+                self.area is None or self.area == 0
+            ):  # avoid error between float and Decimal in the else
                 self.c_estimado = 0
             elif self.rega == "Regional":
                 self.c_estimado = self.area * 10000 / 12

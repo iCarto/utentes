@@ -3,19 +3,26 @@ import unittest
 from utentes.api.tanques_piscicolas import tanques_piscicolas_get
 from utentes.models.tanques_piscicolas import ActividadesTanquesPiscicolas
 from utentes.tests.api import DBIntegrationTest
-from utentes.tests.fixtures import create_tanque
+from utentes.tests.e2e.testing_database import insert_exp
+from utentes.tests.fixtures import build_json, create_tanque
+from utentes.tests.fixtures.create_actividade import piscicola
+from utentes.tests.fixtures.create_exploracao import create_test_exploracao
 
 
 class TestTanquesPiscicolasGET(DBIntegrationTest):
+    def setUp(self):
+        super().setUp()
+        exp = create_test_exploracao(actividade=piscicola())
+        tanque = create_tanque.create_test_tanque()
+        tanque.tanque_id = f"{exp.exp_id}/001"
+        exp.actividade.tanques_piscicolas.append(tanque)
+        insert_exp(self.request.db, exp)
+        self.test_exp = exp
+
     def test_tanque_get_length(self):
-        actual = tanques_piscicolas_get(self.request)
-        previous_count = self.request.db.query(ActividadesTanquesPiscicolas).count()
-        self.assertEqual(len(actual["features"]), previous_count)
-        create_tanque.from_file(self.request)
         actual = tanques_piscicolas_get(self.request)
         count = self.request.db.query(ActividadesTanquesPiscicolas).count()
         self.assertEqual(len(actual["features"]), count)
-        self.assertEqual(previous_count + 1, count)
 
     def test_tanque_get_returns_a_geojson_collection(self):
         actual = tanques_piscicolas_get(self.request)
@@ -24,12 +31,11 @@ class TestTanquesPiscicolasGET(DBIntegrationTest):
         self.assertEqual("FeatureCollection", actual["type"])
 
     def test_tanque_get_id_returns_a_geojson(self):
-        expected = create_tanque.from_file(self.request, commit=True)
-        self.request.matchdict.update({"id": expected.gid})
-        actual = tanques_piscicolas_get(self.request).__json__(self.request)
+        actual = build_json.simple_geojson(
+            self.request, tanques_piscicolas_get(self.request)["features"][0]
+        )
         self.assertTrue("geometry" in actual)
         self.assertTrue("type" in actual)
-        self.assertTrue("properties" in actual)
 
 
 if __name__ == "__main__":

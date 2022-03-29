@@ -8,12 +8,10 @@ from utentes.erp.model import ExploracaosERP, FacturacaoERP
 from utentes.models.constants import K_INACTIVE, K_SUBTERRANEA, K_SUPERFICIAL
 from utentes.models.exploracao import Exploracao
 from utentes.tests.api import DBIntegrationTest
-from utentes.tests.fixtures.create_test_data_for_erp import (
-    create_test_exploracao,
-    create_test_exploracao_erp,
-    create_test_invoice,
-    create_test_licencia,
-)
+from utentes.tests.fixtures.create_exploracao import create_test_exploracao
+from utentes.tests.fixtures.create_invoice import create_test_invoice
+from utentes.tests.fixtures.create_licencia import create_test_licencia
+from utentes.tests.fixtures.create_test_data_for_erp import create_test_exploracao_erp
 
 
 logging.basicConfig()

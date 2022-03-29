@@ -51,3 +51,8 @@ class DBIntegrationTest(unittest.TestCase):
         )
 
         self.request.db.commit()
+
+    def assert_adm_location(self, actual):
+        self.assertEqual("Niassa", actual.loc_provin)
+        self.assertEqual("Lago", actual.loc_distri)
+        self.assertEqual("Cóbue", actual.loc_posto)

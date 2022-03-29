@@ -9,7 +9,7 @@ from utentes.tests.e2e.testing_database import validate_exp
 class TestRenovacaoHappyPath(BaseE2ETest):
     def test_renovacao_happy_path(self):
         try:
-            self._test_renovacao_happ_path()
+            self._test_renovacao_happy_path()
         except Exception:
             logs = self.browser.get_log("browser")
 
@@ -26,7 +26,7 @@ class TestRenovacaoHappyPath(BaseE2ETest):
             # }
             raise
 
-    def _test_renovacao_happ_path(self):
+    def _test_renovacao_happy_path(self):
         login(self.browser, {"name": "test_admin", "passwd": "test_admin"})
         self.browser.get(f"{config.HOST_BASE}/renovacao.html")
 

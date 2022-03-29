@@ -1,11 +1,10 @@
 import datetime
-import json
 import os
 
 from pyramid import testing
 from pyramid.paster import get_appsettings
 from sqlalchemy import engine_from_config
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
 from utentes.lib.utils.dicts import merge_nested_dict
 from utentes.models.exploracao import Exploracao
@@ -13,16 +12,17 @@ from utentes.models.renovacao import Renovacao
 from utentes.models.user import User
 from utentes.repos.user_repo import delete_user_by_username
 from utentes.tests.e2e.config import TMP_DIRECTORY
+from utentes.tests.fixtures import test_data
 
 
-def delete_exp(request, exp_id):
-    request.db.query(Exploracao).filter(Exploracao.exp_id == exp_id).delete()
-    request.db.commit()
+def delete_exp(db: Session, exp_id: str) -> None:
+    db.query(Exploracao).filter(Exploracao.exp_id == exp_id).delete()
+    db.commit()
 
 
 def create_exp(request, data):
-    delete_exp(request, data["exp_id"])
-    # TOOD: Esto hay que eliminarlo
+    delete_exp(request.db, data["exp_id"])
+    # TODO: Esto hay que eliminarlo
     which_exp_id_should_be_used_old = Exploracao._which_exp_id_should_be_used
     Exploracao._which_exp_id_should_be_used = lambda other, request, body: data.get(
         "exp_id"
@@ -35,20 +35,14 @@ def create_exp(request, data):
     return e
 
 
-def get_data_file(name):
-    current_path = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(current_path, "data", name)
-
-
-def get_data():
-    file_data = get_data_file("exp.json")
-    with open(file_data) as f:
-        data = json.load(f)
-    return data
+def insert_exp(db: Session, exp: Exploracao):
+    delete_exp(db, exp.exp_id)
+    db.add(exp)
+    db.commit()
 
 
 def create_renovacao(request, state, other):
-    data = merge_nested_dict(get_data(), other)
+    data = merge_nested_dict(test_data.default_real_exploracao(), other)
     exp = create_exp(request, data)
 
     renovacao = Renovacao()
@@ -60,7 +54,7 @@ def create_renovacao(request, state, other):
 
 
 def validate_exp(self):
-    expected = get_data()
+    expected = test_data.default_real_exploracao()
     e = (
         self.testing_database.request.db.query(Exploracao)
         .filter(Exploracao.exp_id == expected["exp_id"])
@@ -76,7 +70,7 @@ def validate_exp(self):
 
 
 def validate_print_license_exists(self):
-    expected = get_data()
+    expected = test_data.default_real_exploracao()
     tipo_lic = expected["licencias"][0]["tipo_lic"]
     lic_nro = expected["licencias"][0]["lic_nro"].replace("/", "_")
     exp_name = expected["exp_name"]
@@ -123,7 +117,7 @@ class TestingDatabase(object):
         # self.request.GET = MultiDict()
         self.request.db = self.db_session
 
-        e = create_exp(self.request, get_data())
+        e = create_exp(self.request, test_data.default_real_exploracao())
         self.exp_id = e.exp_id
         self.test_e = e
         self.create_test_admin()
@@ -133,7 +127,7 @@ class TestingDatabase(object):
             delete_user_by_username(self.request.db, username)
         self.request.db.commit()
 
-        delete_exp(self.request, self.exp_id)
+        delete_exp(self.request.db, self.exp_id)
         self.db_session.close()
         self.connection.close()
         # self.transaction.rollback()

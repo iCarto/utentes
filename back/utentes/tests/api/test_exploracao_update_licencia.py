@@ -3,7 +3,7 @@ import unittest
 from pyramid.httpexceptions import HTTPBadRequest
 
 from utentes.api.exploracaos import exploracaos_update
-from utentes.models.constants import K_INACTIVE, K_SUBTERRANEA, K_SUPERFICIAL
+from utentes.models.constants import FLAT_FEE, K_INACTIVE, K_SUBTERRANEA, K_SUPERFICIAL
 from utentes.models.licencia import Licencia
 from utentes.repos.exploracao_repo import get_exploracao_by_pk
 from utentes.services.id_service import calculate_lic_nro
@@ -32,7 +32,7 @@ class ExploracaoUpdateLicenciaTests(DBIntegrationTest):
                 "d_validade": "2010-10-10",
                 "c_licencia": 10,
                 "iva": 12.75,
-                "consumo_tipo": "Fixo",
+                "consumo_tipo": FLAT_FEE,
             }
         )
         self.request.json_body = expected_json

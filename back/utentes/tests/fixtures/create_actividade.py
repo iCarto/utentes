@@ -1,9 +1,18 @@
 from utentes.models.actividade import (
     ActividadesAbastecemento,
     ActividadesAgriculturaRega,
+    ActividadesPiscicultura,
 )
-from utentes.models.constants import K_ABASTECIMENTO, K_AGRICULTURA
+from utentes.models.constants import K_ABASTECIMENTO, K_AGRICULTURA, K_PISCICULTURA
 from utentes.tests.utils.gid_generator import GIDGenerator
+
+
+def piscicola():
+    actividade = ActividadesPiscicultura()
+    actividade.gid = GIDGenerator.next_actividade()
+    actividade.tipo = K_PISCICULTURA
+    actividade.c_estimado = 0
+    return actividade
 
 
 def abastecemento():

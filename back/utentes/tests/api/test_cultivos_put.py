@@ -5,24 +5,22 @@ from pyramid.httpexceptions import HTTPBadRequest
 from utentes.api.cultivos import cultivos_update
 from utentes.models.cultivo import ActividadesCultivos
 from utentes.tests.api import DBIntegrationTest
-
-
-def build_json(request, cultivo):
-    expected_json = cultivo.__json__(request)
-    expected_json.update(expected_json.pop("properties"))
-    return expected_json
+from utentes.tests.fixtures import build_json
+from utentes.tests.fixtures.create_cultivo import (
+    get_test_cultivo_from_db,
+    get_test_cultivo_with_geom_from_db,
+)
 
 
 class CultivosUpdateTests(DBIntegrationTest):
+    def setUp(self):
+        super().setUp()
+        self.expected = get_test_cultivo_from_db(self.request.db)
+
     def test_update_cultivo(self):
-        expected = (
-            self.request.db.query(ActividadesCultivos)
-            .order_by(ActividadesCultivos.cult_id)
-            .first()
-        )
-        gid = expected.gid
+        gid = self.expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = build_json.simple_geojson(self.request, self.expected)
         # expected_json['gid'] = json.get('id')
         # expected_json['cult_id'] = json.get('cult_id')
         expected_json["cultivo"] = "Verduras"
@@ -31,7 +29,7 @@ class CultivosUpdateTests(DBIntegrationTest):
         expected_json["eficiencia"] = 33
         expected_json["observacio"] = "uma observacio"
         self.request.json_body = expected_json
-        expected.the_geom = None
+        self.expected.the_geom = None
         self.request.db.commit()
         cultivos_update(self.request)
         actual = (
@@ -47,10 +45,9 @@ class CultivosUpdateTests(DBIntegrationTest):
         self.assertIsNone(actual.the_geom)
 
     def test_update_cultivo_the_geom(self):
-        expected = self.request.db.query(ActividadesCultivos).first()
-        gid = expected.gid
+        gid = self.expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = build_json.simple_geojson(self.request, self.expected)
         expected_json["geometry_edited"] = True
         expected_json["geometry"] = {
             "type": "MultiPolygon",
@@ -76,14 +73,9 @@ class CultivosUpdateTests(DBIntegrationTest):
         self.assertAlmostEqual(367.77, float(actual.area), 2)
 
     def test_not_update_cultivo_the_geom(self):
-        expected = (
-            self.request.db.query(ActividadesCultivos)
-            .order_by(ActividadesCultivos.cult_id)
-            .first()
-        )
-        gid = expected.gid
+        gid = self.expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = build_json.simple_geojson(self.request, self.expected)
         expected_json["geometry_edited"] = False
         expected_json["geometry"] = {
             "type": "MultiPolygon",
@@ -100,7 +92,7 @@ class CultivosUpdateTests(DBIntegrationTest):
             ],
         }
         self.request.json_body = expected_json
-        expected.the_geom = None
+        self.expected.the_geom = None
         self.request.db.commit()
         cultivos_update(self.request)
         actual = (
@@ -111,14 +103,10 @@ class CultivosUpdateTests(DBIntegrationTest):
         self.assertIsNone(actual.the_geom)
 
     def test_update_cultivo_delete_the_geom(self):
-        expected = (
-            self.request.db.query(ActividadesCultivos)
-            .filter(ActividadesCultivos.the_geom.isnot(None))
-            .first()
-        )
-        gid = expected.gid
+        self.expected = get_test_cultivo_with_geom_from_db(self.request.db)
+        gid = self.expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = build_json.simple_geojson(self.request, self.expected)
         expected_json["geometry_edited"] = True
         expected_json["geometry"] = None
         self.request.json_body = expected_json
@@ -129,13 +117,12 @@ class CultivosUpdateTests(DBIntegrationTest):
             .first()
         )
         self.assertIsNone(actual.the_geom)
-        self.assertIsNone(actual.area)
+        self.assertEqual(float(actual.area), 0)  # ticket #3008
 
     def test_update_cultivo_validation_fails(self):
-        expected = self.request.db.query(ActividadesCultivos).first()
-        gid = expected.gid
+        gid = self.expected.gid
         self.request.matchdict.update({"id": gid})
-        expected_json = build_json(self.request, expected)
+        expected_json = build_json.simple_geojson(self.request, self.expected)
         rega = expected_json["rega"]
         expected_json["rega"] = None
         self.request.json_body = expected_json

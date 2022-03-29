@@ -9,19 +9,23 @@ from utentes.models.estado_renovacao import PENDING_TECH_DECISION
 from utentes.tests.e2e import config
 from utentes.tests.e2e.base import BaseE2ETest, login
 from utentes.tests.e2e.testing_database import create_renovacao
+from utentes.tests.utils import domain_generator
 
 
 class TestWeapExport(BaseE2ETest):
     def test_renovacao_no_umbeluzi(self):
+        adm_location = domain_generator.adm_location(loc_posto="Boane - Sede")
+        hydro_location = domain_generator.hydro_location(loc_bacia="Maputo")
+
         create_renovacao(
             self.testing_database.request,
             state=PENDING_TECH_DECISION,
             other={
-                "loc_provin": "Maputo",
-                "loc_distri": "Boane",
-                "loc_posto": "Boane",
-                "loc_divisao": "DGBUM",
-                "loc_bacia": "Maputo",
+                "loc_provin": adm_location.loc_provin,
+                "loc_distri": adm_location.loc_distri,
+                "loc_posto": adm_location.loc_posto,
+                "loc_divisao": hydro_location.loc_divisao,
+                "loc_bacia": hydro_location.loc_bacia,
             },
         )
         self._go_to_exp_in("/renovacao.html")
@@ -35,15 +39,18 @@ class TestWeapExport(BaseE2ETest):
         )
 
     def test_renovacao_umbeluzi(self):
+        adm_location = domain_generator.adm_location(loc_posto="Boane - Sede")
+        hydro_location = domain_generator.hydro_location(loc_bacia="Umbelúzi")
+
         create_renovacao(
             self.testing_database.request,
             state=PENDING_TECH_DECISION,
             other={
-                "loc_provin": "Maputo",
-                "loc_distri": "Boane",
-                "loc_posto": "Boane",
-                "loc_divisao": "DGBUM",
-                "loc_bacia": "Umbelúzi",
+                "loc_provin": adm_location.loc_provin,
+                "loc_distri": adm_location.loc_distri,
+                "loc_posto": adm_location.loc_posto,
+                "loc_divisao": hydro_location.loc_divisao,
+                "loc_bacia": hydro_location.loc_bacia,
             },
         )
         self._go_to_exp_in("/renovacao.html")
