@@ -3,6 +3,7 @@ from pyramid.view import view_config
 from utentes.constants import perms as perm
 from utentes.models import cartography
 from utentes.models.base import notfound_exception
+from utentes.models.constants import THREE_DAYS_IN_SECONDS
 from utentes.models.exploracao import ExploracaoGeom
 
 
@@ -11,6 +12,7 @@ from utentes.models.exploracao import ExploracaoGeom
     permission=perm.PERM_GET,
     request_method="GET",
     renderer="json",
+    http_cache=THREE_DAYS_IN_SECONDS,
 )
 def api_cartography(request):
     layer = request.matchdict["layer"]

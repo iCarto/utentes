@@ -54,3 +54,5 @@ NOT_INVOIZABLE = "Não facturable"
 
 FLAT_FEE = "Fixo"
 PER_UNIT = "Variável"
+
+THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3

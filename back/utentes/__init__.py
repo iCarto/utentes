@@ -9,11 +9,9 @@ from webassets.filter import register_filter
 
 from utentes.constants import perms as perm
 from utentes.lib import json_renderer, webassets_filters
+from utentes.models.constants import THREE_DAYS_IN_SECONDS
 from utentes.tenant_custom_code import adjust_settings
 from utentes.user_utils import get_user_from_request, get_user_role
-
-
-ONE_HOUR = 3600  # in seconds
 
 
 class RequestWithDB(Request):
@@ -74,7 +72,7 @@ def main(global_config, **settings):
     jinja2_env.assets_environment = assets_env
     jinja2_env.globals["perm"] = perm
 
-    config.add_static_view("static", "static", cache_max_age=ONE_HOUR)
+    config.add_static_view("static", "static", cache_max_age=THREE_DAYS_IN_SECONDS)
     config.include("utentes.urls")
 
     config.scan(ignore=["utentes.test"])
