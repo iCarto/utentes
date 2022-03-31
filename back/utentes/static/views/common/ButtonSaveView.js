@@ -4,12 +4,12 @@ Backbone.SIXHIARA.ButtonSaveView = Backbone.View.extend({
         click: "save",
     },
 
-    initialize: function() {
+    initialize: function () {
         this.$el.prop("disabled", true);
         this.listenTo(
             this.model,
             "aChangeHappens",
-            function() {
+            function () {
                 this.$el.prop("disabled", false);
             },
             this
@@ -21,13 +21,13 @@ Backbone.SIXHIARA.ButtonSaveView = Backbone.View.extend({
         if (this.model.isValid()) {
             this.model.save(null, {
                 wait: true,
-                success: function(model, resp, options) {
+                success: function (model, resp, options) {
                     var old_exp_id = self.model.previousAttributes().exp_id;
                     var new_exp_id = model.get("exp_id");
                     if (old_exp_id !== new_exp_id) {
                         bootbox.alert(
                             `A exploração alterou seu número de exploração de&nbsp;<strong>${old_exp_id}</strong>&nbsp;a&nbsp;<strong>${new_exp_id}</strong>.`,
-                            function() {
+                            function () {
                                 window.location = model.urlShow();
                             }
                         );
@@ -35,7 +35,7 @@ Backbone.SIXHIARA.ButtonSaveView = Backbone.View.extend({
                         window.location = model.urlShow();
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
+                error: function (xhr, textStatus, errorThrown) {
                     if (
                         textStatus &&
                         textStatus.responseJSON &&

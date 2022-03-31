@@ -1,6 +1,6 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.UtenteView = Backbone.View.extend({
-    initialize: function(options) {
+    initialize: function (options) {
         this.options = options || {};
 
         this.sexoGerente = {
@@ -24,7 +24,7 @@ Backbone.SIXHIARA.UtenteView = Backbone.View.extend({
             this.model
                 .get("utente")
                 .set("sexo_gerente", this.sexoGerente.valueInProcess, {silent: true});
-            this.sexoGerente.widget.addEventListener("change", function(e) {
+            this.sexoGerente.widget.addEventListener("change", function (e) {
                 if (self.sexoGerente.valueInProcess !== e.target.value) {
                     self.sexoGerente.warningWidget.classList.remove("hidden");
                     self.sexoGerente.warningWidget.innerHTML = `<strong>Atenção! </strong> O <strong>Sexo do Gerente/Presidente</strong> mudou. O DA atribuiu "<strong>${self.sexoGerente.valueInProcess}</strong>" e você selecionou "<strong>${e.target.value}</strong>".`;

@@ -4,16 +4,16 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
         "change #select-utente": "fillInputsEvent",
     },
 
-    initialize: function(options) {
+    initialize: function (options) {
         this.options = options || {};
     },
 
-    render: function() {
+    render: function () {
         this.collection.models.forEach(this.appendOption, this);
         return this;
     },
 
-    appendOption: function(utente) {
+    appendOption: function (utente) {
         var option = new Backbone.UILib.OptionView({
             model: utente,
             text: "nome",
@@ -38,7 +38,7 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
     fillInputs: function(selectedOption) {
         var utente = this.collection.findWhere({nome: selectedOption});
         if (utente === undefined) {
-            this.$(".widget-utente").each(function(index, widget) {
+            this.$(".widget-utente").each(function (index, widget) {
                 // enable widgets and clear values
                 widget.removeAttribute("disabled");
                 widget.value = "";
@@ -46,7 +46,7 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
             });
             if (this.model) this.model.set("utente", new Backbone.SIXHIARA.Utente());
         } else {
-            this.$(".widget-utente").each(function(index, widget) {
+            this.$(".widget-utente").each(function (index, widget) {
                 // disable widgets and set values from model
                 widget.setAttribute("disabled", true);
                 widget.value = utente.get(widget.id);
@@ -56,7 +56,7 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
         }
     },
 
-    checkGenderField: function(changeSelectValue) {
+    checkGenderField: function (changeSelectValue) {
         let sexoGerente = this.options.sexoGerente;
 
         if (!sexoGerente || !sexoGerente.valueInProcess) {

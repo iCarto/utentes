@@ -22,9 +22,9 @@ Backbone.SIXHIARA.Config = {
 };
 
 Backbone.SIXHIARA.formatter = formatter();
-Backbone.SIXHIARA.formatter.formatTipoLicencias = function(licencias) {
+Backbone.SIXHIARA.formatter.formatTipoLicencias = function (licencias) {
     var licenciasStr = ["-", "-"];
-    licencias.forEach(function(lic) {
+    licencias.forEach(function (lic) {
         var tipo = lic["tipo_agua"];
         if (tipo === "Subterrânea") {
             licenciasStr[0] = tipo;

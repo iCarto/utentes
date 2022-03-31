@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $("#wizard-exp").bootstrapWizard({
         withVisible: false,
     });
@@ -16,7 +16,7 @@ var fetchPromises = function fetchPromises(id) {
 
     if (isNaN(id)) {
         var mock = {
-            fetch: function() {
+            fetch: function () {
                 return Promise.resolve().then(() => exploracao.toJSON());
             },
         };
@@ -31,7 +31,7 @@ var fetchPromises = function fetchPromises(id) {
     var backendNextState = document.getElementById("next_state").value;
     var newExpIdDeferred = SIRHA.Services.IdService.getNewExpIdFromApi(
         backendNextState
-    ).then(function(v) {
+    ).then(function (v) {
         newExpId = v.exp_id;
     });
     jqxhr.push(newExpIdDeferred);
@@ -73,13 +73,13 @@ var whenAllDataIsFetched = function whenAllDataIsFetched() {
 var id = SIRHA.Utils.getIdFromSearchParams();
 
 Promise.all(fetchPromises(id))
-    .then(function() {
+    .then(function () {
         whenAllDataIsFetched();
     })
-    .catch(function(error) {
+    .catch(function (error) {
         console.log(error);
     })
-    .finally(function() {
+    .finally(function () {
         document.body.classList.remove("wait");
     });
 

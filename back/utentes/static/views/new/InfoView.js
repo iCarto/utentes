@@ -1,6 +1,6 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.InfoView = Backbone.View.extend({
-    initialize: function(options) {
+    initialize: function (options) {
         this.options = options || {};
 
         var self = this;
@@ -33,7 +33,7 @@ Backbone.SIXHIARA.InfoView = Backbone.View.extend({
 
         var dateId = "d_soli";
         var dateWidget = document.getElementById(dateId);
-        dateWidget.addEventListener("input", function(e) {
+        dateWidget.addEventListener("input", function (e) {
             var dateWidget = e.target;
             var validDate = formatter().validDateFormat(dateWidget.value);
             if (validDate) {

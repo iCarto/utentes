@@ -2,7 +2,7 @@ var expedientes = new Backbone.SIXHIARA.Expediente();
 expedientes.fetch();
 
 var domains = new Backbone.UILib.DomainCollection();
-var domainsFetched = function(collection, response, options) {
+var domainsFetched = function (collection, response, options) {
     new Backbone.UILib.SelectView({
         el: $("#sexo_gerente"),
         collection: domains.byCategory("sexo"),
@@ -18,14 +18,14 @@ var fileModalView = new Backbone.SIXHIARA.FileModalView({
 });
 
 function init() {
-    document.querySelectorAll('form input[type="checkbox"]').forEach(function(input) {
+    document.querySelectorAll('form input[type="checkbox"]').forEach(function (input) {
         input.addEventListener("change", enableBts);
     });
     document.getElementById("exp_name").addEventListener("input", enableBts);
     document.getElementById("sexo_gerente").addEventListener("change", enableBts);
     document.getElementById("d_soli").addEventListener("input", enableBts);
 
-    document.getElementById("js-btns-next").addEventListener("click", function(e) {
+    document.getElementById("js-btns-next").addEventListener("click", function (e) {
         fillExploracao(e);
     });
 
@@ -57,6 +57,7 @@ function validateName(name) {
 function enableBts() {
     var exp_name = document.getElementById("exp_name");
     var sexo_gerente = document.getElementById("sexo_gerente");
+
     var dateWidget = document.getElementById("d_soli");
     var dateObj = formatter().unformatDate(dateWidget.value);
     var validDate =
@@ -126,7 +127,7 @@ function fillExploracao(e, autosave) {
         exploracao.setDocPendenteUtente();
     }
 
-    document.querySelectorAll('form input[type="checkbox"]').forEach(function(input) {
+    document.querySelectorAll('form input[type="checkbox"]').forEach(function (input) {
         exploracao.set(input.id, input.checked);
     });
 
@@ -139,7 +140,7 @@ function fillExploracao(e, autosave) {
     exploracao.urlRoot = Backbone.SIXHIARA.Config.apiRequerimentos;
     bootbox.confirm(
         `Vai criar-se uma nova exploração com estado: <br> <strong>${nextState}</strong>`,
-        function(result) {
+        function (result) {
             if (!result) {
                 return;
             }
@@ -147,7 +148,7 @@ function fillExploracao(e, autosave) {
                 patch: true,
                 validate: false,
                 wait: true,
-                success: function(model) {
+                success: function (model) {
                     if (fileModalView.hasPendingFiles()) {
                         fileModalView.handlePendingFiles(model);
                     } else {
@@ -157,13 +158,13 @@ function fillExploracao(e, autosave) {
                             )} - ${model.get(
                                 "exp_name"
                             )}</strong>&nbsp;tem sido criada correctamente.`,
-                            function() {
+                            function () {
                                 window.location = Backbone.SIXHIARA.Config.urlPendentes;
                             }
                         );
                     }
                 },
-                error: function() {
+                error: function () {
                     bootbox.alert(
                         '<span style="color: red;">Produziu-se um erro. Informe ao administrador.</strong>'
                     );
