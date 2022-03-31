@@ -9,6 +9,7 @@ from utentes.lib.schema_validator.validation_exception import ValidationExceptio
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.base import badrequest_exception
 from utentes.models.documento import delete_exploracao_documentos
+from utentes.models.estado_renovacao import NOT_VALID
 from utentes.models.exploracao import Exploracao, ExploracaoBase
 from utentes.models.exploracao_schema import (
     EXPLORACAO_SCHEMA,
@@ -207,6 +208,86 @@ def exploracaos_create(request):
     request.db.add(e)
     request.db.commit()
     return e
+
+
+@view_config(
+    route_name="api_exploracaos_find",
+    permission=perm.PERM_GET,
+    request_method="GET",
+    renderer="json",
+)
+def exploracaos_find(request):
+
+    exp_name = request.params.get("exp_name", "")
+    exp_id = request.params.get("exp_id", "")
+
+    similarity_grade = 0.3
+    sql = r"""
+        WITH lics AS (
+            SELECT
+                exploracao,
+                CASE WHEN count(*) = 2 THEN
+                    'Ambas'
+                ELSE
+                    string_agg(tipo_agua
+                        , '')
+                END tipo_agua
+            FROM
+                utentes.licencias
+            GROUP BY
+                exploracao
+        ),
+        renovacaos AS (
+            SELECT exploracao, estado
+            FROM utentes.renovacoes
+            WHERE estado NOT IN :renovacao_not_valid_states
+        )
+        SELECT
+            e.gid,
+            e.exp_id,
+            e.exp_name,
+	        COALESCE(renovacaos.estado, e.estado_lic) AS estado_lic,
+            a.tipo as actividade,
+            e.loc_provin,
+            e.loc_distri,
+            e.loc_posto,
+            e.loc_nucleo,
+            e.loc_divisao,
+            e.loc_bacia,
+            e.loc_subaci,
+            lics.tipo_agua,
+            e.c_licencia,
+            e.c_real,
+            case
+                when e.exp_id = :exp_id THEN 1
+                else similarity(:exp_name, e.exp_name)
+            end as similarity,
+            case
+                when e.exp_id = :exp_id THEN 'Número de exploração'
+                else 'Nome da exploração'
+            end as similarity_field
+        FROM utentes.exploracaos e
+            LEFT JOIN utentes.actividades a ON a.exploracao = e.gid
+            LEFT JOIN lics ON e.gid = lics.exploracao
+	        LEFT JOIN renovacaos ON e.gid = renovacaos.exploracao
+        WHERE
+            similarity(:exp_name, e.exp_name)  >= :similarity_grade
+            or e.exp_id = :exp_id
+        ORDER BY similarity DESC
+    """
+    try:
+        result = request.db.execute(
+            sql,
+            {
+                "exp_name": exp_name,
+                "exp_id": exp_id,
+                "similarity_grade": similarity_grade,
+                "renovacao_not_valid_states": NOT_VALID,
+            },
+        )
+        return [(dict(row.items())) for row in result]
+    except:
+        raise badrequest_exception({"error": error_msgs["unknown_error"]})
 
 
 def activity_fail(v):

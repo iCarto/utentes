@@ -31,6 +31,7 @@ def add_routes_views(config: Configurator):  # noqa: WPS213
 
 def add_routes_api(config: Configurator):  # noqa: WPS213
     config.add_route("api_exploracaos", "/api/exploracaos")
+    config.add_route("api_exploracaos_find", "/api/exploracaos/find")
     config.add_route("api_exploracaos_id", "/api/exploracaos/{id}")
 
     config.add_route("api_fontes_exploracao", "/api/fontes/{exploracao}")
@@ -55,6 +56,7 @@ def add_routes_api(config: Configurator):  # noqa: WPS213
     config.add_route("api_exploracao_file", "/api/file/*subpath")
 
     config.add_route("api_utentes", "/api/utentes")
+    config.add_route("api_utentes_find", "/api/utentes/find")
     config.add_route("api_utentes_id", "/api/utentes/{id}")
 
     config.add_route("api_cultivos", "/api/cultivos")

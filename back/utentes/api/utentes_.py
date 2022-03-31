@@ -1,3 +1,4 @@
+import json
 import logging
 
 from pyramid.view import view_config
@@ -124,6 +125,58 @@ def utentes_create(request):
     request.db.add(u)
     request.db.commit()
     return u
+
+
+@view_config(
+    route_name="api_utentes_find",
+    permission=perm.PERM_GET,
+    request_method="GET",
+    renderer="json",
+)
+def utentes_find(request):
+
+    nome = request.params.get("nome", "")
+    nuit = request.params.get("nuit", "")
+    telefone = request.params.get("telefone", "")
+    email = request.params.get("email", "")
+    similarity_grade = 0.3
+    sql = r"""
+        select *,
+            case
+                when nuit = :nuit  THEN 1
+                when telefone = :telefone  THEN 1
+                when email = :email  THEN 1
+                else similarity(:nome, nome)
+            end as similarity,
+            case
+                when nuit = :nuit  THEN 'NUIT'
+                when telefone = :telefone  THEN 'Telefone'
+                when email = :email  THEN 'Email'
+                else 'Nome do utente'
+            end as similarity_field
+        from utentes.utentes
+            where
+                similarity(:nome, nome)  >= :similarity_grade
+                or nuit = :nuit
+                or telefone = :telefone
+                or email = :email
+        order by similarity desc
+    """
+    try:
+        result = request.db.execute(
+            sql,
+            {
+                "nome": nome,
+                "nuit": nuit,
+                "telefone": telefone,
+                "email": email,
+                "similarity_grade": similarity_grade,
+            },
+        )
+
+        return [(dict(row.items())) for row in result]
+    except:
+        raise badrequest_exception({"error": error_msgs["unknown_error"]})
 
 
 def validate_entities(body):
