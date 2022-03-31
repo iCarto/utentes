@@ -7,12 +7,11 @@ $(document).ready(function () {
 
 var exploracao = new Backbone.SIXHIARA.Exploracao();
 var domains = new Backbone.UILib.DomainCollection();
-var expedientes = new Backbone.SIXHIARA.Expediente();
 var utentes = new Backbone.SIXHIARA.UtenteCollection();
 var newExpId;
 
 var fetchPromises = function fetchPromises(id) {
-    var jqxhr = _.invoke([domains, utentes, expedientes], "fetch", {parse: true});
+    var jqxhr = _.invoke([domains, utentes], "fetch", {parse: true});
 
     if (isNaN(id)) {
         var mock = {

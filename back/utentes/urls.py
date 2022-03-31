@@ -96,7 +96,6 @@ def add_routes_api(config: Configurator):  # noqa: WPS213
     config.add_route("nuevo_ciclo_facturacion", "/api/nuevo_ciclo_facturacion")
 
     config.add_route("api_new_exp_id", "/api/new_exp_id")
-    config.add_route("api_expedientes", "/api/expedientes")
 
     config.add_route("api_users", "/api/users")
     config.add_route("api_users_id", "/api/users/{id}")

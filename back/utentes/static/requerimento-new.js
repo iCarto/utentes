@@ -1,6 +1,3 @@
-var expedientes = new Backbone.SIXHIARA.Expediente();
-expedientes.fetch();
-
 var domains = new Backbone.UILib.DomainCollection();
 var domainsFetched = function (collection, response, options) {
     new Backbone.UILib.SelectView({
@@ -41,16 +38,6 @@ function init() {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function validateName(name) {
-    $("#form-exp_name-warning-message").hide();
-    var expList = expedientes.get("list");
-    var newName = accentNeutralise(name);
-    for (var exp in expList) {
-        var existentName = accentNeutralise(expList[exp]["exp_name"]);
-        if (existentName === newName) {
-            $("form-exp_name-warning-message").show();
-            return;
-        }
     }
 }
 
@@ -90,7 +77,6 @@ function enableBts() {
 
     document.getElementById("bt-ok").disabled = !enable;
 
-    validateName(exp_name.value);
 }
 
 function fillExploracao(e, autosave) {
