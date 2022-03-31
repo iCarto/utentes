@@ -345,3 +345,13 @@ with or whithout another 'observacio-anteriores' textarea
     height: 100%;
     overflow-y: auto;
 }
+
+.tooltip-label-value.tooltip .tooltip-inner {
+    max-width: 100%;
+    text-align: left;
+    font-size: 1.1em;
+}
+
+.tooltip-label-value.tooltip .tooltip-label {
+    font-weight: bold;
+}

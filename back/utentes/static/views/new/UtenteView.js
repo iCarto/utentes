@@ -37,16 +37,22 @@ Backbone.SIXHIARA.UtenteView = Backbone.View.extend({
         }
     },
 
-    render: function render() {
-        this.fillSelectUtente();
+    render: function () {
+        this.renderSelectUtente();
     },
 
-    fillSelectUtente: function fillSelectUtente() {
+    renderSelectUtente: function () {
         this.selectUtenteView = new Backbone.SIXHIARA.SelectUtenteView({
             el: $("#utente"),
             collection: this.collection,
             sexoGerente: this.sexoGerente,
         });
         this.selectUtenteView.render();
+    },
+
+    selectUtente: function (utente) {
+        if (this.selectUtenteView) {
+            this.selectUtenteView.selectUtente(utente);
+        }
     },
 });

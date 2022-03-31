@@ -14,11 +14,23 @@ var fileModalView = new Backbone.SIXHIARA.FileModalView({
     components: ["upload"],
 });
 
+var similarExploracaosFoundView = new Backbone.SIXHIARA.ExploracaoSimilarList({
+    el: "#similar-exploracaos-found",
+    collection: new Backbone.SIXHIARA.ExploracaoSimilarCollection(),
+    onLoad: enableBts,
+    onClose: enableBts,
+});
+
+var wf_tmp = Object.create(MyWorkflow);
+
 function init() {
     document.querySelectorAll('form input[type="checkbox"]').forEach(function (input) {
         input.addEventListener("change", enableBts);
     });
     document.getElementById("exp_name").addEventListener("input", enableBts);
+    document
+        .getElementById("exp_name")
+        .addEventListener("input", _.debounce(findSimilarExploracaos, 500));
     document.getElementById("sexo_gerente").addEventListener("change", enableBts);
     document.getElementById("d_soli").addEventListener("input", enableBts);
 
@@ -26,18 +38,21 @@ function init() {
         fillExploracao(e);
     });
 
-    var wf_tmp = Object.create(MyWorkflow);
-    var NOT_EXISTS = SIRHA.ESTADO.NOT_EXISTS;
-    var nextStateOk = wf_tmp.whichNextState(NOT_EXISTS, {target: {id: "bt-ok"}});
-    var nextStateNo = wf_tmp.whichNextState(NOT_EXISTS, {target: {id: "bt-no"}});
-    document.getElementById("bt-ok").title = nextStateOk;
-    document.getElementById("bt-no").title = nextStateNo;
-
     enableBts();
 
     $('[data-toggle="tooltip"]').tooltip();
 }
 
+function findSimilarExploracaos() {
+    var exp_name = $("#exp_name").val();
+
+    var data = {};
+    if (exp_name) {
+        data["exp_name"] = exp_name;
+    }
+
+    if (similarExploracaosFoundView && Object.keys(data).length) {
+        similarExploracaosFoundView.search(data);
     }
 }
 
@@ -59,14 +74,42 @@ function enableBts() {
         );
     }
 
-    var enableBtNo =
-        exp_name.value && exp_name.value.length > 3 && sexo_gerente.value && validDate;
+    var hasExactSuggestion =
+        similarExploracaosFoundView && similarExploracaosFoundView.hasExactSuggestion();
+    var hasSuggestions =
+        similarExploracaosFoundView.hasSuggestions() &&
+        similarExploracaosFoundView.isShown();
+    if (hasExactSuggestion) {
+        var tooltipText =
+            "Não pode continuar porque na base de dados já há uma exploração com os mesmos dados.";
+        document.getElementById("bt-ok").setAttribute("title", tooltipText);
+        document.getElementById("bt-no").setAttribute("title", tooltipText);
+    } else if (hasSuggestions) {
+        var tooltipText =
+            "Não pode continuar porque na base de dados existem explorações com dados semelhantes.\nFeche a janela de sugestões para poder continuar, somente se tiver certeza de que a exploração não existe.";
+        document.getElementById("bt-ok").setAttribute("title", tooltipText);
+        document.getElementById("bt-no").setAttribute("title", tooltipText);
+    } else {
+        var NOT_EXISTS = SIRHA.ESTADO.NOT_EXISTS;
+        var nextStateOk = wf_tmp.whichNextState(NOT_EXISTS, {target: {id: "bt-ok"}});
+        var nextStateNo = wf_tmp.whichNextState(NOT_EXISTS, {target: {id: "bt-no"}});
+        document.getElementById("bt-ok").title = nextStateOk;
+        document.getElementById("bt-no").title = nextStateNo;
+    }
 
-    document.getElementById("bt-no").disabled = !enableBtNo;
+    var btNoDisabled =
+        !exp_name.value ||
+        exp_name.value.length <= 3 ||
+        !sexo_gerente.value ||
+        !validDate ||
+        hasExactSuggestion ||
+        hasSuggestions;
 
-    var enable =
-        enableBtNo &&
-        Array.from(document.querySelectorAll('form input[type="checkbox"]')).every(
+    document.getElementById("bt-no").disabled = btNoDisabled;
+
+    var btOkDisabled =
+        btNoDisabled ||
+        !Array.from(document.querySelectorAll('form input[type="checkbox"]')).every(
             input => {
                 if (input.required) {
                     return input.checked;
@@ -75,8 +118,7 @@ function enableBts() {
             }
         );
 
-    document.getElementById("bt-ok").disabled = !enable;
-
+    document.getElementById("bt-ok").disabled = btOkDisabled;
 }
 
 function fillExploracao(e, autosave) {

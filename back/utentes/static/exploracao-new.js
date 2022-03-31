@@ -9,6 +9,7 @@ var exploracao = new Backbone.SIXHIARA.Exploracao();
 var domains = new Backbone.UILib.DomainCollection();
 var utentes = new Backbone.SIXHIARA.UtenteCollection();
 var newExpId;
+var utenteView, buttonSaveView, similarUtentesFoundView, similarExploracaosFoundView;
 
 var fetchPromises = function fetchPromises(id) {
     var jqxhr = _.invoke([domains, utentes], "fetch", {parse: true});
@@ -83,7 +84,7 @@ Promise.all(fetchPromises(id))
     });
 
 function doIt() {
-    new Backbone.SIXHIARA.UtenteView({
+    utenteView = new Backbone.SIXHIARA.UtenteView({
         el: document.getElementById("utente"),
         collection: utentes,
         model: exploracao,
@@ -91,11 +92,10 @@ function doIt() {
 
     new Backbone.SIXHIARA.InfoView({
         el: document.getElementById("info"),
-        expedientes: expedientes,
     });
 
     // save action
-    new Backbone.SIXHIARA.ButtonSaveView({
+    buttonSaveView = new Backbone.SIXHIARA.ButtonSaveView({
         el: $("#save-button"),
         model: exploracao,
     }).render();
@@ -134,13 +134,121 @@ function doIt() {
         rowViewModel: Backbone.SIXHIARA.RowFonteView,
         noDataText: "NON HAI FONTES",
     }).render();
-    tableFontesView.listenTo(exploracao.get("fontes"), "update", function(
-        model,
-        collection,
-        options
-    ) {
-        this.update(exploracao.get("fontes"));
+    tableFontesView.listenTo(
+        exploracao.get("fontes"),
+        "update",
+        function (model, collection, options) {
+            this.update(exploracao.get("fontes"));
+        }
+    );
+
+    similarUtentesFoundView = new Backbone.SIXHIARA.UtenteSimilarList({
+        el: "#similar-utentes-found",
+        collection: new Backbone.SIXHIARA.UtenteSimilarCollection(),
+        onLoad: reviewSimilarity.bind(this),
+        onSelect: selectUtente.bind(this),
+        onClose: reviewSimilarity.bind(this),
     });
+
+    similarExploracaosFoundView = new Backbone.SIXHIARA.ExploracaoSimilarList({
+        el: "#similar-exploracaos-found",
+        collection: new Backbone.SIXHIARA.ExploracaoSimilarCollection(),
+        onLoad: reviewSimilarity.bind(this),
+        onClose: reviewSimilarity.bind(this),
+    });
+
+    $("#nome").on("keyup", _.debounce(findSimilarUtentes.bind(this), 500));
+    $("#nuit").on("keyup", _.debounce(findSimilarUtentes.bind(this), 500));
+    $("#telefone").on("keyup", _.debounce(findSimilarUtentes.bind(this), 500));
+    $("#email").on("keyup", _.debounce(findSimilarUtentes.bind(this), 500));
+    $("#exp_name").on("keyup", _.debounce(findSimilarExploracaos.bind(this), 500));
+    $("#exp_id").on("keyup", _.debounce(findSimilarExploracaos.bind(this), 500));
+}
+
+function findSimilarUtentes() {
+    var nome = $("#nome").val();
+    var nuit = $("#nuit").val();
+    var telefone = $("#telefone").val();
+    var email = $("#email").val();
+
+    var data = {};
+    if (nome) {
+        data["nome"] = nome;
+    }
+    if (nuit) {
+        data["nuit"] = nuit;
+    }
+    if (telefone) {
+        data["telefone"] = telefone;
+    }
+    if (email) {
+        data["email"] = email;
+    }
+
+    if (similarUtentesFoundView && Object.keys(data).length) {
+        similarUtentesFoundView.search(data);
+    }
+}
+
+function selectUtente(utente) {
+    if (utenteView) {
+        utenteView.selectUtente(utente);
+    }
+}
+
+function reviewSimilarity() {
+    var hasExactUtenteSuggestion =
+        similarUtentesFoundView && similarUtentesFoundView.hasExactSuggestion();
+    var hasUtenteSuggestions =
+        similarUtentesFoundView.hasSuggestions() && similarUtentesFoundView.isShown();
+    var hasExactExploracaoSuggestion =
+        similarExploracaosFoundView && similarExploracaosFoundView.hasExactSuggestion();
+    var hasExploracaoSuggestions =
+        similarExploracaosFoundView.hasSuggestions() &&
+        similarExploracaosFoundView.isShown();
+    if (hasExactUtenteSuggestion) {
+        buttonSaveView.disable(
+            "Não pode continuar porque na base de dados já há um utente com os mesmos dados."
+        );
+    } else if (hasUtenteSuggestions) {
+        buttonSaveView.disable(
+            "Não pode continuar porque na base de dados existem utentes com dados semelhantes.\nFeche a janela de sugestões para poder continuar, somente se tiver certeza de que o utente não existe."
+        );
+    }
+    if (hasExactExploracaoSuggestion) {
+        buttonSaveView.disable(
+            "Não pode continuar porque na base de dados já há uma exploração com os mesmos dados."
+        );
+    } else if (hasExploracaoSuggestions) {
+        buttonSaveView.disable(
+            "Não pode continuar porque na base de dados existem explorações com dados semelhantes.\nFeche a janela de sugestões para poder continuar, somente se tiver certeza de que a exploração não existe."
+        );
+    }
+    if (
+        !hasExactUtenteSuggestion &&
+        !hasUtenteSuggestions &&
+        !hasExactExploracaoSuggestion &&
+        !hasExploracaoSuggestions
+    ) {
+        buttonSaveView.enable();
+    }
+}
+
+function findSimilarExploracaos() {
+    var exp_name = $("#exp_name").val();
+    var exp_id = $("#exp_id").val();
+
+    var data = {};
+    if (exp_name) {
+        data["exp_name"] = exp_name;
+    }
+    if (exp_id) {
+        data["exp_id"] = exp_id;
+    }
+
+    if (similarExploracaosFoundView && Object.keys(data).length) {
+        similarExploracaosFoundView.search(data);
+    }
 }
 
 function fillComponentsWithDomains() {

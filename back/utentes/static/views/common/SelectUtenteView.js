@@ -1,7 +1,7 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
     events: {
-        "change #select-utente": "fillInputsEvent",
+        "change #select-utente": "onChangeSelectedUtente",
     },
 
     initialize: function (options) {
@@ -10,6 +10,9 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
 
     render: function () {
         this.collection.models.forEach(this.appendOption, this);
+        if (this.model && this.model.get("utente")) {
+            this.selectUtente(this.model.get("utente"));
+        }
         return this;
     },
 
@@ -19,24 +22,24 @@ Backbone.SIXHIARA.SelectUtenteView = Backbone.View.extend({
             text: "nome",
             attributes: {value: utente.get("nome")},
         });
-        if (this.model && this.model.get("utente").get("nome") === utente.get("nome")) {
-            option.$el.attr("selected", "selected");
-            if (!this.options.avoidFillInputs) {
-                this.fillInputs(option.model.get("nome"));
-            }
-        }
         this.$("#select-utente").append(option.render().$el);
     },
 
-    fillInputsEvent: function(e) {
-        // update widgets
+    onChangeSelectedUtente: function (e) {
         var selectedOption = e.target.selectedOptions[0].value;
-        this.fillInputs(selectedOption);
-        this.checkGenderField(true);
+        var utente = this.collection.findWhere({nome: selectedOption});
+        this.selectUtente(utente, false);
     },
 
-    fillInputs: function(selectedOption) {
-        var utente = this.collection.findWhere({nome: selectedOption});
+    selectUtente: function (utente, updateSelect = true) {
+        this.fillInputs(utente);
+        this.checkGenderField(true);
+        if (updateSelect) {
+            this.$("#select-utente").val(utente.get("nome"));
+        }
+    },
+
+    fillInputs: function (utente) {
         if (utente === undefined) {
             this.$(".widget-utente").each(function (index, widget) {
                 // enable widgets and clear values

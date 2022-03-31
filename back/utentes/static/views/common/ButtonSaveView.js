@@ -16,7 +16,17 @@ Backbone.SIXHIARA.ButtonSaveView = Backbone.View.extend({
         );
     },
 
-    save: function() {
+    disable: function (message) {
+        this.$el.prop("disabled", true);
+        this.$el.prop("title", message);
+    },
+
+    enable: function () {
+        this.$el.prop("title", "");
+        this.$el.prop("disabled", false);
+    },
+
+    save: function () {
         var self = this;
         if (this.model.isValid()) {
             this.model.save(null, {
