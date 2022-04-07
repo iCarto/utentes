@@ -155,6 +155,7 @@ function doIt() {
         collection: new Backbone.SIXHIARA.ExploracaoSimilarCollection(),
         onLoad: reviewSimilarity.bind(this),
         onClose: reviewSimilarity.bind(this),
+        exclusionIds: [id],
     });
 
     $("#nome").on("keyup", _.debounce(findSimilarUtentes.bind(this), 500));
@@ -163,6 +164,10 @@ function doIt() {
     $("#email").on("keyup", _.debounce(findSimilarUtentes.bind(this), 500));
     $("#exp_name").on("keyup", _.debounce(findSimilarExploracaos.bind(this), 500));
     $("#exp_id").on("keyup", _.debounce(findSimilarExploracaos.bind(this), 500));
+
+    if (id) {
+        findSimilarExploracaos();
+    }
 }
 
 function findSimilarUtentes() {

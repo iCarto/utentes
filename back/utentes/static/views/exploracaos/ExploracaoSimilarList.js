@@ -19,6 +19,7 @@ Backbone.SIXHIARA.ExploracaoSimilarList = Backbone.View.extend({
     createListeners: function () {
         var self = this;
         this.listenTo(this.collection, "sync", () => {
+            self.removeExclusions(self.options.exclusionIds);
             self.render();
             self.onLoad();
         });
@@ -92,5 +93,13 @@ Backbone.SIXHIARA.ExploracaoSimilarList = Backbone.View.extend({
 
     isShown: function () {
         return this.$el.children().length;
+    },
+
+    removeExclusions: function (exclusionIds) {
+        if (exclusionIds) {
+            exclusionIds.forEach(id => {
+                this.collection.remove(id, {silent: true});
+            });
+        }
     },
 });
