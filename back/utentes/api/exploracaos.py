@@ -260,7 +260,7 @@ def exploracaos_find(request):
             e.c_real,
             case
                 when e.exp_id = :exp_id THEN 1
-                else similarity(:exp_name, e.exp_name)
+                else similarity(unaccent(:exp_name), unaccent(e.exp_name))
             end as similarity,
             case
                 when e.exp_id = :exp_id THEN 'Número de exploração'
@@ -271,7 +271,7 @@ def exploracaos_find(request):
             LEFT JOIN lics ON e.gid = lics.exploracao
 	        LEFT JOIN renovacaos ON e.gid = renovacaos.exploracao
         WHERE
-            similarity(:exp_name, e.exp_name)  >= :similarity_grade
+            similarity(unaccent(:exp_name), unaccent(e.exp_name))  >= :similarity_grade
             or e.exp_id = :exp_id
         ORDER BY similarity DESC
     """

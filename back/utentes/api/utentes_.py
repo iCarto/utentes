@@ -146,7 +146,7 @@ def utentes_find(request):
                 when nuit = :nuit  THEN 1
                 when telefone = :telefone  THEN 1
                 when email = :email  THEN 1
-                else similarity(:nome, nome)
+                else similarity(unaccent(:nome), unaccent(nome))
             end as similarity,
             case
                 when nuit = :nuit  THEN 'NUIT'
@@ -156,7 +156,7 @@ def utentes_find(request):
             end as similarity_field
         from utentes.utentes
             where
-                similarity(:nome, nome)  >= :similarity_grade
+                similarity(unaccent(:nome), unaccent(nome))  >= :similarity_grade
                 or nuit = :nuit
                 or telefone = :telefone
                 or email = :email
