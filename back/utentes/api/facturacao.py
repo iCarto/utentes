@@ -1,14 +1,14 @@
 import logging
 
 from pyramid.view import view_config
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
-from utentes.api.error_msgs import error_msgs
 from utentes.constants import perms as perm
-from utentes.models.base import badrequest_exception
 from utentes.models.constants import INVOIZABLE_STATES
-from utentes.models.exploracao import ExploracaoConFacturacao
-from utentes.models.facturacao import Facturacao
+from utentes.repos.exploracao_repo import (
+    get_exploracao_list,
+    get_exploracao_with_invoices_by_pk,
+)
+from utentes.repos.invoice_repo import get_invoice_by_pk
 
 
 log = logging.getLogger(__name__)
@@ -22,11 +22,8 @@ log = logging.getLogger(__name__)
 )
 def facturacao_get(request):
     states = request.GET.getall("states[]") or INVOIZABLE_STATES
-    query = request.db.query(ExploracaoConFacturacao).filter(
-        ExploracaoConFacturacao.estado_lic.in_(states)
-    )
-    features = query.order_by(ExploracaoConFacturacao.exp_id).all()
-    return {"type": "FeatureCollection", "features": features}
+    exploracaos = get_exploracao_list(request.db, states)
+    return {"type": "FeatureCollection", "features": exploracaos}
 
 
 @view_config(
@@ -36,34 +33,21 @@ def facturacao_get(request):
     renderer="json",
 )
 def new_fact_id(request):
+    invoice_pk = request.matchdict["id"]
+    invoice = get_invoice_by_pk(request.db, invoice_pk)
 
-    gid = request.matchdict["id"]
+    if invoice.fact_id:
+        return invoice.fact_id
 
-    try:
-        facturacao = request.db.query(Facturacao).filter(Facturacao.gid == gid).one()
-    except (MultipleResultsFound, NoResultFound):
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+    exploracao = get_exploracao_with_invoices_by_pk(request.db, invoice.exploracao)
 
-    exp_id = facturacao.exploracao
-    if facturacao.fact_id is not None:
-        return facturacao.fact_id
-
-    try:
-        exploracao = (
-            request.db.query(ExploracaoConFacturacao)
-            .filter(ExploracaoConFacturacao.gid == exp_id)
-            .one()
-        )
-    except (MultipleResultsFound, NoResultFound):
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
-
-    facturacao.fact_id = num_factura_get_id_formatted(
-        request.db, exploracao.loc_divisao, facturacao.ano
+    invoice.fact_id = num_factura_get_id_formatted(
+        request.db, exploracao.loc_divisao, invoice.ano
     )
-    request.db.add(facturacao)
+    request.db.add(invoice)
     request.db.commit()
 
-    return facturacao.fact_id
+    return invoice.fact_id
 
 
 @view_config(
@@ -73,34 +57,21 @@ def new_fact_id(request):
     renderer="json",
 )
 def new_recibo_id(request):
+    invoice_pk = request.matchdict["id"]
+    invoice = get_invoice_by_pk(request.db, invoice_pk)
 
-    gid = request.matchdict["id"]
+    if invoice.recibo_id:
+        return invoice.recibo_id
 
-    try:
-        facturacao = request.db.query(Facturacao).filter(Facturacao.gid == gid).one()
-    except (MultipleResultsFound, NoResultFound):
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
+    exploracao = get_exploracao_with_invoices_by_pk(request.db, invoice.exploracao)
 
-    exp_id = facturacao.exploracao
-    if facturacao.recibo_id is not None:
-        return facturacao.recibo_id
-
-    try:
-        exploracao = (
-            request.db.query(ExploracaoConFacturacao)
-            .filter(ExploracaoConFacturacao.gid == exp_id)
-            .one()
-        )
-    except (MultipleResultsFound, NoResultFound):
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
-
-    facturacao.recibo_id = num_recibo_get_id_formatted(
-        request.db, exploracao.loc_divisao, facturacao.ano
+    invoice.recibo_id = num_recibo_get_id_formatted(
+        request.db, exploracao.loc_divisao, invoice.ano
     )
-    request.db.add(facturacao)
+    request.db.add(invoice)
     request.db.commit()
 
-    return facturacao.recibo_id
+    return invoice.recibo_id
 
 
 @view_config(
@@ -110,17 +81,13 @@ def new_recibo_id(request):
     renderer="json",
 )
 def facturacao_exploracao_update(request):
-    gid = request.matchdict["id"]
+    exp_pk = request.matchdict["id"]
     body = request.json_body
-    e = (
-        request.db.query(ExploracaoConFacturacao)
-        .filter(ExploracaoConFacturacao.gid == gid)
-        .one()
-    )
-    e.update_from_json_facturacao(body)
-    request.db.add(e)
+    exploracao = get_exploracao_with_invoices_by_pk(request.db, exp_pk)
+    exploracao.update_from_json_facturacao(body)
+    request.db.add(exploracao)
     request.db.commit()
-    return e
+    return exploracao
 
 
 def num_factura_get_id_formatted(db, divisao, ano):
