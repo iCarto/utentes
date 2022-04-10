@@ -57,11 +57,6 @@ def new_fact_id(request):
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
 
-    if not exploracao.loc_divisao:
-        raise badrequest_exception(
-            {"error": "A divisão é un campo obligatorio", "exp_id": exp_id}
-        )
-
     facturacao.fact_id = num_factura_get_id_formatted(
         request.db, exploracao.loc_divisao, facturacao.ano
     )
@@ -98,11 +93,6 @@ def new_recibo_id(request):
         )
     except (MultipleResultsFound, NoResultFound):
         raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
-
-    if not exploracao.loc_divisao:
-        raise badrequest_exception(
-            {"error": "A divisão é un campo obligatorio", "exp_id": exp_id}
-        )
 
     facturacao.recibo_id = num_recibo_get_id_formatted(
         request.db, exploracao.loc_divisao, facturacao.ano
