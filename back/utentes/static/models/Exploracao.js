@@ -619,26 +619,6 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
                 this.getUtenteOrExploracaoName() === where.attributes.utente;
         }
 
-        var containsEstado = true;
-        if (where.attributes.estado) {
-            containsEstado = false;
-            if (this.get("renovacao")) {
-                // Workaround. refs 1507#change-10870
-                var renovacaoState = this.get("renovacao").get("estado");
-                containsEstado =
-                    containsEstado || where.attributes.estado === renovacaoState;
-            } else {
-                var whereEstado = _.pick(where.values(), "estado");
-                var lics = this.get("licencias").where(whereEstado);
-                if (lics.length > 0) {
-                    containsEstado = true;
-                }
-                containsEstado =
-                    containsEstado ||
-                    where.attributes.estado === this.get("estado_lic");
-            }
-        }
-
         var containsLic = true;
         if (where.attributes.tipo_lic || where.attributes.tipo_agua) {
             containsLic = false;
@@ -691,13 +671,21 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
         return (
             containsAttrs &&
             containsUtente &&
-            containsEstado &&
+            this.containsEstado(where) &&
             containsLic &&
             containsActividade &&
             containsAno &&
             containsGeometria &&
             containsBounds
         );
+    },
+
+    containsEstado: function(where) {
+        if (!where.attributes.estado) {
+            return true;
+        }
+        var lics = this.get("licencias").where({estado: where.attributes.estado});
+        return lics.length > 0 || where.attributes.estado === this.get("estado_lic");
     },
 
     getUtenteOrExploracaoName: function() {
@@ -785,15 +773,6 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
         this.set("lic_time_over", false, {silent: true});
     },
 
-    setDocPendenteUtenteRenovacao: function() {
-        this.get("renovacao").set("lic_time_info", "Pendente do utente", {
-            silent: true,
-        });
-        this.get("renovacao").set("lic_time_enough", false, {silent: true});
-        this.get("renovacao").set("lic_time_warning", false, {silent: true});
-        this.get("renovacao").set("lic_time_over", false, {silent: true});
-    },
-
     cloneExploracao: function() {
         // Merge with toJSON and parse
         var exp = new Backbone.SIXHIARA.Exploracao(this.attributes);
@@ -855,52 +834,6 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
         }
     },
 
-    setLicenseTimeInfoRenovacoes: function() {
-        var renovacao = this.get("renovacao");
-        if (
-            renovacao.get("estado") == SIRHA.ESTADO_RENOVACAO.INCOMPLETE_DA ||
-            renovacao.get("estado") == SIRHA.ESTADO_RENOVACAO.INCOMPLETE_DJ
-        ) {
-            this.setDocPendenteUtenteRenovacao();
-            return;
-        }
-        if (renovacao.get("d_ultima_entrega_doc")) {
-            var licenseDate = renovacao.get("d_ultima_entrega_doc");
-            var now = moment();
-            licenseDate = moment(licenseDate);
-            var times = Backbone.SIXHIARA.tiemposRenovacion;
-            var remainDays = times.limit - now.diff(licenseDate, "days");
-            var remainDaysStr =
-                remainDays == 1 ? remainDays + " dia" : remainDays + " dias";
-
-            if (remainDays > 0 && remainDays < times.warning) {
-                renovacao.set("lic_time_warning", true);
-            } else if (remainDays <= 0) {
-                remainDaysStr = "Prazo esgotado";
-                renovacao.set("lic_time_over", true);
-            } else if (remainDays >= times.warning) {
-                renovacao.set("lic_time_enough", true);
-            }
-
-            var message;
-            if (remainDaysStr) {
-                if (
-                    remainDaysStr == "Prazo esgotado" ||
-                    remainDaysStr == "Licença caducada"
-                ) {
-                    message = remainDaysStr;
-                } else {
-                    message =
-                        "Ficam " +
-                        remainDaysStr +
-                        " para o fim do prazo de renovação da licença";
-                }
-            } else {
-                message = "Sem informação";
-            }
-            renovacao.set("lic_time_info", message);
-        }
-    },
     setLicenseTimeInfoPendentes: function() {
         // Pendentes
         if (
