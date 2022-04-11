@@ -32,7 +32,7 @@ var MyWorkflow = {
 
     whichView: function(exp, next) {
         if (!exp) {
-            return Backbone.SIXHIARA.ViewNoData;
+            return Backbone.SIXHIARA.ViewProcesoNoData;
         }
 
         let state = this.getCurrentState(exp);

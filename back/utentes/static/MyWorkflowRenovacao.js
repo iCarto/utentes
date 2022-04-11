@@ -40,7 +40,7 @@ var MyWorkflowRenovacao = {
 
     whichView: function(exp, next) {
         if (!exp) {
-            return Backbone.SIXHIARA.ViewNoData;
+            return Backbone.SIXHIARA.ViewProcesoNoData;
         }
 
         var state = this.getCurrentState(exp);

@@ -1,5 +1,5 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.ViewNoData = Backbone.SIXHIARA.BaseProcesoView.extend({
+Backbone.SIXHIARA.ViewProcesoNoData = Backbone.SIXHIARA.BaseProcesoView.extend({
     className: "myclass",
 
     template: _.template(`
