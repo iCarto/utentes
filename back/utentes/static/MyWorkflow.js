@@ -44,7 +44,7 @@ var MyWorkflow = {
             view = this.whichLicensingView(state, exp);
         }
 
-        return view || Backbone.SIXHIARA.UpsView;
+        return view || Backbone.SIXHIARA.ViewProcesoError;
     },
 
     whichLicensingView: function(state, exp) {
@@ -59,7 +59,7 @@ var MyWorkflow = {
                 }
                 return Backbone.SIXHIARA.ViewJuridico1;
             case SIRHA.ESTADO.INCOMPLETE_DF:
-                return Backbone.SIXHIARA.UpsView;
+                return Backbone.SIXHIARA.ViewProcesoError;
             case SIRHA.ESTADO.PENDING_REVIEW_DIR:
                 return Backbone.SIXHIARA.ViewSecretaria1;
             case SIRHA.ESTADO.PENDING_REVIEW_DJ:

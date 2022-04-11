@@ -72,9 +72,8 @@ var MyWorkflowRenovacao = {
             case SIRHA.ESTADO_RENOVACAO.PENDING_DIR_SIGN:
                 return Backbone.SIXHIARA.ViewSecretaria2;
             default:
-                return Backbone.SIXHIARA.UpsView;
+                return Backbone.SIXHIARA.ViewProcesoError;
         }
-        return Backbone.SIXHIARA.UpsView;
     },
 
     isNotCompleteForFirstDJState: function(exp) {

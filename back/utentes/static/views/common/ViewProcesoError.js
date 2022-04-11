@@ -1,5 +1,5 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.UpsView = Backbone.SIXHIARA.BaseProcesoView.extend({
+Backbone.SIXHIARA.ViewProcesoError = Backbone.SIXHIARA.BaseProcesoView.extend({
     // optional, you can assign multiple classes to
     // this property like so: 'container homepage'
     className: "myclass",
