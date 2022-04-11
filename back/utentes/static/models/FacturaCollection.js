@@ -1,6 +1,7 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.FacturaCollection = Backbone.Collection.extend({
     model: Backbone.SIXHIARA.Factura,
+    url: Backbone.SIXHIARA.Config.apiInvoices,
 
     initialize: function(models, options) {
         options || (options = {});

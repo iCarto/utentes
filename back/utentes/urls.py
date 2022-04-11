@@ -79,6 +79,7 @@ def add_routes_api(config: Configurator):  # noqa: WPS213
 
     # api_facturacao_stats debe estar sobre otras rutas para que funcione correctamente
     config.add_route("api_facturacao_stats", "/api/facturacao/stats")
+    config.add_route("api_invoices_by_exploracao", "/api/invoices")
     config.add_route("api_facturacao", "/api/facturacao")
     config.add_route("api_facturacao_id", "/api/facturacao/{id}")
     config.add_route("api_facturacao_exploracao_id", "/api/facturacao_exploracao/{id}")

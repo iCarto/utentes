@@ -72,8 +72,29 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     </div>
     `),
 
-    initialize: function(options) {
-        Backbone.SIXHIARA.BaseProcesoView.prototype.initialize.call(this);
+    fetchIfNeeded: function() {
+        if (this.model.fullLoaded) {
+            return Promise.resolve();
+        }
+
+        document.body.classList.add("wait");
+
+        let invoices = this.model.get("facturacao");
+        let expPromise = invoices.fetch({
+            parse: true,
+            data: $.param({
+                exploracao: this.model.id,
+            }),
+        });
+
+        return expPromise.then(() => {
+            this.model.fullLoaded = true;
+            document.body.classList.remove("wait");
+        });
+    },
+
+    render: function() {
+        Backbone.SIXHIARA.BaseProcesoView.prototype.render.call(this);
 
         this.facturacaoHistoricoView = new Backbone.SIXHIARA.ViewFacturacaoHistorico({
             model: this.model.get("facturacao"),
@@ -89,10 +110,6 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
         });
 
         this.listenTo(this.model.get("facturacao"), "change", this.facturacaoUpdated);
-    },
-
-    render: function() {
-        Backbone.SIXHIARA.BaseProcesoView.prototype.render.call(this);
 
         this.renderFacturacaoHistorico();
         this.renderFactura();

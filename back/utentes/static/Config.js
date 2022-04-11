@@ -12,6 +12,7 @@ Backbone.SIXHIARA.Config = {
     apiRequerimentos: "/api/requerimento",
     apiFacturacaoExploracao: "/api/facturacao_exploracao",
     apiFacturacao: "/api/facturacao",
+    apiInvoices: "/api/invoices",
     apiRenovacoes: "/api/renovacao",
     apiHistoricoRenovacoes: "/api/renovacao_historico",
     apiUtentes: "/api/utentes",
@@ -24,9 +25,9 @@ Backbone.SIXHIARA.Config = {
 };
 
 Backbone.SIXHIARA.formatter = formatter();
-Backbone.SIXHIARA.formatter.formatTipoLicencias = function (licencias) {
+Backbone.SIXHIARA.formatter.formatTipoLicencias = function(licencias) {
     var licenciasStr = ["-", "-"];
-    licencias.forEach(function (lic) {
+    licencias.forEach(function(lic) {
         var tipo = lic["tipo_agua"];
         if (tipo === "Subterrânea") {
             licenciasStr[0] = tipo;

@@ -1,7 +1,5 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.UpsView = Backbone.View.extend({
-    tagName: "div",
-
+Backbone.SIXHIARA.UpsView = Backbone.SIXHIARA.BaseProcesoView.extend({
     // optional, you can assign multiple classes to
     // this property like so: 'container homepage'
     className: "myclass",
@@ -14,12 +12,5 @@ Backbone.SIXHIARA.UpsView = Backbone.View.extend({
         Ocorreu un erro. Informe ao administrador
     `),
 
-    initialize: function(options) {
-        this.options = options || {};
-    },
-
-    render: function() {
-        this.$el.html(this.template(this.model.attributes));
-        return this;
-    },
+    init: function() {},
 });

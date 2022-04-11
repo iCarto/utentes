@@ -15,15 +15,19 @@ var MyWorkflow = {
         this.activeView = new viewClass({
             model: exp,
         });
-        document.getElementById("insert-data").appendChild(this.activeView.render().el);
-        this.activeView.init && this.activeView.init();
-        exp &&
-            exp.trigger("leaflet", {
-                type: "mouseover",
-                exp_id: exp.get("exp_id"),
-                notscroll: true,
-            });
-        iAuth.disabledWidgets("#insert-data");
+        this.activeView.fetchIfNeeded().then(() => {
+            document
+                .getElementById("insert-data")
+                .appendChild(this.activeView.render().el);
+            this.activeView.init && this.activeView.init();
+            exp &&
+                exp.trigger("leaflet", {
+                    type: "mouseover",
+                    exp_id: exp.get("exp_id"),
+                    notscroll: true,
+                });
+            iAuth.disabledWidgets("#insert-data");
+        });
     },
 
     whichView: function(exp, next) {

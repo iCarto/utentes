@@ -15,22 +15,27 @@ var MyWorkflowRenovacao = {
         this.activeView = new viewClass({
             model: exp,
         });
-        document.getElementById("insert-data").appendChild(this.activeView.render().el);
-        this.activeView.init && this.activeView.init();
-        exp &&
-            exp.trigger("leaflet", {
-                type: "mouseover",
-                exp_id: exp.get("exp_id"),
-                notscroll: true,
-            });
 
-        var expState = this.getCurrentState(exp);
-        var roles_only_read = window.SIXHIARA.ESTADOS_RENOVACAO.filter(function(s) {
-            return s.key === expState;
-        })[0];
-        roles_only_read = roles_only_read && roles_only_read.roles_only_read;
-        roles_only_read = iAuth.asSafeRoles(roles_only_read);
-        iAuth.disabledWidgets("#insert-data", roles_only_read);
+        this.activeView.fetchIfNeeded().then(() => {
+            document
+                .getElementById("insert-data")
+                .appendChild(this.activeView.render().el);
+            this.activeView.init && this.activeView.init();
+            exp &&
+                exp.trigger("leaflet", {
+                    type: "mouseover",
+                    exp_id: exp.get("exp_id"),
+                    notscroll: true,
+                });
+
+            var expState = this.getCurrentState(exp);
+            var roles_only_read = window.SIXHIARA.ESTADOS_RENOVACAO.filter(function(s) {
+                return s.key === expState;
+            })[0];
+            roles_only_read = roles_only_read && roles_only_read.roles_only_read;
+            roles_only_read = iAuth.asSafeRoles(roles_only_read);
+            iAuth.disabledWidgets("#insert-data", roles_only_read);
+        });
     },
 
     whichView: function(exp, next) {
