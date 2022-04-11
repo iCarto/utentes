@@ -1,7 +1,7 @@
-from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, Numeric, Text, text
+from sqlalchemy import Column, Date, ForeignKey, Integer, Numeric, Text, text
 from sqlalchemy.dialects.postgresql.json import JSONB
 
-from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base
+from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base, ColumnBooleanNotNull
 
 
 class Renovacao(Base):
@@ -26,91 +26,35 @@ class Renovacao(Base):
 
     estado = Column(Text, doc="Estado renovação")
 
-    carta_ren = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Carta de requerimento de renovação",
-    )
-    carta_ren_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Carta de requerimento de renovação (validada)",
+    carta_ren = ColumnBooleanNotNull(doc="Carta de requerimento de renovação")
+    carta_ren_v = ColumnBooleanNotNull(
+        doc="Carta de requerimento de renovação (validada)"
     )
 
-    ident_pro = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Identificação do propietário",
-    )
-    ident_pro_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Identificação do propietário (validada)",
+    ident_pro = ColumnBooleanNotNull(doc="Identificação do propietário")
+    ident_pro_v = ColumnBooleanNotNull(doc="Identificação do propietário (validada)")
+
+    certi_reg = ColumnBooleanNotNull(doc="Certificado de registo comercial")
+    certi_reg_v = ColumnBooleanNotNull(
+        doc="Certificado de registo comercial (validada)"
     )
 
-    certi_reg = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Certificado de registo comercial",
+    duat = ColumnBooleanNotNull(
+        doc="DUAT ou declaração das estructuras locais (bairro)"
     )
-    certi_reg_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Certificado de registo comercial (validada)",
+    duat_v = ColumnBooleanNotNull(
+        doc="DUAT ou declaração das estructuras locais (bairro) (validada)"
     )
 
-    duat = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="DUAT ou declaração das estructuras locais (bairro)",
-    )
-    duat_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="DUAT ou declaração das estructuras locais (bairro) (validada)",
-    )
+    anali_doc = ColumnBooleanNotNull(doc="Análise da documentação")
+    soli_visit = ColumnBooleanNotNull(doc="Solicitação da visitoria")
+    parecer_divisao = ColumnBooleanNotNull(doc="Parecer da Divisão")
+    p_tec = ColumnBooleanNotNull(doc="Parecer técnico")
+    doc_legal = ColumnBooleanNotNull(doc="Documentação legal")
+    p_juri = ColumnBooleanNotNull(doc="Parecer técnico")
 
-    anali_doc = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Análise da documentação",
-    )
-    soli_visit = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Solicitação da visitoria",
-    )
-    parecer_divisao = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer da Divisão"
-    )
-    p_tec = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer técnico"
-    )
-    doc_legal = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Documentação legal"
-    )
-    p_juri = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer técnico"
-    )
-    p_rel = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Parecer de instituições relevantes",
-    )
-    lic_imp = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Licença impressa"
-    )
+    p_rel = ColumnBooleanNotNull(doc="Parecer de instituições relevantes")
+    lic_imp = ColumnBooleanNotNull(doc="Licença impressa")
 
     obser = Column(JSONB, doc="Observações renovacao")
 

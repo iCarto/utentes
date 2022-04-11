@@ -7,6 +7,7 @@ from pyramid.httpexceptions import (
     HTTPNotFound,
     HTTPUnauthorized,
 )
+from sqlalchemy import Boolean, Column, text
 from sqlalchemy.ext.declarative import declarative_base
 
 from utentes.lib.geomet import wkt
@@ -19,6 +20,14 @@ PGSQL_SCHEMA_USERS = "utentes"
 PGSQL_SCHEMA_CBASE = "cbase"
 PGSQL_SCHEMA_CBASE_ARA = "cbase_ara"
 PGSQL_SCHEMA_INVENTARIO = "inventario"
+
+
+def ColumnBooleanNotNull(*args, **kwargs):  # noqa: N802
+    # https://stackoverflow.com/questions/29522557/
+    kwargs.setdefault("nullable", False)
+    kwargs.setdefault("server_default", text("false"))
+    kwargs.setdefault("default", False)
+    return Column(*args, Boolean, **kwargs)
 
 
 class BaseClass(object):

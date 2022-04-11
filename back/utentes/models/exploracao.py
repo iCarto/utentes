@@ -6,7 +6,7 @@ from sqlalchemy import Column, ForeignKey, func, text
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.dialects.postgresql.json import JSONB
 from sqlalchemy.orm import column_property, relationship
-from sqlalchemy.types import Boolean, Date, DateTime, Integer, Numeric, Text
+from sqlalchemy.types import Date, DateTime, Integer, Numeric, Text
 
 from utentes.lib.formatter.formatter import to_decimal
 from utentes.lib.schema_validator.validation_exception import ValidationException
@@ -15,6 +15,7 @@ from utentes.models.actividade import Actividade
 from utentes.models.base import (
     PGSQL_SCHEMA_UTENTES,
     Base,
+    ColumnBooleanNotNull,
     update_area,
     update_array,
     update_geom,
@@ -196,161 +197,50 @@ class Exploracao(ExploracaoGeom):
     c_estimado = Column(Numeric(10, 2), doc="Consumo mensal estimado ")
     area = Column(Numeric(10, 4), doc="")
 
-    carta_re = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Carta de requerimento",
+    carta_re = ColumnBooleanNotNull(doc="Carta de requerimento")
+    ficha_pe = ColumnBooleanNotNull(doc="Ficha de pedido preenchida")
+    ident_pro = ColumnBooleanNotNull(doc="Identificação do proprietário")
+    certi_reg = ColumnBooleanNotNull(doc="Certificado de registo comercial")
+    duat = ColumnBooleanNotNull(
+        doc="DUAT ou declaração das estructuras locais (bairro)"
     )
-    ficha_pe = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Ficha de pedido preenchida",
+    licen_am = ColumnBooleanNotNull(doc="Licença ambiental (se é preciso)")
+    mapa = ColumnBooleanNotNull(doc="Mapa de localização")
+    licen_fu = ColumnBooleanNotNull(
+        doc="Licença de apertura de poço/furo  (se é preciso)"
     )
-    ident_pro = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Identificação do proprietário",
-    )
-    certi_reg = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Certificado de registo comercial",
-    )
-    duat = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="DUAT ou declaração das estructuras locais (bairro)",
-    )
-    licen_am = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Licença ambiental (se é preciso)",
-    )
-    mapa = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Mapa de localização"
-    )
-    licen_fu = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Licença de apertura de poço/furo  (se é preciso)",
-    )
-    r_perf = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Relatório técnico de perforação (se é preciso)",
-    )
-    b_a_agua = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Boletim de análise de água",
-    )
+    r_perf = ColumnBooleanNotNull(doc="Relatório técnico de perforação (se é preciso)")
+    b_a_agua = ColumnBooleanNotNull(doc="Boletim de análise de água")
 
-    carta_re_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Carta de requerimento (validada)",
+    carta_re_v = ColumnBooleanNotNull(doc="Carta de requerimento (validada)")
+    ficha_pe_v = ColumnBooleanNotNull(doc="Ficha de pedido preenchida (validada)")
+    ident_pro_v = ColumnBooleanNotNull(doc="Identificação do proprietário (validada)")
+    certi_reg_v = ColumnBooleanNotNull(
+        doc="Certificado de registo comercial (validada)"
     )
-    ficha_pe_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Ficha de pedido preenchida (validada)",
+    duat_v = ColumnBooleanNotNull(
+        doc="DUAT ou declaração das estructuras locais (bairro) (validada)"
     )
-    ident_pro_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Identificação do proprietário (validada)",
+    licen_am_v = ColumnBooleanNotNull(
+        doc="Relatório técnico de perforação (se é preciso) (validada)"
     )
-    certi_reg_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Certificado de registo comercial (validada)",
+    mapa_v = ColumnBooleanNotNull(doc="Mapa de localização (validada)")
+    licen_fu_v = ColumnBooleanNotNull(
+        doc="Licença de apertura de poço/furo  (se é preciso) (validada)"
     )
-    duat_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="DUAT ou declaração das estructuras locais (bairro) (validada)",
-    )
-    licen_am_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Relatório técnico de perforação (se é preciso) (validada)",
-    )
-    mapa_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Mapa de localização (validada)",
-    )
-    licen_fu_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Licença de apertura de poço/furo  (se é preciso) (validada)",
-    )
-    r_perf_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Licença ambiental (se é preciso) (validada)",
-    )
-    b_a_agua_v = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Boletim de análise de água (validada)",
-    )
+    r_perf_v = ColumnBooleanNotNull(doc="Licença ambiental (se é preciso) (validada)")
+    b_a_agua_v = ColumnBooleanNotNull(doc="Boletim de análise de água (validada)")
 
-    anali_doc = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Análise da documentação",
+    anali_doc = ColumnBooleanNotNull(doc="Análise da documentação")
+    soli_visit = ColumnBooleanNotNull(doc="Solicitação da vistoria")
+    parecer_divisao = ColumnBooleanNotNull(doc="Parecer da Divisão")
+    p_tec = ColumnBooleanNotNull(doc="Parecer técnico")
+    p_tec_disp_hidrica = ColumnBooleanNotNull(
+        doc="Avaliação disponibilidade hídrica (WEAP WAM-T)"
     )
-    soli_visit = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Solicitação da vistoria",
-    )
-    parecer_divisao = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer da Divisão"
-    )
-    p_tec = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer técnico"
-    )
-    p_tec_disp_hidrica = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Avaliação disponibilidade hídrica (WEAP WAM-T)",
-    )
-    doc_legal = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Documentação legal"
-    )
-    p_juri = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Parecer técnico"
-    )
-    p_rel = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Parecer de instituições relevantes",
-    )
+    doc_legal = ColumnBooleanNotNull(doc="Documentação legal")
+    p_juri = ColumnBooleanNotNull(doc="Parecer técnico")
+    p_rel = ColumnBooleanNotNull(doc="Parecer de instituições relevantes")
 
     sexo_gerente = Column(
         Text, nullable=False, server_default="Outros", doc="Sexo do Gerente/Presidente"
@@ -364,15 +254,8 @@ class Exploracao(ExploracaoGeom):
         server_default=text("'Mensal'::text"),
         doc="Mensal/Trimestral/Anual",
     )
-    pago_lic = Column(
-        Boolean,
-        nullable=False,
-        server_default=text("false"),
-        doc="Factura emisión licencia pagada",
-    )
-    lic_imp = Column(
-        Boolean, nullable=False, server_default=text("false"), doc="Licença impressa"
-    )
+    pago_lic = ColumnBooleanNotNull(doc="Factura emisión licencia pagada")
+    lic_imp = ColumnBooleanNotNull(doc="Licença impressa")
 
     utente_rel = relationship("Utente", lazy="joined")
 
