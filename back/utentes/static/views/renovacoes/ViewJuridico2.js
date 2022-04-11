@@ -109,10 +109,6 @@ Backbone.SIXHIARA.ViewJuridico2 = Backbone.SIXHIARA.View1.extend({
         });
         document.getElementById("bt-ok").title = nextBtState;
 
-        if (self.model.get("renovacao").get("lic_time_info")) {
-            document.getElementById("time-renovacao-info").style.display = "block";
-        }
-
         this.enableBts();
         document
             .querySelectorAll('table input[type="checkbox"]')

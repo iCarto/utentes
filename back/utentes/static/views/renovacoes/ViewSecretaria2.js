@@ -53,10 +53,6 @@ Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
     init: function() {
         Backbone.SIXHIARA.View1.prototype.init.call(this);
         this.enableBts();
-
-        if (this.model.get("renovacao").get("lic_time_info")) {
-            document.getElementById("time-renovacao-info").style.display = "block";
-        }
     },
 
     enableBts: function() {

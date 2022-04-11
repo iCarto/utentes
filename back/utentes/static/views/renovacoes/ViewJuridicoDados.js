@@ -191,10 +191,6 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
         Backbone.SIXHIARA.View1.prototype.init.call(this);
         var self = this;
 
-        if (self.model.get("renovacao").get("lic_time_info")) {
-            document.getElementById("time-renovacao-info").style.display = "block";
-        }
-
         document
             .getElementById("lic_imp")
             .addEventListener("change", self.autosave.bind(self), false);

@@ -109,10 +109,6 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
                 input.addEventListener("change", self.enableBts.bind(self), false);
             });
 
-        if (self.model.get("renovacao").get("lic_time_info")) {
-            document.getElementById("time-renovacao-info").style.display = "block";
-        }
-
         this.enableBts();
 
         document
