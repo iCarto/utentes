@@ -100,11 +100,7 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
     },
 
     doFillRenovacao: function(e, autosave) {
-        var self = this;
         var renovacao = this.model.get("renovacao");
-        var exploracao = this.model;
-
-        var nextState = wfr.whichNextState(renovacao.get("estado"), e);
 
         if (!renovacao.get("d_ultima_entrega_doc")) {
             renovacao.set("d_ultima_entrega_doc", new Date());
@@ -114,6 +110,26 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
         if (renovacao.get("d_soli") && renovacao.get("d_ultima_entrega_doc")) {
             this.updateUltimaEntregaDoc();
         }
+
+        this.updateLastCommentSetNewStateCreateNewComment(e, autosave);
+        this.fillRenovacaoFromForm();
+        this.saveToBackend(autosave);
+    },
+
+    fillRenovacaoFromForm: function() {
+        var renovacao = this.model.get("renovacao");
+        document
+            .querySelectorAll('table input[type="checkbox"]')
+            .forEach(function(input) {
+                renovacao.set(input.id, input.checked);
+            });
+    },
+
+    updateLastCommentSetNewStateCreateNewComment: function(e, autosave) {
+        var renovacao = this.model.get("renovacao");
+
+        // Sanity check. Probably we can ensure before that a first empy comment
+        // always exists
         if (!renovacao.get("obser")) {
             renovacao.set("obser", [
                 {
@@ -126,6 +142,8 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
         }
 
         var currentComment = renovacao.get("obser").slice(-1)[0];
+
+        var nextState = wfr.whichNextState(renovacao.get("estado"), e);
         Object.assign(currentComment, {
             create_at: new Date(),
             author: iAuth.getUser(),
@@ -141,15 +159,12 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
                 state: null,
             });
         }
-
         renovacao.setLicState(nextState);
+    },
 
-        document
-            .querySelectorAll('table input[type="checkbox"]')
-            .forEach(function(input) {
-                renovacao.set(input.id, input.checked);
-            });
-
+    saveToBackend: function(autosave) {
+        var exploracao = this.model;
+        var self = this;
         exploracao.urlRoot = Backbone.SIXHIARA.Config.apiRenovacoes;
         exploracao.save(null, {
             patch: true,

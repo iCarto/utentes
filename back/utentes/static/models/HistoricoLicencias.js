@@ -1,10 +1,6 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.HistoricoLicencias = Backbone.Model.extend({
-    urlRoot: "/api/renovacao_historico/",
-
-    url: function() {
-        return this.urlRoot + this.get("id");
-    },
+    urlRoot: Backbone.SIXHIARA.Config.apiHistoricoRenovacoes,
 
     parse: function(response) {
         response.forEach(function(historic) {

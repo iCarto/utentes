@@ -373,82 +373,14 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
         });
     },
 
-    fillExploracao: function(e, autosave) {
-        var self = this;
-        var exploracao = this.model;
-        var renovacao = this.model.get("renovacao");
-
-        var nextState = wfr.whichNextState(renovacao.get("estado"), e);
-
-        if (autosave) {
-            this.doFillRenovacao(e, autosave);
-        } else {
-            bootbox.confirm(
-                `A exploração vai mudar o seu a: <br> <strong>${nextState}</strong>`,
-                function(result) {
-                    if (result) {
-                        self.doFillRenovacao(e, autosave);
-                    }
-                }
-            );
-        }
-    },
-
     doFillRenovacao: function(e, autosave) {
-        var self = this;
-        var exploracao = this.model;
         var renovacao = this.model.get("renovacao");
 
         renovacao.set("lic_imp", document.getElementById("lic_imp").checked);
 
-        var nextState = wfr.whichNextState(renovacao.get("estado"), e);
-
-        var currentComment = renovacao.get("obser").slice(-1)[0];
-        Object.assign(currentComment, {
-            create_at: new Date(),
-            author: iAuth.getUser(),
-            text: document.getElementById("observacio").value,
-            state: nextState,
-        });
-
-        if (!autosave) {
-            renovacao.get("obser").push({
-                create_at: null,
-                author: null,
-                text: null,
-                state: null,
-            });
-        }
-
-        renovacao.setLicState(nextState);
-
+        this.updateLastCommentSetNewStateCreateNewComment(e, autosave);
         this.fillRenovacaoFromForm();
-
-        exploracao.urlRoot = Backbone.SIXHIARA.Config.apiRenovacoes;
-        exploracao.save(null, {
-            patch: true,
-            validate: false,
-            wait: true,
-            success: function(model) {
-                var exp_id = model.get("exp_id");
-                var exp_name = model.get("exp_name");
-                if (autosave) {
-                    console.log("autosaving");
-                } else {
-                    bootbox.alert(
-                        `A exploração&nbsp;<strong>${exp_id} - ${exp_name}</strong>&nbsp;tem sido gravada correctamente.`,
-                        function() {
-                            exploracao.trigger("show-next-exp", exploracao);
-                        }
-                    );
-                }
-            },
-            error: function() {
-                bootbox.alert(
-                    '<span style="color: red;">Produziu-se um erro. Informe ao administrador.</strong>'
-                );
-            },
-        });
+        this.saveToBackend(autosave);
     },
 
     printLicense: function(e) {

@@ -165,50 +165,8 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
     },
 
     dofillRenovacao: function(e, autosave) {
-        var self = this;
-        var exploracao = this.model;
-        var renovacao = this.model.get("renovacao");
-
-        var nextState = wfr.whichNextState(renovacao.get("estado"), e);
-
-        var currentComment = renovacao.get("obser").slice(-1)[0];
-        Object.assign(currentComment, {
-            create_at: new Date(),
-            author: iAuth.getUser(),
-            text: document.getElementById("observacio").value,
-            state: nextState,
-        });
-
-        if (!autosave) {
-            renovacao.get("obser").push({
-                create_at: null,
-                author: null,
-                text: null,
-                state: null,
-            });
-        }
-
-        renovacao.setLicState(nextState);
-
-        document
-            .querySelectorAll('table input[type="checkbox"]')
-            .forEach(function(input) {
-                renovacao.set(input.id, input.checked);
-            });
-
-        exploracao.urlRoot = Backbone.SIXHIARA.Config.apiRenovacoes;
-        exploracao.save(null, {
-            patch: true,
-            validate: false,
-            wait: true,
-            success: function(model, response, options) {
-                self.onSuccessfulSave(model, response, options, autosave);
-            },
-            error: function() {
-                bootbox.alert(
-                    '<span style="color: red;">Produziu-se um erro. Informe ao administrador.</strong>'
-                );
-            },
-        });
+        this.updateLastCommentSetNewStateCreateNewComment(e, autosave);
+        this.fillRenovacaoFromForm();
+        this.saveToBackend(autosave);
     },
 });
