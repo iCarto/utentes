@@ -9,9 +9,9 @@ from utentes.models.base import badrequest_exception
 from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL, RENEWABLE_STATES
 from utentes.models.estado_renovacao import (
     DE_FACTO,
+    FINISHED_RENOVACAO_STATES,
     LICENSED,
     NOT_APPROVED,
-    NOT_VALID,
     PENDING_RENOV_LICENSE,
 )
 from utentes.models.exploracao import Exploracao
@@ -62,7 +62,7 @@ def renovacao_get(request):
         valid = [
             r
             for r in f.get("properties").get("renovacao")
-            if r.get("estado") not in NOT_VALID
+            if r.get("estado") not in FINISHED_RENOVACAO_STATES
         ]
 
         if not valid:
@@ -137,7 +137,7 @@ def renovacao_update(request):
         .all()
     )
 
-    valid = [r for r in renovacoes if r.estado not in NOT_VALID]
+    valid = [r for r in renovacoes if r.estado not in FINISHED_RENOVACAO_STATES]
 
     if len(valid) > 1:
         raise badrequest_exception(
@@ -182,7 +182,10 @@ def renovacao_get_historical(request):
     try:
         return (
             request.db.query(Renovacao)
-            .filter(Renovacao.exploracao == exp_gid, Renovacao.estado.in_(NOT_VALID))
+            .filter(
+                Renovacao.exploracao == exp_gid,
+                Renovacao.estado.in_(FINISHED_RENOVACAO_STATES),
+            )
             .order_by(
                 Renovacao.d_validade_sub_old.desc(), Renovacao.d_validade_sup_old.desc()
             )

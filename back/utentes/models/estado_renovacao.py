@@ -14,7 +14,7 @@ PENDING_DADOS_LICENSE = "Pendente Dados Renovação Licença (DSU-J)"
 PENDING_DIR_SIGN = "Pendente Firma Renovação Licença (Direcção)"
 NOT_APPROVED = "Não aprovada"
 
-NOT_VALID = (LICENSED, DE_FACTO, NOT_APPROVED)
+FINISHED_RENOVACAO_STATES = (LICENSED, DE_FACTO, NOT_APPROVED)
 
 
 class EstadoRenovacao(DeclarativeBase):

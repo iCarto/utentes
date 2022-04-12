@@ -9,7 +9,7 @@ from utentes.lib.schema_validator.validation_exception import ValidationExceptio
 from utentes.lib.schema_validator.validator import Validator
 from utentes.models.base import badrequest_exception
 from utentes.models.documento import delete_exploracao_documentos
-from utentes.models.estado_renovacao import NOT_VALID
+from utentes.models.estado_renovacao import FINISHED_RENOVACAO_STATES
 from utentes.models.exploracao import Exploracao, ExploracaoBase
 from utentes.models.exploracao_schema import (
     EXPLORACAO_SCHEMA,
@@ -246,7 +246,7 @@ def exploracaos_find(request):
             e.gid,
             e.exp_id,
             e.exp_name,
-	        COALESCE(renovacaos.estado, e.estado_lic) AS estado_lic,
+            COALESCE(renovacaos.estado, e.estado_lic) AS estado_lic,
             a.tipo as actividade,
             e.loc_provin,
             e.loc_distri,
@@ -269,7 +269,7 @@ def exploracaos_find(request):
         FROM utentes.exploracaos e
             LEFT JOIN utentes.actividades a ON a.exploracao = e.gid
             LEFT JOIN lics ON e.gid = lics.exploracao
-	        LEFT JOIN renovacaos ON e.gid = renovacaos.exploracao
+            LEFT JOIN renovacaos ON e.gid = renovacaos.exploracao
         WHERE
             similarity(unaccent(:exp_name), unaccent(e.exp_name))  >= :similarity_grade
             or e.exp_id = :exp_id
@@ -282,7 +282,7 @@ def exploracaos_find(request):
                 "exp_name": exp_name,
                 "exp_id": exp_id,
                 "similarity_grade": similarity_grade,
-                "renovacao_not_valid_states": NOT_VALID,
+                "renovacao_not_valid_states": FINISHED_RENOVACAO_STATES,
             },
         )
         return [(dict(row.items())) for row in result]
