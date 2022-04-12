@@ -21,20 +21,6 @@ from utentes.models.renovacao import Renovacao
 
 
 @view_config(
-    route_name="api_renovacao_id",
-    permission=perm.PERM_GET,
-    request_method="GET",
-    renderer="json",
-)
-def api_renovacao_id_get(request):
-    gid = request.matchdict["id"]
-    try:
-        return request.db.query(Renovacao).filter(Renovacao.gid == gid).one()
-    except (MultipleResultsFound, NoResultFound):
-        raise badrequest_exception({"error": error_msgs["no_gid"], "gid": gid})
-
-
-@view_config(
     route_name="api_renovacao",
     permission=perm.PERM_GET,
     request_method="GET",
