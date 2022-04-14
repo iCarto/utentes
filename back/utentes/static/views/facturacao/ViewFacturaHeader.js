@@ -16,7 +16,7 @@ Backbone.SIXHIARA.ViewFacturaHeader = Backbone.View.extend({
         var json = {
             fact_name: this.model.get("fact_id")
                 ? this.model.get("fact_id")
-                : this.model.get("mes") + "/" + this.model.get("ano"),
+                : this.model.get("billing_period"),
             fact_estado: this.model.get("fact_estado"),
         };
         this.$el.empty();
