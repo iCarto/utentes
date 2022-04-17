@@ -2,6 +2,31 @@ from sqlalchemy import Column, Date, ForeignKey, Integer, Numeric, Text, text
 from sqlalchemy.dialects.postgresql.json import JSONB
 
 from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base, ColumnBooleanNotNull
+from utentes.models.constants import K_SUBTERRANEA, K_SUPERFICIAL
+from utentes.models.estado_renovacao import PENDING_RENOV_LICENSE
+
+
+def create(exp):
+    renovacao = Renovacao()
+    renovacao.exploracao = exp.gid
+    renovacao.exp_id = exp.exp_id
+    renovacao.estado = PENDING_RENOV_LICENSE
+
+    for lic in exp.licencias:
+        if lic.tipo_agua == K_SUBTERRANEA:
+            renovacao.tipo_lic_sub_old = lic.tipo_lic
+            renovacao.d_emissao_sub_old = lic.d_emissao
+            renovacao.d_validade_sub_old = lic.d_validade
+            renovacao.c_licencia_sub_old = lic.c_licencia
+            renovacao.consumo_fact_sub_old = lic.consumo_fact
+        if lic.tipo_agua == K_SUPERFICIAL:
+            renovacao.tipo_lic_sup_old = lic.tipo_lic
+            renovacao.d_emissao_sup_old = lic.d_emissao
+            renovacao.d_validade_sup_old = lic.d_validade
+            renovacao.c_licencia_sup_old = lic.c_licencia
+            renovacao.consumo_fact_sup_old = lic.consumo_fact
+
+    return renovacao
 
 
 class Renovacao(Base):
@@ -121,10 +146,11 @@ class Renovacao(Base):
     )
 
     def update_from_json(self, json):
+        self.exploracao = json.get("id")
+
         renovacao = json.get("renovacao")
         for column in set(self.__mapper__.columns.keys()) - {"gid"}:
             setattr(self, column, renovacao.get(column))
 
-    def update_from_json_renovacao(self, json):
-        self.exploracao = json.get("id")
-        self.update_from_json(json)
+    def __json__(self, request):
+        return {c: getattr(self, c) for c in self.__mapper__.columns.keys()}
