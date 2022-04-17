@@ -75,7 +75,11 @@ class Renovacao(Base):
     p_rel = ColumnBooleanNotNull(doc="Parecer de instituições relevantes")
     lic_imp = ColumnBooleanNotNull(doc="Licença impressa")
 
-    obser = Column(JSONB, doc="Observações renovacao")
+    obser = Column(
+        JSONB,
+        doc="Observações renovacao",
+        default=[{"create_at": None, "author": None, "text": None, "state": None}],
+    )
 
     tipo_lic_sup_old = Column(
         Text, nullable=False, doc="Tipo de Licença superficial previa"

@@ -16,8 +16,7 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
         var self = this;
         var renovacao = this.model.get("renovacao");
 
-        var currentComment =
-            renovacao.get("obser") && renovacao.get("obser").slice(-1)[0];
+        var currentComment = renovacao.get("obser").slice(-1)[0];
         if (currentComment.text) {
             document.getElementById("observacio").value = currentComment.text;
         }
@@ -127,19 +126,6 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
 
     updateLastCommentSetNewStateCreateNewComment: function(e, autosave) {
         var renovacao = this.model.get("renovacao");
-
-        // Sanity check. Probably we can ensure before that a first empy comment
-        // always exists
-        if (!renovacao.get("obser")) {
-            renovacao.set("obser", [
-                {
-                    create_at: null,
-                    author: null,
-                    text: null,
-                    state: null,
-                },
-            ]);
-        }
 
         var currentComment = renovacao.get("obser").slice(-1)[0];
 
