@@ -7,6 +7,25 @@ from utentes.models.base import PGSQL_SCHEMA_UTENTES, Base, ColumnBooleanNotNull
 class Renovacao(Base):
     __tablename__ = "renovacoes"
     __table_args__ = {"schema": PGSQL_SCHEMA_UTENTES}
+    __eager_defaults__ = (
+        "carta_ren",
+        "carta_ren_v",
+        "ident_pro",
+        "ident_pro_v",
+        "certi_reg",
+        "certi_reg_v",
+        "duat",
+        "duat_v",
+        "anali_doc",
+        "soli_visit",
+        "parecer_divisao",
+        "p_tec",
+        "doc_legal",
+        "p_juri",
+        "p_rel",
+        "lic_imp",
+        "obser",
+    )
 
     gid = Column(
         Integer,
