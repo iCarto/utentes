@@ -72,7 +72,14 @@ REQUERIMENTO_FIELDS = (
 )
 
 FACTURACAO_FIELDS = ("fact_tipo", "pago_lic")
-INVOICE_READ_ONLY = ("created_at", "billing_cyle", "fact_tipo", "periodo_fact")
+INVOICE_READ_ONLY = (
+    "created_at",
+    "billing_cyle",
+    "fact_tipo",
+    "periodo_fact",
+    "gid",
+    "id",
+)
 
 
 NORMAL_FIELDS = (
