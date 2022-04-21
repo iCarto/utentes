@@ -38,7 +38,11 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
         utente: new Backbone.SIXHIARA.Utente(),
         licencias: new Backbone.SIXHIARA.LicenciaCollection(),
         fontes: new Backbone.SIXHIARA.FonteCollection(),
-        facturacao: new Backbone.SIXHIARA.FacturaCollection(),
+        // if API does not returns a facturacao attribute we create the collection by
+        // hand in "parse" method. If we do it here, it will be the same object shared
+        // by all the exps. Or we should change defaults to a function instead of an
+        // object
+        // facturacao: new Backbone.SIXHIARA.FacturaCollection(),
         geometry: new Backbone.Model(),
         geometry_edited: false,
         summary_pago_iva: null,
@@ -451,6 +455,8 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
                 oldCollection.set(updatedFacturaArray, {silent: true});
                 response.facturacao = oldCollection;
             }
+        } else {
+            this.set("facturacao", new Backbone.SIXHIARA.FacturaCollection());
         }
         if (_.has(response, "actividade")) {
             if (response.actividade) {
