@@ -6,6 +6,7 @@ from setuptools import find_packages, setup
 here = os.path.abspath(os.path.dirname(__file__))
 
 requires = [
+    "MarkupSafe==2.0.1",  # https://github.com/pallets/markupsafe/issues/284
     "pyramid==1.10.4",
     "webassets==2.0",
     "pyramid-webassets==0.10",
