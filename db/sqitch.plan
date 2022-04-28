@@ -240,3 +240,4 @@ revebue_water_allocation_integration 2022-03-15T18:50:30Z Francisco Puga <fpuga@
 enable_pg_trgm_extension 2022-03-21T13:52:25Z Francisco Puga <fpuga@icarto.es> # Enable extension pg_trgm
 add_columns_periodo_fact_to_facturacao 2022-03-08T11:18:25Z Francisco Puga <fpuga@icarto.es> # Add column periodo_fact and periodo_fact_real to facturacao
 enable_extension_unaccent 2022-04-07T10:13:34Z Francisco Puga <fpuga@icarto.es> # Enable extension unaccent
+create_table_cbase_subacias 2022-04-25T17:16:04Z Francisco Puga <fpuga@icarto.es> # Create table cbase subacias
