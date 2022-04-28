@@ -36,8 +36,8 @@ def view_monitor_tween_factory(handler, registry):
                 db.add(view_monitor)
                 db.commit()
             except Exception as e:
-                db.rolloback()
                 log.exception(e)
+                db.rollback()
             finally:
                 db.close()
 
