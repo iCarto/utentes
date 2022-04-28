@@ -11,7 +11,7 @@ ALTER TABLE cbase_ara.distritos DROP COLUMN censo_2007;
 ALTER TABLE cbase.postos DROP COLUMN censo_2007;
 ALTER TABLE cbase_ara.postos DROP COLUMN censo_2007;
 
-ALTER TABLE table cbase_ara.provincias_outras drop column censo_2007;
+ALTER TABLE cbase_ara.provincias_outras drop column censo_2007;
 
 CREATE OR REPLACE FUNCTION utentes.extract_discriminator_from_ara_name_list(text) RETURNS setof text AS $f$
     -- Column 'ara' in cbase schema is like 'ARA-Centro, IP; ARA-Sul, IP'

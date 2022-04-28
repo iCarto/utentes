@@ -18,11 +18,4 @@ UPDATE domains.groups SET (key, value) = ('Departamento Financeiro', 'DF') WHERE
 UPDATE domains.groups SET (key, value) = ('Departamento Jurídico', 'DJ') WHERE key = 'D. Jurídico';
 UPDATE domains.groups SET (key, value) = ('Departamento Técnico', '') WHERE key = 'D. Técnico';
 
-
--- CREATE SCHEMA users AUTHORIZATION :"owner";
--- REVOKE ALL ON SCHEMA users from PUBLIC;
-
--- ALTER TABLE utentes.users SET SCHEMA users;
--- ALTER TABLE domains.groups SET SCHEMA users;
-
 COMMIT;
