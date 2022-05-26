@@ -18,46 +18,44 @@ var allLayers = [
         pointToLayer: Backbone.SIXHIARA.LayerStyle.doPointToLayerFontes,
     },
     {
-        id: "entidadespopulacao",
-        pointToLayer: Backbone.SIXHIARA.LayerStyle.doPointToLayerEntidadespopulacao,
-        initialOrder: 3,
-        farZoom: 10,
-    },
-    {
         id: "albufeiras",
-        initialOrder: 4,
+        initialOrder: 3,
     },
     {
         id: "lagos",
-        initialOrder: 5,
-    },
-    {
-        id: "estradas",
-        initialOrder: 6,
-        farZoom: 12,
+        initialOrder: 4,
     },
     {
         id: "rios",
-        initialOrder: 7,
+        initialOrder: 5,
         farZoom: 9,
     },
     {
         id: "aras",
         onEachFeature: Backbone.SIXHIARA.LayerStyle.onEachFeaturearas,
-        initialOrder: 8,
+        initialOrder: 6,
         closeZoom: 11,
+    },
+    {
+        id: "divisoes",
+        initialOrder: 7,
     },
     {
         id: "bacias",
         onEachFeature: Backbone.SIXHIARA.LayerStyle.onEachFeaturebacias,
+        initialOrder: 8,
+        farZoom: 9,
+    },
+    {
+        id: "subacias",
+        onEachFeature: Backbone.SIXHIARA.LayerStyle.onEachFeaturesubacias,
         initialOrder: 9,
         farZoom: 10,
-        closeZoom: 11,
     },
     {
         id: "baciasrepresentacion",
         initialOrder: 10,
-        closeZoom: 10,
+        closeZoom: 9,
     },
     {
         id: "provincias",

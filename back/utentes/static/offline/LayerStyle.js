@@ -240,14 +240,23 @@ Backbone.SIXHIARA.LayerStyle = {
         });
     },
 
+    doStyledivisoes: function(feature) {
+        return {
+            weight: 0.7,
+            fillColor: "#ffffff",
+            color: "#000000",
+            opacity: 1,
+            fillOpacity: 0,
+            interactive: false,
+        };
+    },
+
     doStylebacias: function(feature) {
         return {
-            weight: 0.6,
-            fillColor: "#ffffff",
-            dashArray: "5, 5, 1, 5",
+            weight: 0.55,
             color: "#05328c",
             opacity: 1,
-            fillOpacity: 1,
+            fillOpacity: 0,
             interactive: false,
         };
     },
@@ -256,6 +265,35 @@ Backbone.SIXHIARA.LayerStyle = {
             permanent: false,
             offset: [0, 0],
             className: "sixhiara-leaflet-label-poligons sixhiara-leaflet-label-bacias",
+            opacity: 1,
+            zoomAnimation: true,
+            interactive: false,
+            direction: "center", // auto, rigth, left, center, bottom. top, middle
+            sticky: false,
+        };
+        layer.on("add", function() {
+            let t = layer.bindTooltip(feature.properties.nome, options).getTooltip();
+            layer.openTooltip(layer.getBounds().getCenter());
+            layer.off("add", this);
+        });
+    },
+
+    doStylesubacias: function(feature) {
+        return {
+            weight: 0.5,
+            dashArray: "5, 5, 1, 5",
+            color: "#000000",
+            opacity: 1,
+            fillOpacity: 0,
+            interactive: false,
+        };
+    },
+    onEachFeaturesubacias: function(feature, layer) {
+        let options = {
+            permanent: false,
+            offset: [0, 0],
+            className:
+                "sixhiara-leaflet-label-poligons sixhiara-leaflet-label-subacias",
             opacity: 1,
             zoomAnimation: true,
             interactive: false,
@@ -284,6 +322,7 @@ Backbone.SIXHIARA.LayerStyle = {
             case "Monapo":
             case "Melela":
             case "Govuro":
+            case "Tembe":
                 ret.fillColor = "#1e3ca0";
                 break;
             case "Save":
@@ -293,16 +332,20 @@ Backbone.SIXHIARA.LayerStyle = {
             case "Ligonha":
             case "Licungo":
             case "Incomati":
+            case "Mogincual":
+            case "Luaua":
                 ret.fillColor = "#0a46aa";
                 break;
             case "Resto de bacias":
                 ret.fillColor = "#0044CE";
                 break;
             case "Raraga":
-            case "Raraga":
             case "Meluli":
             case "Megaruma":
             case "Inharrime":
+            case "Molocue":
+            case "Cuacua":
+            case "Umbelúzi":
                 ret.fillColor = "#7d7d7d";
                 break;
             case "Lurio":
@@ -320,11 +363,10 @@ Backbone.SIXHIARA.LayerStyle = {
 
     doStyleprovincias: function(feature) {
         return {
-            weight: 1.2,
-            color: "#000000",
-            fillColor: "#F6F6F6",
-            dashArray: "5, 5, 1, 5",
-            opacity: 0.4,
+            weight: 1,
+            color: "#ffffff",
+            fillColor: "#ffffff",
+            opacity: 1,
             fillOpacity: 1,
             interactive: false,
         };

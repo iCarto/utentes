@@ -43,14 +43,14 @@
     border: none;
     box-shadow: none;
     color: #070140;
-    font: 10px "Calibri", "Helvetica Neue", "Arial", "Helvetica", sans-serif;
+    font: 9px "Calibri", "Helvetica Neue", "Arial", "Helvetica", sans-serif;
     font-style: italic;
     font-weight: normal;
 }
 
 .sixhiara-leaflet-label-aras {
     color: #05328c;
-    font: 16px "Calibri", "Helvetica Neue", "Arial", "Helvetica", sans-serif;
+    font: 15px "Calibri", "Helvetica Neue", "Arial", "Helvetica", sans-serif;
     font-style: normal;
     font-weight: bold;
     text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff;
@@ -59,9 +59,16 @@
 .sixhiara-leaflet-label-bacias {
     color: #05328c;
     font: 11px "Calibri", "Helvetica Neue", "Arial", "Helvetica", sans-serif;
-    font-style: italic;
+    font-style: normal;
     font-weight: bold;
     text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff;
+}
+
+.sixhiara-leaflet-label-subacias {
+    color: #000;
+    font: 11px "Calibri", "Helvetica Neue", "Arial", "Helvetica", sans-serif;
+    font-style: italic;
+    font-weight: bold;
 }
 
 .sixhiara-leaflet-label-paises {

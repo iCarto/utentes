@@ -214,3 +214,17 @@ class Divisoes(CartographyBase):
             None,
         )
     )
+
+
+class Subacias(CartographyBase):
+    __tablename__ = "subacias"
+    __table_args__ = {"schema": PGSQL_SCHEMA_CBASE_ARA}
+
+    nome = Column(Text)
+    geom = Column(Geometry("MULTIPOLYGON", "32737"), index=True)
+    geom_as_geojson = column_property(
+        func.coalesce(
+            func.ST_AsGeoJSON(func.ST_Transform(func.ST_Simplify(geom, 10), 4326), 6),
+            None,
+        )
+    )

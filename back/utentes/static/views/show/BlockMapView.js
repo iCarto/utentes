@@ -5,7 +5,7 @@ Backbone.SIXHIARA.BlockMapView = Backbone.View.extend({
         var self = this;
 
         var baseOfflineLayers = allLayers.filter(function(l) {
-            return !["baciasrepresentacion", "bacias"].includes(l.id);
+            return !["baciasrepresentacion"].includes(l.id);
         });
         options.offline = {layers: baseOfflineLayers};
 

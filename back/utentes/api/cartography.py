@@ -33,6 +33,7 @@ def api_cartography(request):
         "oceanos": cartography.Oceanos,
         "exploracaos": ExploracaoGeom,
         "divisoes": cartography.Divisoes,
+        "subacias": cartography.Subacias,
     }.get(layer)
     if not model:
         raise notfound_exception(
