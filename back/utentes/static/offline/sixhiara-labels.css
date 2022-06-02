@@ -62,6 +62,9 @@
     font-style: normal;
     font-weight: bold;
     text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff;
+
+    /* Puts bacias label over subacias label */
+    z-index: 651;
 }
 
 .sixhiara-leaflet-label-subacias {
