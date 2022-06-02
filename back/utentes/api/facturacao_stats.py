@@ -104,7 +104,7 @@ def usos_comuns(
                 "exp_id": e.exp_id,
                 "utente_id": e.utente_rel.gid,
                 "utente": e.utente_rel.nome,
-                "numero_facturas_esperadas": months,
+                "numero_facturas_esperadas": 0,
                 "consumo_facturas_esperadas": months * c_real,
                 "importe_facturas_esperadas": 0,
                 "numero_facturas_emitidas": 0,
