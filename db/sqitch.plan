@@ -243,3 +243,5 @@ enable_extension_unaccent 2022-04-07T10:13:34Z Francisco Puga <fpuga@icarto.es> 
 create_table_cbase_subacias 2022-04-25T17:16:04Z Francisco Puga <fpuga@icarto.es> # Create table cbase subacias
 new_version_220502 2022-05-02T14:42:29Z Francisco Puga <fpuga@icarto.es> # new_version_220502
 @220502 2022-05-02T14:44:32Z Francisco Puga <fpuga@icarto.es> # tag 220502
+
+create_table_domains_size_category 2022-06-02T15:04:25Z Francisco Puga <fpuga@icarto.es> # Create table domains size_category
