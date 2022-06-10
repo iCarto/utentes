@@ -64,6 +64,10 @@ def last_day_of_current_month():
     return today() + relativedelta(day=31)
 
 
+def last_day_of_month(year, month):
+    return datetime.date(year, month, 1) + relativedelta(day=31)
+
+
 def quarter_ordinal(d: datetime.date = None):
     """Returns the ordinal (1 to 4) for the quarter in which d is.
 
