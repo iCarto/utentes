@@ -117,7 +117,12 @@ class RootFactory(object):
         (
             Allow,
             user_roles.OBSERVADOR,
-            (perm.PERM_FACTURACAO, perm.PERM_REQUERIMENTO, perm.PERM_RENOVACAO),
+            (
+                perm.PERM_FACTURACAO,
+                perm.PERM_REQUERIMENTO,
+                perm.PERM_RENOVACAO,
+                perm.PERM_GET_USAGE_COMMON,
+            ),
         ),
         (
             Allow,
