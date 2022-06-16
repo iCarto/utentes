@@ -130,7 +130,7 @@ var IAuth = {
         return roles.includes(SIRHA.ROLE.TECNICO);
     },
 
-    disabledWidgets: function(selector, roles_only_read) {
+    disabledWidgets: function(selector, roles_only_read, context) {
         roles_only_read = roles_only_read || [];
 
         var baseElement = document;
@@ -139,6 +139,13 @@ var IAuth = {
         }
 
         var elements = baseElement.getElementsByClassName("uilib-enability");
+        iAuth._ui_enability(elements, roles_only_read);
+
+        var elements = baseElement.getElementsByClassName("uilib-enability-expression");
+        iAuth._ui_enability_expression(elements, context);
+    },
+
+    _ui_enability: function(elements, roles_only_read) {
         Array.prototype.forEach.call(elements, function(w) {
             var rolesEnabled = [];
             var rolesDisabled = roles_only_read;
@@ -172,6 +179,18 @@ var IAuth = {
             ) {
                 w.style.display = "none";
             }
+        });
+    },
+
+    _ui_enability_expression: function(elements, context) {
+        Array.prototype.forEach.call(elements, function(w) {
+            let expression = undefined;
+            w.classList.forEach(function(c) {
+                if (c.startsWith("uilib-enability-expression-")) {
+                    expression = c.replace("uilib-enability-expression-", "");
+                }
+            });
+            Backbone.UILib.Enability.Expressions[expression](w, context);
         });
     },
 

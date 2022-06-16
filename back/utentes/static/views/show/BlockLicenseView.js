@@ -188,7 +188,7 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
         modalView.render();
         modalView.fillFactTipo(this.model.get("fact_tipo"));
 
-        iAuth.disabledWidgets("#licenciaModal");
+        iAuth.disabledWidgets("#licenciaModal", [], modalView);
     },
 
     showModalEstadoLicencia: function() {
