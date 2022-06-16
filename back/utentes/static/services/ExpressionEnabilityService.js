@@ -3,12 +3,13 @@ Backbone.UILib.Enability = {
 };
 
 Backbone.UILib.Enability.Expressions.proforma = function(widget, context) {
-    if (!iAuth.hasRoleTecnico() && !iAuth.isAdmin()) {
+    if (!(iAuth.hasRoleTecnico() || iAuth.isAdmin())) {
         return;
     }
 
     if (
-        context.options.exploracao.get("estado") != SIRHA.ESTADO.PENDING_TECH_DECISION
+        context.options.exploracao.get("estado_lic") !=
+        SIRHA.ESTADO.PENDING_TECH_DECISION
     ) {
         return;
     }
