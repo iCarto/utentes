@@ -201,7 +201,7 @@ SIRHA.Services.PrintService = (function(formatter) {
                 licencia.taxa_fixa = data.factura["taxa_fixa_" + tipo];
                 licencia.taxa_uso = data.factura["taxa_uso_" + tipo];
                 licencia.pago_mes = data.factura["pago_mes_" + tipo];
-                licencia.iva = data.factura["iva_" + tipo];
+                licencia.iva = data.factura["iva"];
                 licencia.pago_iva = data.factura["pago_iva_" + tipo];
             });
         }

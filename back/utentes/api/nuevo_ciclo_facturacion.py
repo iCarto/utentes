@@ -100,12 +100,10 @@ def nuevo_ciclo_facturacion(request):
                 f.consumo_fact_sup = e.facturacao[-1].consumo_fact_sup
                 f.taxa_fixa_sup = e.facturacao[-1].taxa_fixa_sup
                 f.taxa_uso_sup = e.facturacao[-1].taxa_uso_sup
-                f.iva_sup = e.facturacao[-1].iva_sup
             if lic_sub.estado in INVOIZABLE_STATES:
                 f.consumo_fact_sub = e.facturacao[-1].consumo_fact_sub
                 f.taxa_fixa_sub = e.facturacao[-1].taxa_fixa_sub
                 f.taxa_uso_sub = e.facturacao[-1].taxa_uso_sub
-                f.iva_sub = e.facturacao[-1].iva_sub
             f.iva = e.facturacao[-1].iva
         else:
             f.pago_lic = False
@@ -113,13 +111,11 @@ def nuevo_ciclo_facturacion(request):
                 f.consumo_fact_sup = lic_sup.c_licencia
                 f.taxa_fixa_sup = lic_sup.taxa_fixa
                 f.taxa_uso_sup = lic_sup.taxa_uso
-                f.iva_sup = lic_sup.iva
             if lic_sub.estado in INVOIZABLE_STATES:
                 f.consumo_fact_sub = lic_sub.c_licencia
                 f.taxa_fixa_sub = lic_sub.taxa_fixa
                 f.taxa_uso_sub = lic_sub.taxa_uso
-                f.iva_sub = lic_sub.iva
-            f.iva = lic_sup.iva or lic_sub.iva
+            f.iva = lic_sup.iva or lic_sub.iva or 0
 
         f.calculate_pagos()
 

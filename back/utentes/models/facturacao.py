@@ -58,7 +58,6 @@ class Facturacao(Base):
     taxa_uso_sup = Column(Numeric(10, 2))
     pago_mes_sup = Column(Numeric(10, 2))
     pago_iva_sup = Column(Numeric(10, 2))
-    iva_sup = Column(Numeric(10, 2))
     consumo_tipo_sub = Column(
         Text, nullable=False, server_default=text(f"'{FLAT_FEE}'::text")
     )
@@ -67,7 +66,6 @@ class Facturacao(Base):
     taxa_uso_sub = Column(Numeric(10, 2))
     pago_mes_sub = Column(Numeric(10, 2))
     pago_iva_sub = Column(Numeric(10, 2))
-    iva_sub = Column(Numeric(10, 2))
     iva = Column(Numeric(10, 2))
     juros = Column(Numeric(10, 2))
     pago_mes = Column(Numeric(10, 2))
