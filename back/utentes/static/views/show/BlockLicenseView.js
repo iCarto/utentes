@@ -14,10 +14,13 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
 
     initialize: function(options) {
         this.options = options;
+        this._setLicense();
+    },
 
+    _setLicense: function() {
         this.license = this.model
             .get("licencias")
-            .where({tipo_agua: options.tipo_agua})[0];
+            .where({tipo_agua: this.options.tipo_agua})[0];
         if (this.license) this.listenTo(this.license, "change", this.render);
     },
 
@@ -130,61 +133,52 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
 
     renderEditLicenseModal: function(event) {
         event.preventDefault();
-
-        var modalView = new Backbone.SIXHIARA.LicenseModalView({
-            modalSelectorTpl: "#block-license-modal-tmpl",
-            collection: this.model.get("licencias"),
-            collectionModel: Backbone.SIXHIARA.Licencia,
-            model: this.license,
-            domains: this.options.domains,
-            editing: true,
-            exploracao: this.model,
-        });
-
-        modalView.render();
-        modalView.fillFactTipo(this.model.get("fact_tipo"));
-
-        iAuth.disabledWidgets("#licenciaModal");
+        this._postRenderLicenseModal(false);
     },
 
     renderAddLicenseModal: function(event) {
         event.preventDefault();
-        var self = this;
-        var AddLicenseModalView = Backbone.SIXHIARA.LicenseModalView.extend({
-            okButtonClicked: function() {
-                // in this context, this is the backbone modalView
-                if (this.isSomeWidgetInvalid()) return;
-                this.collection.add(this.model);
-                self.license = self.model
-                    .get("licencias")
-                    .where({tipo_agua: self.options.tipo_agua})[0];
-                self.license.set(
-                    "lic_nro",
-                    SIRHA.Services.IdService.calculateNewLicNro(
-                        self.model.get("exp_id"),
-                        self.license.get("tipo_agua")
-                    )
-                );
-                self.listenTo(self.license, "change", self.render);
-                self.render();
-                this.$(".modal").modal("hide");
-                self.$el.removeClass("disabled");
-                self.model.setLicState(this.model.get("estado"));
-            },
-        });
+        this._postRenderLicenseModal(true);
+    },
 
-        var modalView = new AddLicenseModalView({
+    _postRenderLicenseModal: function(creating) {
+        const options = {
             modalSelectorTpl: "#block-license-modal-tmpl",
             collection: this.model.get("licencias"),
             collectionModel: Backbone.SIXHIARA.Licencia,
-            model: new Backbone.SIXHIARA.Licencia({
-                tipo_agua: this.options.tipo_agua,
-            }),
+            model: this.license,
+            // tipo_agua: this.options.tipo_agua,
             domains: this.options.domains,
-            creating: true,
-            editing: false,
-        });
+            editing: true,
+            creating: false,
+            exploracao: this.model,
+        };
+        let AddLicenseModalView = Backbone.SIXHIARA.LicenseModalView;
 
+        if (creating) {
+            var self = this;
+            options.editing = false;
+            options.creating = true;
+            options.model = new Backbone.SIXHIARA.Licencia({
+                tipo_agua: this.options.tipo_agua,
+                lic_nro: SIRHA.Services.IdService.calculateNewLicNro(
+                    this.model.get("exp_id"),
+                    this.options.tipo_agua
+                ),
+            });
+
+            AddLicenseModalView = Backbone.SIXHIARA.LicenseModalView.extend({
+                okButtonClicked: function() {
+                    Backbone.SIXHIARA.LicenseModalView.prototype.okButtonClicked.call(
+                        this
+                    );
+                    self._setLicense();
+                    self.render();
+                },
+            });
+        }
+
+        var modalView = new AddLicenseModalView(options);
         modalView.render();
         modalView.fillFactTipo(this.model.get("fact_tipo"));
 

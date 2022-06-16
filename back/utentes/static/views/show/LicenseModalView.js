@@ -1,10 +1,9 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
     customConfiguration: function() {
-        // connect auxiliary views, which would be removed when the modal is closed
         var estadosLicencia = this.options.domains.byCategory("licencia_estado");
 
-        var selectView = new Backbone.UILib.SelectView({
+        new Backbone.UILib.SelectView({
             el: this.$("#estado"),
             collection: estadosLicencia,
             cloneCollection: true,
@@ -18,7 +17,7 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
 
         var self = this;
         this.$("#info-estado-licencia").on("click", function() {
-            var tooltipView = new Backbone.SIXHIARA.ModalTooltipEstadoLicenciaView({
+            new Backbone.SIXHIARA.ModalTooltipEstadoLicenciaView({
                 collection: estadosLicencia,
                 actual_state: self.model.get("estado"),
             }).show();
@@ -53,13 +52,9 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
     },
 
     okButtonClicked: function() {
-        var previousState = this.model.get("estado");
         Backbone.UILib.ModalView.prototype.okButtonClicked.call(this);
 
         // See #1685
-        var actualState = this.model.get("estado");
-        if (previousState != actualState) {
-            this.options.exploracao.setLicState(actualState);
-        }
+        this.options.exploracao.setLicState(this.model.get("estado"));
     },
 });
