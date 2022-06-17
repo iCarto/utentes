@@ -13,7 +13,7 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                 <div class="panel-body row">
                     <div class="form-group col-xs-12">
                         <label for="consumo_tipo_sub"><strong>Tipo de consumo</strong></label>
-                        <select class="form-control" id="consumo_tipo_sub" disabled >
+                        <select class="form-control widget" id="consumo_tipo_sub" disabled >
                             <option>Fixo</option>
                             <option>Variável</option>
                         </select>
@@ -21,27 +21,27 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
 
                     <div class="form-group col-xs-12">
                         <label for="c_licencia_sub">Consumo licenciado&nbsp;<i class="units">(m<sup>3</sup>/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="c_licencia_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(c_licencia_sub, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="c_licencia_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="consumo_fact_sub">Consumo facturado&nbsp;<i class="units">(m<sup>3</sup>/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="consumo_fact_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(consumo_fact_sub, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="consumo_fact_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="taxa_fixa_sub">Taxa fixa&nbsp;<i class="units">(MT/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="taxa_fixa_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(taxa_fixa_sub, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="taxa_fixa_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="taxa_uso_sub">Taxa de uso&nbsp;<i class="units">(MT/m<sup>3</sup>)</i></label>
-                        <input type="text" class="form-control widget-number" id="taxa_uso_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(taxa_uso_sub, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="taxa_uso_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="pago_mes_sub">Valor pago&nbsp;<i class="units js-change-mes">(MT/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="pago_mes_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(pago_mes_sub, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="pago_mes_sub" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                 <div class="panel-body row">
                     <div class="form-group col-xs-12">
                         <label for="consumo_tipo_sup"><strong>Tipo de consumo</strong></label>
-                        <select class="form-control" id="consumo_tipo_sup" disabled>
+                        <select class="form-control widget" id="consumo_tipo_sup" disabled>
                             <option>Fixo</option>
                             <option>Variável</option>
                         </select>
@@ -63,27 +63,27 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
 
                     <div class="form-group col-xs-12">
                         <label for="c_licencia_sup">Consumo licenciado&nbsp;<i class="units">(m<sup>3</sup>/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="c_licencia_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(c_licencia_sup, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="c_licencia_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="consumo_fact_sup">Consumo facturado&nbsp;<i class="units">(m<sup>3</sup>/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="consumo_fact_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(consumo_fact_sup, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="consumo_fact_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="taxa_fixa_sup">Taxa fixa&nbsp;<i class="units">(MT/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="taxa_fixa_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(taxa_fixa_sup, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="taxa_fixa_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="taxa_uso_sup">Taxa de uso&nbsp;<i class="units">(MT/m<sup>3</sup>)</i></label>
-                        <input type="text" class="form-control widget-number" id="taxa_uso_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" value="<%- formatter().formatNumber(taxa_uso_sup, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="taxa_uso_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
 
                     <div class="form-group col-xs-12">
                         <label for="pago_mes_sup">Valor pago&nbsp;<i class="units js-change-mes">(MT/mês)</i></label>
-                        <input type="text" class="form-control widget-number" id="pago_mes_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled value="<%- formatter().formatNumber(pago_mes_sup, '0[.]00') %>" disabled>
+                        <input type="text" class="form-control widget-number" id="pago_mes_sup" pattern="[0-9]{1,8}([,][0-9]{1,2})?" disabled>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,6 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                                class="form-control widget-number"
                                id="iva"
                                pattern="[0-9]{1,8}([,][0-9]{1,2})?"
-                               value="<%- formatter().formatNumber(iva, '0[.]00') %>"
                                style="padding: 6px 6px;"
                                disabled
                         >
@@ -115,7 +114,6 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                                class="form-control widget-number"
                                id="juros"
                                pattern="[0-9]{1,8}([,][0-9]{1,2})?"
-                               value="<%- formatter().formatNumber(juros, '0[.]00') %>"
                                style="padding: 6px 6px;"
                                disabled
                         >
@@ -127,7 +125,6 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                                class="form-control widget-number"
                                id="pago_iva"
                                pattern="[0-9]{1,8}([,][0-9]{1,2})?"
-                               value="<%- formatter().formatNumber(pago_iva, '0[.]00') %>"
                                disabled
                         >
                     </div>
@@ -275,6 +272,11 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
     render: function() {
         var json = this.model.toJSON();
         this.$el.html(this.template(json));
+        this.widgetsView && this.widgetsView.remove();
+        this.widgetsView = new Backbone.UILib.WidgetsView({
+            el: this.$el,
+            model: this.model,
+        }).render();
         return this;
     },
 
@@ -286,32 +288,18 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
     },
 
     updateWidgets: function() {
-        this._defineWidgetsToBeUsed();
+        const self = this;
+        this._defineWidgetsToBeUsed(); // sets this.widgets
+        this.widgets.forEach(function(w) {
+            var input = this.$("#edit-facturacao-modal #" + w);
+            input.prop("disabled", false);
+            input.prop("required", true);
+            input.on("input", self._enableBts.bind(self));
+        });
+        this.$("#observacio").on("input", this._observacioUpdated.bind(self));
         this._enableBts();
         iAuth.disabledWidgets();
-        this._setWidgetsValue();
         this._initFactPeriod();
-    },
-
-    _setWidgetsValue: function() {
-        this.$("#consumo_tipo_sub").val(this.model.get("consumo_tipo_sub"));
-        this.$("#consumo_tipo_sup").val(this.model.get("consumo_tipo_sup"));
-    },
-
-    _facturaUpdated: function(evt) {
-        var target = evt.currentTarget;
-        if (target.validity.valid) {
-            var modifiedAttributes = {};
-            var trigger = false;
-            if (target.nodeName == "INPUT") {
-                modifiedAttributes[target.id] = formatter().unformatNumber(
-                    target.value
-                );
-            } else if (target.nodeName == "SELECT") {
-                modifiedAttributes[target.id] = target.value;
-            }
-            this.model.set(modifiedAttributes);
-        }
     },
 
     _observacioUpdated: function(evt) {
@@ -475,17 +463,6 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                 }
             });
         });
-
-        // _enabledWidgets
-
-        this.widgets.forEach(function(w) {
-            var input = this.$("#edit-facturacao-modal #" + w);
-            input.prop("disabled", false);
-            input.prop("required", true);
-            input.on("input", self._facturaUpdated.bind(self));
-            input.on("input", self._enableBts.bind(self));
-        });
-        this.$("#observacio").on("input", this._observacioUpdated.bind(self));
     },
 
     _enableBts: function() {

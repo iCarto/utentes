@@ -101,6 +101,11 @@ Backbone.UILib.WidgetsView = Backbone.View.extend({
 
         return this;
     },
+    setInModelIfValid: function(widget, attr, value) {
+        if (widget.get(0).validity.valid) {
+            this.model.set(attr, value);
+        }
+    },
 
     updateText: function(e) {
         var attr = e.target.id;
@@ -109,21 +114,21 @@ Backbone.UILib.WidgetsView = Backbone.View.extend({
         if (value != null) {
             value = widget.val().trim() || null;
         }
-        this.model.set(attr, value);
+        this.setInModelIfValid(widget, attr, value);
     },
 
     updateNumber: function(e) {
         var attr = e.target.id;
         var widget = this.$el.find("#" + attr);
         var value = formatter().unformatNumber(widget.val());
-        this.model.set(attr, value);
+        this.setInModelIfValid(widget, attr, value);
     },
 
     updateDate: function(e) {
         var attr = e.target.id;
         var widget = this.$el.find("#" + attr);
         var value = formatter().unformatDate(widget.val());
-        this.model.set(attr, value);
+        this.setInModelIfValid(widget, attr, value);
     },
 
     updateFromOptions: function(e) {
@@ -143,7 +148,7 @@ Backbone.UILib.WidgetsView = Backbone.View.extend({
             // model.get('example') would return "Some text", not "1"
             var widgetSelected = this.$el.find("#" + attr + " option:selected");
             var value = widgetSelected.text().trim() || null;
-            this.model.set(attr, value);
+            this.setInModelIfValid(widget, attr, value);
         }
     },
 
@@ -164,7 +169,13 @@ Backbone.UILib.WidgetsView = Backbone.View.extend({
             var value = null;
             if (widgetSelected.val() === "true") value = true;
             if (widgetSelected.val() === "false") value = false;
-            this.model.set(attr, value);
+            this.setInModelIfValid(widget, attr, value);
         }
+    },
+
+    remove: function() {
+        this.stopListening();
+        this.undelegateEvents();
+        return this;
     },
 });
