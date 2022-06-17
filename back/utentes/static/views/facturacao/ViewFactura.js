@@ -148,7 +148,7 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
                         <button id="bt-recibo" type="button" class="btn btn-sm btn-primary">Recibo</button>
                     </div>
                 </label>
-                <textarea id="observacio" class="form-control widget"><%- observacio.slice(-1)[0].text %></textarea>
+                <textarea id="observacio" class="form-control"><%- observacio.slice(-1)[0].text %></textarea>
             </div>
         </div>
 
@@ -276,6 +276,20 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         this.widgetsView = new Backbone.UILib.WidgetsView({
             el: this.$el,
             model: this.model,
+            auto: [
+                {
+                    id: "pago_mes_sup",
+                    formatter: x => formatter().formatNumber(x, "0[.]00"),
+                },
+                {
+                    id: "pago_mes_sub",
+                    formatter: x => formatter().formatNumber(x, "0[.]00"),
+                },
+                {
+                    id: "pago_iva",
+                    formatter: x => formatter().formatNumber(x, "0[.]00"),
+                },
+            ],
         }).render();
         return this;
     },

@@ -9,6 +9,26 @@ Backbone.UILib.WidgetsView = Backbone.View.extend({
         "change .widget-boolean": "updateFromOptionsBoolean",
     },
 
+    /**
+     * options.auto is like "derived field", "computed property", "auto calculated", "calculated field"
+     *
+     */
+    initialize: function(options) {
+        if (options.auto) {
+            for (const a of options.auto) {
+                this.setAutoListener(a);
+            }
+        }
+    },
+
+    setAutoListener: function(config) {
+        this.listenTo(this.model, `change:${config.id}`, function() {
+            const value = this.model.get(config.id);
+            const widget = this.$el.find(`#${config.id}`);
+            widget.val(config.formatter(value));
+        });
+    },
+
     displayNull: function(name) {
         // having the name property available would let developers hack this method
         // in custom ways. For example:
