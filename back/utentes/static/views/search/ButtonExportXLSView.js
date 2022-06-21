@@ -135,7 +135,7 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
                         },
                     };
                 }
-                if ((C == 32) & (R !== 0)) {
+                if ((C == 33) & (R !== 0)) {
                     cell.s = {
                         font: {sz: "10"},
                         alignment: {

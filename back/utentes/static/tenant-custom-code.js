@@ -389,6 +389,7 @@ window.SIXHIARA.xlsFieldsToExport.exploracaos = [
         },
     },
     {header: "Facturação", value: "fact_tipo"},
+    {header: "Consumo Estimado", value: "c_estimado"},
     {header: "Consumo Real", value: "c_real"},
     {header: "Consumo Licencia", value: "c_licencia"},
     {
@@ -443,6 +444,7 @@ window.SIXHIARA.shpFieldsToExport = [
         },
     },
     {header: "tipo_fact", value: "fact_tipo"},
+    {header: "c_estimad", value: "c_estimado"},
     {header: "c_real", value: "c_real"},
     {header: "c_licenc", value: "c_licencia"},
     {
