@@ -130,7 +130,11 @@ def build_data_to_export(e: InvoicesResultSet) -> Dict:
         "Con_Sub": (is_sub and invoice.consumo_fact_sub) or DEFAULT_EMPTY_TIPO_AGUA,
         "TaxaUso_Sub": (is_sub and invoice.taxa_uso_sub) or DEFAULT_EMPTY_TIPO_AGUA,
         "TaxaFixa_Sub": (is_sub and invoice.taxa_fixa_sub) or DEFAULT_EMPTY_TIPO_AGUA,
-        "Valor": invoice.pago_mes,
+        "Valor": (
+            (invoice.pago_mes_sub or DEFAULT_EMPTY_TIPO_AGUA)
+            + (invoice.pago_mes_sup or DEFAULT_EMPTY_TIPO_AGUA)
+        )
+        or DEFAULT_EMPTY_TIPO_AGUA,
         "IVA": invoice.iva,
         "valor_IVA": (
             (invoice.pago_iva_sub or DEFAULT_EMPTY_TIPO_AGUA)

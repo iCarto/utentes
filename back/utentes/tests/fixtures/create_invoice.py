@@ -25,7 +25,6 @@ def create_test_invoice(exp: Exploracao, year, month, **kwargs) -> Facturacao:
     )
     invoice.iva = 12.75
     invoice.juros = 1
-    invoice.pago_mes = 1
     invoice.pago_iva = 1
     invoice.fact_id = invoice.gid
     invoice.fact_date = datetime.date(year, month, 5)

@@ -68,7 +68,6 @@ class Facturacao(Base):
     pago_iva_sub = Column(Numeric(10, 2))
     iva = Column(Numeric(10, 2))
     juros = Column(Numeric(10, 2))
-    pago_mes = Column(Numeric(10, 2))
     pago_iva = Column(Numeric(10, 2))
     fact_id = Column(Text, unique=True)
     recibo_id = Column(Text, unique=True)
@@ -143,7 +142,6 @@ class Facturacao(Base):
         self._calcula_pagos_lic("sup")
         self._calcula_pagos_lic("sub")
 
-        self.pago_mes = ((self.pago_mes_sub or 0) + (self.pago_mes_sup or 0)) or None
         self.pago_iva = (
             ((self.pago_iva_sub or 0) + (self.pago_iva_sup or 0))
             * (1 + float(self.juros) / 100)

@@ -87,7 +87,7 @@ class ERPIntegrationTests(DBIntegrationTest):
         db.add(self.not_exportable_invoice_for_old_date)
 
         self.invoice_for_exp_sub_exists = create_test_invoice(
-            self.exp_sub_exists, 2021, 4, pago_mes=5
+            self.exp_sub_exists, 2021, 4
         )
         db.add(self.invoice_for_exp_sub_exists)
 
@@ -169,7 +169,7 @@ class ERPIntegrationTests(DBIntegrationTest):
             actual, self.invoice_for_exp_sub_exists
         )
         self.assertEqual(invoice_for_exp_sub_exists["Estado"], "Novo")
-        self.assertEqual(invoice_for_exp_sub_exists["Valor"], 5)
+        self.assertEqual(invoice_for_exp_sub_exists["Valor"], 2)
         self.assertEqual(invoice_for_exp_sub_exists["TaxaFixa_Sub"], 2)
         self.assertEqual(invoice_for_exp_sub_exists["Subterranea"], "Subterrânea")
         self.assertEqual(invoice_for_exp_sub_exists["TaxaFixa_Sup"], 0)
@@ -180,9 +180,7 @@ class ERPIntegrationTests(DBIntegrationTest):
 
         self.data_for_clients()
 
-        self.request.db.add(
-            create_test_invoice(self.exp_sub_sup_new, 2021, 4, pago_mes=10)
-        )
+        self.request.db.add(create_test_invoice(self.exp_sub_sup_new, 2021, 4))
         self.assertRaises(HTTPBadRequest, get_and_update_bd, self.request.db)
 
 
