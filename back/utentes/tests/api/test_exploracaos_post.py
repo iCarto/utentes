@@ -43,7 +43,7 @@ class ExploracaoCreateTests(DBIntegrationTest):
         self.assertEqual("new enderezo", self.actual.loc_endere)
         self.assertEqual("DGBM", self.actual.loc_divisao)
         self.assertEqual("Megaruma", self.actual.loc_bacia)
-        self.assertEqual("Megaruma", self.actual.loc_subaci)
+        self.assertEqual("Necapa", self.actual.loc_subaci)
         self.assertEqual("Megaruma", self.actual.loc_rio)
         self.assertEqual(19.02, float(self.actual.c_soli))
         self.assertEqual(29, float(self.actual.c_licencia))

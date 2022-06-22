@@ -16,8 +16,8 @@ def hydro_location(
     """
     locations = [
         ("DGBI", "Incomati", None),
-        ("DGBM", "Megaruma", "Megaruma"),
-        ("DGBUM", "Tembe", "Tembe"),
+        ("DGBM", "Megaruma", "Necapa"),
+        ("DGBUM", "Tembe", "Changalane"),
         ("DGBL", "Limpopo", None),
         ("DGBUM", "Maputo", None),
         ("DGBUM", "Umbelúzi", None),

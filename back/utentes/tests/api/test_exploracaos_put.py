@@ -22,7 +22,7 @@ class ExploracaoUpdateTests(DBIntegrationTest):
     def test_update_exploracao(self):
         # Filter to use a Exploracao in a final state
         self.request.matchdict.update({"id": self.expected_gid})
-        hydro_location = domain_generator.hydro_location(loc_subaci="Tembe")
+        hydro_location = domain_generator.hydro_location(loc_subaci="Changalane")
         self.request.json_body = from_exploracao(self.request, self.expected)
         self.request.json_body.update(
             {
@@ -53,7 +53,7 @@ class ExploracaoUpdateTests(DBIntegrationTest):
         self.assertEqual("new enderezo", actual.loc_endere)
         self.assertEqual("DGBUM", actual.loc_divisao)
         self.assertEqual("Tembe", actual.loc_bacia)
-        self.assertEqual("Tembe", actual.loc_subaci)
+        self.assertEqual("Changalane", actual.loc_subaci)
         self.assertEqual(19.02, float(actual.c_soli))
         self.assertEqual(29, float(actual.c_licencia))
         self.assertEqual(92, float(actual.c_real))
