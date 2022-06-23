@@ -32,6 +32,13 @@ Backbone.SIXHIARA.Licencia = Backbone.Model.extend({
     },
 
     initialize: function() {
+        if (this.get("taxa_uso") === null && this.get("tipo_agua") === "Subterrânea") {
+            this.set("taxa_uso", 0.6);
+        }
+
+        if (this.get("iva") === null) {
+            this.set("iva", window.SIXHIARA.IVA);
+        }
         this.on(
             "change:c_soli_int change:c_soli_fon",
             function(model, value, options) {
@@ -48,21 +55,28 @@ Backbone.SIXHIARA.Licencia = Backbone.Model.extend({
             },
             this
         );
+    },
 
-        if (this.get("taxa_uso") === null && this.get("tipo_agua") === "Subterrânea") {
-            this.set("taxa_uso", 0.6);
+    initializePayments: function(exploracao) {
+        // Este cálculo de pagos, sólo tiene sentido para el paso de la concesión de
+        // licencias, en que el técnico prepara los datos para la proforma. Por eso
+        // se usa el consumo licenciado y no el facturado.
+        if (this.payments) {
+            return;
         }
+        this.payments = new SIRHA.Services.PaymentsCalculationService({
+            org_model: this,
+            fact_tipo: exploracao.get("fact_tipo"),
+        });
 
-        if (this.get("iva") === null) {
-            this.set("iva", window.SIXHIARA.IVA);
-        }
-
-        this.on(
-            "change:taxa_fixa change:taxa_uso change:consumo_fact",
-            this.updatePagoMes,
-            this
+        this.payments.setLicFields(
+            "taxa_fixa",
+            "taxa_uso",
+            "c_licencia",
+            "iva",
+            "pago_mes",
+            "pago_iva"
         );
-        this.on("change:pago_mes change:iva", this.updatePagoIva, this);
     },
 
     getSoliTot: function() {
@@ -71,17 +85,6 @@ Backbone.SIXHIARA.Licencia = Backbone.Model.extend({
 
     getRealTot: function() {
         return this.get("c_real_int") + this.get("c_real_fon");
-    },
-
-    updatePagoMes: function() {
-        var pago_mes =
-            this.get("taxa_fixa") + this.get("taxa_uso") * this.get("consumo_fact");
-        this.set("pago_mes", pago_mes);
-    },
-
-    updatePagoIva: function() {
-        var pago_iva = this.get("pago_mes") * (1 + this.get("iva") / 100);
-        this.set("pago_iva", pago_iva);
     },
 
     impliesValidateActivity: function() {

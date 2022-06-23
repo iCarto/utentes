@@ -15,6 +15,15 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
                 actual_state: self.model.get("estado"),
             }).show();
         });
+
+        // Workaround. Si se clona el modelo de licencia licencia.exploracao no se copia
+        //al clon y monthFactor falla
+        if (
+            this.options.exploracao.get("estado_lic") ===
+            SIRHA.ESTADO.PENDING_TECH_DECISION
+        ) {
+            this.widgetModel.initializePayments(this.options.exploracao);
+        }
     },
 
     fillFactTipo: function(factTipoValue) {
