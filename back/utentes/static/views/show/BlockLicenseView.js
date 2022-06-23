@@ -156,6 +156,18 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
                 consumo_tipo: "facturacao_consumo_tipo",
                 tipo_lic: "licencia_tipo_lic",
             },
+            widgetsViewExtraOptions: {
+                auto: [
+                    {
+                        id: "pago_mes",
+                        formatter: x => formatter().formatNumber(x, "0[.]00"),
+                    },
+                    {
+                        id: "pago_iva",
+                        formatter: x => formatter().formatNumber(x, "0[.]00"),
+                    },
+                ],
+            },
         };
         let AddLicenseModalView = Backbone.SIXHIARA.LicenseModalView;
 

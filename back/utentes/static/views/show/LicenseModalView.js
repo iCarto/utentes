@@ -15,17 +15,6 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
                 actual_state: self.model.get("estado"),
             }).show();
         });
-
-        this.listenTo(this.widgetModel, "change:pago_mes", function() {
-            var value = this.widgetModel.get("pago_mes");
-            var widget = this.$(".modal").find("#pago_mes");
-            widget.val(formatter().formatNumber(value));
-        });
-        this.listenTo(this.widgetModel, "change:pago_iva", function() {
-            var value = this.widgetModel.get("pago_iva");
-            var widget = this.$(".modal").find("#pago_iva");
-            widget.val(formatter().formatNumber(value));
-        });
     },
 
     fillFactTipo: function(factTipoValue) {
