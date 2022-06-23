@@ -214,55 +214,7 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
     },
 
     _modelChanged: function() {
-        this._updatePagoIva();
         this._enableBts();
-        this._initFactPeriod();
-    },
-
-    _updatePagoIva: function() {
-        this._updatePagoMesLicencia("sup");
-        this._updatePagoMesLicencia("sub");
-        var pago_mes_sup =
-            formatter().unformatNumber(document.getElementById("pago_mes_sup").value) ||
-            0;
-        var pago_mes_sub =
-            formatter().unformatNumber(document.getElementById("pago_mes_sub").value) ||
-            0;
-
-        var juros =
-            formatter().unformatNumber(document.getElementById("juros").value) || 0;
-        var iva = formatter().unformatNumber(document.getElementById("iva").value) || 0;
-        var pago_iva =
-            (pago_mes_sup + pago_mes_sub) * (1 + iva / 100) * (1 + juros / 100);
-        this.model.set({pago_iva: pago_iva});
-        document.getElementById("pago_iva").value = formatter().formatNumber(
-            pago_iva,
-            "0[.]00"
-        );
-    },
-
-    _updatePagoMesLicencia: function(lic) {
-        var taxa_fixa = formatter().unformatNumber(
-            document.getElementById("taxa_fixa_" + lic).value
-        );
-        var taxa_uso = formatter().unformatNumber(
-            document.getElementById("taxa_uso_" + lic).value
-        );
-        var consumo_fact = formatter().unformatNumber(
-            document.getElementById("consumo_fact_" + lic).value
-        );
-        var pago_mes =
-            (taxa_fixa + taxa_uso * consumo_fact) *
-            SIRHA.Services.InvoiceService.monthFactor(this.model.get("periodo_fact"));
-        var iva = formatter().unformatNumber(document.getElementById("iva").value) || 0;
-        var pago_mes_iva = pago_mes * (1 + iva / 100);
-        this.model.set("pago_mes_" + lic, pago_mes);
-        this.model.set("pago_iva_" + lic, pago_mes_iva);
-        this.model.set("iva_" + lic, iva);
-        document.getElementById("pago_mes_" + lic).value = formatter().formatNumber(
-            pago_mes,
-            "0[.]00"
-        );
     },
 
     _estadoChanged: function() {
@@ -480,13 +432,21 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
     },
 
     _enableBts: function() {
-        let enable = this.widgets.every(function(w) {
+        const enable = this._widgetsAreValid();
+        this._enableBtsBasedOnRolesAndState(enable);
+    },
+
+    _widgetsAreValid: function() {
+        const enable = this.widgets.every(function(w) {
             var input = this.$("#edit-facturacao-modal #" + w)[0];
             var e = input.value === 0 || input.value.trim();
             e = e && input.validity.valid;
             return e;
         });
+        return enable;
+    },
 
+    _enableBtsBasedOnRolesAndState(enable) {
         this.$("#bt-diferida").hide();
         this.$("#bt-factura").hide();
         this.$("#bt-recibo").hide();
