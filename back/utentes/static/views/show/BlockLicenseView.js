@@ -1,4 +1,3 @@
-Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
     template: _.template($("#licencia-tmpl").html()),
 
@@ -152,6 +151,11 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
             editing: true,
             creating: false,
             exploracao: this.model,
+            selectViewWrapper: true,
+            domainMap: {
+                consumo_tipo: "facturacao_consumo_tipo",
+                tipo_lic: "licencia_tipo_lic",
+            },
         };
         let AddLicenseModalView = Backbone.SIXHIARA.LicenseModalView;
 

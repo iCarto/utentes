@@ -1,4 +1,3 @@
-Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
     customConfiguration: function() {
         var estadosLicencia = this.options.domains.byCategory("licencia_estado");
@@ -9,12 +8,6 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
             cloneCollection: true,
         }).render();
 
-        var consumoTipo = this.options.domains.byCategory("facturacao_consumo_tipo");
-        new Backbone.UILib.SelectView({
-            el: this.$("#consumo_tipo"),
-            collection: consumoTipo,
-        }).render();
-
         var self = this;
         this.$("#info-estado-licencia").on("click", function() {
             new Backbone.SIXHIARA.ModalTooltipEstadoLicenciaView({
@@ -22,12 +15,6 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
                 actual_state: self.model.get("estado"),
             }).show();
         });
-
-        var tiposLicencia = this.options.domains.byCategory("licencia_tipo_lic");
-        new Backbone.UILib.SelectView({
-            el: this.$("#tipo_lic"),
-            collection: tiposLicencia,
-        }).render();
 
         this.listenTo(this.widgetModel, "change:pago_mes", function() {
             var value = this.widgetModel.get("pago_mes");
@@ -44,7 +31,7 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
     fillFactTipo: function(factTipoValue) {
         // fact_tipo is in the `exploracao` and not in the `license`
         // Las licencias de usos comuns no tienen #fact_tipo
-        // Igual se podrían ocualtar con uilib-enability
+        // Igual se podrían ocultar con uilib-enability
         let factTipoWidget = this.$("#fact_tipo");
         if (factTipoWidget.length) {
             factTipoWidget[0].value = factTipoValue;
