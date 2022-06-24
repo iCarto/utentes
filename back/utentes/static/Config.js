@@ -64,6 +64,7 @@ Backbone.SIXHIARA.tipoTemplates = {
     Concessão: "static/print-templates/210920_Modelo_Concesao_SIRH.docx",
     Factura: "static/print-templates/Modelo_Factura_SIRH.docx",
     Recibo: "static/print-templates/Modelo_Recibo_SIRH.docx",
+    Factura_Proforma: "static/print-templates/220607_Modelo_Factura_Proforma_SIRH.docx",
 };
 
 window.bootbox &&

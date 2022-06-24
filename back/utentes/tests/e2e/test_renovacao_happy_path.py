@@ -50,7 +50,7 @@ class TestRenovacaoHappyPath(BaseE2ETest):
         self.fill_date_input_text("d_emissao_sup")
         self.fill_date_input_text("d_validade_sup", 365 * 3)
         self.fill_input_text("c_licencia_sup", "1000")
-        self.click_element("bt-imprimir-licencia")
+        self.click_element("bt-imprimir-licencia", 1)
         time.sleep(5)
         # validate_print_license_exists(self)
 

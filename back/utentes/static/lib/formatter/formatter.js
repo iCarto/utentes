@@ -20,6 +20,13 @@ numeral.register("locale", "pt-mz", {
 function formatter() {
     // TODO: make formats configurable
 
+    function defaultEmpty(value) {
+        if (value === 0) {
+            return value;
+        }
+        return value || " - ";
+    }
+
     function isNumber(field) {
         // http://stackoverflow.com/a/1830844/854308
         return !isNaN(parseFloat(field)) && isFinite(field);
@@ -291,6 +298,7 @@ function formatter() {
     }
 
     var formatterObj = new Object();
+    formatterObj.defaultEmpty = defaultEmpty;
     formatterObj.formatNumber = formatNumber;
     formatterObj.unformatNumber = unformatNumber;
 

@@ -232,7 +232,7 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
         SIRHA.Services.PrintService.license(this.model, this.options.tipo_agua).catch(
             function(error) {
                 bootbox.alert({
-                    title: "Erro ao imprimir licença",
+                    title: "Erro ao imprimir",
                     message: error,
                 });
             }

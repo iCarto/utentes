@@ -781,7 +781,15 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
 
     cloneExploracao: function() {
         // Merge with toJSON and parse
-        var exp = new Backbone.SIXHIARA.Exploracao(this.attributes);
+        let _class = Backbone.SIXHIARA.Exploracao;
+        if (
+            Backbone.SIXHIARA.ExpConRenovacao &&
+            this instanceof Backbone.SIXHIARA.ExpConRenovacao
+        ) {
+            _class = Backbone.SIXHIARA.ExpConRenovacao;
+        }
+
+        var exp = new _class(this.attributes);
         exp.set("actividade", this.get("actividade"));
         exp.set("utente", this.get("utente"));
         exp.set("licencias", this.get("licencias"));
@@ -918,5 +926,11 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
         this.set("lic_time_enough", endsFirst.get("lic_time_enough"), {silent: true});
         this.set("lic_time_warning", endsFirst.get("lic_time_warning"), {silent: true});
         this.set("lic_time_over", endsFirst.get("lic_time_over"), {silent: true});
+    },
+
+    anyLicWithFlatFeeConsuption: function() {
+        return this.get("licencias").any(function(lic) {
+            return lic.get("consumo_tipo") === "Fixo";
+        });
     },
 });

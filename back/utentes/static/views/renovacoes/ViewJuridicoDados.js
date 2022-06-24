@@ -337,6 +337,9 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
     },
 
     enableBts: function() {
+        // Con el autosave, el botón de imprimir se activa al momento de cambiar algo en el formulario
+        // pero en el modelo los cambios no se aplican hasta el autosave/fillRenovacao y eso tarda
+        // el tiempo del timer. Si un usuario pulsa muy rápido imprimir, los cambios no estarán guardados
         document.getElementById("bt-ok").disabled = true;
         document.getElementById("bt-imprimir-licencia").disabled = true;
         var lic_imp = document.getElementById("lic_imp").checked;
@@ -386,7 +389,22 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
     printLicense: function(e) {
         e.preventDefault();
         e.stopPropagation();
-        SIRHA.Services.PrintService.licenses(this.model, "es_renovacao")
+
+        const exploracaoForPrint = this.model.cloneExploracao();
+        const renovacao = exploracaoForPrint.get("renovacao");
+
+        exploracaoForPrint.get("licencias").forEach(lic => {
+            lic.initializePayments(exploracaoForPrint);
+            const prefix = lic.getSafeTipoAgua();
+            lic.set({
+                d_emissao: renovacao.get("d_emissao_" + prefix),
+                d_validade: renovacao.get("d_validade_" + prefix),
+                c_licencia: renovacao.get("c_licencia_" + prefix),
+                tipo_lic: renovacao.get("tipo_lic_" + prefix),
+            });
+        });
+
+        SIRHA.Services.PrintService.licenses(exploracaoForPrint)
             .then(function() {
                 var lic_imp = document.getElementById("lic_imp");
                 lic_imp.checked = true;
@@ -398,5 +416,16 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
                     message: error,
                 });
             });
+
+        if (this.model.anyLicWithFlatFeeConsuption()) {
+            SIRHA.Services.PrintService.proforma(exploracaoForPrint).catch(function(
+                error
+            ) {
+                bootbox.alert({
+                    title: "Erro ao imprimir",
+                    message: error,
+                });
+            });
+        }
     },
 });

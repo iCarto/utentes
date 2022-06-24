@@ -158,5 +158,14 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
                     message: error,
                 });
             });
+
+        if (this.model.anyLicWithFlatFeeConsuption()) {
+            SIRHA.Services.PrintService.proforma(this.model).catch(function(error) {
+                bootbox.alert({
+                    title: "Erro ao imprimir",
+                    message: error,
+                });
+            });
+        }
     },
 });

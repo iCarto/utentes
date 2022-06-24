@@ -25,6 +25,9 @@ SIRHA.Services.PrintService = (function(formatter) {
         if (lic && !lic.get("tipo_lic")) {
             return "A exploração tem que ter uma tipo de licença.";
         }
+        if (lic && !_.isNumber(lic.get("c_licencia"))) {
+            return "A exploração tem que ter consumo licenciado";
+        }
         const locDivisao = exploracao.get
             ? exploracao.get("loc_divisao")
             : exploracao.loc_divisao;
@@ -33,7 +36,7 @@ SIRHA.Services.PrintService = (function(formatter) {
         }
     }
 
-    function fillData(_model, dataARA, tipoAgua, fontes, es_renovacao) {
+    function fillData(_model, dataARA, tipoAgua, fontes) {
         var json = _model.toJSON();
         if (fontes) {
             json.fontes = fontes;
@@ -47,9 +50,6 @@ SIRHA.Services.PrintService = (function(formatter) {
         });
 
         data.licencia = data.licencias.filter(lic => lic.tipo_agua === tipoAgua)[0];
-        if (es_renovacao) {
-            fillLicenseDataFromRenovacao(data.licencia, data.renovacao);
-        }
 
         data.licencia.d_emissao = formatter.formatDate(data.licencia.d_emissao) || "";
         data.licencia.d_validade = formatter.formatDate(data.licencia.d_validade) || "";
@@ -78,16 +78,7 @@ SIRHA.Services.PrintService = (function(formatter) {
         return data;
     }
 
-    function fillLicenseDataFromRenovacao(lic, renovacao) {
-        var prefix = lic.tipo_agua.substring(0, 3).toLowerCase();
-        lic.d_emissao = renovacao["d_emissao_" + prefix];
-        lic.d_validade = renovacao["d_validade_" + prefix];
-        lic.c_licencia = renovacao["c_licencia_" + prefix];
-        lic.tipo_lic = renovacao["tipo_lic_" + prefix];
-        return lic;
-    }
-
-    function licenses(_model, es_renovacao) {
+    function licenses(_model) {
         return fetch(`/api/fontes/${_model.get("id")}`)
             .then(response => {
                 if (!response.ok) {
@@ -98,34 +89,42 @@ SIRHA.Services.PrintService = (function(formatter) {
             .then(fontes => {
                 const licsTipoAgua = _model.get("licencias").pluck("tipo_agua");
                 const printedLics = licsTipoAgua.map(tipoAgua =>
-                    license(_model, tipoAgua, fontes, es_renovacao)
+                    license(_model, tipoAgua, fontes)
                 );
                 return Promise.all(printedLics);
             });
     }
 
-    function license(_model, tipoAgua, fontes, es_renovacao) {
+    function license(_model, tipoAgua, fontes) {
         const lic = _model.get("licencias").findWhere({tipo_agua: tipoAgua});
         const errorMsg = isValidForPrint(_model, lic);
         if (errorMsg) {
             return Promise.reject(errorMsg);
         }
 
-        return fetch("/api/get_datos_ara")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then(function(dataARA) {
-                var data = fillData(_model, dataARA, tipoAgua, fontes, es_renovacao);
+        return _getDatosARA().then(function(dataARA) {
+            var data = fillData(_model, dataARA, tipoAgua, fontes);
 
-                new Backbone.SIXHIARA.DocxGeneratorView({
-                    data: data,
-                });
-                return data;
+            new Backbone.SIXHIARA.DocxGeneratorView({
+                data: data,
             });
+            return data;
+        });
+    }
+
+    function proforma(_model) {
+        const errorMsg = isValidForPrint(_model);
+        if (errorMsg) {
+            return Promise.reject(errorMsg);
+        }
+
+        return _getDatosARA().then(function(dataARA) {
+            let data = new Backbone.SIXHIARA.Proforma(_model, dataARA).data;
+            new Backbone.SIXHIARA.DocxGeneratorView({
+                data: data,
+            });
+            return data;
+        });
     }
 
     function factura(invoiceData) {
@@ -136,18 +135,21 @@ SIRHA.Services.PrintService = (function(formatter) {
         return billing(invoiceData, "Recibo");
     }
 
+    function _getDatosARA() {
+        return fetch("/api/get_datos_ara").then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        });
+    }
+
     function billing(invoiceData, template) {
         const errorMsg = isValidForPrint(invoiceData);
         if (errorMsg) {
             return Promise.reject(errorMsg);
         }
-        return fetch("/api/get_datos_ara")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
+        return _getDatosARA()
             .then(function(dataARA) {
                 var data = fillBillingData(invoiceData, dataARA, template);
                 return data;
@@ -215,6 +217,6 @@ SIRHA.Services.PrintService = (function(formatter) {
         return data;
     }
 
-    const publicAPI = {license, licenses, factura, recibo};
+    const publicAPI = {license, licenses, factura, recibo, proforma};
     return publicAPI;
 })(formatter());
