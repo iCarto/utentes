@@ -28,22 +28,39 @@ SIRHA.Utils.DOM = {
 
     /**
     Disables a button or DOM Element acting as a button within bootstrap
-    @param {String} id the element
+    @param {String} btID the element
+    @param {String} title Optional. The title to put on the button.
     */
-    disableBt: function disableBt(btName) {
-        const bt = document.getElementById(btName);
+    disableBt: function disableBt(btID, title) {
+        const bt = document.getElementById(btID);
         bt.classList.add("disabled");
         bt.setAttribute("aria-disabled", "true");
+        if (title) {
+            bt.title = title;
+        }
+        bt.disabled = true;
     },
 
     /**
     Enables a button or DOM Element acting as a button within bootstrap
     @param {String} id the element
     */
-    enableBt: function(btName) {
+    enableBt: function enableBt(btName, title) {
         const bt = document.getElementById(btName);
         bt.classList.remove("disabled");
         bt.removeAttribute("aria-disabled");
+        if (title) {
+            bt.title = title;
+        }
+        bt.disabled = null;
+    },
+
+    enableBtIf(enable, btName, title) {
+        if (enable) {
+            SIRHA.Utils.DOM.enableBt(btName, title);
+        } else {
+            SIRHA.Utils.DOM.disableBt(btName, title);
+        }
     },
 
     allRequiredInputAreChecked: function(selector) {

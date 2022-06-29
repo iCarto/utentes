@@ -128,16 +128,20 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
         if (validState === SIRHA.ESTADO.PENDING_FIELD_VISIT) {
             this.enableBts_for_state_pending_field_visit();
         } else if (validState === SIRHA.ESTADO.PENDING_TECH_DECISION) {
-            document.getElementById("bt-ok").disabled = true;
-            document.getElementById("bt-ok").title =
-                "Deve rechear correctamente a 'Ficha' dantes de completar";
+            SIRHA.Utils.DOM.disableBt(
+                "bt-ok",
+                "Deve rechear correctamente a 'Ficha' dantes de completar"
+            );
             this.enableBts_for_state_pending_tech_decision();
         } else if (validState === "FICHA IS VALID") {
             var enableChb = SIRHA.Utils.DOM.allRequiredInputAreChecked(
                 'table input[type="checkbox"]'
             );
-            document.getElementById("bt-ok").disabled = !enableChb;
-            document.getElementById("bt-ok").title = SIRHA.ESTADO.PENDING_EMIT_LICENSE;
+            SIRHA.Utils.DOM.enableBtIf(
+                enableChb,
+                "bt-ok",
+                SIRHA.ESTADO.PENDING_EMIT_LICENSE
+            );
             this.enableBts_for_state_pending_tech_decision();
         }
 
@@ -167,14 +171,16 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
     enableBts_for_state_pending_field_visit: function() {
         SIRHA.Utils.DOM.enableBt("bt-adicionar");
         SIRHA.Utils.DOM.disableBt("bt-ficha");
-        SIRHA.Utils.DOM.disableBt("bt-defacto");
+        SIRHA.Utils.DOM.disableBt(
+            "bt-defacto",
+            "Deve 'Adicionar' dantes de poder criar uma 'Utente de facto'"
+        );
         document.getElementById("parecer_divisao").disabled = true;
         document.getElementById("p_tec").disabled = true;
-        document.getElementById("bt-ok").disabled = true;
-        document.getElementById("bt-ok").title =
-            "Deve 'Adicionar' dantes de poder completar";
-        document.getElementById("bt-defacto").title =
-            "Deve 'Adicionar' dantes de poder criar uma 'Utente de facto'";
+        SIRHA.Utils.DOM.disableBt(
+            "bt-ok",
+            "Deve 'Adicionar' dantes de poder completar"
+        );
     },
 
     enableBts_for_state_pending_tech_decision: function() {

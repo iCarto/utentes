@@ -126,16 +126,19 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
             var enableChb = SIRHA.Utils.DOM.allRequiredInputAreChecked(
                 'table input[type="checkbox"]'
             );
-            document.getElementById("bt-ok").disabled = !enableChb;
-            document.getElementById("bt-ok").title =
-                SIRHA.ESTADO_RENOVACAO.PENDING_EMIT_LICENSE;
+            SIRHA.Utils.DOM.enableBtIf(
+                enableChb,
+                "bt-ok",
+                SIRHA.ESTADO_RENOVACAO.PENDING_EMIT_LICENSE
+            );
         } else {
             SIRHA.Utils.DOM.disableBt("bt-defacto");
             document.getElementById("parecer_divisao").disabled = true;
             document.getElementById("p_tec").disabled = true;
-            document.getElementById("bt-ok").disabled = true;
-            document.getElementById("bt-ok").title =
-                "Deve rechear correctamente a 'Ficha' dantes de completar";
+            SIRHA.Utils.DOM.disableBt(
+                "bt-ok",
+                "Deve rechear correctamente a 'Ficha' dantes de completar"
+            );
         }
 
         this._subviews.forEach(v => v.enableBts());
