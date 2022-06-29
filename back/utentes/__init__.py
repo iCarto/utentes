@@ -75,5 +75,5 @@ def main(global_config, **settings):
     config.add_static_view("static", "static", cache_max_age=THREE_DAYS_IN_SECONDS)
     config.include("utentes.urls")
 
-    config.scan(ignore=["utentes.test"])
+    config.scan(ignore=["utentes.tests"])
     return config.make_wsgi_app()

@@ -1,3 +1,4 @@
+import logging
 import time
 import unittest
 
@@ -5,6 +6,9 @@ from selenium.webdriver.support.select import Select
 
 from utentes.tests.e2e import config
 from utentes.tests.e2e.base import BaseE2ETest, login
+
+
+log = logging.getLogger(__name__)
 
 
 class TestUtentesUsosComuns(BaseE2ETest):
@@ -19,7 +23,7 @@ class TestUtentesUsosComuns(BaseE2ETest):
         except Exception:
             # https://advancedweb.hu/detecting-errors-in-the-browser-with-selenium/
             logs = self.browser.get_log("browser")
-            print(logs)
+            log.error(logs)
             raise
 
     def fill_ficha(self):

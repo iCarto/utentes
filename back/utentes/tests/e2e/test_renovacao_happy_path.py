@@ -1,9 +1,13 @@
+import logging
 import time
 import unittest
 
 from utentes.tests.e2e import config
 from utentes.tests.e2e.base import BaseE2ETest, login
 from utentes.tests.e2e.testing_database import validate_exp
+
+
+log = logging.getLogger(__name__)
 
 
 class TestRenovacaoHappyPath(BaseE2ETest):
@@ -13,7 +17,7 @@ class TestRenovacaoHappyPath(BaseE2ETest):
         except Exception:
             logs = self.browser.get_log("browser")
 
-            print(logs)
+            log.error(logs)
             # Logs logs = getDriver().manage().logs();
             # LogEntries logEntries = logs.get(LogType.BROWSER);
             # List<LogEntry> errorLogs = logEntries.filter(Level.SEVERE);

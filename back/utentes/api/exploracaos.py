@@ -88,8 +88,8 @@ def upsert_utente(request, body):
     if u:
         return u[0]
 
-    validatorUtente = Validator(UTENTE_SCHEMA)
-    msgs = validatorUtente.validate(body["utente"])
+    validator_utente = Validator(UTENTE_SCHEMA)
+    msgs = validator_utente.validate(body["utente"])
     if msgs:
         raise badrequest_exception({"error": msgs})
     u = Utente.create_from_json(body["utente"])
@@ -114,7 +114,7 @@ def exploracaos_update(request):
         log.error(ve)
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
 
-    msgs = validate_entities(request, body)
+    msgs = validate_entities(body)
     if msgs:
         raise badrequest_exception({"error": msgs})
 
@@ -174,7 +174,7 @@ def exploracaos_create(request):
         raise badrequest_exception({"error": error_msgs["body_not_valid"]})
 
     exp_id = body.get("exp_id")
-    msgs = validate_entities(request, body)
+    msgs = validate_entities(body)
     if msgs:
         raise badrequest_exception({"error": msgs})
 
@@ -189,8 +189,7 @@ def exploracaos_create(request):
     u_filter = Utente.nome == body.get("utente").get("nome")
     u = request.db.query(Utente).filter(u_filter).one_or_none()
     if not u:
-        validatorUtente = Validator(UTENTE_SCHEMA)
-        msgs = validatorUtente.validate(body["utente"])
+        msgs = Validator(UTENTE_SCHEMA).validate(body["utente"])
         if msgs:
             raise badrequest_exception({"error": msgs})
         u = Utente.create_from_json(body["utente"])
@@ -222,7 +221,7 @@ def exploracaos_find(request):
     exp_id = request.params.get("exp_id", "")
 
     similarity_grade = 0.3
-    sql = r"""
+    sql = """
         WITH lics AS (
             SELECT
                 exploracao,
@@ -275,54 +274,48 @@ def exploracaos_find(request):
             or e.exp_id = :exp_id
         ORDER BY similarity DESC
     """
-    try:
-        result = request.db.execute(
-            sql,
-            {
-                "exp_name": exp_name,
-                "exp_id": exp_id,
-                "similarity_grade": similarity_grade,
-                "renovacao_not_valid_states": FINISHED_RENOVACAO_STATES,
-            },
-        )
-        return [(dict(row.items())) for row in result]
-    except:
-        raise badrequest_exception({"error": error_msgs["unknown_error"]})
+
+    result = request.db.execute(
+        sql,
+        {
+            "exp_name": exp_name,
+            "exp_id": exp_id,
+            "similarity_grade": similarity_grade,
+            "renovacao_not_valid_states": FINISHED_RENOVACAO_STATES,
+        },
+    )
+    return [(dict(row.items())) for row in result]
 
 
 def activity_fail(v):
     return (
-        (v is None)
-        or (v == "")
-        or (len(v) == 0)
-        or (v.get("tipo") is None)
-        or (v.get("tipo") == "Actividade non declarada")
+        (not v) or (not v.get("tipo")) or (v.get("tipo") == "Actividade non declarada")
     )
 
 
-def validate_entities(request, body):
+def validate_entities(body):
 
-    validatorExploracao = Validator(EXPLORACAO_SCHEMA)
+    validator_exploracao = Validator(EXPLORACAO_SCHEMA)
 
-    validatorExploracao.add_rule("EXP_ID_FORMAT", {"fails": is_not_valid_exp_id})
+    validator_exploracao.add_rule("EXP_ID_FORMAT", {"fails": is_not_valid_exp_id})
+    validator_exploracao.add_rule("ACTIVITY_NOT_NULL", {"fails": activity_fail})
 
-    validatorExploracao.add_rule("ACTIVITY_NOT_NULL", {"fails": activity_fail})
     if Licencia.implies_validate_ficha(body.get("estado_lic")):
-        validatorExploracao.append_schema(EXPLORACAO_SCHEMA_CON_FICHA)
+        validator_exploracao.append_schema(EXPLORACAO_SCHEMA_CON_FICHA)
 
-    msgs = validatorExploracao.validate(body)
+    msgs = validator_exploracao.validate(body)
 
-    validatorFonte = Validator(FONTE_SCHEMA)
+    validator_fonte = Validator(FONTE_SCHEMA)
     for fonte in body.get("fontes"):
-        msgs = msgs + validatorFonte.validate(fonte)
+        msgs = msgs + validator_fonte.validate(fonte)
 
     if Licencia.implies_validate_ficha(body.get("estado_lic")):
-        validatorLicencia = Validator(LICENCIA_SCHEMA)
+        validator_licencia = Validator(LICENCIA_SCHEMA)
 
-        validatorLicencia.add_rule("LIC_NRO_FORMAT", {"fails": is_not_valid_lic_nro})
+        validator_licencia.add_rule("LIC_NRO_FORMAT", {"fails": is_not_valid_lic_nro})
 
         for lic in body.get("licencias"):
             if Licencia.implies_validate_activity(lic.get("estado")):
-                msgs = msgs + validatorLicencia.validate(lic)
+                msgs = msgs + validator_licencia.validate(lic)
 
     return msgs

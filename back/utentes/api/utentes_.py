@@ -140,7 +140,7 @@ def utentes_find(request):
     telefone = request.params.get("telefone", "")
     email = request.params.get("email", "")
     similarity_grade = 0.3
-    sql = r"""
+    sql = """
         select *,
             case
                 when nuit = :nuit  THEN 1
@@ -162,21 +162,19 @@ def utentes_find(request):
                 or email = :email
         order by similarity desc
     """
-    try:
-        result = request.db.execute(
-            sql,
-            {
-                "nome": nome,
-                "nuit": nuit,
-                "telefone": telefone,
-                "email": email,
-                "similarity_grade": similarity_grade,
-            },
-        )
 
-        return [(dict(row.items())) for row in result]
-    except:
-        raise badrequest_exception({"error": error_msgs["unknown_error"]})
+    result = request.db.execute(
+        sql,
+        {
+            "nome": nome,
+            "nuit": nuit,
+            "telefone": telefone,
+            "email": email,
+            "similarity_grade": similarity_grade,
+        },
+    )
+
+    return [(dict(row.items())) for row in result]
 
 
 def validate_entities(body):
