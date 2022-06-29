@@ -245,3 +245,6 @@ new_version_220502 2022-05-02T14:42:29Z Francisco Puga <fpuga@icarto.es> # new_v
 @220502 2022-05-02T14:44:32Z Francisco Puga <fpuga@icarto.es> # tag 220502
 
 create_table_domains_size_category 2022-06-02T15:04:25Z Francisco Puga <fpuga@icarto.es> # Create table domains size_category
+drop_iva_xx_columns 2022-06-16T11:09:45Z Francisco Puga <fpuga@icarto.es> # Drop iva_sup, iva_sub columns
+not_allows_null_values_in_facturacao_iva 2022-06-16T11:20:16Z Francisco Puga <fpuga@icarto.es> # Sets NOT NULL to facturacao.iva
+drop_pago_mes_column_in_facturacao 2022-06-22T10:08:32Z Francisco Puga <fpuga@icarto.es> # Drops column 'pago_mes' in utentes.facturacao

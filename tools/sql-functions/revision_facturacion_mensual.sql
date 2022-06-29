@@ -11,7 +11,8 @@ WITH lics AS (
                 , '')
         END tipo_agua
         , CASE WHEN count(*) = 2 THEN
-            string_agg(distinct consumo_tipo, ' ')
+            string_agg(DISTINCT consumo_tipo
+                , ' ')
         ELSE
             string_agg(consumo_tipo
                 , '')
@@ -21,8 +22,8 @@ WITH lics AS (
     GROUP BY
         exploracao
     ORDER BY
-        exploracao,
-        tipo_agua
+        exploracao
+        , tipo_agua
 )
 , exps AS (
     SELECT
@@ -67,7 +68,9 @@ WITH lics AS (
         , f.pago_iva_sub
         , f.iva_sub
         , f.iva
-        , f.pago_mes
+        , COALESCE(f.pago_mes_sup
+            , 0) + COALESCE(f.pago_mes_sub
+            , 0) AS pago_mes
         , f.pago_iva
         , f.fact_id
         , f.juros
@@ -100,9 +103,8 @@ SELECT
     , tipo_agua AS "Tipo Água" -- con valores: 'Superficial', 'Subterrânea', 'Ambas'
     , exp_fact_tipo AS "Tipo Facturação" -- El último de la explotación. No el de la factura.
     , consumo_tipo AS "Tipo Consumo" -- valores 'Fixo', 'Variável', 'Fixo Variável', 'Variável Fixo'. El último de la licencia. No el de la factura.
-    
 FROM
     invs
 ORDER BY
-    inv_gid
-;
+    inv_gid;
+
