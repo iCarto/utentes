@@ -54,47 +54,52 @@ var EXPLORACAO_SCHEMA = [
         message: 'A "área" não tem o formato correcto',
         rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
     },
-];
-
-var EXPLORACAO_SCHEMA_CON_FICHA = [
     {
         fieldname: "loc_provin",
         message: 'A "provincia" da exploracão não pode estar vazia',
         rules: ["NOT_NULL"],
+        context: ["validateFicha"],
     },
     {
         fieldname: "loc_distri",
         message: 'O "distrito" da exploracão não pode estar vazio',
         rules: ["NOT_NULL"],
+        context: ["validateFicha"],
     },
     {
         fieldname: "loc_posto",
         message: 'O "posto administrativo" da exploracão não pode estar vazio',
         rules: ["NOT_NULL"],
+        context: ["validateFicha"],
     },
     {
         fieldname: "loc_divisao",
         message: 'A "Divisão" da exploracão não pode estar vazia',
         rules: ["NOT_NULL"],
+        context: ["validateFicha"],
     },
     {
         fieldname: "loc_bacia",
         message: 'A "bacia" da exploracão não pode estar vazia',
         rules: ["NOT_NULL"],
+        context: ["validateFicha"],
     },
     {
         fieldname: "utente",
         message: "A exploracão deve ter um utente",
         rules: ["NOT_NULL"],
+        context: ["validateFicha"],
     },
     {
         fieldname: "actividade",
         message: "A exploracão deve ter uma actividade",
         rules: ["ACTIVITY_NOT_NULL"],
+        context: ["validateFicha"],
     },
     {
         fieldname: "licencias",
         message: "A exploracão deve ter uma licença",
         rules: ["ARRAY_NOT_VOID"],
+        context: ["validateFicha"],
     },
 ];

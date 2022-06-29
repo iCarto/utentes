@@ -18,6 +18,15 @@ function validator(schemaValidateFrom) {
         messages.length = 0;
 
         schema.forEach(function(def) {
+            // if any of the functions defined in the context key is true apply the rules
+            if (
+                !def.context?.some(context =>
+                    SIRHA.Services.ValidatorContextService[context](model)
+                )
+            ) {
+                return messages;
+            }
+
             def.rules.forEach(function(ruleName) {
                 var rule = getRule(ruleName);
                 if (rule.fails(model[def.fieldname])) {

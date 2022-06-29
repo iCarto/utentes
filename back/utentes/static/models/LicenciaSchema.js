@@ -46,6 +46,12 @@ var LICENCIA_SCHEMA = [
         rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
     },
     {
+        fieldname: "c_licencia",
+        message: 'O "consumo licenciado" da licença não pode estar vazio',
+        rules: ["NOT_NULL"],
+        context: ["proforma"],
+    },
+    {
         fieldname: "c_real_tot",
         message: 'O "consumo real" não tem o formato correcto',
         rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
@@ -62,28 +68,24 @@ var LICENCIA_SCHEMA = [
     },
     {
         fieldname: "taxa_fixa",
-        message: 'A "taxa fixa" da licença não tem o formato correcto',
-        rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
+        message:
+            'A "taxa fixa" da licença não pode estar vazio ou não tem o formato correcto',
+        rules: ["NOT_NULL", "IS_NUMERIC", "INT_LESS_THAN_8"],
+        context: ["proforma"],
     },
     {
         fieldname: "taxa_uso",
-        message: 'A "taxa de uso" da licença não tem o formato correcto',
-        rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
-    },
-    {
-        fieldname: "pago_mes",
-        message: 'O "valor de pago mensal" da licença não tem o formato correcto',
-        rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
+        message:
+            'A "taxa de uso" da licença não pode estar vazio ou não tem o formato correcto',
+        rules: ["NOT_NULL", "IS_NUMERIC", "INT_LESS_THAN_8"],
+        context: ["proforma"],
     },
     {
         fieldname: "iva",
-        message: 'O "IVA" da licença não tem o formato correcto',
-        rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
-    },
-    {
-        fieldname: "pago_iva",
-        message: 'O "valor com IVA" da licença não tem o formato correcto',
-        rules: ["IS_NUMERIC", "INT_LESS_THAN_8"],
+        message:
+            'O "IVA" da licença não pode estar vazio ou não tem o formato correcto',
+        rules: ["NOT_NULL", "IS_NUMERIC", "INT_LESS_THAN_8"],
+        context: ["proforma"],
     },
     {
         fieldname: "consumo_tipo",

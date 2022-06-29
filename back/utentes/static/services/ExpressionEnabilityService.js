@@ -14,4 +14,5 @@ Backbone.UILib.Enability.Expressions.proforma = function(widget, context) {
         return;
     }
     widget.disabled = false;
+    widget.required = true;
 };

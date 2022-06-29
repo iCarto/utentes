@@ -523,9 +523,6 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             },
         });
 
-        if (this.validateFicha()) {
-            expValidator.appendSchema(EXPLORACAO_SCHEMA_CON_FICHA);
-        }
         expValidator.validate(this.toJSON()).forEach(function(msg) {
             messages.push(msg);
         });
@@ -744,10 +741,6 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             geometry: geojson.geometry,
             properties: properties,
         };
-    },
-
-    validateFicha: function() {
-        return SIRHA.ESTADO.CATEGORY_VALIDATE_FICHA.includes(this.get("estado_lic"));
     },
 
     getLicencia: function(tipo) {
