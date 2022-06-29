@@ -44,6 +44,9 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
                 this.$("#printLicense").removeClass("hidden");
             }
             // licenciada, pendente firma licença (Director) y pendente emissão licença (DJ)
+
+            this.$el.removeClass("disabled");
+
             /*
             fact_tipo no es una propiedad de cada licencia. Si no que es común a ambas
             por lo que debería estar en un "emplazamiento" común a ambas y no hackeear de esta forma
@@ -51,7 +54,7 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
             */
             this.$("span.js_fact_tipo").text(this.model.get("fact_tipo"));
         } else {
-            var lic = new Backbone.SIXHIARA.Licencia({
+            var lic = Backbone.SIXHIARA.Licencia.create(this.model, {
                 tipo_agua: this.options.tipo_agua,
                 lic_nro: SIRHA.ESTADO.NOT_EXISTS,
             });
@@ -61,7 +64,7 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
             licencia nueva vacía esos valores se muestran en el template a
             pesar de que en realidad deberían nulos
             */
-            lic.set({taxa_uso: null, iva: null}, {silent: true});
+            // lic.set({taxa_uso: null, iva: null}, {silent: true});
 
             this.$el.append(this.template(lic.toJSON()));
             this.$("#addLicense").removeClass("hidden");
@@ -175,12 +178,8 @@ Backbone.SIXHIARA.BlockLicenseView = Backbone.View.extend({
             var self = this;
             options.editing = false;
             options.creating = true;
-            options.model = new Backbone.SIXHIARA.Licencia({
+            options.model = Backbone.SIXHIARA.Licencia.create(this.model, {
                 tipo_agua: this.options.tipo_agua,
-                lic_nro: SIRHA.Services.IdService.calculateNewLicNro(
-                    this.model.get("exp_id"),
-                    this.options.tipo_agua
-                ),
             });
 
             AddLicenseModalView = Backbone.SIXHIARA.LicenseModalView.extend({

@@ -24,18 +24,9 @@ Backbone.SIXHIARA.LicenseView = Backbone.UILib.BaseView.extend({
     },
 
     createLicense: function() {
-        return new Backbone.SIXHIARA.Licencia({
+        return new Backbone.SIXHIARA.Licencia.create(this.model, {
             tipo_agua: this.tipo_agua,
             estado: this.model.get("estado_lic"),
-            lic_nro: this.model.get("exp_id")
-                ? SIRHA.Services.IdService.calculateNewLicNro(
-                      this.model.get("exp_id"),
-                      this.tipo_agua
-                  )
-                : null,
-            taxa_fixa: null,
-            taxa_uso: this.tipo_agua === "Subterrânea" ? 0.6 : null,
-            iva: window.SIXHIARA.IVA,
         });
     },
 

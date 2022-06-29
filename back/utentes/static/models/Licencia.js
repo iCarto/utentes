@@ -32,13 +32,6 @@ Backbone.SIXHIARA.Licencia = Backbone.Model.extend({
     },
 
     initialize: function() {
-        if (this.get("taxa_uso") === null && this.get("tipo_agua") === "Subterrânea") {
-            this.set("taxa_uso", 0.6);
-        }
-
-        if (this.get("iva") === null) {
-            this.set("iva", window.SIXHIARA.IVA);
-        }
         this.on(
             "change:c_soli_int change:c_soli_fon",
             function(model, value, options) {
@@ -105,3 +98,28 @@ Backbone.SIXHIARA.Licencia = Backbone.Model.extend({
             .toLowerCase();
     },
 });
+
+Backbone.SIXHIARA.Licencia.create = function(exploracao, attrs) {
+    const lic = new Backbone.SIXHIARA.Licencia(attrs);
+
+    if (lic.get("taxa_uso") === null && lic.get("tipo_agua") === "Subterrânea") {
+        lic.set("taxa_uso", 0.6, {silent: true});
+    }
+
+    if (lic.get("iva") === null) {
+        lic.set("iva", window.SIXHIARA.IVA, {silent: true});
+    }
+
+    if (!lic.get("lic_nro")) {
+        lic.set(
+            "lic_nro",
+            SIRHA.Services.IdService.calculateNewLicNro(
+                exploracao.get("exp_id"),
+                lic.get("tipo_agua")
+            ),
+            {silent: true}
+        );
+    }
+
+    return lic;
+};
