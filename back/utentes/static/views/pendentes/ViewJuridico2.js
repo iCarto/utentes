@@ -127,6 +127,11 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
             .forEach(function(input) {
                 input.addEventListener("change", self.autosave.bind(self), false);
             });
+
+        if (!this.model.isValid()) {
+            const msg = this.model.validationError.join("\n");
+            SIRHA.Utils.DOM.disableBt("bt-imprimir-licencia", msg);
+        }
     },
 
     enableBts: function() {

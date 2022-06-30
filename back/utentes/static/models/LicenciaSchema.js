@@ -20,9 +20,27 @@ var LICENCIA_SCHEMA = [
         rules: ["IS_DATE"],
     },
     {
+        fieldname: "d_emissao",
+        message: 'A "data de emissão" não pode estar vazio',
+        rules: ["NOT_NULL"],
+        context: ["printLicense"],
+    },
+    {
         fieldname: "d_validade",
         message: 'A "data de validade" não tem o formato correcto',
         rules: ["IS_DATE"],
+    },
+    {
+        fieldname: "d_validade",
+        message: 'A "data de emissão" não pode estar vazio',
+        rules: ["NOT_NULL"],
+        context: ["printLicense"],
+    },
+    {
+        fieldname: "tipo_lic",
+        message: 'O "Tipo de licença" não pode estar vazio',
+        rules: ["NOT_NULL"],
+        context: ["printLicense"],
     },
     {
         fieldname: "c_soli_tot",
