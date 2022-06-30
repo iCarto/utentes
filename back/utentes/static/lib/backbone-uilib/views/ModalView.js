@@ -61,7 +61,7 @@ Backbone.UILib.ModalView = Backbone.View.extend({
     },
 
     _renderWidgetsView: function() {
-        widgetsView = new Backbone.UILib.WidgetsView({
+        const widgetsView = new Backbone.UILib.WidgetsView({
             el: this.$el,
             model: this.widgetModel,
             ...this.options.widgetsViewExtraOptions,
