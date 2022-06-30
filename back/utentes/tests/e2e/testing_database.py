@@ -20,6 +20,11 @@ def delete_exp(db: Session, exp_id: str) -> None:
     db.commit()
 
 
+def delete_exp_by_name(db: Session, exp_name: str) -> None:
+    db.query(Exploracao).filter(Exploracao.exp_name == exp_name).delete()
+    db.commit()
+
+
 def create_exp(request, data):
     delete_exp(request.db, data["exp_id"])
     # TODO: Esto hay que eliminarlo

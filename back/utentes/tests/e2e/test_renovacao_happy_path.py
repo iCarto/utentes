@@ -16,8 +16,8 @@ class TestRenovacaoHappyPath(BaseE2ETest):
             self._test_renovacao_happy_path()
         except Exception:
             logs = self.browser.get_log("browser")
-
             log.error(logs)
+            # https://advancedweb.hu/detecting-errors-in-the-browser-with-selenium/
             # Logs logs = getDriver().manage().logs();
             # LogEntries logEntries = logs.get(LogType.BROWSER);
             # List<LogEntry> errorLogs = logEntries.filter(Level.SEVERE);
@@ -28,6 +28,10 @@ class TestRenovacaoHappyPath(BaseE2ETest):
             #     }
             #     fail(errorLogs.size() + " Console error found");
             # }
+
+            # Estos logs de javascript sólo se muestran si se produce una exceción,
+            # habría que conseguir chequearlos y mostrarlos siempre por si se están
+            # produciendo errores en el js que no se ven si no.
             raise
 
     def _test_renovacao_happy_path(self):
@@ -68,3 +72,37 @@ class TestRenovacaoHappyPath(BaseE2ETest):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# def check_browser_errors(driver):
+#     """
+#     Checks browser for errors, returns a list of errors
+#     :param driver:
+#     :return:
+#     """
+#     try:
+#         browserlogs = driver.get_log("browser")
+#     except (ValueError, WebDriverException) as e:
+#         # Some browsers does not support getting logs
+#         LOGGER.debug(
+#             "Could not get browser logs for driver %s due to exception: %s", driver, e
+#         )
+#         return []
+
+#     errors = []
+#     for entry in browserlogs:
+#         if entry["level"] == "SEVERE":
+#             errors.append(entry)
+#     return errors
+
+
+# def tearDown(self):
+#     # browser_logs is a list of dicts
+#     browser_logs = driver.get_log("browser")
+#     errors = [
+#         logentry["message"]
+#         for logentry in browser_logs
+#         if logentry["level"] == "SEVERE"
+#     ]
+#     if errors:
+#         self.fail(f'The following JavaScript errors occurred: {"; ".join(errors)}')

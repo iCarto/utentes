@@ -14,11 +14,11 @@ import unittest
 from pyramid import testing
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC  # noqa: N812
-from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 
 from utentes.tests.e2e import config
 from utentes.tests.e2e.chrome_browser import get_browser as get_browser_chrome
+from utentes.tests.e2e.pages.page_helper import PageHelper
 from utentes.tests.e2e.testing_database import TestingDatabase
 from utentes.tests.e2e.testing_server import start_server
 
@@ -54,9 +54,11 @@ class BaseE2ETest(unittest.TestCase):
     def setUp(self):
         try:
             self.browser = get_browser()
+            self.page_helper = PageHelper(self.browser)
         except Exception:
             traceback.print_exc()
             self.browser = None
+            self.page_helper = None
 
         if not self.browser:
             self.skipTest("Web browser not available")
@@ -77,14 +79,7 @@ class BaseE2ETest(unittest.TestCase):
         testing.tearDown()
 
     def fill_input_text(self, input_id, text, clear=True, seconds_to_wait=0.5):
-        # Esperamos un tiempo concreto para simular los tiempos que tarda de
-        # verdad un usuario en poder hacer click. Y poder ver como evoluciona la
-        # pantalla
-        time.sleep(seconds_to_wait)
-        element = self.browser.find_element_by_id(input_id)
-        if clear:
-            element.clear()
-        element.send_keys(text)
+        self.page_helper.fill_input_text(input_id, text, clear, seconds_to_wait)
 
     def fill_date_input_text(self, input_id, days=0):
         # By default puts "today". If days is present set the date as
@@ -102,6 +97,14 @@ class BaseE2ETest(unittest.TestCase):
             time.sleep(0.5)
             check.click()
 
+    def click_required_checkboxes(self):
+        required_checkboxes = self.browser.find_elements_by_css_selector(
+            'input[type="checkbox"]:required'
+        )
+        for check in required_checkboxes:
+            time.sleep(0.5)
+            check.click()
+
     def click_ok_and_accept_modals_in_process(self):
         self.click_element("bt-ok", 1)
 
@@ -116,28 +119,21 @@ class BaseE2ETest(unittest.TestCase):
         ).click()
 
     def click_element(self, input_id, seconds_to_wait=0.5):
-        time.sleep(seconds_to_wait)
-        self.browser.find_element_by_id(input_id).click()
+        self.page_helper.click_element(input_id, seconds_to_wait)
 
     def select_option_by_index(
         self, input_id, index, second_to_wait_before=0.5, second_to_wait_after=0.5
     ):
-        time.sleep(second_to_wait_before)
-        widget = Select(
-            self.browser.find_element_by_xpath(f"//select[@id='{input_id}']")
+        self.page_helper.select_option_by_index(
+            input_id, index, second_to_wait_before, second_to_wait_after
         )
-        widget.select_by_index(index)
-        time.sleep(second_to_wait_after)
 
     def select_option_by_visible_text(
         self, input_id, text, second_to_wait_before=0.5, second_to_wait_after=0.5
     ):
-        time.sleep(second_to_wait_before)
-        widget = Select(
-            self.browser.find_element_by_xpath(f"//select[@id='{input_id}']")
+        self.page_helper.select_option_by_visible_text(
+            input_id, text, second_to_wait_before, second_to_wait_after
         )
-        widget.select_by_visible_text(text)
-        time.sleep(second_to_wait_after)
 
     def click_exp_id_link_on_list(self, exp_id):
         wait = WebDriverWait(self.browser, 60)
@@ -155,3 +151,7 @@ class BaseE2ETest(unittest.TestCase):
         self.assertEqual(alert.text, alert_text)
         alert.accept()
         time.sleep(second_to_wait_after)
+
+    def browse_to(self, page):
+        self.browser.get(f"{config.HOST_BASE}/{page}")
+        time.sleep(1)
