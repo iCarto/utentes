@@ -67,6 +67,12 @@ var exploracaosFetched = function() {
         listView: listView,
     }).render();
 
+    new Backbone.SIXHIARA.ButtonExportXLSDivisoesView({
+        el: $("#projects-header .export-buttons2"),
+        listView: listView,
+        where: where,
+    }).render();
+
     mapView = new Backbone.SIXHIARA.MapView({
         el: $("#map"),
         collection: exploracaosFiltered,

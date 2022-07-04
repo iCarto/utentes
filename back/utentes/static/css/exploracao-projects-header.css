@@ -13,9 +13,19 @@
 
 #projects-header .results {
     color: #ccc;
+    margin-bottom: 4px;
 }
 
 #projects-header .results .filtered {
     color: #999;
     font-weight: bold;
+}
+
+#projects-header .export-buttons {
+    margin-bottom: 2px;
+}
+
+#projects-header .export-buttons2 {
+    margin-bottom: -4px;
+    padding: 2px;
 }

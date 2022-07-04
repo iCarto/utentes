@@ -412,6 +412,58 @@ window.SIXHIARA.xlsFieldsToExport.exploracaos = [
     },
 ];
 
+window.SIXHIARA.xlsFieldsToExportDivisoes = {};
+
+window.SIXHIARA.xlsFieldsToExportDivisoes.exploracaos = [
+    {header: "       Nome Utente       ", value: "utente.nome"},
+    {header: "   Telefone Utente   ", value: "utente.telefone"},
+    {header: "Número Exploração", value: "exp_id"},
+    {header: "       Nome Exploração       ", value: "exp_name"},
+    {header: "Província Exploração", value: "loc_provin"},
+    {header: "Distrito Exploração", value: "loc_distri"},
+    {header: "Posto Exploração", value: "loc_posto"},
+    {header: "Bairro Exploração", value: "loc_nucleo"},
+    {header: "        Endereço Exploração        ", value: "loc_endere"},
+    {header: "   Actividade   ", value: "actividade.tipo"},
+    {
+        header: "   Tipo Água   ",
+        value: function(exp) {
+            var licSubterranea = exp.licencias.filter(
+                lic => lic.tipo_agua == "Subterrânea"
+            ).length;
+            var licSuperficial = exp.licencias.filter(
+                lic => lic.tipo_agua == "Superficial"
+            ).length;
+            if (licSubterranea && licSuperficial) {
+                return "Ambas";
+            } else if (licSubterranea) {
+                return "Subterrânea";
+            } else if (licSuperficial) {
+                return "Superficial";
+            } else {
+                return "";
+            }
+        },
+    },
+    {header: "Facturação", value: "fact_tipo"},
+    {header: "Consumo Licencia", value: "c_licencia"},
+    {
+        header: "Consumo Factura Sup",
+        value: function(exp) {
+            var lic = exp.licencias.filter(lic => lic.tipo_agua == "Superficial");
+            return (lic[0] && lic[0].consumo_fact) || null;
+        },
+    },
+    {
+        header: "Consumo Factura Sub",
+        value: function(exp) {
+            var lic = exp.licencias.filter(lic => lic.tipo_agua == "Subterrânea");
+            return (lic[0] && lic[0].consumo_fact) || null;
+        },
+    },
+    {header: "          Observações              ", value: ""},
+];
+
 window.SIXHIARA.shpFieldsToExport = [
     {header: "nr_exp", value: "exp_id"},
     {header: "nome_exp", value: "exp_name"},
