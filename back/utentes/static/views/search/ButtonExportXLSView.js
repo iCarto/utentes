@@ -19,7 +19,7 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
     render: function() {
         this.$el.append(
             $(
-                '<button id="export-button-xls" type="button" class="btn btn-default btn-sm">XLS</button>'
+                '<button id="export-button-xls" type="button" class="btn btn-default btn-xs">XLS</button>'
             )
         );
     },
@@ -51,7 +51,13 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
     },
 
     exportXLS: function(evt) {
-        var file = "exploracoes.xlsx";
+        var date = new Date();
+        var dateXLS =
+            String(date.getFullYear()) +
+            String(date.getMonth() + 1).padStart(2, "0") +
+            String(date.getDate()).padStart(2, "0");
+
+        var file = dateXLS + "_Exploracoes.xlsx";
         if (!file) return;
 
         var exploracaos = this.options.listView.collection.sortBy(function(exp) {
@@ -68,7 +74,7 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
         /* ws['!merges'] = ranges; */
 
         /* add worksheet to workbook */
-        var ws_name = "Explorações";
+        var ws_name = dateXLS + " Explorações";
 
         wb.SheetNames.push(ws_name);
         wb.Sheets[ws_name] = wsExploracaos;

@@ -13,7 +13,7 @@ Backbone.SIXHIARA.ButtonExportSHPView = Backbone.View.extend({
     render: function() {
         this.$el.append(
             $(
-                '<button id="export-button-shp" type="button" class="btn btn-default btn-sm">SHP</button>'
+                '<button id="export-button-shp" type="button" class="btn btn-default btn-xs">SHP</button>'
             )
         );
     },
@@ -28,10 +28,16 @@ Backbone.SIXHIARA.ButtonExportSHPView = Backbone.View.extend({
         });
         exploracaos = new Backbone.SIXHIARA.ExploracaoCollection(exploracaos);
 
+        var date = new Date();
+        var dateSHP =
+            String(date.getFullYear()) +
+            String(date.getMonth() + 1).padStart(2, "0") +
+            String(date.getDate()).padStart(2, "0");
+
         var options = {
-            folder: "exploracoes",
+            folder: dateSHP + "_Exploracoes",
             types: {
-                polygon: "exploracoes",
+                polygon: dateSHP + "_Exploracoes",
             },
         };
         var features = exploracaos.toSHP();
