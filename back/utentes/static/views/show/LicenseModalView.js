@@ -23,6 +23,12 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
             SIRHA.ESTADO.PENDING_TECH_DECISION
         ) {
             this.widgetModel.initializePayments(this.options.exploracao);
+            document
+                .querySelector(".modal #fact_tipo")
+                .addEventListener("change", function(e) {
+                    self.widgetModel.payments.set("fact_tipo", e.target.value);
+                    self.widgetModel.trigger("change:iva");
+                });
         }
     },
 
@@ -41,5 +47,9 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
 
         // See #1685
         this.options.exploracao.setLicState(this.model.get("estado"));
+        this.options.exploracao.set(
+            "fact_tipo",
+            this.widgetModel.payments.get("fact_tipo")
+        );
     },
 });
