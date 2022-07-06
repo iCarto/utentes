@@ -1,11 +1,5 @@
-function Workbook() {
-    if (!(this instanceof Workbook)) return new Workbook();
-    this.SheetNames = [];
-    this.Sheets = {};
-}
-
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
+Backbone.SIXHIARA.ButtonExportXLSView = Backbone.SIXHIARA.ExportXLSView.extend({
     /* http://sheetjs.com/demos/Export2Excel.js */
 
     events: {
@@ -13,6 +7,8 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
     },
 
     initialize: function(options) {
+        Backbone.SIXHIARA.ExportXLSView.prototype.initialize.call(this);
+
         this.options = options || {};
     },
 
@@ -22,15 +18,6 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
                 '<button id="export-button-xls" type="button" class="btn btn-default btn-xs">XLS</button>'
             )
         );
-    },
-
-    getInnerValue: function(obj, key) {
-        if (typeof key === "function") {
-            return key(obj);
-        }
-        return key.split(".").reduce(function(o, x) {
-            return typeof o == "undefined" || o === null ? o : o[x];
-        }, obj);
     },
 
     getData: function(collection, sheet) {
@@ -51,11 +38,7 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
     },
 
     exportXLS: function(evt) {
-        var date = new Date();
-        var dateXLS =
-            String(date.getFullYear()) +
-            String(date.getMonth() + 1).padStart(2, "0") +
-            String(date.getDate()).padStart(2, "0");
+        var dateXLS = moment().format("YYYYMMDD");
 
         var file = dateXLS + "_Exploracoes.xlsx";
         if (!file) return;
@@ -158,25 +141,5 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.View.extend({
         }
         if (range.s.c < 10000000) ws["!ref"] = XLSX.utils.encode_range(range);
         return ws;
-    },
-
-    setColumnsWidthFromHeaderRow(ws, data) {
-        var wscols = data[0].map(headerCell => {
-            return {wch: Math.max(headerCell.length, 11)};
-        });
-        ws["!cols"] = wscols;
-    },
-
-    datenum: function(v, date1904) {
-        if (date1904) v += 1462;
-        var epoch = Date.parse(v);
-        return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
-    },
-
-    s2ab: function(s) {
-        var buf = new ArrayBuffer(s.length);
-        var view = new Uint8Array(buf);
-        for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
-        return buf;
     },
 });

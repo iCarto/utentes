@@ -28,11 +28,7 @@ Backbone.SIXHIARA.ButtonExportSHPView = Backbone.View.extend({
         });
         exploracaos = new Backbone.SIXHIARA.ExploracaoCollection(exploracaos);
 
-        var date = new Date();
-        var dateSHP =
-            String(date.getFullYear()) +
-            String(date.getMonth() + 1).padStart(2, "0") +
-            String(date.getDate()).padStart(2, "0");
+        var dateSHP = moment().format("YYYYMMDD");
 
         var options = {
             folder: dateSHP + "_Exploracoes",

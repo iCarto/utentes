@@ -1,11 +1,8 @@
-function Workbook() {
-    if (!(this instanceof Workbook)) return new Workbook();
-    this.SheetNames = [];
-    this.Sheets = {};
-}
+var buttonTitle =
+    "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \n Verifique não ter usado nenhum outro filtro, nem ter feito zoom no mapa";
 
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
-Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.View.extend({
+Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.extend({
     /* http://sheetjs.com/demos/Export2Excel.js */
 
     events: {
@@ -13,24 +10,18 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.View.extend({
     },
 
     initialize: function(options) {
+        Backbone.SIXHIARA.ExportXLSView.prototype.initialize.call(this);
+
         this.options = options || {};
+        const self = this;
         this.options.where.on("change", function(e) {
             // This code is used to activate and deactivate export-button-xls-divisoes button each time the filters are update.
-            var divisao = document.getElementById("loc_divisao").value;
-            var filtros = document.getElementsByClassName("form-control widget");
-            var filtrosValue = [];
-            for (var i = 0; i < filtros.length; i++) {
-                filtrosValue.push(filtros[i].value);
-            }
-            var filtrosNoDivisao = filtrosValue
-                .filter(item => item !== divisao)
-                .filter(Boolean); // Erase empty values created in first filter
-            if (!divisao || filtrosNoDivisao.length) {
-                document.getElementById("export-button-xls-divisoes").disabled = true;
-                document.getElementById("export-button-xls-divisoes").title =
-                    "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \n Verifique não ter usado nenhum outro filtro";
+            var divisao = self.options.where.get("loc_divisao"); // Divisao Filter value
+            var filtros = self.options.where.values(); // Filters dictionary
+            if (!divisao || Object.keys(filtros).length > 1) {
+                SIRHA.Utils.DOM.disableBt("export-button-xls-divisoes", buttonTitle);
             } else {
-                document.getElementById("export-button-xls-divisoes").disabled = false;
+                SIRHA.Utils.DOM.enableBt("export-button-xls-divisoes", " ");
             }
         });
     },
@@ -41,19 +32,7 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.View.extend({
                 '<button id="export-button-xls-divisoes" type="button" class="btn btn-default btn-xs">XLS Divisões</button>'
             )
         );
-        //CÓDIGO REPETIFO, PTE CAMBIAR
-        document.getElementById("export-button-xls-divisoes").disabled = true;
-        document.getElementById("export-button-xls-divisoes").title =
-            "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \n Verifique também não ter usado nenhum outro filtro";
-    },
-
-    getInnerValue: function(obj, key) {
-        if (typeof key === "function") {
-            return key(obj);
-        }
-        return key.split(".").reduce(function(o, x) {
-            return typeof o == "undefined" || o === null ? o : o[x];
-        }, obj);
+        SIRHA.Utils.DOM.disableBt("export-button-xls-divisoes", buttonTitle);
     },
 
     getData: function(collection, sheet) {
@@ -76,10 +55,9 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.View.extend({
     },
 
     exportXLS: function(evt) {
-        var date = new Date();
-        var dateXLS =
-            String(date.getFullYear()) + String(date.getMonth() + 1).padStart(2, "0");
-        var divisao = document.getElementById("loc_divisao").value;
+        const self = this;
+        var divisao = self.options.where.get("loc_divisao");
+        var dateXLS = moment().format("YYYYMM");
 
         var file = dateXLS + "_Facturacao_" + divisao + ".xlsx";
         if (!file) return;
@@ -219,25 +197,5 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.View.extend({
         }
         if (range.s.c < 10000000) ws["!ref"] = XLSX.utils.encode_range(range);
         return ws;
-    },
-
-    setColumnsWidthFromHeaderRow(ws, data) {
-        var wscols = data[0].map(headerCell => {
-            return {wch: Math.max(headerCell.length, 11)};
-        });
-        ws["!cols"] = wscols;
-    },
-
-    datenum: function(v, date1904) {
-        if (date1904) v += 1462;
-        var epoch = Date.parse(v);
-        return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
-    },
-
-    s2ab: function(s) {
-        var buf = new ArrayBuffer(s.length);
-        var view = new Uint8Array(buf);
-        for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
-        return buf;
     },
 });
