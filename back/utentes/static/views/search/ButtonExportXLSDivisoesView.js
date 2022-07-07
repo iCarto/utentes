@@ -39,12 +39,10 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.
     },
 
     exportXLS: function(evt) {
-        const self = this;
-        var divisao = self.options.where.get("loc_divisao");
+        var divisao = this.options.where.get("loc_divisao");
         var dateXLS = moment().format("YYYYMM");
 
-        var file = dateXLS + "_Facturacao_" + divisao + ".xlsx";
-        if (!file) return;
+        var fileName = dateXLS + "_Facturacao_" + divisao + ".xlsx";
 
         var exploracaos = this.options.listView.collection.sortBy(function(exp) {
             return exp.get("utente").get("nome");
@@ -63,8 +61,8 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.
             SIXHIARA.xlsFieldsToExportDivisoes["exploracaos"],
             exploracaosFactDivisoes
         );
-        var ws_name = dateXLS + "_" + divisao + "_Consumos.xlsx";
-        this.buildAndSaveWorkbook(dataExploracaos, ws_name);
+        var ws_name = dateXLS + "_" + divisao + "_Consumos";
+        this.buildAndSaveWorkbook(dataExploracaos, ws_name, fileName);
     },
 
     formatSheet: function(R, C, cell) {

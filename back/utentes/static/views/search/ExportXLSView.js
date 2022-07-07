@@ -57,7 +57,7 @@ Backbone.SIXHIARA.ExportXLSView = Backbone.View.extend({
         return ws;
     },
 
-    buildAndSaveWorkbook: function(data, sheetName) {
+    buildAndSaveWorkbook: function(data, sheetName, fileName) {
         function Workbook() {
             if (!(this instanceof Workbook)) return new Workbook();
             this.SheetNames = [];
@@ -72,7 +72,7 @@ Backbone.SIXHIARA.ExportXLSView = Backbone.View.extend({
         var wbout = XLSX.write(wb, {bookType: "xlsx", bookSST: false, type: "binary"});
         saveAs(
             new Blob([this.s2ab(wbout)], {type: "application/octet-stream"}),
-            sheetName + ".xlsx"
+            fileName
         );
     },
 

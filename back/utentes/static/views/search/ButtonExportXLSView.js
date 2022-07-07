@@ -23,8 +23,7 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.SIXHIARA.ExportXLSView.extend({
     exportXLS: function(evt) {
         var dateXLS = moment().format("YYYYMMDD");
 
-        var file = dateXLS + "_Exploracoes.xlsx";
-        if (!file) return;
+        var fileName = dateXLS + "_Exploracoes.xlsx";
 
         var exploracaos = this.options.listView.collection.sortBy(function(exp) {
             return exp.get("utente").get("nome");
@@ -35,7 +34,7 @@ Backbone.SIXHIARA.ButtonExportXLSView = Backbone.SIXHIARA.ExportXLSView.extend({
             exploracaos
         );
         var ws_name = dateXLS + " Explorações";
-        this.buildAndSaveWorkbook(dataExploracaos, ws_name);
+        this.buildAndSaveWorkbook(dataExploracaos, ws_name, fileName);
     },
 
     formatSheet: function(R, C, cell) {
