@@ -47,9 +47,8 @@ Backbone.SIXHIARA.LicenseModalView = Backbone.UILib.ModalView.extend({
 
         // See #1685
         this.options.exploracao.setLicState(this.model.get("estado"));
-        this.options.exploracao.set(
-            "fact_tipo",
-            this.widgetModel.payments.get("fact_tipo")
-        );
+        const factTipoValue = this.widgetModel.payments.get("fact_tipo");
+        this.options.exploracao.set("fact_tipo", factTipoValue);
+        document.querySelector("span.js_fact_tipo").textContent = factTipoValue;
     },
 });

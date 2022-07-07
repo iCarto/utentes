@@ -322,7 +322,6 @@ class Exploracao(ExploracaoGeom):
     def update_from_json_requerimento(self, request, data):
         self._update_requerimento_fields(data)
         self.set_lic_state_and_exp_id(request, data)
-        self.fact_tipo = "Mensal"
         self.pago_lic = False
 
     def update_from_json_renovacao(self, request, data):
