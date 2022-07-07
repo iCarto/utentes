@@ -1,9 +1,9 @@
-var buttonTitle =
-    "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \n Verifique não ter usado nenhum outro filtro, nem ter feito zoom no mapa";
-
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.extend({
     /* http://sheetjs.com/demos/Export2Excel.js */
+
+    buttonTitle:
+        "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \n Verifique não ter usado nenhum outro filtro, nem ter feito zoom no mapa",
 
     events: {
         "click #export-button-xls-divisoes": "exportXLS",
@@ -19,9 +19,12 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.
             var divisao = self.options.where.get("loc_divisao"); // Divisao Filter value
             var filtros = self.options.where.values(); // Filters dictionary
             if (!divisao || Object.keys(filtros).length > 1) {
-                SIRHA.Utils.DOM.disableBt("export-button-xls-divisoes", buttonTitle);
+                SIRHA.Utils.DOM.disableBt(
+                    "export-button-xls-divisoes",
+                    this.buttonTitle
+                );
             } else {
-                SIRHA.Utils.DOM.enableBt("export-button-xls-divisoes", " ");
+                SIRHA.Utils.DOM.enableBt("export-button-xls-divisoes", "");
             }
         });
     },
@@ -32,7 +35,7 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.
                 '<button id="export-button-xls-divisoes" type="button" class="btn btn-default btn-xs">XLS Divisões</button>'
             )
         );
-        SIRHA.Utils.DOM.disableBt("export-button-xls-divisoes", buttonTitle);
+        SIRHA.Utils.DOM.disableBt("export-button-xls-divisoes", this.buttonTitle);
     },
 
     getData: function(collection, sheet) {
