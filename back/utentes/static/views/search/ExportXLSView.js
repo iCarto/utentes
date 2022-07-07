@@ -1,9 +1,3 @@
-function Workbook() {
-    if (!(this instanceof Workbook)) return new Workbook();
-    this.SheetNames = [];
-    this.Sheets = {};
-}
-
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.ExportXLSView = Backbone.View.extend({
     getInnerValue: function(obj, key) {
@@ -64,6 +58,12 @@ Backbone.SIXHIARA.ExportXLSView = Backbone.View.extend({
     },
 
     buildAndSaveWorkbook: function(data, sheetName) {
+        function Workbook() {
+            if (!(this instanceof Workbook)) return new Workbook();
+            this.SheetNames = [];
+            this.Sheets = {};
+        }
+
         var wb = new Workbook();
         var ws = this.sheet_from_array_of_arrays(data);
         this.setColumnsWidthFromHeaderRow(ws, data);
