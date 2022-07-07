@@ -24,7 +24,7 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.
                     this.buttonTitle
                 );
             } else {
-                SIRHA.Utils.DOM.enableBt("export-button-xls-divisoes", "");
+                SIRHA.Utils.DOM.enableBt("export-button-xls-divisoes", " ");
             }
         });
     },

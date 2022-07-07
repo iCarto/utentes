@@ -448,14 +448,14 @@ window.SIXHIARA.xlsFieldsToExportDivisoes.exploracaos = [
     {header: "Facturação", value: "fact_tipo"},
     {header: "Consumo Licencia", value: "c_licencia"},
     {
-        header: "Consumo Factura Sup",
+        header: "Consumo Factura Sup (m3/mês)",
         value: function(exp) {
             var lic = exp.licencias.filter(lic => lic.tipo_agua == "Superficial");
             return (lic[0] && lic[0].consumo_fact) || null;
         },
     },
     {
-        header: "Consumo Factura Sub",
+        header: "Consumo Factura Sub (m3/mês)",
         value: function(exp) {
             var lic = exp.licencias.filter(lic => lic.tipo_agua == "Subterrânea");
             return (lic[0] && lic[0].consumo_fact) || null;
