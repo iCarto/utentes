@@ -248,3 +248,4 @@ create_table_domains_size_category 2022-06-02T15:04:25Z Francisco Puga <fpuga@ic
 drop_iva_xx_columns 2022-06-16T11:09:45Z Francisco Puga <fpuga@icarto.es> # Drop iva_sup, iva_sub columns
 not_allows_null_values_in_facturacao_iva 2022-06-16T11:20:16Z Francisco Puga <fpuga@icarto.es> # Sets NOT NULL to facturacao.iva
 drop_pago_mes_column_in_facturacao 2022-06-22T10:08:32Z Francisco Puga <fpuga@icarto.es> # Drops column 'pago_mes' in utentes.facturacao
+update_state_ticket_3158 2022-07-07T10:08:17Z Francisco Puga <fpuga@icarto.es> # Update licencia.estado, exploracao.estado for ticket 3158
