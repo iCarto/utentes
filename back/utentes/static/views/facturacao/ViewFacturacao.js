@@ -94,6 +94,13 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     },
 
     render: function() {
+        if (this.model.get("facturacao").isEmpty()) {
+            this.$el.html(
+                `<div style="margin-bottom: 10px; margin-top: 10px" class="alert alert-info">Não existem facturas para esta exploração</div>`
+            );
+            return this;
+        }
+
         Backbone.SIXHIARA.BaseProcesoView.prototype.render.call(this);
 
         this.facturacaoHistoricoView = new Backbone.SIXHIARA.ViewFacturacaoHistorico({
@@ -139,6 +146,9 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     },
 
     init: function() {
+        if (this.model.get("facturacao").isEmpty()) {
+            return;
+        }
         Backbone.SIXHIARA.BaseProcesoView.prototype.init.call(this);
 
         self = this;
