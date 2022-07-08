@@ -1,0 +1,253 @@
+%syntax-version=1.0.0
+%project=utentes
+%uri=https://github.com/iCarto/utentes-bd
+
+public_schema_owner 2016-02-10T15:50:13Z Francisco Puga <fpuga@icarto.es> # Set utentes as public owner
+create_owner_user_and_permissions 2016-07-18T10:28:12Z Francisco Puga <fpuga@icarto.es> # Create db objects owner and fix public permissions
+create_roles_inventario 2016-07-18T16:10:32Z Francisco Puga <fpuga@icarto.es> # Create roles inventario_read, inventario_write
+create_postgis_extension 2016-02-10T16:52:58Z Francisco Puga <fpuga@icarto.es> # Create postgis extension
+create_schema_domains 2016-03-04T09:05:07Z Francisco Puga <fpuga@icarto.es> # Create schema domains
+create_table_domains_actividade [create_schema_domains] 2016-03-04T09:05:07Z Francisco Puga <fpuga@icarto.es> # Create table domains.actividade
+create_table_domains_animal_tipo [create_schema_domains] 2016-03-04T09:05:07Z Francisco Puga <fpuga@icarto.es> # Create table domains.animal_tipo
+create_table_domains_bacia [create_schema_domains] 2016-03-04T09:05:08Z Francisco Puga <fpuga@icarto.es> # Create table domains.bacia
+create_table_domains_contador [create_schema_domains] 2016-03-04T09:05:08Z Francisco Puga <fpuga@icarto.es> # Create table domains.contador
+create_table_domains_cultivo_tipo [create_schema_domains] 2016-03-04T09:05:08Z Francisco Puga <fpuga@icarto.es> # Create table domains.cultivo_tipo
+create_table_domains_distrito [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.distrito
+create_table_domains_energia_tipo [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.energia_tipo
+create_table_domains_fonte_tipo [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.fonte_tipo
+create_table_domains_industria_tipo [create_schema_domains] 2016-03-04T09:05:09Z Francisco Puga <fpuga@icarto.es> # Create table domains.industria_tipo
+create_table_domains_licencia_estado [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.licencia_estado
+create_table_domains_licencia_tipo [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.licencia_tipo
+create_table_domains_pagamentos [create_schema_domains] 2016-03-04T09:05:10Z Francisco Puga <fpuga@icarto.es> # Create table domains.pagamentos
+create_table_domains_boolean [create_schema_domains] 2016-03-04T09:05:10Z Andrés Maneiro <amaneiro@icarto.es> # Create table domains.boolean
+create_table_domains_posto [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.posto
+create_table_domains_provincia [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.provincia
+create_table_domains_rega_tipo [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.rega_tipo
+create_table_domains_subacia [create_schema_domains] 2016-03-04T09:05:11Z Francisco Puga <fpuga@icarto.es> # Create table domains.subacia
+create_view_domains [create_schema_domains] 2016-03-04T09:05:12Z Francisco Puga <fpuga@icarto.es> # Create view domains.domains
+populate_domains_table [create_schema_domains] 2016-03-04T09:05:12Z Francisco Puga <fpuga@icarto.es> # Populate domains tables
+create_schema_utentes 2016-02-10T17:41:33Z Francisco Puga <fpuga@icarto.es> # Create schema 'utentes'
+create_table_utentes [create_schema_utentes] 2016-02-10T20:02:41Z Francisco Puga <fpuga@icarto.es> # Create table utentes
+create_table_exploracaos [create_table_utentes] 2016-02-10T19:08:54Z Francisco Puga <fpuga@icarto.es> # Create table exploracaos
+create_table_licencias [create_table_exploracaos] 2016-02-10T19:40:31Z Francisco Puga <fpuga@icarto.es> # Create table licencias
+create_table_fontes [create_table_exploracaos] 2016-02-10T19:53:10Z Francisco Puga <fpuga@icarto.es> # Create table fontes
+create_table_actividades [create_schema_utentes] 2016-03-11T13:52:28Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades
+create_table_actividades_abastecemento [create_schema_utentes create_table_actividades] 2016-03-11T17:31:31Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_abastecemento
+create_table_actividades_saneamento [create_schema_utentes create_table_actividades] 2016-03-11T17:31:31Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_saneamento
+create_table_actividades_agricultura_rega [create_schema_utentes create_table_actividades] 2016-03-11T17:31:31Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_agricultura_rega
+create_table_actividades_piscicultura [create_schema_utentes create_table_actividades] 2016-03-11T17:31:32Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_piscicultura
+create_table_actividades_industria [create_schema_utentes create_table_actividades] 2016-03-11T17:31:32Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_industria
+create_table_actividades_produccao_energia [create_schema_utentes create_table_actividades] 2016-03-11T17:31:34Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_produccao_energia
+create_table_actividades_cultivos [create_schema_utentes create_table_actividades create_table_actividades_agricultura_rega] 2016-03-16T15:26:17Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_cultivos
+create_table_actividades_pecuaria [create_schema_utentes create_table_actividades] 2016-03-16T17:45:38Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_pecuaria
+create_table_actividades_reses [create_schema_utentes create_table_actividades create_table_actividades_pecuaria] 2016-03-16T17:52:14Z Francisco Puga <fpuga@icarto.es> # Create table utentes.actividades_reses
+create_table_settings 2016-04-05T16:34:43Z Francisco Puga <fpuga@icarto.es> # Create table utentes.settings
+populate_table_settings 2016-04-05T16:48:30Z Francisco Puga <fpuga@icarto.es> # Populate table settings
+update_domains_cultivo_tipo_add_fruticola 2016-08-03T14:52:50Z Francisco Puga <fpuga@icarto.es> # Adds the type fruticola to the cultivo_tipo table
+create_table_inventario_fuentes 2016-08-17T11:35:58Z Francisco Puga <fpuga@icarto.es> # Create table inventario.fuentes
+create_elle 2016-07-18T12:27:46Z Francisco Puga <fpuga@icarto.es> # Create elle, schema, tables and users
+create_schema_cartografia_base 2016-07-18T15:24:16Z Francisco Puga <fpuga@icarto.es> # Creates schema cartografia_base and fixes privileges
+create_tables_cartografia_base 2016-07-18T15:36:30Z Francisco Puga <fpuga@icarto.es> # Create the tables in the schema cbase
+create_schema_inventario_dominios 2016-07-18T15:50:24Z Francisco Puga <fpuga@icarto.es> # Create schema inventario_dominios
+create_and_populate_domains_location 2016-08-03T07:06:56Z Francisco Puga <fpuga@icarto.es> # Create and populate domains for location
+create_schema_inventario 2016-07-18T16:02:08Z Francisco Puga <fpuga@icarto.es> # Create schema inventario
+create_tables_inventario_imagenes 2016-07-26T17:40:18Z Francisco Puga <fpuga@icarto.es> # Creates the images tables for inventario elements
+create_user_inventario 2016-07-18T16:13:26Z Francisco Puga <fpuga@icarto.es> # Create user inventario
+populate_elle_map_sixhiara 2016-07-20T15:02:52Z Francisco Puga <fpuga@icarto.es> # Populates tables and simbology for map SIXHIARA
+populate_elle_map_todas 2016-07-22T15:04:04Z Francisco Puga <fpuga@icarto.es> # Populates tables and simbology for map TODAS
+create_table_inventario_exploracoes 2016-08-14T10:34:54Z Francisco Puga <fpuga@icarto.es> # Create table inventario.exploracoes
+@20161006 2017-01-11T12:30:57Z Francisco Puga <fpuga@icarto.es> # tag 20161006
+
+insert_domains_industria_tipo_more_types 2017-01-11T12:40:23Z Francisco Puga <fpuga@icarto.es> # Insert more rows in domains.industria_tipo
+update_domains_licencia_estado_inserts_and_renames 2017-01-11T12:50:13Z Francisco Puga <fpuga@icarto.es> # Inserts and modifies rows in domains.licencia_estado
+update_domains_pagamentos_renames_keys 2017-01-11T16:55:54Z Francisco Puga <fpuga@icarto.es> # Renames values for domains.pagamentos
+update_domains_actividade_renames_regadio 2017-01-18T09:16:13Z Francisco Puga <fpuga@icarto.es> # Renames 'Agricultura-Regadia' in domains.actividade
+update_domains_localizacion 2017-01-18T09:57:14Z Francisco Puga <fpuga@icarto.es> # Adds a new column and more localization domains
+update_domains_localizacion_hidrologica 2017-01-18T11:45:16Z Francisco Puga <fpuga@icarto.es> # Update the domains for bacia and subacia
+create_table_domains_ara 2017-01-18T12:09:19Z Francisco Puga <fpuga@icarto.es> # Create table domains.ara
+update_view_domains_with_ara 2017-01-18T12:17:33Z Francisco Puga <fpuga@icarto.es> # Update view domains to add domains.ara table
+update_table_utentes_licencias_add_taxa_fields 2017-01-18T14:41:07Z Francisco Puga <fpuga@icarto.es> # Adds columns to calculate the cost of the licenses
+@20170201 2017-02-01T17:12:01Z Francisco Puga <fpuga@icarto.es> # tag 20170201
+@20170503 2017-05-03T15:07:18Z Francisco Puga <fpuga@icarto.es> # tag 20170503
+
+alter_table_domains_boolean_add_unique_constraint 2017-07-17T18:25:45Z Francisco Puga <fpuga@icarto.es> # Adds a unique constraint for column key in domains.boolean
+alter_table_actividades_piscicolas_add_new_fields 2017-07-17T18:26:45Z Francisco Puga <fpuga@icarto.es> # alter_table_actividades_piscicolas_add_new_fields
+create_tables_domains_tanques_piscicolas 2017-07-16T09:16:14Z Francisco Puga <fpuga@icarto.es> # Create domains tables needed by tanques_piscicolas
+create_table_actividades_tanques_piscicolas 2017-07-12T19:11:26Z Francisco Puga <fpuga@icarto.es> # Create table actividades_tanques_piscicolas
+alter_table_utentes_add_new_fields 2017-07-17T16:21:34Z Francisco Puga <fpuga@icarto.es> # Adds new field to utentes.utentes
+alter_table_domains_add_app_column 2017-07-18T12:36:02Z Francisco Puga <fpuga@icarto.es> # Add column app to provincia, distrito, posto, bacia, subacia, licencia_estado
+update_table_domains_licencia_estado_set_parent 2017-08-02T16:12:18Z Francisco Puga <fpuga@icarto.es> # Sets a parent value in licencia_estado
+domains_view_filtered 2017-07-17T19:04:54Z Francisco Puga <fpuga@icarto.es> # Uses a materialized view for domains filtered by ara
+@dpmaip20170906 2017-09-06T10:28:23Z Francisco Puga <fpuga@icarto.es> # dpmaip-20170906
+alter_table_fuentes_add_sist_med_del_contador 2017-09-21T09:40:18Z eboado <eboado@icarto.es> # Adds new column to utentes.fontes and remove column contador
+fixes_orthographic_errors_in_domains 2017-09-22T13:35:28Z Francisco Puga <fpuga@icarto.es> # Rio, Umbeleci, Futi, Incomati
+alter_table_licencias_add_n_licen_a 2017-09-24T16:20:12Z Francisco Puga <fpuga@icarto.es> # Add field n_licen_a to utentes.licencias
+create_domain_unidade_bacia 2017-09-21T16:21:20Z Francisco Puga <fpuga@icarto.es> # Create domain unidade bacia
+refresh_domains_view_with_unidade 2017-09-24T18:16:58Z Francisco Puga <fpuga@icarto.es> # Adds unidade to domains view
+alter_table_add_column_n_res_tot_to_pecuaria 2017-09-25T09:44:48Z Francisco Puga <fpuga@icarto.es> # Add column n_res_tot to actividades_pecuaria
+alter_table_reses_change_type_c_res 2017-09-25T11:25:50Z Francisco Puga <fpuga@icarto.es> # Changes to numeric the type of c_res
+alter_table_agricultura_add_new_fields 2017-09-25T17:24:43Z Francisco Puga <fpuga@icarto.es> # Add fields to table actividades.agricultura_rega
+create_table_version 2017-09-26T10:31:25Z Francisco Puga <fpuga@icarto.es> # Create table utentes.version
+@20170927 2017-09-27T18:21:55Z Francisco Puga <fpuga@icarto.es> # 20170927
+
+create_table_version_inventario 2017-12-12T10:50:04Z Francisco Puga <fpuga@icarto.es> # Create table inventario.version
+update_inventario_domains_estado 2018-03-16T11:38:31Z Pablo Sanxiao <psanxiao@icarto.es> # Update table inventario_dominios.estado
+update_inventario_domains_estado_ampliado 2018-03-16T11:44:02Z Pablo Sanxiao <psanxiao@icarto.es> # Update table inventario_dominios.estado_ampliado
+update_elle_map_style_bo_operacional 2018-03-16T12:33:14Z Pablo Sanxiao <psanxiao@icarto.es> # Update table elle._map_style change Bo to Operacional in estacoes and barragens
+alter_table_fontes_add_columns_bacia_font_subacia_font 2018-04-06T17:34:36Z Pablo Sanxiao <psanxiao@icarto.es> # Added columns bacia_font and subacia_font to fontes table
+alter_table_analise_name 2018-04-11T08:38:34Z Pablo Sanxiao <psanxiao@icarto.es> # Update name of table analise to fontes_analise
+create_table_estacoes_analise 2018-04-11T09:06:11Z Pablo Sanxiao <psanxiao@icarto.es> # Create table estacoes_analise
+alter_table_fontes_analise_add_new_fields 2018-04-16T08:05:00Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table fontes_analise to add new fields sulfatos and fluoreto
+alter_table_quantidade_automatic 2018-04-18T08:06:11Z Francisco Puga <fpuga@icarto.es> # Meter y quitar campos en quantidade_agua
+fixes_rename_fontes_analise 2018-04-19T10:26:34Z Francisco Puga <fpuga@icarto.es> # Fixes issues when renaming 'analise' to 'fontes_analise'
+alter_tables_domains_bacia_subvacia_ARA_Sul 2018-04-27T11:54:39Z Pablo Sanxiao <psanxiao@icarto.es> # Alter domains tables bacia and subvacia for ARA Sul
+alter_table_licencias_add_field_tipo_lic 2018-05-08T09:37:39Z Pablo Sanxiao <psanxiao@icarto.es> # Added field tipo_lic in licencias table
+alter_table_licencias_rename_field_lic_tipo 2018-05-09T14:25:50Z Pablo Sanxiao <psanxiao@icarto.es> # Renamed field of licencias table lic_tipo to tipo_agua
+update_domains_licencia_estado_1435 2018-04-27T15:54:49Z Francisco Puga <fpuga@icarto.es> # New domains for implementing a workflow
+alter_exploracaos_add_estado_lic 2018-04-27T18:10:23Z Francisco Puga <fpuga@icarto.es> # Adds estado_lic to exploracaos
+alter_exploracaos_add_requerimento_fields_1438 2018-04-28T08:00:59Z Francisco Puga <fpuga@icarto.es> # Adds 'requerimento' fields to 'exploraacos'
+update_renames_codes_to_new_format 2018-05-02T09:57:12Z Francisco Puga <fpuga@icarto.es> # Update exploracaos and licencias to rename codes to new format
+create_table_facturacao 2018-05-04T10:41:29Z Francisco Puga <fpuga@icarto.es> # Create table utentes.facturacao
+create_table_users 2018-05-15T10:34:51Z Francisco Puga <fpuga@icarto.es> # create table users
+add_new_domain_bacia 2018-05-24T16:12:49Z Francisco Puga <fpuga@icarto.es> # Add infulene
+@20180525 2018-07-11T17:11:40Z Francisco Puga <fpuga@icarto.es> # 20180525
+
+update_data_renames_estados 2018-07-11T17:16:55Z Francisco Puga <fpuga@icarto.es> # Renames estados
+alter_table_exploracaos_add_new_requerimento_documents_1510 2018-09-14T15:52:20Z Francisco Puga <fpuga@icarto.es> # Add new requerimento documents
+create_table_documentos 2018-09-25T11:50:11Z Elías Gago <egago@icarto.es> # New table 'documents' to manage uploaded files for a exploraçao
+alter_table_documents_set_null_when_cascade 2018-10-10T18:41:43Z Francisco Puga <fpuga@icarto.es> # Sets null to exploracao when delete cascade con documents
+alter_table_facturacao_add_new_field_fact_id 2018-10-17T18:34:50Z Luis Sevillano <lsevillano@icarto.es> # Add column fact_id to utentes.facturacao
+create_table_datos_aras 2018-10-24T07:19:01Z Luis Sevillano <lsevillano@icarto.es> # Create table datos_aras to read from templates
+add_new_fields_to_actividades_piscicultura 2018-09-24T09:45:37Z Luis Sevillano <lsevillano@icarto.es> # Create table domains.tipo_agua
+add_new_field_tipo_fonte_to_fontes 2018-09-25T14:29:45Z Luis Sevillano <lsevillano@icarto.es> # Add new type of font
+add_new_field_disponibilidade_de_agua_to_fontes 2018-09-26T07:10:16Z Luis Sevillano <lsevillano@icarto.es> # Create new domain table Disponibilidad de Agua
+update_domains_to_add_new_fields_to_actividades_piscicultura 2018-09-26T09:47:03Z Luis Sevillano <lsevillano@icarto.es> # Update domains to include actividades piscticultura new fields
+changes_in_departaments_perms_and_names 2018-10-07T19:34:53Z Francisco Puga <fpuga@icarto.es> # A couple of change in perm and departament names
+alter_triggers_validate_exploracao_licencia 2018-10-26T18:42:49Z Francisco Puga <fpuga@icarto.es> # Adds DPMAIP as valid 'substring' for exp_id and lic_nro
+alter_table_exploracaos_add_lic_imp 2018-10-27T19:30:05Z Francisco Puga <fpuga@icarto.es> # Adds lic_imp to utentes.exploracaos refs #1394
+populate_arazambeze_domains 2018-11-05T11:04:05Z Francisco Puga <fpuga@icarto.es> # inserts/updates araz domains
+endereco_in_two_lines 2018-11-05T23:00:49Z Francisco Puga <fpuga@icarto.es> # Endereco is now implemented as an array
+alter_exploracaos_add_column_d_ultima_entrega_doc 2018-12-16T12:26:27Z Luis Sevillano <lsevillano@icarto.es> # Alter Exploracaos add column 'd_ultima_entrega_doc'
+update_datos_ara_zambeze 2018-12-18T17:42:25Z Luis Sevillano <lsevillano@icarto.es> # Update datos Ara Zambeze
+alter_default_values_for_consumo_to_fixo 2018-12-19T10:54:36Z Luis Sevillano <lsevillano@icarto.es> # Alter default values for consumo to Fixo
+alter_table_utentes_add_column_endereco 2018-12-20T09:49:52Z Luis Sevillano <lsevillano@icarto.es> # Alter table utentes add column Endereco
+alter_table_exploracaos_add_cadastro_uni 2018-12-20T12:23:48Z Luis Sevillano <lsevillano@icarto.es> # Alter tables exploracaos and fontes to add new fields cadastro_uni and cadastro
+move_datos_ara_table_from_utentes_squema_to_domains_squema 2019-01-28T06:51:16Z Luis Sevillano <lsevillano@icarto.es> # Move table datos ara from utentes squema to domains squema
+update_datos_aras 2019-02-18T18:46:54Z Luis Sevillano <lsevillano@icarto.es> # Update datos aras
+@190220 2019-02-20T12:00:30Z Francisco Puga <fpuga@icarto.es> # tag 190220
+create_table_domains.licencia_estado_renovacion 2019-01-14T13:05:07Z Luis Sevillano <lsevillano@icarto.es> # Create new domains licencia estados renovación
+create_table_utentes.renovacoes 2019-01-14T10:59:35Z Luis Sevillano <lsevillano@icarto.es> # Create table utentes.renovacoes
+create_new_user_can_not_edit_anything 2019-02-18T11:16:21Z Luis Sevillano <lsevillano@icarto.es> # Create a new user that can't edit anything
+create_user_for_unidades_and_delegaciones 2019-03-06T08:35:43Z Luis Sevillano <lsevillano@icarto.es> # Create an user for Unidades and Delegaciones
+alter_table_add_column_unidade_to_utentes.users 2019-03-06T11:52:06Z Luis Sevillano <lsevillano@icarto.es> # Alter table add new column Unidade to utentes.users
+alter_table_documentos_add_column_unidade 2019-03-22T12:44:03Z Elías Gago <egago@icarto.es> # Create new column in documentos to store unidade info
+alter_table_facturacao_add_column_juros 2019-05-01T10:58:48Z Elías Gago <egago@icarto.es> # Add column Juros to Facturacao table
+alter_table_facturacao_drop_column_pagos 2019-05-11T07:51:20Z Elías Gago <egago@icarto.es> # Delete pagos column from facturacao and exploracao tables
+alter_table_facturacao_add_column_recibo_id 2019-05-13T10:36:03Z Elías Gago <egago@icarto.es> # New column for facturacao to store the recibo number
+alter_table_facturacao_add_column_factura_and_recibo_dates 2019-05-13T11:40:27Z Elías Gago <egago@icarto.es> # Create columns for factura date and recibo date
+update_domains_facturacao_fac_estado 2019-05-14T14:16:33Z Elías Gago <egago@icarto.es> # Changes in facturacao name states
+alter_table_fontes_rename_column_cod_fonte 2019-05-21T10:19:32Z Pablo Sanxiao <psanxiao@icarto.es> # Rename cod_fonte to cadastro in fontes table
+alter_table_fontes_analise_remove_fonte_rename_comen_lab 2019-05-21T17:24:10Z Pablo Sanxiao <psanxiao@icarto.es> # Changes in table fontes_analise, remove field fonte and rename comen_lab
+alter_table_fontes_add_rename_delete_several_fields 2019-05-22T14:28:37Z Pablo Sanxiao <psanxiao@icarto.es> # Changes in table fontes: Add, rename and remove several fields
+create_tables_fontes_litologia_carac_hid 2019-05-22T15:00:34Z Pablo Sanxiao <psanxiao@icarto.es> # Created tables fontes_litologia and fontes_carac_hid, including related domains tables
+alter_table_quantidade_agua_add_and_rename_fields 2019-05-23T08:28:02Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table quantidade_agua, added and rename several fields
+alter_tabla_domains_gestao 2019-05-23T08:43:02Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table values inventario_dominios.gestao
+alter_tabla_inventario_barragens_add_rename_delete_fields 2019-05-23T08:57:51Z Pablo Sanxiao <psanxiao@icarto.es> # Alter table inventario.barragens: Add, rename and delete fields
+drop_tables_cbase_201905 2019-05-15T18:38:55Z Francisco Puga <fpuga@icarto.es> # drop_tables_cartografia_fase_201905
+add_tables_cbase_201905 2019-05-19T15:59:08Z Francisco Puga <fpuga@icarto.es> # Add cbase tables 201905
+alter_tables_domains_add_defaults_categories 2019-05-19T16:53:48Z Francisco Puga <fpuga@icarto.es> # add defalt categories for some inventario_dominios tables
+alter_tables_inventario_domains_add_app 2019-05-21T17:30:04Z Francisco Puga <fpuga@icarto.es> # Add app column to inventario domains
+changes_for_bddunica_190520_inv_domains_loc_adm 2019-05-20T11:57:03Z Francisco Puga <fpuga@icarto.es> # Some changes for bddunica 190520
+changes_for_bddunica_190520_inv_domains_loc_hidro 2019-05-22T07:53:38Z Francisco Puga <fpuga@icarto.es> # inv domains bacia
+changes_for_bddunica_190520_ute_domains_loc_adm 2019-05-22T08:26:10Z Francisco Puga <fpuga@icarto.es> # ute domains adm
+changes_for_bddunica_190520_ute_domains_loc_hidro 2019-05-22T09:47:36Z Francisco Puga <fpuga@icarto.es> # ute domains hidro
+rename_domain_tipo_rega_tipo_cult 2019-05-24T16:23:06Z Francisco Puga <fpuga@icarto.es> # refs 1549
+add_tables_cbase_ara_201905 2019-05-27T14:16:58Z Francisco Puga <fpuga@icarto.es> # workaround for maps
+elle_wizard_maps_190520 2019-05-22T17:13:22Z Francisco Puga <fpuga@icarto.es> # elle maps for wizards
+basic_gis_permissions 2019-05-28T18:46:28Z Francisco Puga <fpuga@icarto.es> # basic gis permissions
+changes_for_inventario_tables_201905 2019-05-28T20:37:29Z Francisco Puga <fpuga@icarto.es> # changes
+fixes_elle_wizard_maps_190520 2019-05-29T11:59:07Z Francisco Puga <fpuga@icarto.es> # fixes for elle maps
+use_indentity_instead_of_serial 2019-06-04T10:28:11Z Francisco Puga <fpuga@icarto.es> # Use identity column instead of serial
+add_domain_value_termo_to_energia_tipo 2019-06-25T14:37:10Z Francisco Puga <fpuga@icarto.es> # Adds a domain to energia_tipo
+rename_domain_azucar_to_cana_azucar 2019-07-09T11:48:27Z Francisco Puga <fpuga@icarto.es> # Renames açucar to cana de açucar
+new_column_tipo_aqui_to_analise_fonte 2019-07-10T13:53:14Z Francisco Puga <fpuga@icarto.es> # Add column "tipo_aqui" to "fontes_analise"\n\nrefs #1689
+new_version_190730 2019-07-30T15:21:18Z Francisco Puga <fpuga@icarto.es> # New version 190730
+@190730 2019-07-30T15:28:38Z Francisco Puga <fpuga@icarto.es> # tag 190730
+
+rename_license_code 2019-08-07T17:00:27Z Francisco Puga <fpuga@icarto.es> # Rename License Code
+adds_missing_postos_lincom_risunodo_velha 2019-09-09T10:00:54Z Francisco Puga <fpuga@icarto.es> # adds_missing_postos_lincom_risunodo_velha
+modify_domain_hidroelectrica 2019-09-26T18:24:24Z Francisco Puga <fpuga@icarto.es> # Modify domain Hidroelectrica
+set_default_for_req_obs 2019-09-27T17:51:02Z Francisco Puga <fpuga@icarto.es> # Sets a correct default for req_obs\n\nrefs #1809
+modify_ara_domain_and_code_validations 2019-09-28T14:50:23Z Francisco Puga <fpuga@icarto.es> # Modify domains.ara, exp_id and lic_nro validation
+estacoes_and_related_changes_for_aras_1761 2019-10-22T09:03:48Z Francisco Puga <fpuga@icarto.es> # Changes for estacoes and related_tables
+estacoes_estado_domain_ampliado_to_estado 2019-10-31T18:38:49Z Francisco Puga <fpuga@icarto.es> # changes estacoes.estado from domains.estado_ampliado to domains.estado
+drop_trigger_calcular_pagos_licencias 2019-11-07T22:57:59Z Francisco Puga <fpuga@icarto.es> # drop_trigger_calcular_pagos_licencias
+new_version_191107 2019-11-07T16:49:53Z ,,, <utentes@utentes> # new_version_191107
+@191107 2019-11-26T15:33:56Z Francisco Puga <fpuga@icarto.es> # tag 191107
+
+add_ara_centro_and_centronorte 2020-01-14T08:59:59Z Francisco Puga <fpuga@icarto.es> # Add ARAC and ARACN
+create_tables_cbase_unidades 2020-01-15T08:59:59Z Francisco Puga <fpuga@icarto.es> # Creates cbase.unidades and cbase_ara.unidades
+fill_cbase_ara_schema_from_cbase_schema 2020-01-24T09:43:15Z Francisco Puga <fpuga@icarto.es> # Fills tables in cbase_ara from values in cbase
+fill_domains_from_cbase 2020-01-24T11:44:55Z Francisco Puga <fpuga@icarto.es> # Fill localization (hidro and admin) tables in schema domains from schema cbase
+
+updates_datos_arac_aracn 2020-01-27T10:54:49Z Francisco Puga <fpuga@icarto.es> # Adds data for ARAC and ARAN to domains.datos_aras
+drop_table_utentes_inventario_fontes 2020-04-28T17:29:11Z Francisco Puga <fpuga@icarto.es> # Drop utentes inventario fonte
+moves_c_estimado_to_actividade 2020-05-23T08:24:00Z Francisco Puga <fpuga@icarto.es> # Moves 'c_estimado' from childs to parent 'actividade'
+new_version_200527 2020-05-27T15:26:34Z Francisco Puga <fpuga@icarto.es> # new_version_200527
+@200527 2020-05-27T15:30:28Z Francisco Puga <fpuga@icarto.es> # tag 200527
+
+update_table_datos_aras_with_rigth_unidades 2020-09-09T20:45:16Z Francisco Puga <fpuga@icarto.es> # Update table datos_aras with fixes about unidades
+adds_bi_columns_to_utente 2020-09-10T14:58:03Z Francisco Puga <fpuga@icarto.es> # Adds BI columns to utentes
+adds_duat_fields_to_exploracao 2020-09-10T16:58:52Z Francisco Puga <fpuga@icarto.es> # Adds DUAT fields to exploracao
+alter_table_utentes_fontes_with_inventario_columns 2020-09-11T15:57:49Z Francisco Puga <fpuga@icarto.es> # Adds columns to utentes.fontes to match inventario.fontes
+@201007 2020-10-07T07:28:11Z Francisco Puga <fpuga@icarto.es> # tag 201007
+
+add_field_recolha_to_estacoes 2020-10-22T16:20:41Z Francisco Puga <fpuga@icarto.es> # Add field 'recolha' to 'estacoes'
+modify_values_of_domain_tip_barra 2020-10-22T16:21:40Z Francisco Puga <fpuga@icarto.es> # Modify values of inventario_dominios.tip_barra
+changes_estacoes_rendering_expression_in_elle 2020-11-26T08:45:59Z Francisco Puga <fpuga@icarto.es> # Changes the expression that defines how to render estacoes layer in elle
+create_table_cbase_unidades_weap 2020-12-20T15:29:42Z Francisco Puga <fpuga@icarto.es> # Create table cbase.unidades_weap
+add_export_to_weap_checkbox 2021-01-14T18:35:08Z Francisco Puga <fpuga@icarto.es> # add checkbox export to weap
+erp_integration 2021-02-16T17:48:35Z Francisco Puga <fpuga@icarto.es> # Changes for erp integration
+new_version_210317 2021-03-17T15:22:03Z Francisco Puga <fpuga@icarto.es> # new_version_210317
+@210317 2021-03-17T15:25:01Z Francisco Puga <fpuga@icarto.es> # tag 210317
+
+add_columns_created_updated 2020-11-30T11:22:34Z Francisco Puga <fpuga@icarto.es> # Adds columns 'created_at' and 'updated_at' to many tables
+adds_field_sexo 2021-05-05T17:45:20Z Francisco Puga <fpuga@icarto.es> # Adds field sexo
+new_version_210607 2021-06-07T15:01:28Z Francisco Puga <fpuga@icarto.es> # new_version_210607
+@210607 2021-06-07T15:03:25Z Francisco Puga <fpuga@icarto.es> # tag 210607
+
+aras_unification 2021-06-14T19:03:38Z Francisco Puga <fpuga@icarto.es> # ARAs unification
+aras_unification_update_datos_aras 2021-07-07T20:33:23Z Francisco Puga <fpuga@icarto.es> # ARAs unification updates datos_ara
+new_version_210825 2021-08-25T14:04:35Z Francisco Puga <fpuga@icarto.es> # new_version_210825
+@210825 2021-08-25T14:10:18Z Francisco Puga <fpuga@icarto.es> # tag 210825
+
+aras_unification_reassing_groups 2021-08-27T16:57:58Z Francisco Puga <fpuga@icarto.es> # Updates groups, roles and perms for ARAs unification
+aras_unification_rename_unidade_divisao 2021-09-03T13:54:08Z Francisco Puga <fpuga@icarto.es> # aras unification rename unidade divisao
+aras_unification_rename_states 2021-09-14T09:51:24Z Francisco Puga <fpuga@icarto.es> # aras unification rename states
+delete_column_exploracao_fact_estado 2021-09-24T17:00:17Z Francisco Puga <fpuga@icarto.es> # delete column exploracao.fact_estado
+aras_unification_rename_state_irregular 2021-09-16T08:21:53Z Francisco Puga <fpuga@icarto.es> # aras unification rename state irregular
+adds_schema_and_table_view_monitor 2021-09-29T19:39:19Z Francisco Puga <fpuga@icarto.es> # Adds schema monitoring and table view monitor
+delete_bacia_namacurra_dgblic 2021-10-06T13:37:57Z Francisco Puga <fpuga@icarto.es> # Deletes Namacurra-DGBLIC from domains.bacia
+new_version_211011 2021-10-11T16:19:10Z Francisco Puga <fpuga@icarto.es> # new_version_211011
+@211011 2021-10-11T16:20:59Z Francisco Puga <fpuga@icarto.es> # tag 211011
+
+create_function_exp_id_part 2022-01-21T19:35:12Z Francisco Puga <fpuga@icarto.es> # Create function exp_id_part
+changes_for_adm_locs_censo_2021 2022-02-23T12:31:57Z Francisco Puga <fpuga@icarto.es> # Changes for adm locs censo 2021
+new_version_220311 2022-03-11T18:47:22Z Francisco Puga <fpuga@icarto.es> # new_version_220311
+@220311 2022-03-11T18:50:30Z Francisco Puga <fpuga@icarto.es> # tag 220311
+
+revebue_water_allocation_integration 2022-03-15T18:50:30Z Francisco Puga <fpuga@icarto.es> # add a view for export water allocation data for revebue
+enable_pg_trgm_extension 2022-03-21T13:52:25Z Francisco Puga <fpuga@icarto.es> # Enable extension pg_trgm
+add_columns_periodo_fact_to_facturacao 2022-03-08T11:18:25Z Francisco Puga <fpuga@icarto.es> # Add column periodo_fact and periodo_fact_real to facturacao
+enable_extension_unaccent 2022-04-07T10:13:34Z Francisco Puga <fpuga@icarto.es> # Enable extension unaccent
+create_table_cbase_subacias 2022-04-25T17:16:04Z Francisco Puga <fpuga@icarto.es> # Create table cbase subacias
+new_version_220502 2022-05-02T14:42:29Z Francisco Puga <fpuga@icarto.es> # new_version_220502
+@220502 2022-05-02T14:44:32Z Francisco Puga <fpuga@icarto.es> # tag 220502
+
+create_table_domains_size_category 2022-06-02T15:04:25Z Francisco Puga <fpuga@icarto.es> # Create table domains size_category
+drop_iva_xx_columns 2022-06-16T11:09:45Z Francisco Puga <fpuga@icarto.es> # Drop iva_sup, iva_sub columns
+not_allows_null_values_in_facturacao_iva 2022-06-16T11:20:16Z Francisco Puga <fpuga@icarto.es> # Sets NOT NULL to facturacao.iva
+drop_pago_mes_column_in_facturacao 2022-06-22T10:08:32Z Francisco Puga <fpuga@icarto.es> # Drops column 'pago_mes' in utentes.facturacao
+update_state_ticket_3158 2022-07-07T10:08:17Z Francisco Puga <fpuga@icarto.es> # Update licencia.estado, exploracao.estado for ticket 3158
+drop_tables_version 2022-07-08T08:52:24Z Francisco Puga <fpuga@icarto.es> # Drop tables utentes.version and inventario.version
+@220708 2022-07-08T08:57:56Z Francisco Puga <fpuga@icarto.es> # tag 220708

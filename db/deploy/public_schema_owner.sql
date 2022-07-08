@@ -1,0 +1,8 @@
+-- Deploy utentes:public_schema_owner to pg
+
+BEGIN;
+
+-- CREATE ROLE utentes WITH NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN NOREPLICATION;
+-- ALTER SCHEMA public OWNER TO utentes;
+
+COMMIT;

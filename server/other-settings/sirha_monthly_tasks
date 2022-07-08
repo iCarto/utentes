@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# set -e: stops the script on error
+# set -u: stops the script on unset variables
+# set -o pipefail:  fail the whole pipeline on first error
+set -euo pipefail
+
+# This script should be configured to be ran each day with anacron
+# It could be placed in /etc/cron.daily
+
+# Configuratio: monthly_tasks variables
+# Usuario que se puede usar para copiar los archivos mediante scp
+SCP_USER=
+PG_PORT=
+DBNAME=
+TOKEN=
+BASE_BACKUP_FOLDER=/tmp
+BASE_MEDIA_FOLDER=
+WEB_PORT=
+WEB_URL=
+export PGPASSWORD=
+BACKUP_FOLDER=${BASE_BACKUP_FOLDER}/sirha_${DBNAME}/backups
+
+# Configuration: Expected day of the month to be executed in two digits format
+EXPECTED_DAY_EXECUTION="05"
+# Configuration: Path to the file that registers the last execution time
+LAST_EXECUTION_FILE="${BASE_BACKUP_FOLDER}/sirha_${DBNAME}/last_time_executed"
+
+EXPECTED_TIME_EXECUTION=$(date -d 'this month' "+%Y%m${EXPECTED_DAY_EXECUTION}")
+EXPECTED_EPOCH_TIME_EXECUTION=$(date -d "${EXPECTED_TIME_EXECUTION}" '+%s')
+
+NOW=$(date '+%Y%m%d')
+NOW_DAY=$(date '+%d')
+NOW_MONTH=$(date '+%m')
+
+PREVIOUS_MONTH=$(date -d 'last month' '+%m')
+
+# First time, LAST_EXECUTION_FILE will not exists, we created it empty
+mkdir -p $(dirname "${LAST_EXECUTION_FILE}") && touch "${LAST_EXECUTION_FILE}"
+# If LAST_EXECUTION does not exist initialize it with this day on last month
+FIRST_TIME_INITIALIZATION_DATE=$(date -d "last month" '+%Y%m%d')
+
+LAST_EXECUTION=$([ -f "${LAST_EXECUTION_FILE}" ] && cat "${LAST_EXECUTION_FILE}")
+LAST_EXECUTION_MONTH=$(date -d "${LAST_EXECUTION:=${FIRST_TIME_INITIALIZATION_DATE}}" '+%m')
+
+function monthly_tasks() {
+    # Remove old backups
+    rm -rf ${BACKUP_FOLDER}
+    mkdir -p ${BACKUP_FOLDER}
+
+    pg_dump -h localhost -p ${PG_PORT} -U postgres -Fc -Z9 -E UTF-8 -f ${BACKUP_FOLDER}/${DBNAME}_bck_$(date +%y%m%d).dump ${DBNAME} 2> ${BACKUP_FOLDER}/pgdump.log
+    tar czf ${BACKUP_FOLDER}/${DBNAME}_files_bck_$(date +%y%m%d).tgz ${BASE_MEDIA_FOLDER}/media 2> ${BACKUP_FOLDER}/tar_files.log
+
+    curl "${WEB_URL}:${WEB_PORT}/api/nuevo_ciclo_facturacion?token_new_fact_cycle=${TOKEN}" > ${BACKUP_FOLDER}/nuevo_ciclo_facturacion.log 2>&1
+
+    chown -R ${SCP_USER}:${SCP_USER} ${BACKUP_FOLDER}
+}
+
+# If today is less that the expected day of execution. 01..04, we expect that the job was already done last month
+if [[ "${NOW_DAY}" -lt "${EXPECTED_DAY_EXECUTION}" ]]; then
+    # and the last execution was the previous month, or this month (because server was off all the previous month, and finally was executed this month)
+    if [[ "${PREVIOUS_MONTH}" -eq "${LAST_EXECUTION_MONTH}" ]] || [[ "${NOW_MONTH}" -eq "${LAST_EXECUTION_MONTH}" ]]; then
+        # nothing should be done
+        exit 0
+    fi
+fi
+
+# If today is greather that the expected day of execution, 06..30, we expect that the job was already done this month
+if [[ "${NOW_DAY}" -gt "${EXPECTED_DAY_EXECUTION}" ]]; then
+    # and the last execution was this month
+    if [[ "${NOW_MONTH}" -eq "${LAST_EXECUTION_MONTH}" ]]; then
+        # nothing should be done
+        exit 0
+    fi
+fi
+
+# In any other case, the jobs should be executed now
+monthly_tasks
+# And the date should be recorded
+echo "${NOW}" > "${LAST_EXECUTION_FILE}"

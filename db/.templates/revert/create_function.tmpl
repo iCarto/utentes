@@ -1,0 +1,7 @@
+-- Revert [% change %]
+
+BEGIN;
+
+DROP FUNCTION [% schema %].[% function %];
+
+COMMIT;

@@ -1,0 +1,24 @@
+-- Deploy [% change %]
+[% FOREACH item IN requires -%]
+-- requires: [% item %]
+[% END -%]
+[% FOREACH item IN conflicts -%]
+-- conflicts: [% item %]
+[% END -%]
+
+BEGIN;
+
+CREATE OR REPLACE FUNCTION [% schema %].[% function %](foo text, bar text DEFAULT '/') RETURNS text AS $$
+DECLARE
+    result text;
+BEGIN
+    result := foo || bar;
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+ALTER FUNCTION [% schema %].[% function %] OWNER TO :owner;
+GRANT ALL ON FUNCTION [% schema %].[% function %] TO :owner;
+REVOKE ALL ON FUNCTION [% schema %].[% function %] FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION [% schema %].[% function %] TO :base_user;
+
+COMMIT;

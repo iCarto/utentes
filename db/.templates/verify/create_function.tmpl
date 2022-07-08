@@ -1,0 +1,11 @@
+-- Verify [% change %]
+
+BEGIN;
+
+-- Verify that a function exists
+SELECT '[% schema %].[% function %](text, text)'::regprocedure;
+
+-- Verify that a function exists and a user can execute it
+SELECT has_function_privilege(:'base_user', '[% schema %].[% function %](text, text)', 'execute');
+
+ROLLBACK;

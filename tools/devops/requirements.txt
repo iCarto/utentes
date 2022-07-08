@@ -1,0 +1,4 @@
+
+# For devops
+fabric==2.6.0
+patchwork==1.0.1
