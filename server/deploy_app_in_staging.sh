@@ -12,7 +12,7 @@ source "${this_dir}"/variables.ini
 # En lugar del clone se puede jugar con los `synced_folder` y limpiar el
 # repositorio con `git clean -ndx` y `git clean -fdx`
 
-rama=${1:-master}
+rama=${1:-main}
 
 if [[ $(whoami) != 'vagrant' ]]; then
     echo "Sólo usable en testing"
