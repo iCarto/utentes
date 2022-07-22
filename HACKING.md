@@ -149,7 +149,7 @@ code . # or your favourite IDE
 
 Instead of `start.sh` script you can open two consoles:
 
-````shell
+```shell
 # Launch back
 workon "${PROJECT_NAME}"
 cd back; pserve development.ini --reload
@@ -215,7 +215,6 @@ cd /vagrant/bd
 pg_prove -Q tests/
 ```
 
-
 # Test in a production like environment
 
 NOT READY YET
@@ -225,8 +224,6 @@ vagrant ssh
 workon "${PROJECT_NAME}"
 ./scripts/deploy.sh
 ```
-
-
 
 # Recap
 
@@ -276,4 +273,3 @@ workon "${PROJECT_NAME}"
 
 ./scripts/test.sh
 ```
-
