@@ -90,9 +90,8 @@ Some scripts are configured to search for locations outside the main git folder.
 
 ```text
 | "${PROJECT_ROOT_PATH}"
-| |- sixhiara
-| |- utentes-api
-| |- utentes-bd
+| |- sixhiara # SIRHA: Inventario
+| |- utentes  # SIRHA: Utentes
 | |- Tasks
 | |  | - task_<xxx>_<short_name>
 | |- bck-sirha
@@ -152,10 +151,11 @@ Instead of `start.sh` script you can open two consoles:
 ```shell
 # Launch back
 workon "${PROJECT_NAME}"
-cd back; pserve development.ini --reload
+cd back
+pserve development.ini --reload
 
 # Lauch front
-cd front; npm start
+# cd front; npm start
 ```
 
 # Deployment
@@ -234,9 +234,7 @@ After installing the pre-requisites.
 ```shell
 cd "${PROJECT_ROOT_PATH}"
 git clone git@gitlab.com:icarto/sixhiara.git
-git clone git@gitlab.com:icarto/utentes-api.git
-# Ya no se usa
-# git clone https://gitlab.com/icarto/utentes-deploy
+git clone git@gitlab.com:icarto/utentes.git
 ```
 
 ## Each development phase
