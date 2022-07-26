@@ -67,7 +67,8 @@ SIRHA.Services.PrintService = (function(formatter) {
 
         data.ara = dataARA;
         data.divisao_long_name = data.ara.divisoes.reduce(
-            (mem, u) => (u.nome.startsWith(data.loc_divisao) ? mem + u.nome : mem),
+            (mem, u) =>
+                u.nome.split(" ")[0] === data.loc_divisao ? mem + u.nome : mem,
             ""
         );
 
