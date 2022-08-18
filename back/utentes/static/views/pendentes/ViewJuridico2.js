@@ -21,7 +21,7 @@ Backbone.SIXHIARA.ViewJuridico2 = Backbone.SIXHIARA.View1.extend({
   </div>
 </div>
 
-<h4 style="margin-bottom: 20px;">
+<h4 style="margin-bottom: 15px;">
 <%- formatter().formatDate(d_ultima_entrega_doc) + ' - ' %><span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span> <span style="color: grey"><%= ' (' + (actividade && actividade.tipo || 'Não declarada') + '). ' %></span>
 <div class="licencias">
     <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[0] %> / <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[1] %>
@@ -97,6 +97,9 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
        </textarea>
  </div>
 
+ <div id="map-process"">
+ </div>
+
     `),
 
     init: function() {
@@ -132,6 +135,13 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
             const msg = this.model.validationError.join("\n");
             SIRHA.Utils.DOM.disableBt("bt-imprimir-licencia", msg);
         }
+
+        // MapViewProcess Exploracao geometry and map
+        var exploracao = this.model;
+        mapViewProcess = new Backbone.SIXHIARA.MapViewProcess({
+            el: $("#map-process"),
+            model: exploracao,
+        });
     },
 
     enableBts: function() {

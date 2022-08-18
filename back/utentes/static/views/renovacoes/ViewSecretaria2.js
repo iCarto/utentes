@@ -14,14 +14,14 @@ Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
            </div>
         </div>
         <div id="time-renovacao-info" class="info-pill <%- renovacao.lic_time_over ? 'label-danger' : (renovacao.lic_time_warning ? 'label-warning' : renovacao.lic_time_enough ? 'label-success' : 'label-default') %>"> <%- renovacao.lic_time_info || 'Sem informação' %></div>
-        <h4 style="margin-bottom: 20px;">
+        <h4 style="margin-bottom: 15px;">
            <%- (renovacao.d_ultima_entrega_doc ? formatter().formatDate(renovacao.d_ultima_entrega_doc) + ' - ' : '') %><span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span> <span style="color: grey"><%= ' (' + (actividade && actividade.tipo || 'Não declarada ') + ') ' %></span>
            <div class="licencias">
               <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[0] %> /
               <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[1] %>
            </div>
         </h4>
-        <div id="renovacao-block" class="form-group" style="margin-top: 40px">
+        <div id="renovacao-block" class="form-group" style="margin-top: 20px">
            <label for="observacio" style="width: 100%; margin-bottom: 0px">
               <div style="display:inline-block; width: 29%">
                  Observações
@@ -37,7 +37,7 @@ Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
            </label>
            <textarea id="observacio" class="form-control widget uilib-enability uilib-disable-role-observador" rows="7"></textarea>
         </div>
-        <div class="form-group" style="margin-top: 40px">
+        <div class="form-group" style="margin-top: 20px">
            <label for="observacio_ant">Observações anteriores</label>
            <textarea class="form-control widget" id="observacio_ant" rows="7" disabled>
            <% for (var i=0; i<renovacao.obser.length - 1; i+=1) {
@@ -48,11 +48,21 @@ Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
               %>
            </textarea>
         </div>
+
+        <div id="map-process"">
+        </div>
     `),
 
     init: function() {
         Backbone.SIXHIARA.View1.prototype.init.call(this);
         this.enableBts();
+
+        // MapViewProcess Exploracao geometry and map
+        var exploracao = this.model;
+        mapViewProcess = new Backbone.SIXHIARA.MapViewProcess({
+            el: $("#map-process"),
+            model: exploracao,
+        });
     },
 
     enableBts: function() {

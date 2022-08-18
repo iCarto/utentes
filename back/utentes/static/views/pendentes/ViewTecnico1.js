@@ -1,6 +1,7 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.ViewTecnico1 = Backbone.SIXHIARA.View1.extend({
     template: _.template(`
+
         <div id="bt-toolbar" class="row">
   <div class="col-xs-12">
     <div class="btn-group btn-group-justified" role="group">
@@ -17,7 +18,7 @@ Backbone.SIXHIARA.ViewTecnico1 = Backbone.SIXHIARA.View1.extend({
   </div>
 </div>
 
-<h4 style="margin-bottom: 20px;">
+<h4 style="margin-bottom: 15px;">
 <%- formatter().formatDate(d_ultima_entrega_doc) + ' - ' %><span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span> <span style="color: grey"><%= ' (' + (actividade && actividade.tipo || 'Não declarada') + ')' %></span>
 <div class="licencias">
     <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[0] %> /
@@ -93,6 +94,9 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
        </textarea>
  </div>
 
+ <div id="map-process">
+ </div>
+
     `),
 
     init: function() {
@@ -120,6 +124,13 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
             .forEach(function(input) {
                 input.addEventListener("change", self.autosave.bind(self), false);
             });
+
+        // MapViewProcess Exploracao geometry and map
+        var exploracao = this.model;
+        mapViewProcess = new Backbone.SIXHIARA.MapViewProcess({
+            el: $("#map-process"),
+            model: exploracao,
+        });
     },
 
     enableBts: function() {

@@ -11,7 +11,7 @@ Backbone.SIXHIARA.ViewJuridico1 = Backbone.SIXHIARA.View1.extend({
   </div>
 </div>
 
-<h4 style="margin-bottom: 20px;">
+<h4 style="margin-bottom: 15px;">
 <%- formatter().formatDate(d_ultima_entrega_doc) + ' - ' %><span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span>
 </h4>
 

@@ -13,6 +13,10 @@ body,
     height: 100%;
 }
 
+#map-process {
+    height: 250px;
+}
+
 #projects {
     overflow-y: scroll;
 }

@@ -27,9 +27,9 @@ input#d_soli {
 
 #time-renovacao-info {
     display: none;
-    font-size: 18px;
+    font-size: 15px;
     font-style: italic;
-    margin-bottom: 22px;
+    margin-bottom: 15px;
     padding: 0;
     text-align: center;
 }
