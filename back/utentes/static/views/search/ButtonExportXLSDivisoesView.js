@@ -3,7 +3,7 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.
     /* http://sheetjs.com/demos/Export2Excel.js */
 
     buttonTitle:
-        "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \n Verifique não ter usado nenhum outro filtro, nem ter feito zoom no mapa",
+        "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \nVerifique não ter usado nenhum outro filtro, nem ter feito zoom no mapa.",
 
     events: {
         "click #export-button-xls-divisoes": "exportXLS",
@@ -21,7 +21,7 @@ Backbone.SIXHIARA.ButtonExportXLSDivisoesView = Backbone.SIXHIARA.ExportXLSView.
             if (!divisao || Object.keys(filtros).length > 1) {
                 SIRHA.Utils.DOM.disableBt(
                     "export-button-xls-divisoes",
-                    this.buttonTitle
+                    "Para exportar o XLS de Facturação deve ter seleccionada uma Divisão. \nVerifique não ter usado nenhum outro filtro, nem ter feito zoom no mapa."
                 );
             } else {
                 SIRHA.Utils.DOM.enableBt("export-button-xls-divisoes", " ");
