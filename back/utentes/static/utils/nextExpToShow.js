@@ -6,8 +6,7 @@ var onShowNextExp = function(
     filteredList,
     where,
     wf,
-    listView,
-    mapView
+    listView
 ) {
     if (estados.where({text: state}).length === 0) {
         fullList.remove(model);
@@ -16,7 +15,6 @@ var onShowNextExp = function(
     filteredList = fullList.filterBy(where);
     listView.listenTo(filteredList, "leaflet", myLeafletEvent);
     listView.update(filteredList);
-    mapView.update(filteredList);
 
     var nextExp = nextExpToShow(fullList, filteredList, model.get("exp_id"), state);
     wf.renderView(nextExp);

@@ -2,7 +2,7 @@ var where = new Backbone.SIXHIARA.Where();
 var exploracaos = new Backbone.SIXHIARA.ExploracaoCollection();
 var exploracaosFiltered = new Backbone.SIXHIARA.ExploracaoCollection();
 var domains = new Backbone.UILib.DomainCollection();
-var listView, mapView, numberOfResultsView, filtersView;
+var listView, numberOfResultsView, filtersView;
 
 exploracaos.url = Backbone.SIXHIARA.Config.apiFacturacao;
 
@@ -37,7 +37,6 @@ var domainsFetched = function(collection, response, options) {
             exploracaosFiltered = exploracaos.filterBy(where);
             listView.listenTo(exploracaosFiltered, "leaflet", myLeafletEvent);
             listView.update(exploracaosFiltered);
-            mapView.update(exploracaosFiltered);
         }
         numberOfResultsView.update(_.size(exploracaosFiltered));
         renderNextExpOnFilterChange(wf, exploracaosFiltered);
@@ -73,15 +72,8 @@ var exploracaosFetched = function() {
         );
     }
 
-    mapView = new Backbone.SIXHIARA.MapView({
-        el: $("#map"),
-        collection: exploracaosFiltered,
-        where: where,
-    });
-
     listView.listenTo(exploracaosFiltered, "leaflet", myLeafletEvent);
     listView.update(exploracaosFiltered);
-    mapView.update(exploracaosFiltered);
 
     if (exploracaosFiltered.length > 0) {
         wf.renderView(exploracaosFiltered.at(0));
@@ -98,8 +90,7 @@ var exploracaosFetched = function() {
             exploracaosFiltered,
             where,
             wf,
-            listView,
-            mapView
+            listView
         );
     });
 };

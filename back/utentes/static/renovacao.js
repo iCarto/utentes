@@ -7,7 +7,7 @@ var renovacoes = new Backbone.SIXHIARA.RenovacaoCollection();
 var renovacoesFiltered = new Backbone.SIXHIARA.RenovacaoCollection();
 var domains = new Backbone.UILib.DomainCollection();
 var estados = new Backbone.SIXHIARA.EstadoRenovacaoCollection();
-var listView, mapView, numberOfResultsView, filtersView;
+var listView, numberOfResultsView, filtersView;
 
 var domainsFetched = function(collection, response, options) {
     filtersView = new Backbone.SIXHIARA.FiltersView({
@@ -35,7 +35,6 @@ var domainsFetched = function(collection, response, options) {
             renovacoesFiltered = renovacoes.filterBy(where);
             listView.listenTo(renovacoesFiltered, "leaflet", myLeafletEvent);
             listView.update(renovacoesFiltered);
-            mapView.update(renovacoesFiltered);
         }
         numberOfResultsView.update(_.size(renovacoesFiltered));
         renderNextExpOnFilterChange(wfr, renovacoesFiltered);
@@ -70,15 +69,8 @@ var renovacoesFetched = function() {
         listView: listView,
     }).render();
 
-    mapView = new Backbone.SIXHIARA.MapView({
-        el: $("#map"),
-        collection: renovacoesFiltered,
-        where: where,
-    });
-
     listView.listenTo(renovacoesFiltered, "leaflet", myLeafletEvent);
     listView.update(renovacoesFiltered);
-    mapView.update(renovacoesFiltered);
 
     if (renovacoesFiltered.length > 0) {
         wfr.renderView(renovacoesFiltered.at(0));
@@ -95,8 +87,7 @@ var renovacoesFetched = function() {
             renovacoesFiltered,
             where,
             wfr,
-            listView,
-            mapView
+            listView
         );
     });
 };
