@@ -59,7 +59,7 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
         });
 
         this.tabBarTitle = new Backbone.SIXHIARA.TabBarTitle({
-            el: document.querySelector("#map-container ul.nav.nav-tabs"),
+            el: document.querySelector("#leftside-toolbar"),
             model: currentState,
         }).render();
     },

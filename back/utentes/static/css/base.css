@@ -263,9 +263,16 @@ with or whithout another 'observacio-anteriores' textarea
     cursor: not-allowed;
 }
 
-#bt-toolbar {
-    margin-bottom: 22px;
-    margin-top: 22px;
+#toolbar {
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+
+#state-toolbar {
+    background-color: rgba(204, 204, 204, 0.3);
+    border-radius: 5px;
+    color: white;
+    padding: 7px;
 }
 
 #js-btns-next {
@@ -347,9 +354,9 @@ with or whithout another 'observacio-anteriores' textarea
 }
 
 .tooltip-label-value.tooltip .tooltip-inner {
+    font-size: 1.1em;
     max-width: 100%;
     text-align: left;
-    font-size: 1.1em;
 }
 
 .tooltip-label-value.tooltip .tooltip-label {

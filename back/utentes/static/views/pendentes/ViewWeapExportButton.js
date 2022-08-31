@@ -4,7 +4,7 @@ Backbone.SIXHIARA.ViewWeapExportButton = Backbone.View.extend({
         var json = this.model.toJSON();
         var exportBthtml = _.template(`
             <div class="btn-group" role="group">
-                <a id="bt-export-demand" class="btn btn-default" role="button" href="/api/weap/demand?id=<%- id %>">Exportar demandas</a>
+                <a id="bt-export-demand" class="btn btn-default" role="button" href="/api/weap/demand?id=<%- id %>">XLS Demandas</a>
             </div>
         `)(json);
 

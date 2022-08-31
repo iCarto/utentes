@@ -29,9 +29,9 @@ input#d_soli {
     display: none;
     font-size: 15px;
     font-style: italic;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     padding: 0;
-    text-align: center;
+    text-align: left;
 }
 
 #time-renovacao-info.info-pill.label-warning,

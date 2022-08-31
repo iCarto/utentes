@@ -1,19 +1,23 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.ViewSecretaria1 = Backbone.SIXHIARA.View1.extend({
     template: _.template(`
-        <div id="bt-toolbar" class="row">
-  <div class="col-xs-12">
-    <div class="btn-group btn-group-justified" role="group">
-        <div class="btn-group" role="group">
-            <button id="file-modal" class="btn btn-default" role="button">Documentação</button>
+
+<h4 style="margin-top: 30px; margin-bottom: 0px">
+    <%- formatter().formatDate(d_ultima_entrega_doc) + ' - ' %><span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span>
+</h4>
+
+<div id="toolbar" class="row">
+    <div id="leftside-toolbar" class="col-xs-6"></div>
+    <div id="rightside-toolbar" class="col-xs-6">
+        <div id="bt-toolbar">
+            <div class="btn-group btn-group-justified" role="group">
+                <div class="btn-group" role="group">
+                    <button id="file-modal" class="btn btn-default" role="button">Documentação</button>
+                </div>
+            </div>
         </div>
     </div>
-  </div>
 </div>
-
-<h4 style="margin-bottom: 15px;">
-<%- formatter().formatDate(d_ultima_entrega_doc) + ' - ' %><span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span>
-</h4>
 
 <div class="row panel-equal-height">
   <div class="col-xs-6">

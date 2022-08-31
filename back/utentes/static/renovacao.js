@@ -74,7 +74,7 @@ var renovacoesFetched = function() {
 
     if (renovacoesFiltered.length > 0) {
         wfr.renderView(renovacoesFiltered.at(0));
-        $('#map-container a[href="#insert-data-tab"]').tab("show");
+        $("#process-container");
     }
 
     renovacoes.on("show-next-exp", function(model) {
@@ -114,7 +114,7 @@ document.getElementById("projects").addEventListener("click", e => {
         var exp_id = e.target.parentNode.parentNode.id.replace("exp_id-", "");
         var exp = renovacoes.findWhere({exp_id: exp_id});
         wfr.renderView(exp);
-        $('#map-container a[href="#insert-data-tab"]').tab("show");
+        $("#process-container");
     }
     return false;
 });

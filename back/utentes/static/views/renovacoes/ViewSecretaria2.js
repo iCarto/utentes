@@ -1,27 +1,35 @@
 Backbone.SIXHIARA = Backbone.SIXHIARA || {};
 Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
     template: _.template(`
-        <div id="bt-toolbar" class="row">
-           <div class="col-xs-12">
-              <div class="btn-group btn-group-justified" role="group">
-                 <div class="btn-group" role="group">
-                    <button id="file-modal" class="btn btn-default" role="button">Documentação</button>
-                 </div>
-                 <div class="btn-group" role="group">
-                    <a id="bt-ficha" class="btn btn-default" role="button" href="/exploracao-show.html?id=<%- id %>">Ficha</a>
-                 </div>
-              </div>
-           </div>
-        </div>
-        <div id="time-renovacao-info" class="info-pill <%- renovacao.lic_time_over ? 'label-danger' : (renovacao.lic_time_warning ? 'label-warning' : renovacao.lic_time_enough ? 'label-success' : 'label-default') %>"> <%- renovacao.lic_time_info || 'Sem informação' %></div>
-        <h4 style="margin-bottom: 15px;">
+
+        <h4 style="margin-top: 30px; margin-bottom: 0px">
            <%- (renovacao.d_ultima_entrega_doc ? formatter().formatDate(renovacao.d_ultima_entrega_doc) + ' - ' : '') %><span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span> <span style="color: grey"><%= ' (' + (actividade && actividade.tipo || 'Não declarada ') + ') ' %></span>
            <div class="licencias">
               <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[0] %> /
               <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[1] %>
            </div>
         </h4>
-        <div id="renovacao-block" class="form-group" style="margin-top: 20px">
+        <div id="time-renovacao-info" class="info-pill
+        <%- renovacao.lic_time_over ? 'label-danger' : (renovacao.lic_time_warning ? 'label-warning' : renovacao.lic_time_enough ? 'label-success' : 'label-default') %>"> <%- renovacao.lic_time_info || 'Sem informação' %>
+        </div>
+
+        <div id="toolbar" class="row">
+            <div id="leftside-toolbar" class="col-xs-6"></div>
+            <div id="rightside-toolbar" class="col-xs-6">
+                <div id="bt-toolbar">
+                    <div class="btn-group btn-group-justified" role="group">
+                        <div class="btn-group" role="group">
+                            <button id="file-modal" class="btn btn-default" role="button">Documentação</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <a id="bt-ficha" class="btn btn-default" role="button" href="/exploracao-show.html?id=<%- id %>">Ficha</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="renovacao-block" class="form-group">
            <label for="observacio" style="width: 100%; margin-bottom: 0px">
               <div style="display:inline-block; width: 29%">
                  Observações

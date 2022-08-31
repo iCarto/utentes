@@ -3,53 +3,46 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
     id: "view-facturacao",
     className: "myclass",
     template: _.template(`
-    <div id="bt-toolbar" class="row" style="margin-bottom: 10px; margin-top: 10px">
-        <div class="col-xs-12">
-            <div class="btn-group btn-group-justified" role="group">
-                <div class="btn-group" role="group">
-                    <button id="file-modal" class="btn btn-default" role="button">Documentação</button>
-                </div>
-                <div class="btn-group" role="group">
-                    <a id="bt-ficha" class="btn btn-default" role="button" href="/exploracao-show.html?id=<%- id %>">Ficha</a>
-                </div>
-                <div class="btn-group uilib-enability uilib-hide-role-observador" role="group">
-                    <button id="bt-emision" type="button" class="btn btn-default" disabled>Factura&nbsp;(emissão licença)</button>
+
+    <h4 style="margin-top: 25px; margin-bottom: 0px">
+        <span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span> <span style="color: grey"><%= ' (' + (actividade && actividade.tipo || 'Não declarada') + ') ' %></span>
+        <div class="licencias">
+            <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[0] %> / <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[1] %>
+            </div>
+    </h4>
+
+    <div id="toolbar" class="row" style="margin-bottom: 15px; margin-top: 15px">
+        <div id="leftside-toolbar" class="col-xs-4">
+            <div id="factura-header"></div>
+        </div>
+        <div id="rightside-toolbar" class="col-xs-8">
+            <div id="bt-toolbar">
+                <div class="col-xs-12">
+                    <div class="btn-group btn-group-justified" role="group">
+                        <div class="btn-group" role="group">
+                            <button id="file-modal" class="btn btn-default" role="button">Documentação</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <a id="bt-ficha" class="btn btn-default" role="button" href="/exploracao-show.html?id=<%- id %>">Ficha</a>
+                        </div>
+                        <div class="btn-group uilib-enability uilib-hide-role-observador" role="group">
+                            <button id="bt-emision" type="button" class="btn btn-default" disabled>Factura&nbsp;(emissão licença)</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-<h4 style="margin-bottom: 10px;">
-    <span style="color:#00a2da"><%- exp_id + ' '%> <%- exp_name %></span> <span style="color: grey"><%= ' (' + (actividade && actividade.tipo || 'Não declarada') + ') ' %></span>
-    <div class="licencias">
-        <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[0] %> / <%- Backbone.SIXHIARA.formatter.formatTipoLicencias(licencias)[1] %>
-    </div>
-</h4>
-
     <form id="view-facturacao-common-widgets" class="form-horizontal" style="margin-top: 10px">
         <fieldset class="uilib-enability uilib-enable-role-financieiro uilib-enable-role-administrador">
             <div class="row">
-                <div id="factura-header" class="col-xs-4">
-                </div>
 
                 <div class="col-xs-4">
-                    <div class="form-group" style="margin-left: 0px; margin-right: 0px">
-                        <label for="pago_lic" class="control-label col-xs-9" style="text-align: left">Pagamento emissão licença</label>
-                        <div class="col-xs-3" style="padding-left: 10px; padding-right: 10px;">
-                            <select id="pago_lic" class="form-control widget-boolean" style="padding: 3px 5px;" required>
-                                <option value="true">Sim</option>
-                                <option value="false">Não</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-4">
-                    <div class="form-group " style="margin-left: 0px; margin-right: 0px">
+                    <div class="form-group">
                         <label for="fact_tipo" class="control-label col-xs-7" style="text-align: left">Tipo de facturação</label>
-                        <div class="col-xs-5" style="padding-left: 10px; padding-right: 10px;">
-                            <select id="fact_tipo" class="form-control widget" style="padding: 3px 3px;" required>
+                        <div class="col-xs-5">
+                            <select id="fact_tipo" class="form-control widget" style="padding: 3px 3px; height: 25px" required>
                                 <option value="Mensal">Mensal</option>
                                 <option value="Trimestral">Trimestral</option>
                                 <option value="Anual">Anual</option>
@@ -57,6 +50,19 @@ Backbone.SIXHIARA.ViewFacturacao = Backbone.SIXHIARA.BaseProcesoView.extend({
                         </div>
                     </div>
                 </div>
+
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="pago_lic" class="control-label col-xs-9" style="text-align: left">Pagamento emissão licença</label>
+                        <div class="col-xs-3">
+                            <select id="pago_lic" class="form-control widget-boolean" style="padding: 3px 5px; height: 25px" required>
+                                <option value="true">Sim</option>
+                                <option value="false">Não</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </fieldset>
     </form>

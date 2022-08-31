@@ -77,7 +77,7 @@ var exploracaosFetched = function() {
 
     if (exploracaosFiltered.length > 0) {
         wf.renderView(exploracaosFiltered.at(0));
-        $('#map-container a[href="#insert-data-tab"]').tab("show");
+        $("#process-container");
     }
 
     exploracaos.on("show-next-exp", function(model) {
@@ -108,7 +108,7 @@ document.getElementById("project_list").addEventListener("click", e => {
         var exp_id = e.target.parentNode.parentNode.id.replace("exp_id-", "");
         var exp = exploracaos.findWhere({exp_id: exp_id});
         wf.renderView(exp);
-        $('#map-container a[href="#insert-data-tab"]').tab("show");
+        $("#process-container");
     }
     return false;
 });

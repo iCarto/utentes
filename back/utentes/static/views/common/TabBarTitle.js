@@ -6,17 +6,18 @@ Backbone.SIXHIARA.TabBarTitle = Backbone.View.extend({
 
     render: function() {
         fragment = document.createDocumentFragment();
-        this.li = document.createElement("li");
+        this.div = document.createElement("div");
         var a = document.createElement("a");
         a.textContent = this.model;
-        this.li.appendChild(a);
-        this.li.style.float = "right";
-        fragment.appendChild(this.li);
+        this.div.appendChild(a);
+        this.div.id = "state-toolbar";
+        this.div.style.textAlign = "left";
+        fragment.appendChild(this.div);
         this.el.appendChild(fragment);
         return this;
     },
 
     remove: function() {
-        this.li.remove();
+        this.div.remove();
     },
 });
