@@ -62,6 +62,15 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
             el: document.querySelector("#leftside-toolbar"),
             model: currentState,
         }).render();
+
+        // MapViewProcess Exploracao geometry and map
+        const mapProcessElement = document.getElementById("map-process");
+        if (mapProcessElement) {
+            new Backbone.SIXHIARA.MapViewProcess({
+                el: mapProcessElement,
+                model: this.model,
+            });
+        }
     },
 
     fillExploracao: function(e, autosave) {

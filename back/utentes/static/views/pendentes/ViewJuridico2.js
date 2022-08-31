@@ -138,13 +138,6 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
             const msg = this.model.validationError.join("\n");
             SIRHA.Utils.DOM.disableBt("bt-imprimir-licencia", msg);
         }
-
-        // MapViewProcess Exploracao geometry and map
-        var exploracao = this.model;
-        mapViewProcess = new Backbone.SIXHIARA.MapViewProcess({
-            el: $("#map-process"),
-            model: exploracao,
-        });
     },
 
     enableBts: function() {

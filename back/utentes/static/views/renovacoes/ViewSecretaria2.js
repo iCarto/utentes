@@ -64,13 +64,6 @@ Backbone.SIXHIARA.ViewSecretaria2 = Backbone.SIXHIARA.View1.extend({
     init: function() {
         Backbone.SIXHIARA.View1.prototype.init.call(this);
         this.enableBts();
-
-        // MapViewProcess Exploracao geometry and map
-        var exploracao = this.model;
-        mapViewProcess = new Backbone.SIXHIARA.MapViewProcess({
-            el: $("#map-process"),
-            model: exploracao,
-        });
     },
 
     enableBts: function() {

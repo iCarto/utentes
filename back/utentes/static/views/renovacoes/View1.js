@@ -68,6 +68,15 @@ Backbone.SIXHIARA.View1 = Backbone.SIXHIARA.BaseProcesoView.extend({
         if (this.model.get("renovacao").get("lic_time_info")) {
             document.getElementById("time-renovacao-info").style.display = "block";
         }
+
+        // MapViewProcess Exploracao geometry and map
+        const mapProcessElement = document.getElementById("map-process");
+        if (mapProcessElement) {
+            new Backbone.SIXHIARA.MapViewProcess({
+                el: mapProcessElement,
+                model: this.model,
+            });
+        }
     },
 
     updateUltimaEntregaDoc: function(date, date2) {

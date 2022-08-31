@@ -127,13 +127,6 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
             .forEach(function(input) {
                 input.addEventListener("change", self.autosave.bind(self), false);
             });
-
-        // MapViewProcess Exploracao geometry and map
-        var exploracao = this.model;
-        mapViewProcess = new Backbone.SIXHIARA.MapViewProcess({
-            el: $("#map-process"),
-            model: exploracao,
-        });
     },
 
     enableBts: function() {
