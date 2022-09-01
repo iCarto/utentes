@@ -22,9 +22,9 @@
   WSGIPassAuthorization On
   WSGIDaemonProcess utentes user=vagrant group=www-data python-path=/var/www/utentes python-home=/home/vagrant/.virtualenvs/utentes/ lang='en_ZA.utf8' locale='en_ZA.utf8'
   WSGIProcessGroup utentes
-  WSGIScriptAlias / /var/www/utentes/wsgi.py
+  WSGIScriptAlias / /var/www/utentes/back/wsgi.py
 
-  <Directory /var/www/utentes>
+  <Directory /var/www/utentes/back>
     <Files wsgi.py>
       Require all granted
     </Files>
@@ -32,10 +32,10 @@
 
 
   ## static files if served by Apache ##
-  Alias /static/ /var/www/utentes/utentes/static/
+  Alias /static/ /var/www/utentes/back/utentes/static/
 
 
-  <Directory /var/www/utentes/utentes/static>
+  <Directory /var/www/utentes/back/utentes/static>
     Require all granted
   </Directory>
 
