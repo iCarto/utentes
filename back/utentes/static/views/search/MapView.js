@@ -8,6 +8,17 @@ Backbone.SIXHIARA.MapView = Backbone.View.extend({
         options.offline = {layers: allLayers};
         this.map = Backbone.SIXHIARA.mapConfig(this.el.id, options);
 
+        // Calculate polygon centers and use getLatLng and setLatLng methods to create latlng field and enable MarkerCluster plugin to cluster polygons
+        L.Polygon.addInitHook(function() {
+            this._latlng = this._bounds.getCenter();
+        });
+        L.Polygon.include({
+            getLatLng: function() {
+                return this._latlng;
+            },
+            setLatLng: function() {},
+        });
+
         this.geoJSONLayer = L.geoJson(this.collection.toGeoJSON(), {
             style: this.map.SIRHASExploracaoStyle,
             onEachFeature: function(feature, layer) {
@@ -15,7 +26,23 @@ Backbone.SIXHIARA.MapView = Backbone.View.extend({
                     var exp_id = feature.properties.exp_id;
                     var exp = self.collection.filter({exp_id: exp_id})[0];
                     layer.bindPopup(
-                        '<a href="' + exp.urlShow() + '">' + exp_id + "</a>"
+                        "<strong>" +
+                            "Exploração: " +
+                            "</strong>" +
+                            feature.properties.exp_id +
+                            "<br/>" +
+                            "<strong>" +
+                            "Nome: " +
+                            "</strong>" +
+                            feature.properties.exp_name +
+                            "<p/>" +
+                            "<div align='center'>" +
+                            '<a href="' +
+                            exp.urlShow() +
+                            '">' +
+                            "FICHA" +
+                            "</a>" +
+                            "<p/>"
                     );
                 }
                 layer.on({
@@ -46,7 +73,13 @@ Backbone.SIXHIARA.MapView = Backbone.View.extend({
         });
 
         this.mapEvents();
-        this.geoJSONLayer.addTo(this.map);
+
+        //Exploraçoes cluster display by MarkerCluster
+        this.markers = L.markerClusterGroup({
+            showCoverageOnHover: true,
+            zoomToBoundsOnClick: true,
+            disableClusteringAtZoom: 12,
+        });
     },
 
     update: function(newCollection) {
@@ -57,10 +90,13 @@ Backbone.SIXHIARA.MapView = Backbone.View.extend({
 
     updateLayer: function() {
         this.geoJSONLayer.clearLayers();
+        this.markers.clearLayers();
         var geojson = this.collection.toGeoJSON();
         if (geojson.features.length > 0) {
             this.geoJSONLayer.addData(geojson);
         }
+        //Insert data in cluster markers and add to the map
+        this.markers.addLayer(this.geoJSONLayer).addTo(this.map);
     },
 
     updateMapView: function() {
