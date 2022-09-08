@@ -83,14 +83,14 @@ def renovacao_update(request):
 
     r_to_be_used.update_from_json(body)
 
+    exp = get_exploracao_by_pk(request.db, r_to_be_used.exploracao)
     if r_to_be_used.estado in FINISHED_RENOVACAO_STATES:
-        exp = get_exploracao_by_pk(request.db, r_to_be_used.exploracao)
         exp.update_from_json_renovacao(request, body)
         request.db.add(exp)
 
     request.db.add(r_to_be_used)
     request.db.commit()
-    return r_to_be_used
+    return exp
 
 
 @view_config(
