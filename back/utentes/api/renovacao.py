@@ -1,18 +1,13 @@
-from dateutil.relativedelta import relativedelta
 from pyramid.view import view_config
 
 from utentes.constants import perms as perm
-from utentes.lib.utils import dates
 from utentes.models.base import badrequest_exception
-from utentes.models.constants import RENEWABLE_STATES
 from utentes.models.estado_renovacao import FINISHED_RENOVACAO_STATES
-from utentes.models.exploracao_con_renovacao import ExpConRenovacao
-from utentes.models.licencia import Licencia
 from utentes.models.renovacao import Renovacao, create
-from utentes.repos.exploracao_repo import get_exploracao_by_pk
-
-
-N_MONTHS_TO_GO_BACK = 6
+from utentes.repos.exploracao_repo import (
+    get_exploracao_by_pk,
+    get_renewable_exploracaos,
+)
 
 
 @view_config(
@@ -22,20 +17,7 @@ N_MONTHS_TO_GO_BACK = 6
     renderer="json",
 )
 def renovacao_get(request):
-
-    threshold_renewal_date = dates.today() + relativedelta(months=N_MONTHS_TO_GO_BACK)
-
-    lics_ids_query = (
-        request.db.query(Licencia.exploracao)
-        .filter(Licencia.estado.in_(RENEWABLE_STATES))
-        .filter(Licencia.d_validade < threshold_renewal_date)
-        .group_by(Licencia.exploracao)
-    )
-    exp_ids = [lic[0] for lic in lics_ids_query]
-
-    exploracaos = (
-        request.db.query(ExpConRenovacao).filter(ExpConRenovacao.gid.in_(exp_ids)).all()
-    )
+    exploracaos = get_renewable_exploracaos(request.db)
 
     for f in exploracaos:
         renovacoes = [
@@ -89,7 +71,6 @@ def renovacao_update(request):
         request.db.add(exp)
 
     request.db.add(r_to_be_used)
-    request.db.commit()
     return exp
 
 
