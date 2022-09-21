@@ -21,7 +21,7 @@ def includeme(config: Configurator):
             ],
             traces_sample_rate=1.0,
             send_default_pii=True,
-            release="220708",
+            release="220921",
             environment=config.registry.settings.get("ara"),
             attach_stacktrace=False,
             request_bodies="medium",
