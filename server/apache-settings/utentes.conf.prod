@@ -1,17 +1,43 @@
 <VirtualHost *:80>
-    # ServerName localhost
+
+    LoadModule wsgi_module "/usr/lib/apache2/modules/mod_wsgi-py36.cpython-36m-x86_64-linux-gnu.so"
+
+    # ServerName li2053-236.members.linode.com
     # ServerAlias localhost
     ServerAdmin dev@icarto.es
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel info
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    # ErrorLog ${APACHE_LOG_DIR}/error.log
+    # CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-    RewriteEngine On
-    # When http (and not https) is being used. No matters if the url is an ip or a domain
-    RewriteCond %{HTTPS} off
-    # Redirect the browser to the desired domain with https
-    RewriteRule ^(.*)$ https://foo.example.com$1 [R=301,END,NE]
+
+    DocumentRoot /var/www
+
+
+    ## mod_wsgi ##
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    WSGIDaemonProcess utentes user=utentes group=www-data python-path=/var/www/utentes/back python-home=/home/utentes/.virtualenvs/utentes/ lang='en_ZA.utf8' locale='en_ZA.utf8'
+    WSGIProcessGroup utentes
+    WSGIScriptAlias / /var/www/utentes/back/wsgi.py
+
+    <Directory /var/www/utentes/back>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+
+
+    ## static files if served by Apache ##
+    Alias /static/ /var/www/utentes/back/utentes/static/
+
+
+    <Directory /var/www/utentes/back/utentes/static>
+        Require all granted
+    </Directory>
+
+    AddOutputFilterByType DEFLATE application/json
+
 </VirtualHost>

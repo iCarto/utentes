@@ -8,7 +8,7 @@ set -euo pipefail
 # This script should be configured to be ran each day with anacron
 # It could be placed in /etc/cron.daily
 
-# Configuratio: monthly_tasks variables
+# Configuration: monthly_tasks variables
 # Usuario que se puede usar para copiar los archivos mediante scp
 SCP_USER=
 PG_PORT=
@@ -40,20 +40,20 @@ mkdir -p $(dirname "${LAST_EXECUTION_FILE}") && touch "${LAST_EXECUTION_FILE}"
 # If LAST_EXECUTION does not exist initialize it with this day on last month
 FIRST_TIME_INITIALIZATION_DATE=$(date -d "last month" '+%Y%m%d')
 
-LAST_EXECUTION=$([ -f "${LAST_EXECUTION_FILE}" ] && cat "${LAST_EXECUTION_FILE}")
+LAST_EXECUTION=$([[ -f "${LAST_EXECUTION_FILE}" ]] && cat "${LAST_EXECUTION_FILE}")
 LAST_EXECUTION_MONTH=$(date -d "${LAST_EXECUTION:=${FIRST_TIME_INITIALIZATION_DATE}}" '+%m')
 
 function monthly_tasks() {
     # Remove old backups
-    rm -rf ${BACKUP_FOLDER}
-    mkdir -p ${BACKUP_FOLDER}
+    rm -rf "${BACKUP_FOLDER}"
+    mkdir -p "${BACKUP_FOLDER}"
 
-    pg_dump -h localhost -p ${PG_PORT} -U postgres -Fc -Z9 -E UTF-8 -f ${BACKUP_FOLDER}/${DBNAME}_bck_$(date +%y%m%d).dump ${DBNAME} 2> ${BACKUP_FOLDER}/pgdump.log
-    tar czf ${BACKUP_FOLDER}/${DBNAME}_files_bck_$(date +%y%m%d).tgz ${BASE_MEDIA_FOLDER}/media 2> ${BACKUP_FOLDER}/tar_files.log
+    pg_dump -h localhost -p "${PG_PORT}" -U postgres -Fc -Z9 -E UTF-8 -f "${BACKUP_FOLDER}/${DBNAME}_bck_$(date +%y%m%d).dump" "${DBNAME}" 2> "${BACKUP_FOLDER}/pgdump.log"
+    tar czf "${BACKUP_FOLDER}/${DBNAME}_files_bck_$(date +%y%m%d).tgz" "${BASE_MEDIA_FOLDER}/media" 2> "${BACKUP_FOLDER}/tar_files.log"
 
-    curl "${WEB_URL}:${WEB_PORT}/api/nuevo_ciclo_facturacion?token_new_fact_cycle=${TOKEN}" > ${BACKUP_FOLDER}/nuevo_ciclo_facturacion.log 2>&1
+    curl "${WEB_URL}:${WEB_PORT}/api/nuevo_ciclo_facturacion?token_new_fact_cycle=${TOKEN}" > "${BACKUP_FOLDER}/nuevo_ciclo_facturacion.log" 2>&1
 
-    chown -R ${SCP_USER}:${SCP_USER} ${BACKUP_FOLDER}
+    chown -R "${SCP_USER}":"${SCP_USER}" "${BACKUP_FOLDER}"
 }
 
 # If today is less that the expected day of execution. 01..04, we expect that the job was already done last month

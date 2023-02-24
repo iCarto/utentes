@@ -24,7 +24,7 @@ dump() {
     DBNAME=$1
     BACKUP_FOLDER=/tmp/${TODAY}
     mkdir -p "${BACKUP_FOLDER}"
-    [ "${FLAG_DUMP}" -eq 1 ] && ${PGDUMP} -h localhost -U postgres -Fc -Z 9 -E UTF-8 -f "${BACKUP_FOLDER}/${TODAY}_BDD_${1}.backup" -O -x "${DBNAME}"
+    [[ "${FLAG_DUMP}" -eq 1 ]] && ${PGDUMP} -h localhost -U postgres -Fc -Z 9 -E UTF-8 -f "${BACKUP_FOLDER}/${TODAY}_BDD_${1}.backup" -O -x "${DBNAME}"
 }
 
 # $1 = DBNAME
@@ -33,7 +33,7 @@ sqitch_deploy() {
     cd .. || error 'ERROR: arrancando sqitch deploy'
     # --quiet
     sqitch deploy "db:pg://postgres:postgres@localhost:${PG_PORT}/${1}" --to-change "${2}"
-    if ! [ "$?" -eq "${SUCCESS}" ]; then
+    if ! [[ "$?" -eq "${SUCCESS}" ]]; then
         echo 'Sqitch no ha finalizado correctamente'
         echo "$1, $2"
         echo "Saliendo"
@@ -73,16 +73,17 @@ fill_data() {
     # introducir datos de analise antes que datos de fuente y se produce un error
     # https://stackoverflow.com/questions/5359968/restore-postgresql-db-from-backup-without-foreign-key-constraint-issue
     # http://blog.fabianbecker.eu/pg_restore-and-foreign-key-constraints/
-    if [ -f "${BACKUP_INVENTARIO}" ]; then
+    if [[ -f "${BACKUP_INVENTARIO}" ]]; then
         ${PGRESTORE} -h localhost -U postgres -d "${DBNAME}" --data-only --single-transaction --exit-on-error --disable-triggers "${BACKUP_INVENTARIO}"
     fi
 
     ARA_DOMAIN=""
     case "${DBNAME}" in
         'aranorte') ARA_DOMAIN='Norte' ;;
-        'arasul') ARA_DOMAIN='Sul' ;;
         'arazambeze') ARA_DOMAIN='Zambeze' ;;
         'dpmaip') ARA_DOMAIN='DPMAIP' ;;
+        'arasul') ARA_DOMAIN='Sul' ;;
+        *) ARA_DOMAIN='Sul' ;;
     esac
     PGOPTIONS='--client-min-messages=warning' ${PSQL} -h localhost -U postgres -d "${DBNAME}" -c "DELETE FROM domains.ara; INSERT INTO domains.ara VALUES ('ara', '${ARA_DOMAIN}', '${ARA_DOMAIN}', NULL, NULL, NULL); REFRESH MATERIALIZED VIEW domains.domains;"
 
@@ -94,14 +95,14 @@ fill_data() {
         echo -e '\nGestionado caso especial: dpmaip'
         ${PGRESTORE} -h localhost -U postgres -d "${DBNAME}" --data-only --single-transaction --exit-on-error --disable-triggers ./datos/180711_BDD_dpmaip_pro.dump
     else
-        if [ -f "${BACKUP_UTENTES}.dump" ]; then
+        if [[ -f "${BACKUP_UTENTES}.dump" ]]; then
             ${PGRESTORE} -h localhost -U postgres -d "${DBNAME}" --data-only --single-transaction --exit-on-error --disable-triggers "${BACKUP_UTENTES}.dump"
         else
             PGOPTIONS='--client-min-messages=warning' ${PSQL} -h localhost -U postgres -d "${1}" -f "${BACKUP_UTENTES}.sql"
         fi
     fi
 
-    if [ -f "${BACKUP_FOTOS}" ]; then
+    if [[ -f "${BACKUP_FOTOS}" ]]; then
         echo "Restoring photos from specific dump"
         bash restore_pictures_from_backup.sh "${BACKUP_FOTOS}" "${DBNAME}"
     fi
@@ -128,7 +129,7 @@ aranorte() {
 
     # LAST_VERSION=20180525
 
-    if [ -n "${LAST_VERSION}" ]; then
+    if [[ -n "${LAST_VERSION}" ]]; then
         CBASE_VERSION=""
         for_each_database "vacia" "${DBNAME}" "${CBASE_VERSION}"
         fill_from_last_version "${DBNAME}" "${LAST_VERSION}"
@@ -138,6 +139,7 @@ aranorte() {
         UTENTES_VERSION=190104
         # Comentar esta línea si no es necesario procesar las fotos desde un dump aparte
         # INVENTARIO_FOTOS_VERSION=180314_aranorte_inventario2.backup
+        INVENTARIO_FOTOS_VERSION=''
         for_each_database "vacia" "${DBNAME}" "${CBASE_VERSION}"
         sqitch_deploy "${DBNAME}" endereco_in_two_lines
         fill_data "${DBNAME}" "${INVENTARIO_VERSION}" "${UTENTES_VERSION}" "${INVENTARIO_FOTOS_VERSION}"
@@ -202,7 +204,7 @@ main() {
     # Cuando está presente permite agrupar ciertos tareas en un template
     # común para que sea un poco más rápido el proceso
     LAST_COMMON_SQITCH_TAG="@dpmaip20170906"
-    if [ -n "${LAST_COMMON_SQITCH_TAG}" ]; then
+    if [[ -n "${LAST_COMMON_SQITCH_TAG}" ]]; then
         DBNAME=vacia
         CBASE_VERSION=""
         for_each_database "${DB_TEMPLATE}" "${DBNAME}" "${CBASE_VERSION}"
@@ -226,13 +228,18 @@ main() {
 DB_TEMPLATE='template0'
 FLAG_DUMP=0
 # Process input arguments
-while [ $# -gt 0 ]; do
+while [[ $# -gt 0 ]]; do
     case $1 in
 
         --dump)
             FLAG_DUMP=1
             shift
             ;;
+        *)
+            echo "ERROR: Opción no reconocida"
+            exit 1
+            ;;
+
     esac
 done
 

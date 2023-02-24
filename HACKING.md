@@ -29,11 +29,9 @@ VERSION=$(date +%y%m%d) # like 220315
 
 ## Other repos
 
--   https://gitlab.com/icarto/utentes-api. SIRHA: Utentes. Web application to manage water users and licenses
--   https://gitlab.com/icarto/sixhiara. SIRHA: Inventario. gvSIG based application to manage water resources cadastre
--   https://gitlab.com/icarto/utentes-bd. Deprecated. Database (sqitch), tools and scripts, ...
--   https://gitlab.com/icarto/utentes-deploy. Deprecated. Tools to package SIRH:Utentes as a desktop application with Electron
--   https://gitlab.com/icarto/utentes-deploy/sixhiara-formacion. E-R db diagrams, slides, workshops, and other doc related to the project
+-   https://github.com/iCarto/utentes. SIRHAS: Utentes. Web application for water users and licenses
+-   https://github.com/iCarto/es.icarto.gvsig.sixhiara. SIRHA: Inventario. gvSIG based application to manage water resources cadastre
+-   https://github.com/iCarto/utentes-deploy/sixhiara-formacion. E-R db diagrams, slides, workshops, and other doc related to the project
 
 ## Branches and Tags
 
@@ -90,7 +88,7 @@ Some scripts are configured to search for locations outside the main git folder.
 
 ```text
 | "${PROJECT_ROOT_PATH}"
-| |- sixhiara # SIRHA: Inventario
+| |- es.icarto.gvsig.sixhiara # SIRHA: Inventario
 | |- utentes  # SIRHA: Utentes
 | |- Tasks
 | |  | - task_<xxx>_<short_name>
@@ -153,9 +151,6 @@ Instead of `start.sh` script you can open two consoles:
 workon "${PROJECT_NAME}"
 cd back
 pserve development.ini --reload
-
-# Lauch front
-# cd front; npm start
 ```
 
 # Deployment
@@ -233,8 +228,8 @@ After installing the pre-requisites.
 
 ```shell
 cd "${PROJECT_ROOT_PATH}"
-git clone git@gitlab.com:icarto/sixhiara.git
-git clone git@gitlab.com:icarto/utentes.git
+git clone git@github.com:iCarto/es.icarto.gvsig.sixhiara.git
+git clone git@github.com:iCarto/utentes.git
 ```
 
 ## Each development phase

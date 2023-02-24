@@ -25,6 +25,7 @@ requires = [
     "numpy==1.19.5",
     "openpyxl==3.0.5",
     "pandas==1.1.5",
+    "PasteDeploy==2.1.0",  # for python 3.6
     "sentry-sdk==1.3.1",
 ]
 
