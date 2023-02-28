@@ -85,4 +85,6 @@ sed -i 's%.*history-search-forward%"\\e[6~": history-search-forward%' /etc/input
 
 ./install_letsencrypt.sh
 
+./install_fail2ban.sh
+
 bash do_dist_upgrade.sh
