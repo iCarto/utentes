@@ -104,7 +104,7 @@ git checkout "${REPO_BRANCH}"
 
 chown -R "${DEFAULT_USER}":www-data "${WWW_PATH}"
 
-source scripts/db_utils.sh
+source tools/db_utils.sh
 PGPASSWORD="${PG_POSTGRES_PASSWD}" create_last_db "${TODAY}_bck_${DBNAME}" "${DATABASE_DUMP}"
 PGPASSWORD="${PG_POSTGRES_PASSWD}" create_db_from_template "${TODAY}_bck_${DBNAME}" "${DBNAME}"
 
