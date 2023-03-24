@@ -251,3 +251,5 @@ drop_pago_mes_column_in_facturacao 2022-06-22T10:08:32Z Francisco Puga <fpuga@ic
 update_state_ticket_3158 2022-07-07T10:08:17Z Francisco Puga <fpuga@icarto.es> # Update licencia.estado, exploracao.estado for ticket 3158
 drop_tables_version 2022-07-08T08:52:24Z Francisco Puga <fpuga@icarto.es> # Drop tables utentes.version and inventario.version
 @220708 2022-07-08T08:57:56Z Francisco Puga <fpuga@icarto.es> # tag 220708
+
+3927_changes_in_departaments_names 2023-03-24T11:50:17Z Francisco Puga <fpuga@icarto.es> # 3927 changes in departaments names
