@@ -8,7 +8,7 @@ Backbone.SIXHIARA.ViewFacturacaoHistorico = Backbone.View.extend({
             <div class="panel-heading">
                 <h3 class="panel-title"><strong>Histórico</strong></h3>
             </div>
-            <div class="panel-body row">
+            <div class="panel-body row" style="padding: 0px 15px 0px 15px;">
                 <ul id="historico" class="facturacao-historico">
                 </ul>
             </div>

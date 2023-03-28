@@ -90,7 +90,7 @@ Backbone.SIXHIARA.ViewFactura = Backbone.View.extend({
         </div>
     </div>
 
-    <div class="row panel-equal-height">
+    <div class="row panel-equal-height" style="margin-bottom: 0px;">
         <div class="col-xs-6">
             <div class="panel panel-info">
                 <div class="panel-heading">

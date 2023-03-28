@@ -96,7 +96,9 @@ a:hover {
 }
 
 .facturacao-historico {
+    height: 605px;
     list-style: none;
+    overflow-y: auto;
     padding-inline-start: 0;
 }
 
