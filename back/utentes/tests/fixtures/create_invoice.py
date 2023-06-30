@@ -1,6 +1,6 @@
 import datetime
 
-from utentes.models.constants import MONTHTLY, PENDING_PAYMENT
+from utentes.models.constants import MONTHLY, PENDING_PAYMENT
 from utentes.models.exploracao import Exploracao
 from utentes.models.facturacao import Facturacao
 from utentes.models.licencia import Licencia
@@ -17,7 +17,7 @@ def create_test_invoice(exp: Exploracao, year, month, **kwargs) -> Facturacao:
     invoice.ano = year
     invoice.mes = month
     invoice.fact_estado = PENDING_PAYMENT
-    invoice.fact_tipo = MONTHTLY
+    invoice.fact_tipo = MONTHLY
     _fill_lic_invoice_data(invoice, exp.get_licencia("sup"))
     _fill_lic_invoice_data(invoice, exp.get_licencia("sub"))
     invoice.periodo_fact = BillingPeriodCalculator().theorical(

@@ -44,15 +44,17 @@ IMPLIES_VALIDADE_FICHA_STATES = (
     None,
 )
 
-MONTHTLY = "Mensal"
+MONTHLY = "Mensal"
+QUARTERLY = "Trimestral"
+YEARLY = "Anual"
+
+FLAT_FEE = "Fixo"
+PER_UNIT = "Variável"
 
 INVOICE_STATE_PENDING_CONSUMPTION = "Pendente Acrescentar Consumo (DRH)"
 PENDING_INVOICE = "Pendente Emissão Factura (DSU-F)"
 PENDING_PAYMENT = "Pendente Pagamento (DSU-F)"
 PAID = "Pagada"
 NOT_INVOIZABLE = "Não facturable"
-
-FLAT_FEE = "Fixo"
-PER_UNIT = "Variável"
 
 THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3

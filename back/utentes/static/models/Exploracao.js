@@ -149,6 +149,9 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             model.on("change:c_soli_tot", app.updateCSoli, app);
             model.on("change:c_real_tot change:c_real_int", app.updateCReal, app);
             model.on("change:c_licencia", app.updateCLicencia, app);
+            // Automatic update fact_tipo and consumo_tipo based explotation consumption
+            model.on("change:c_licencia", app.updateFactTipo, app);
+            model.on("change:c_licencia", app.updateConsumoTipo, app);
             model.on("change:estado", app.updateSummaryEstado, app);
             model.on("change:pago_iva", app.updateSummaryPagoIva, app);
             // TODO: data should be shown as it is,
@@ -381,6 +384,25 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             c_lic += license.get("c_licencia");
         });
         return c_lic;
+    },
+
+    updateFactTipo: function() {
+        this.set(
+            "fact_tipo",
+            SIRHA.Services.Exp_size_billing_service.get_billing_type(
+                this.get("c_licencia")
+            )
+        );
+    },
+
+    updateConsumoTipo: function() {
+        let c_licencia = this.get("c_licencia");
+        this.get("licencias").forEach(function(licencia) {
+            licencia.set(
+                "consumo_tipo",
+                SIRHA.Services.Exp_size_billing_service.get_consumption_type(c_licencia)
+            );
+        });
     },
 
     updateSummaryEstado: function() {

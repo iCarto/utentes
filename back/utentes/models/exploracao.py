@@ -23,7 +23,7 @@ from utentes.models.base import (
 from utentes.models.facturacao import Facturacao
 from utentes.models.fonte import Fonte
 from utentes.models.licencia import Licencia
-from utentes.services import id_service
+from utentes.services import exp_size_billing_service, id_service
 
 
 class ST_Multi(GenericFunction):
@@ -334,12 +334,20 @@ class Exploracao(ExploracaoGeom):
         self.d_soli = data.get("d_soli")
         self.d_ultima_entrega_doc = data.get("d_ultima_entrega_doc")
         self.c_licencia = data.get("c_licencia")
+        # Automatic update fact_tipo based on exploration consumption
+        self.fact_tipo = exp_size_billing_service.get_billing_type(
+            data.get("c_licencia")
+        )
         for json_lic in data.get("licencias"):
             lic = self.get_licencia(json_lic["tipo_agua"])
             lic.tipo_lic = json_lic.get("tipo_lic")
             lic.d_emissao = json_lic.get("d_emissao")
             lic.d_validade = json_lic.get("d_validade")
             lic.c_licencia = to_decimal(json_lic.get("c_licencia"))
+            # Automatic update consumo_tipo based on exploration consumption
+            lic.consumo_tipo = exp_size_billing_service.get_consumption_type(
+                data.get("c_licencia")
+            )
 
     def update_from_json_facturacao(self, data):
         self.fact_tipo = data["fact_tipo"]
