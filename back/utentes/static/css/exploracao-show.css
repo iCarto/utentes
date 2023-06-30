@@ -86,6 +86,25 @@ label {
     color: #00a2da;
 }
 
+#cultivos_table {
+    direction: rtl;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#cultivos_content {
+    direction: ltr;
+}
+
+#cultivos thead th,
+#cultivos tbody td {
+    text-align: center;
+}
+
+#cultivos tbody td .observacio {
+    text-align: left;
+}
+
 #block-fontes thead th,
 #block-fontes tbody td {
     text-align: center;
