@@ -168,7 +168,7 @@ Backbone.SIXHIARA.ViewTecnico = Backbone.SIXHIARA.View1.extend({
             this.dofillRenovacao(e, autosave);
         } else {
             bootbox.confirm(
-                `A exploração vai mudar o seu a: <br> <strong>${nextState}</strong>`,
+                `A exploração vai mudar o seu estado a: <br> <strong>${nextState}</strong>`,
                 function(result) {
                     if (result) {
                         self.dofillRenovacao(e, autosave);

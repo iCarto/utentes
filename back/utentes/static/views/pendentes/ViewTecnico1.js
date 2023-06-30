@@ -210,7 +210,7 @@ print('O ' + formatter().formatDate(req_obs[i]['create_at']) + ', ' + req_obs[i]
             this.doFillExploracao(e, autosave);
         } else {
             bootbox.confirm(
-                `A exploração vai mudar o seu a: <br> <strong>${nextState}</strong>`,
+                `A exploração vai mudar o seu estado a: <br> <strong>${nextState}</strong>`,
                 function(result) {
                     if (result) {
                         self.doFillExploracao(e, autosave);
