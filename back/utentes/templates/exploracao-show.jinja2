@@ -23,18 +23,19 @@
 {% endblock css_assets %}
 {% block main_block %}
     <main>
-      <div id="license-info" class="row"></div>
       <section class="row">
-        <section id="block-title" class="col-xs-12">
+        <section id="block-title" class="col-xs-3">
           <h3>
             <button id="delete-button" type="button" class="btn btn-default btn-sm uilib-enability uilib-show-role-administrador">Eliminar</button>
             <button id="file-modal" type="button" class="btn btn-default btn-sm">Documentação</button>
             <button id="refresh-button" type="button" class="btn btn-default btn-sm uilib-enability uilib-hide-role-observador">Refrescar</button>
             <button id="save-button" type="button" class="btn btn-primary btn-sm uilib-enability uilib-show-role-administrador uilib-show-role-tecnico uilib-show-role-juridico">Gravar</button>
             {% if next_state in ['Utente de usos comuns', 'Utente de facto'] %}
-            <button id="licenciar-button" type="button" class="btn btn-primary btn-sm uilib-enability uilib-show-role-administrador uilib-show-role-juridico" style="float: right;">Licenciar</button>
+            <button id="licenciar-button" type="button" class="btn btn-primary btn-sm uilib-enability uilib-show-role-administrador uilib-show-role-juridico">Licenciar</button>
             {% endif %}
           </h3>
+        </section>
+        <section id="license-info" class="col-xs-3">
         </section>
       </section>
       <section id="intro-section" class="row">
