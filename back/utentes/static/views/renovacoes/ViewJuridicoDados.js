@@ -24,6 +24,13 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
         <%- renovacao.lic_time_over ? 'label-danger' : (renovacao.lic_time_warning ? 'label-warning' : renovacao.lic_time_enough ? 'label-success' : 'label-default') %>"> <%- renovacao.lic_time_info || 'Sem informação' %>
         </div>
 
+        <div class="row">
+          <div class="col-xs-12">
+            <div id="billing_info_change">
+            </div>
+          </div>
+        </div>
+
         <div id="toolbar" class="row">
             <div id="leftside-toolbar" class="col-xs-4"></div>
             <div id="rightside-toolbar" class="col-xs-8">
@@ -210,6 +217,7 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
         this.enabledWidgets();
         this.fillSelects();
         this.enableBts();
+        this.changeBillingType();
 
         document.querySelectorAll(".widget-date").forEach(function(el) {
             el.addEventListener("input", function() {
@@ -365,6 +373,17 @@ Backbone.SIXHIARA.ViewJuridicoDados = Backbone.SIXHIARA.View1.extend({
             document.getElementById("bt-ok").disabled = !enable;
         }
         return enable;
+    },
+
+    changeBillingType: function() {
+        self = this;
+        var expSizeBillingAlert = new Backbone.SIXHIARA.ExpSizeBillingAlert({
+            el: $("#billing_info_change"),
+            model: self,
+            evaluated_value: "c_licencia_sub",
+            evaluated_value2: "c_licencia_sup",
+            route: self.model.attributes.renovacao,
+        });
     },
 
     fillRenovacaoFromForm: function() {

@@ -106,6 +106,14 @@ Backbone.SIXHIARA.ExploracaoShowView = Backbone.View.extend({
                     model: exploracao,
                 });
                 self.subViews.push(blockInfoLicenseView);
+
+                var expSizeBillingAlert = new Backbone.SIXHIARA.ExpSizeBillingAlert({
+                    el: $("#billing_info_change"),
+                    model: exploracao,
+                    evaluated_value: "c_licencia",
+                    route: self.model,
+                });
+                self.subViews.push(expSizeBillingAlert);
             },
             error: function() {
                 // TODO: show message to user
