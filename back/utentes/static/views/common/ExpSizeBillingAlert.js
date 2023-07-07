@@ -8,8 +8,8 @@ Backbone.SIXHIARA.ExpSizeBillingAlert = Backbone.View.extend({
     ),
 
     initialize: function(options) {
-        evaluated_value = options.evaluated_value;
-        evaluated_value2 = options.evaluated_value2;
+        const evaluated_value = options.evaluated_value;
+        const evaluated_value2 = options.evaluated_value2;
         // evaluated_value2 is only used for renewal processes
         route = options.route;
         route.on(
