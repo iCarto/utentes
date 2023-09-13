@@ -10,7 +10,7 @@ from utentes.models.exploracao import Exploracao, ExploracaoBase
 from utentes.models.facturacao import Facturacao
 
 
-MANUAL_SYNC_TIME = datetime.datetime(year=2022, month=11, day=1)
+MANUAL_SYNC_TIME = datetime.datetime(year=2023, month=10, day=1)
 
 
 class ExploracaosERP(Base):
