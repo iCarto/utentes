@@ -1,5 +1,8 @@
 # Project
 
+# Workaround mientras no actualicemos la 3.6 de Pythopn
+# typing-extensions==3.6.5
+
 # Utils
 ipython==7.16.3
 
