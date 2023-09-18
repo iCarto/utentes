@@ -164,6 +164,8 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
         this.get("licencias").on("add", function(model, collection, options) {
             model.on("change:c_soli_tot", app.updateCSoli, app);
             model.on("change:c_real_tot change:c_real_int", app.updateCReal, app);
+            model.on("change:c_licencia", app.updateFactTipo, app);
+            model.on("change:c_licencia", app.updateConsumoTipo, app);
             model.on("change:c_licencia", app.updateCLicencia, app);
             model.on("change:estado", app.updateSummaryEstado, app);
             model.on("change:pago_iva", app.updateSummaryPagoIva, app);
@@ -173,10 +175,14 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             app.updateCReal();
             app.updateCLicencia();
             app.updateSummaryPagoIva();
+            app.updateFactTipo();
+            app.updateConsumoTipo();
         });
         this.get("licencias").on("remove", function(model, collection, options) {
             model.off("change:c_soli_tot", app.updateCSoli, app);
             model.off("change:c_real_tot change:c_real_int", app.updateCReal, app);
+            model.off("change:c_licencia", app.updateFactTipo, app);
+            model.off("change:c_licencia", app.updateConsumoTipo, app);
             model.off("change:c_licencia", app.updateCLicencia, app);
             model.off("change:estado", app.updateSummaryEstado, app);
             model.off("change:pago_iva", app.updateSummaryPagoIva, app);
@@ -186,11 +192,15 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
             app.updateCReal();
             app.updateCLicencia();
             app.updateSummaryPagoIva();
+            app.updateFactTipo();
+            app.updateConsumoTipo();
         });
         this.get("licencias").on("reset", function(collection, options) {
             collection.forEach(function(model) {
                 model.on("change:c_soli_tot", app.updateCSoli, app);
                 model.on("change:c_real_tot change:c_real_int", app.updateCReal, app);
+                model.on("change:c_licencia", app.updateFactTipo, app);
+                model.on("change:c_licencia", app.updateConsumoTipo, app);
                 model.on("change:c_licencia", app.updateCLicencia, app);
                 model.on("change:estado", app.updateSummaryEstado);
                 model.on("change:pago_iva", app.updateSummaryPagoIva, app);
@@ -200,10 +210,14 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
                 app.updateCReal();
                 app.updateCLicencia();
                 app.updateSummaryPagoIva();
+                app.updateFactTipo();
+                app.updateConsumoTipo();
             });
             collection.previousModels.forEach(function(model) {
                 model.off("change:c_soli_tot", app.updateCSoli, app);
                 model.off("change:c_real_tot", app.updateCReal, app);
+                model.off("change:c_licencia", app.updateFactTipo, app);
+                model.off("change:c_licencia", app.updateConsumoTipo, app);
                 model.off("change:c_licencia", app.updateCLicencia, app);
                 model.off("change:estado", app.updateSummaryEstado, app);
                 model.off("change:pago_iva", app.updateSummaryPagoIva, app);
@@ -213,6 +227,8 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
                 app.updateCReal();
                 app.updateCLicencia();
                 app.updateSummaryPagoIva();
+                app.updateFactTipo();
+                app.updateConsumoTipo();
             });
         });
 
@@ -387,12 +403,15 @@ Backbone.SIXHIARA.Exploracao = Backbone.GeoJson.Feature.extend({
     },
 
     updateFactTipo: function() {
-        this.set(
-            "fact_tipo",
-            SIRHA.Services.Exp_size_billing_service.get_billing_type(
-                this.get("c_licencia")
-            )
+        const factTipoValue = SIRHA.Services.Exp_size_billing_service.get_billing_type(
+            this.get("c_licencia")
         );
+        this.set("fact_tipo", factTipoValue);
+        const factTipoWidget = document.querySelector("#licenciaModal #fact_tipo");
+        if (factTipoWidget) {
+            factTipoWidget.value = factTipoValue;
+            factTipoWidget.dispatchEvent(new Event("change"));
+        }
     },
 
     updateConsumoTipo: function() {
