@@ -253,3 +253,5 @@ drop_tables_version 2022-07-08T08:52:24Z Francisco Puga <fpuga@icarto.es> # Drop
 @220708 2022-07-08T08:57:56Z Francisco Puga <fpuga@icarto.es> # tag 220708
 
 3927_changes_in_departaments_names 2023-03-24T11:50:17Z Francisco Puga <fpuga@icarto.es> # 3927 changes in departaments names
+new_version_230919 2023-09-19T20:04:18Z Francisco Puga <fpuga@icarto.es> # new_version_230919
+@230919 2023-09-19T20:03:23Z Francisco Puga <fpuga@icarto.es> # tag 230919
