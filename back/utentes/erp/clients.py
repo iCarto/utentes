@@ -137,6 +137,7 @@ def build_data_to_export(e: ClientsResultSet):
         "Num_Contrib": stringify(
             exp.utente_rel.nuit, exp.utente_rel.bi_di_pas, maxlen=20
         ),
+        "CentroCusto": stringify(exp.loc_divisao),
         "Fac_Mor": stringify(exp.loc_divisao, exp.loc_bacia),
         "Fac_Mor2": stringify(exp.loc_provin, exp.loc_distri, exp.loc_posto),
         "Fac_Local": stringify(exp.loc_nucleo),
