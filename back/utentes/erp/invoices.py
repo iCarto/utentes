@@ -102,13 +102,28 @@ def build_data_to_export(e: InvoicesResultSet) -> Dict:
     invoice = e.invoice
     invoice_erp = e.invoice_erp
 
-    is_sup = invoice.has_water_type("sup")
-    is_sub = invoice.has_water_type("sub")
-
     if invoice_erp.id:
         estado = "Existente"
     else:
         estado = "Novo"
+
+    if invoice.has_water_type("sup"):
+        taxa_fixa_sup = invoice.taxa_fixa_sup * invoice._month_factor()  # noqa: WPS437
+        consumo_sup = invoice.consumo_fact_sup * invoice._month_factor()  # noqa: WPS437
+        taxa_uso_sup = invoice.taxa_uso_sup
+    else:
+        taxa_fixa_sup = DEFAULT_EMPTY_TIPO_AGUA
+        consumo_sup = DEFAULT_EMPTY_TIPO_AGUA
+        taxa_uso_sup = DEFAULT_EMPTY_TIPO_AGUA
+
+    if invoice.has_water_type("sub"):
+        taxa_fixa_sub = invoice.taxa_fixa_sub * invoice._month_factor()  # noqa: WPS437
+        consumo_sub = invoice.consumo_fact_sub * invoice._month_factor()  # noqa: WPS437
+        taxa_uso_sub = invoice.taxa_uso_sub
+    else:
+        taxa_fixa_sub = DEFAULT_EMPTY_TIPO_AGUA
+        consumo_sub = DEFAULT_EMPTY_TIPO_AGUA
+        taxa_uso_sub = DEFAULT_EMPTY_TIPO_AGUA
 
     return {
         "Cliente": e.exploracao_erp.erp_id,
@@ -123,13 +138,13 @@ def build_data_to_export(e: InvoicesResultSet) -> Dict:
         "Periodo_Factura": invoice.billing_period(),
         "Descricao": e.exploracao_base.actividade.tipo,
         "Superficial": K_SUPERFICIAL,
-        "Con_Sup": (is_sup and invoice.consumo_fact_sup) or DEFAULT_EMPTY_TIPO_AGUA,
-        "TaxaUso_sup": (is_sup and invoice.taxa_uso_sup) or DEFAULT_EMPTY_TIPO_AGUA,
-        "TaxaFixa_Sup": (is_sup and invoice.taxa_fixa_sup) or DEFAULT_EMPTY_TIPO_AGUA,
+        "Con_Sup": consumo_sup,
+        "TaxaUso_sup": taxa_uso_sup,
+        "TaxaFixa_Sup": taxa_fixa_sup,
         "Subterranea": K_SUBTERRANEA,
-        "Con_Sub": (is_sub and invoice.consumo_fact_sub) or DEFAULT_EMPTY_TIPO_AGUA,
-        "TaxaUso_Sub": (is_sub and invoice.taxa_uso_sub) or DEFAULT_EMPTY_TIPO_AGUA,
-        "TaxaFixa_Sub": (is_sub and invoice.taxa_fixa_sub) or DEFAULT_EMPTY_TIPO_AGUA,
+        "Con_Sub": consumo_sub,
+        "TaxaUso_Sub": taxa_uso_sub,
+        "TaxaFixa_Sub": taxa_fixa_sub,
         "Valor": (
             (invoice.pago_mes_sub or DEFAULT_EMPTY_TIPO_AGUA)
             + (invoice.pago_mes_sup or DEFAULT_EMPTY_TIPO_AGUA)
