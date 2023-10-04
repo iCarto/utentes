@@ -5,7 +5,7 @@ from pyramid.view import view_config
 from utentes.constants import perms as perm
 from utentes.models.constants import INVOIZABLE_STATES
 from utentes.repos.exploracao_repo import (
-    get_exploracao_list,
+    get_exploracao_for_facturacao_list,
     get_exploracao_with_invoices_by_pk,
 )
 from utentes.repos.invoice_repo import get_invoice_by_pk
@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 )
 def facturacao_get(request):
     states = request.GET.getall("states[]") or INVOIZABLE_STATES
-    exploracaos = get_exploracao_list(request.db, states)
+    exploracaos = get_exploracao_for_facturacao_list(request.db, states)
     return {"type": "FeatureCollection", "features": exploracaos}
 
 

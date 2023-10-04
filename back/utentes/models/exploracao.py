@@ -489,6 +489,9 @@ class Exploracao(ExploracaoGeom):
         if self.utente_rel:
             payload["properties"]["utente"] = self.utente_rel.own_columns_as_dict()
 
+        if hasattr(self, "exploracao_erp"):
+            payload["properties"]["primavera"] = True if self.exploracao_erp else False
+
         return payload
 
     def _update_requerimento_fields(self, data):

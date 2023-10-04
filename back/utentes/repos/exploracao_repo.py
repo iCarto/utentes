@@ -8,7 +8,7 @@ from utentes.models.constants import RENEWABLE_STATES
 from utentes.models.exploracao import Exploracao, ExploracaoConFacturacao
 from utentes.models.exploracao_con_renovacao import ExpConRenovacao
 from utentes.models.licencia import Licencia
-from utentes.repos.exploracao_list import ExploracaoList
+from utentes.repos.exploracao_list import ExploracaoFacturacaoList, ExploracaoList
 
 
 def get_exploracao_by_pk(db: Session, pk: int):
@@ -23,7 +23,7 @@ def get_exploracao_with_invoices_by_pk(db: Session, exp_pk) -> ExploracaoConFact
     )
 
 
-def get_exploracao_list(db: Session, states):
+def get_exploracao_for_facturacao_list(db: Session, states):
     """Returns a list of ExploracaoList.
 
     db: Session
@@ -33,9 +33,9 @@ def get_exploracao_list(db: Session, states):
 
     """
     return (
-        db.query(ExploracaoList)
+        db.query(ExploracaoFacturacaoList)
         .filter(ExploracaoList.estado_lic.in_(states))
-        .order_by(ExploracaoList.exp_id)
+        .order_by(ExploracaoFacturacaoList.exp_id)
         .all()
     )
 
