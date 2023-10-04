@@ -256,7 +256,7 @@ if (window.SIRHA.getARA() === "ARAS") {
         southWest: [-26.8686950002522, 31.3062989916333],
         northEast: [-20.8837170380884, 35.604025999402],
     });
-    window.SIXHIARA.IVA = 12.75;
+    window.SIXHIARA.IVA = 0;
 }
 
 window.SIXHIARA.xlsFieldsToExport = {};
