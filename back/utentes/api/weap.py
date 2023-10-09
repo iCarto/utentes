@@ -4,8 +4,8 @@ from pyramid.view import view_config
 from sqlalchemy.engine import Engine
 
 from utentes.lib.utils import dates
-from utentes.services.pyramid_spreadsheet_response import spreadsheet_response
-from utentes.services.spreadsheet_writer import write_tmp_spreadsheet_from_dataframes
+from utentes.services.pyramid_response import spreadsheet_response
+from utentes.services.spreadsheet_writer import write_tmp_file_from_dataframes
 
 
 @view_config(route_name="api_weap_demand")
@@ -23,7 +23,7 @@ def build_spreadsheet_file(engine: Engine, exp_gid: int):
         "Nova_Licenca": get_new_exp_demand(engine, exp_gid),
     }
     exp_id = sheets["Nova_Licenca"]["Número da exploração"][0]
-    spreadsheet_file = write_tmp_spreadsheet_from_dataframes(sheets)
+    spreadsheet_file = write_tmp_file_from_dataframes(sheets)
     spreadsheet_filename = build_filename(exp_id)
 
     return spreadsheet_file, spreadsheet_filename

@@ -31,13 +31,13 @@ def write_tmp_file_from_dataframes(sheets: Dict) -> BinaryIO:
             can be passed in this way
 
     Returns:
-        A file-like object, in fact a `NameTemporarFile`.
+        A file-like object, in fact a `NameTemporaryFile`.
 
     Raises:
         Exception: If any error is thrown in the process of writing the file. The code
             ensures that the file will be deleted if an error is thrown
     """
-    tmp = NamedTemporaryFile(suffix=".xlsx")
+    tmp = NamedTemporaryFile(suffix=".csv")
 
     try:
         write_file_from_dataframes(sheets, tmp)
@@ -58,14 +58,12 @@ def write_file_from_dataframes(sheets: dict, file: BinaryIO) -> None:
         file: A file-like object. The caller has the responsability to open and close
             the file. The `file` argument is `seek(0)` to allow return it directly.
     """
-    writer = pd.ExcelWriter(
-        file, date_format="DD/MM/YYYY", datetime_format="DD/MM/YYYY"
-    )
+    writer = file
     for sheetname, df in sheets.items():
         _write_df_to_sheet(writer, sheetname, df)
-        writer.save()
-        file.seek(0)
+        # writer.save()
+        # file.seek(0)
 
 
 def _write_df_to_sheet(writer, sheet_name: str, df: pd.DataFrame):
-    df.to_excel(writer, sheet_name=sheet_name, index=False)
+    df.to_csv(writer.name, sep=";", index=False)

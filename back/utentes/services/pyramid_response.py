@@ -17,3 +17,16 @@ def spreadsheet_response(request: Request, tmp: BinaryIO, filename: str) -> Resp
         tmp.close()
         raise
     return response
+
+
+def csv_response(request: Request, tmp: BinaryIO, filename: str) -> Response:
+    response = request.response
+    # https://docs.microsoft.com/es-es/archive/blogs/vsofficedeveloper/office-2007-file-format-mime-types-for-http-content-streaming-2
+    response.content_type = "text/csv"
+    response.content_disposition = f"attachment; filename={filename}"
+    try:
+        response.app_iter = FileIter(tmp)
+    except Exception:
+        tmp.close()
+        raise
+    return response

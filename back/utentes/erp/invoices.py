@@ -12,6 +12,7 @@ from utentes.erp.model import (
     FacturacaoERP,
     InvoicesResultSet,
 )
+from utentes.erp.response import FileType, file_response
 from utentes.lib.utils import dates
 from utentes.models.base import badrequest_exception_user
 from utentes.models.constants import (
@@ -22,8 +23,6 @@ from utentes.models.constants import (
 )
 from utentes.models.exploracao import ExploracaoBase
 from utentes.models.facturacao import Facturacao
-from utentes.services.pyramid_spreadsheet_response import spreadsheet_response
-from utentes.services.spreadsheet_writer import write_tmp_spreadsheet_from_records
 
 
 DEFAULT_EMPTY_TIPO_AGUA = Decimal("0.00")
@@ -32,9 +31,8 @@ DEFAULT_EMPTY_TIPO_AGUA = Decimal("0.00")
 @view_config(route_name="api_erp_invoices")
 def api_erp_invoices(request):
     invoices_to_export = get_and_update_bd(request.db)
-    # It's granted that response will call close on `tmp` so the file will be deleted
-    tmp, filename = build_spreadsheet_file(request.db, invoices_to_export)
-    return spreadsheet_response(request, tmp, filename)
+    sheets = {"Sheet1": invoices_to_export}
+    return file_response(request, sheets, build_filename(), FileType.xlsx)
 
 
 def get_and_update_bd(db: Session):
@@ -161,13 +159,6 @@ def build_data_to_export(e: InvoicesResultSet) -> Dict:
     }
 
 
-def build_spreadsheet_file(db: Session, data: List[Dict]):
-    sheets = {"Sheet1": data}
-    spreadsheet_file = write_tmp_spreadsheet_from_records(sheets)
-    spreadsheet_filename = build_filename()
-    return spreadsheet_file, spreadsheet_filename
-
-
 def build_filename() -> str:
     today = dates.today().strftime("%y%m%d")
-    return f"{today}_facturas_primavera.xlsx"
+    return f"{today}_facturas_primavera"

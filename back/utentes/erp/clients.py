@@ -24,29 +24,27 @@ exporta como "Novo"
 """
 
 import datetime
-from typing import Dict, List
+from typing import List
 
 from pyramid.request import Request
 from pyramid.view import view_config
 from sqlalchemy.orm import Session, aliased, noload
 
 from utentes.erp.model import MANUAL_SYNC_TIME, ClientsResultSet, ExploracaosERP
+from utentes.erp.response import FileType, file_response
 from utentes.lib.utils import dates
 from utentes.lib.utils.strings import stringify
 from utentes.models.actividade import ActividadeBase
 from utentes.models.constants import INVOIZABLE_STATES
 from utentes.models.exploracao import Exploracao
 from utentes.services import exp_service
-from utentes.services.pyramid_spreadsheet_response import spreadsheet_response
-from utentes.services.spreadsheet_writer import write_tmp_spreadsheet_from_records
 
 
 @view_config(route_name="api_erp_clients")
 def api_erp_clients(request: Request):
     exps_to_export = get_and_update_bd(request.db)
-    # It's granted that response will call close on `tmp` so the file will be deleted
-    tmp, filename = build_spreadsheet_file(request.db, exps_to_export)
-    return spreadsheet_response(request, tmp, filename)
+    sheets = {"Explorações": exps_to_export}
+    return file_response(request, sheets, build_filename(), FileType.xlsx)
 
 
 def get_and_update_bd(db: Session):
@@ -159,13 +157,6 @@ def update_exported_at(db: Session):
     db.query(ExploracaosERP).update({"exported_at": now}, synchronize_session=False)
 
 
-def build_spreadsheet_file(db: Session, data: List[Dict]):
-    sheets = {"Explorações": data}
-    spreadsheet_file = write_tmp_spreadsheet_from_records(sheets)
-    spreadsheet_filename = build_filename()
-    return spreadsheet_file, spreadsheet_filename
-
-
 def build_filename() -> str:
     today = dates.today().strftime("%y%m%d")
-    return f"{today}_exploracaoes_primavera.xlsx"
+    return f"{today}_exploracaoes_primavera"
