@@ -1,0 +1,75 @@
+#!/bin/bash                                                                                                                                                                                   
+
+set -eu
+
+# This script should be configured to be ran each day with anacron                                                                                                                            
+# It could be placed in /etc/cron.daily                                                                                                                                                       
+
+# Configuration: weekly_tasks variables                                                                                                                                                       
+# Usuario que se puede usar para copiar los archivos mediante scp                                                                                                                             
+SCP_USER=
+PG_PORT=
+DBNAME=
+BASE_MEDIA_FOLDER=
+export PGPASSWORD=
+BACKUP_FOLDER=
+
+function mount_nas() {
+    # FILL ME
+}
+
+function umount_nas() {
+    # FILL ME
+}
+
+
+function weekly_tasks() {
+    # echo "ejecutado $NOW"  >"${BACKUP_FOLDER}"/foo                                                                                                                                          
+
+    # Remove old backups                                                                                                                                                                      
+    rm -rf "${BACKUP_FOLDER}"/*
+    pg_dump -h localhost -p ${PG_PORT} -U postgres -Fc -Z9 -E UTF-8 -f ${BACKUP_FOLDER}/${DBNAME}_bck_$(date +%y%m%d).dump ${DBNAME} 2> ${BACKUP_FOLDER}/pgdump.log
+    tar czf ${BACKUP_FOLDER}/${DBNAME}_files_bck_$(date +%y%m%d).tgz ${BASE_MEDIA_FOLDER}/media 2> ${BACKUP_FOLDER}/tar_files.log
+    chown -R ${SCP_USER}:${SCP_USER} ${BACKUP_FOLDER}
+}
+
+mount_nas
+
+
+# Configuration: Path to the file that registers the last execution time                                                                                                                      
+LAST_EXECUTION_FILE="${BACKUP_FOLDER}/sirha_${DBNAME}/last_time_executed"
+
+NOW=$(date)
+
+
+
+# First time, LAST_EXECUTION_FILE will not exists, we created it empty                                                                                                                        
+mkdir -p $(dirname "${LAST_EXECUTION_FILE}") && touch "${LAST_EXECUTION_FILE}"
+# If LAST_EXECUTION does not exist initialize it with this day on last week                                                                                                                   
+FIRST_TIME_INITIALIZATION_DATE=$(date -d "last week" )
+
+LAST_EXECUTION=$([ -f "${LAST_EXECUTION_FILE}" ] && cat "${LAST_EXECUTION_FILE}")
+LAST_EXECUTION_TIME=$(date -d "${LAST_EXECUTION:=${FIRST_TIME_INITIALIZATION_DATE}}")
+
+# echo $LAST_EXECUTION_TIME                                                                                                                                                                   
+# echo $NOW                                                                                                                                                                                   
+
+# https://stackoverflow.com/questions/63579084/compare-two-dates-in-shell-bash-script-and-find-days-difference                                                                                
+function date_difference_in_days() {
+   local date_one=$(date -d "${1}" +%s)
+   local date_two=$(date -d "${2}" +%s)
+   local diff_days=$(( (date_one - date_two) / 86400 ))
+   # echo $diff_days                                                                                                                                                                          
+   [[ $diff_days -gt 6 ]]
+}
+
+# if 7 or more days have pass since last backup do it again                                                                                                                                   
+if date_difference_in_days "${NOW}" "${LAST_EXECUTION_TIME}"; then
+    echo "Ejecutando"
+    weekly_tasks
+    # And the date should be recorded                                                                                                                                                         
+    echo "${NOW}" > "${LAST_EXECUTION_FILE}"
+fi
+
+# echo "Saliendo"                                                                                                                                                                             
+umount_nas
